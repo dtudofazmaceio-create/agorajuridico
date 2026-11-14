@@ -232,7 +232,7 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
 .mcard{display:flex;flex-direction:column;overflow:hidden;color:inherit;text-decoration:none!important;transition:border-color .15s,box-shadow .15s}
 .mcard:hover{border-color:var(--latao);box-shadow:0 16px 34px -24px rgba(19,32,58,.5)}
-.mthumb{height:132px;display:grid;place-items:center;position:relative;background:var(--toga);color:var(--latao);overflow:hidden;isolation:isolate}
+.mthumb{height:200px;display:grid;place-items:center;position:relative;background:var(--toga);color:var(--latao);overflow:hidden;isolation:isolate}
 .mthumb:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.07;z-index:-1}
 .mthumb.audio{background:#3a1520}.mthumb.pdf{background:#2b2a24}
 .mthumb .art{width:150px;height:96px}
@@ -301,14 +301,17 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .mthumb.tem-capa .art{display:none}
 .mthumb img.capa{display:block;opacity:0;transition:opacity .25s}
 .mthumb img.capa.ok{opacity:1}
-.mthumb.pdf.tem-capa img.capa{height:116px;width:auto;max-width:78%;border-radius:2px;background:#fff;box-shadow:0 10px 22px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)}
+.mthumb.pdf.tem-capa{background:#fff}
+.mthumb.pdf.tem-capa:before{display:none}
+.mthumb.pdf.tem-capa img.capa{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:0}
+.mthumb.tem-capa .badge{z-index:1;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 .mthumb.yt img.capa{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
 .mthumb.yt:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,32,58,.1),rgba(19,32,58,.55));z-index:-1}
 .mthumb.yt .play{width:44px;height:44px;border-radius:50%;background:rgba(251,249,244,.92);color:var(--toga);display:grid;place-items:center}
 .capa-prev{display:flex;gap:14px;align-items:center}
 .capa-prev img{height:110px;width:auto;border-radius:2px;box-shadow:0 6px 16px rgba(19,32,58,.3);background:#fff}
 .capa-prev .acts{display:grid;gap:6px}
-@media (max-width:820px){.mthumb.pdf.tem-capa img.capa{height:80px}.mthumb.yt .play{width:34px;height:34px}}
+@media (max-width:820px){.mthumb.pdf.tem-capa{height:auto;width:104px}.mthumb.yt .play{width:34px;height:34px}}
 
 /* Leitor de PDF */
 .leitor{background:#4b5363;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(82vh,1100px)}
@@ -1188,7 +1191,7 @@ async function render() {
   const main = $('#main');
   main.innerHTML = '<div class="loading">Carregando…</div>';
   bindShell();
-  try { await r.view(main, param, q); bindInstall(); }
+  try { await r.view(main, param, q); bindInstall(); capasAutomaticas(); }
   catch (e) { console.error(e); main.innerHTML = `<div class="page"><div class="card empty"><h3>Não foi possível carregar</h3><p>${esc(e.message)}</p></div></div>`; }
   window.scrollTo(0, 0);
 }
@@ -2093,24 +2096,19 @@ function admCodigos(box, codigos) {
 function admMateriais(box, mats) {
   mats.sort(byNewest);
   const semCapa = mats.filter(m => m.tipo === 'pdf' && m.fileRef && !m.capaRef);
+  const driveSemCapa = mats.filter(m => m.tipo === 'pdf' && !m.fileRef && m.url && !m.capaRef);
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
-    ${semCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${semCapa.length} PDF${semCapa.length > 1 ? 's' : ''} sem capa</h3><p>Gere a capa a partir da primeira página de cada arquivo já enviado.</p></div><button class="btn primary" id="gerar-capas">Gerar capas</button></div>` : ''}
+    ${semCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${semCapa.length} PDF${semCapa.length > 1 ? 's' : ''} sem capa</h3><p>As capas são extraídas automaticamente da primeira página. Se ainda não apareceram, clique no botão.</p></div><button class="btn primary" id="gerar-capas">Gerar capas</button></div>` : ''}
+    ${driveSemCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${driveSemCapa.length} PDF${driveSemCapa.length > 1 ? 's' : ''} do Google Drive sem capa</h3><p>O Drive não permite ler o arquivo para extrair a capa. Em <b>Editar</b>, use <b>Escolher imagem de capa</b> ou escolha o PDF do seu computador só para gerar a capa e os dados.</p></div></div>` : ''}
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
     ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
-    gc.disabled = true; let ok = 0, falha = 0;
-    for (const [i, m] of semCapa.entries()) {
-      gc.textContent = `Gerando ${i + 1} de ${semCapa.length}…`;
-      try {
-        const u = await store.fileURL(m.fileRef, 'application/pdf');
-        const capa = await capaDoPDF(await (await fetch(u)).blob());
-        const ref = await store.uploadFile(new File([capa], 'capa.jpg', { type: 'image/jpeg' }));
-        await store.save('materiais', { ...m, capaRef: ref }); ok++;
-      } catch (e) { console.warn(e); falha++; }
-    }
-    toast(`${ok} capa${ok !== 1 ? 's' : ''} gerada${ok !== 1 ? 's' : ''}${falha ? `, ${falha} com erro` : ''}.`, !!falha && !ok); render();
+    gc.disabled = true; gc.textContent = 'Gerando…';
+    const r = await gerarCapasPendentes((i, n) => { gc.textContent = `Gerando ${i} de ${n}…`; });
+    if (!r) { toast('As capas já estão sendo geradas. Aguarde alguns segundos.'); gc.disabled = false; gc.textContent = 'Gerar capas'; return; }
+    toast(`${r.ok} capa${r.ok !== 1 ? 's' : ''} gerada${r.ok !== 1 ? 's' : ''}${r.falha ? `, ${r.falha} com erro` : ''}.`, !!r.falha && !r.ok); render();
   };
   box.onclick = async e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
@@ -2246,6 +2244,35 @@ async function capaDoPDF(blob) {
   const doc = await pdfjs.getDocument({ data: new Uint8Array(await blob.arrayBuffer()), isEvalSupported: false }).promise;
   try { return await renderCapa(await doc.getPage(1)); } finally { try { await doc.destroy(); } catch {} }
 }
+/* Extrai as capas dos PDFs já enviados que ainda não têm capa */
+let capasRodando = false, capasAuto = false;
+async function gerarCapasPendentes(onProgress) {
+  if (capasRodando) return null; capasRodando = true;
+  try {
+    const pend = (await store.list('materiais')).filter(m => m.tipo === 'pdf' && m.fileRef && !m.capaRef);
+    let ok = 0, falha = 0;
+    for (const [i, m] of pend.entries()) {
+      onProgress?.(i + 1, pend.length);
+      try {
+        const u = await store.fileURL(m.fileRef, 'application/pdf');
+        const capa = await capaDoPDF(await (await fetch(u)).blob());
+        const ref = await store.uploadFile(new File([capa], 'capa.jpg', { type: 'image/jpeg' }));
+        const atual = await store.get('materiais', m.id);
+        await store.save('materiais', { ...(atual || m), capaRef: ref }); ok++;
+      } catch (e) { console.warn('capa não gerada', m.titulo, e); falha++; }
+    }
+    return { ok, falha, total: pend.length };
+  } finally { capasRodando = false; }
+}
+function capasAutomaticas() {
+  if (capasAuto || S.user?.role !== 'admin') return; capasAuto = true;
+  setTimeout(async () => {
+    const r = await gerarCapasPendentes(); if (!r || !r.total) return;
+    if (r.ok) toast(`${r.ok} capa${r.ok > 1 ? 's extraídas' : ' extraída'} dos PDFs já enviados.`);
+    if (r.falha) toast(`${r.falha} PDF${r.falha > 1 ? 's' : ''} não ${r.falha > 1 ? 'tiveram' : 'teve'} a capa extraída. Tente pelo botão Gerar capas.`, true);
+    if (r.ok && /^#\/(materiais|painel|admin|busca)/.test(location.hash) && !document.querySelector('.modal-bg')) render();
+  }, 1200);
+}
 const ytId = url => (String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
 /* Carrega as capas guardadas assim que os cartões aparecem na tela */
 new MutationObserver(() => {
@@ -2306,10 +2333,10 @@ function formMaterial(m = {}) {
         <span class="hint">O portal lê o título, o autor e o número de páginas e preenche os campos.${store.modo === 'gist' ? ' Até 4 MB.' : ''}</span>
         <input type="file" name="arquivo" accept="application/pdf,.pdf"></label>
       <div class="pdf-info hidden" id="pdf-info"></div>
-      <div class="capa-prev ${m.capaRef ? '' : 'hidden'}" id="capa-prev"><img id="capa-img" alt="Capa do material" ${m.capaRef ? `data-capa="${esc(m.capaRef)}" class="capa ok"` : ''}>
-        <div class="acts"><b class="small" style="color:var(--toga)">Capa do material</b><span class="hint" id="capa-txt">${m.capaRef ? 'Capa atual.' : ''}</span>
-          <label class="btn ghost sm" style="display:inline-flex">${ic('file', 14)} Usar outra imagem<input type="file" id="capa-file" accept="image/*" hidden></label>
-          <button type="button" class="btn ghost sm" id="capa-rm">Remover capa</button></div></div>
+      <div class="capa-prev" id="capa-prev"><img id="capa-img" alt="Capa do material" ${m.capaRef ? `data-capa="${esc(m.capaRef)}" class="capa ok"` : 'class="hidden"'}>
+        <div class="acts"><b class="small" style="color:var(--toga)">Capa do material</b><span class="hint" id="capa-txt">${m.capaRef ? 'Capa atual.' : 'Sem capa. Ela é extraída da 1ª página ao escolher o PDF.'}</span>
+          <label class="btn ghost sm" style="display:inline-flex">${ic('file', 14)} Escolher imagem de capa<input type="file" id="capa-file" accept="image/*" hidden></label>
+          <button type="button" class="btn ghost sm ${m.capaRef ? '' : 'hidden'}" id="capa-rm">Remover capa</button></div></div>
     </div>
     <div data-t="video audio" class="form">
       <label><span id="lb-url">Link do YouTube ou do Google Drive</span><input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
@@ -2352,10 +2379,10 @@ function formMaterial(m = {}) {
     capaNova = blob; capaRemover = false;
     if (pimg.src?.startsWith('blob:')) URL.revokeObjectURL(pimg.src);
     pimg.removeAttribute('data-capa'); pimg.src = URL.createObjectURL(blob); pimg.className = '';
-    $('#capa-txt', el).textContent = txt; prev.classList.remove('hidden');
+    $('#capa-txt', el).textContent = txt; $('#capa-rm', el).classList.remove('hidden');
   };
   $('#capa-file', el).onchange = async e => { const fl = e.target.files[0]; if (!fl) return; try { usarCapa(await capaDeImagem(fl), 'Imagem escolhida por você.'); } catch { toast('Não consegui abrir essa imagem.', true); } };
-  $('#capa-rm', el).onclick = () => { capaNova = null; capaRemover = true; prev.classList.add('hidden'); };
+  $('#capa-rm', el).onclick = () => { capaNova = null; capaRemover = true; pimg.className = 'hidden'; $('#capa-txt', el).textContent = 'A capa será removida ao salvar.'; $('#capa-rm', el).classList.add('hidden'); };
   const escolher = async file => {
     if (!file) return;
     if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) { mostrar('aviso', `${ic('file', 16)}<span>Escolha um arquivo PDF.</span>`); return; }
