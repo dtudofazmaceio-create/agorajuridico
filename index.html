@@ -279,6 +279,24 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .article .body p{margin:0 0 1.1em}
 .article .doc{padding:34px 38px}
 
+
+/* Formulário de material */
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg label{display:flex!important;align-items:center;justify-content:center;gap:8px;border:1px solid var(--linha);border-radius:8px;padding:.7em;cursor:pointer;background:var(--branco);font-weight:600!important;color:var(--toga)!important}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){border-color:var(--rubi);background:var(--rubi-bg);color:var(--rubi)!important}
+.drop{border:1.5px dashed var(--latao);border-radius:10px;padding:18px;text-align:center;background:var(--papel);cursor:pointer;display:grid;gap:6px;justify-items:center;color:var(--toga);font-weight:600}
+.drop.over{background:var(--latao-bg)}
+.drop input{display:none}
+.drop .hint{font-weight:400}
+.pdf-info{border-radius:8px;padding:.75em .95em;font-size:.86rem;display:flex;gap:10px;align-items:flex-start}
+.pdf-info.lendo{background:var(--linha-2);color:var(--toga)}
+.pdf-info.ok{background:var(--ok-bg);color:var(--ok)}
+.pdf-info.aviso{background:var(--warn-bg);color:var(--warn)}
+.form input.auto,.form textarea.auto,.form select.auto{background:#fbf6ea;border-color:var(--latao)}
+.minfo{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--cinza);margin-top:2px}
+.minfo span{display:inline-flex;gap:4px;align-items:center}
+
 /* Tabelas e admin */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
@@ -547,7 +565,9 @@ const I = {
   scroll: '<path d="M8 21h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8"/><path d="M8 3a2 2 0 0 0-2 2v14a2 2 0 1 1-4 0v-2h4"/><path d="M10 8h6M10 12h6M10 16h4"/>',
   tag: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>',
   news: '<path d="M4 5h13v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v10a2 2 0 0 1-2 2"/><path d="M7 9h7M7 13h7M7 17h4"/>',
-  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>'
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
 
@@ -1548,7 +1568,11 @@ function matCard(m) {
   const t = TIPOS[m.tipo] || TIPOS.pdf;
   return `<a class="card mcard" href="#/material/${encodeURIComponent(m.id)}">
     <div class="mthumb ${esc(m.tipo)}"><span class="badge">${t.nome}</span>${ART.thumb(m.tipo)}</div>
-    <div class="mbody"><span class="d">${esc(m.disciplina || 'Geral')}</span><h4>${esc(m.titulo)}</h4><p>${esc(m.descricao || '')}</p></div></a>`;
+    <div class="mbody"><span class="d">${esc(m.disciplina || 'Geral')}</span><h4>${esc(m.titulo)}</h4>${infoMat(m)}<p>${esc(m.descricao || '')}</p></div></a>`;
+}
+function infoMat(m) {
+  const it = [m.autor ? `<span>${ic('user', 13)} ${esc(m.autor)}</span>` : '', m.tipo === 'pdf' && m.paginas ? `<span>${ic('file', 13)} ${esc(m.paginas)} páginas</span>` : '', m.tipo !== 'pdf' && m.duracao ? `<span>${ic('clock', 13)} ${esc(m.duracao)}</span>` : ''].filter(Boolean);
+  return it.length ? `<div class="minfo">${it.join('')}</div>` : '';
 }
 function miniPost(p) {
   const c = CATS[p.categoria] || CATS.estagio;
@@ -1621,7 +1645,7 @@ async function viewMaterial(main, id) {
   else player = `<div class="player"><iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}"></iframe></div>`;
 
   main.innerHTML = `<div class="page">
-    <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')} · ${t.nome}</div><h2>${esc(m.titulo)}</h2></div>
+    <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')}, ${t.nome.toLowerCase()}</div><h2>${esc(m.titulo)}</h2>${infoMat(m)}</div>
       ${m.tipo === 'pdf' && src ? `<a class="btn ghost sm" href="${esc(safeURL(src))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir em nova aba</a>` : ''}</div>
     ${player}
     ${m.descricao ? `<div class="card pad article" style="margin-top:22px"><h4>Sobre este material</h4><div class="body">${paras(m.descricao)}</div></div>` : ''}
@@ -1922,7 +1946,7 @@ function admMateriais(box, mats) {
   mats.sort(byNewest);
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
-    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ' · ' + fmtSize(m.size) : 'Link externo'}</td><td>${fmtDate(m.criadoEm)}</td>
+    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   box.onclick = async e => {
@@ -1934,42 +1958,205 @@ function admMateriais(box, mats) {
     }
   };
 }
+
+/* ====================== Leitura automática de PDF ======================
+   Usa o PDF.js (Mozilla) pelo CDN. Sem internet ou se o CDN falhar,
+   uma leitura básica ainda tenta obter páginas, título e autor. */
+const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/';
+let _pdfjs = null;
+function carregarPdfJs() {
+  if (!_pdfjs) _pdfjs = import(PDFJS + 'pdf.min.mjs').then(m => { m.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.mjs'; return m; }).catch(e => { _pdfjs = null; throw e; });
+  return _pdfjs;
+}
+const DISC_PISTAS = {
+  'Direito Constitucional': ['constituição', 'constitucional', 'direitos fundamentais', 'cf/88', 'emenda constitucional', 'controle de constitucionalidade', 'poder constituinte'],
+  'Direito Civil': ['código civil', 'contrato', 'obrigações', 'responsabilidade civil', 'direito de família', 'sucessões', 'posse', 'propriedade', 'negócio jurídico'],
+  'Direito Penal': ['código penal', 'crime', 'penal', 'dolo', 'culpa', 'tipicidade', 'homicídio', 'teoria do crime', 'pena'],
+  'Processo Civil': ['processo civil', 'cpc', 'petição inicial', 'tutela provisória', 'recurso de apelação', 'cumprimento de sentença'],
+  'Processo Penal': ['processo penal', 'cpp', 'inquérito', 'ação penal', 'prisão preventiva', 'júri'],
+  'Direito Administrativo': ['administração pública', 'ato administrativo', 'licitação', 'servidor público', 'improbidade', 'direito administrativo'],
+  'Direito Tributário': ['tributário', 'tributo', 'imposto', 'ctn', 'icms', 'contribuinte'],
+  'Direito do Trabalho': ['clt', 'trabalhista', 'empregado', 'empregador', 'contrato de trabalho', 'direito do trabalho'],
+  'Processo do Trabalho': ['processo do trabalho', 'reclamação trabalhista', 'justiça do trabalho'],
+  'Direito Empresarial': ['empresarial', 'sociedade empresária', 'falência', 'recuperação judicial', 'títulos de crédito'],
+  'Direito do Consumidor': ['consumidor', 'cdc', 'fornecedor', 'relação de consumo'],
+  'Direito Ambiental': ['ambiental', 'meio ambiente', 'licenciamento ambiental'],
+  'Direito Internacional': ['direito internacional', 'tratado internacional', 'onu'],
+  'Direitos Humanos': ['direitos humanos', 'dignidade da pessoa humana', 'corte interamericana'],
+  'Ética e Estatuto da OAB': ['oab', 'estatuto da advocacia', 'ética profissional', 'exame de ordem'],
+  'Filosofia e Teoria do Direito': ['filosofia do direito', 'hermenêutica', 'teoria do direito', 'kelsen', 'jusnaturalismo'],
+  'Prática Jurídica': ['prática jurídica', 'modelo de petição', 'peça processual', 'prática forense']
+};
+function adivinharDisciplina(texto) {
+  const t = ' ' + String(texto || '').toLowerCase() + ' ';
+  let best = '', sc = 0;
+  for (const [d, ks] of Object.entries(DISC_PISTAS)) {
+    const n = ks.reduce((a, k) => a + (t.split(k).length - 1) * (k.includes(' ') ? 2 : 1), 0);
+    if (n > sc) { sc = n; best = d; }
+  }
+  return sc >= 2 ? best : '';
+}
+function limparTitulo(t) {
+  t = String(t || '').replace(/^Microsoft (Word|PowerPoint) - /i, '').replace(/\.(docx?|pptx?|odt|pdf|rtf)$/i, '').replace(/\s+/g, ' ').trim();
+  if (t.length < 4 || /^(untitled|sem t[ií]tulo|documento\s*\d*|apresenta[çc][ãa]o\s*\d*|slide\s*\d*)$/i.test(t)) return '';
+  return t.slice(0, 160);
+}
+const autorValido = a => { a = String(a || '').trim(); return a.length >= 3 && !/^\(?(user|usu[aá]rio|admin|administrador|administrator|windows user|owner|pc|autor|author|unknown|desconhecido|anonymous|an[ôo]nimo|unspecified|none|n\/a)\)?$/i.test(a) ? a : ''; };
+const textoValido = t => { t = String(t || '').trim(); return /^\(?(unspecified|untitled|none|n\/a|sem assunto|subject|keywords)\)?$/i.test(t) ? '' : t; };
+function autorNoTexto(t) {
+  const m = String(t || '').match(/(?:[Aa]utor(?:a|es)?|AUTOR(?:A|ES)?|[Ee]laborado por|[Oo]rganizado por|[Pp]rof(?:\.|essor|essora)?\.?(?:\s+(?:[Dd]r|[Dd]ra|[Mm]e|[Mm]a|[Mm]sc)\.?)?)\s*[:\-–]?\s*([A-ZÁÂÃÉÊÍÓÔÕÚÇ][a-záâãéêíóôõúç]+(?:\s+(?:d[aeo]s?\s+)?[A-ZÁÂÃÉÊÍÓÔÕÚÇ][a-záâãéêíóôõúç]+){1,4})/);
+  return m ? m[1].trim() : '';
+}
+const tituloDoArquivo = n => limparTitulo(String(n || '').replace(/\.pdf$/i, '').replace(/[_\-]+/g, ' ').replace(/\s+/g, ' ').trim()).replace(/^./, c => c.toUpperCase());
+function pdfStr(tok) {
+  if (!tok) return '';
+  let bytes = [];
+  if (tok[0] === '<') { const h = tok.slice(1, -1).replace(/\s/g, ''); for (let i = 0; i < h.length; i += 2) bytes.push(parseInt(h.substr(i, 2), 16)); }
+  else {
+    const t = tok.slice(1, -1);
+    for (let i = 0; i < t.length; i++) {
+      let c = t[i];
+      if (c === '\\') { const n = t[++i]; const map = { n: 10, r: 13, t: 9, b: 8, f: 12 }; if (n in map) bytes.push(map[n]); else if (/[0-7]/.test(n)) { let o = n; while (o.length < 3 && /[0-7]/.test(t[i + 1])) o += t[++i]; bytes.push(parseInt(o, 8)); } else bytes.push(n.charCodeAt(0)); }
+      else bytes.push(c.charCodeAt(0) & 255);
+    }
+  }
+  if (bytes[0] === 0xFE && bytes[1] === 0xFF) { let o = ''; for (let i = 2; i + 1 < bytes.length; i += 2) o += String.fromCharCode(bytes[i] << 8 | bytes[i + 1]); return o.trim(); }
+  return new TextDecoder('latin1').decode(new Uint8Array(bytes)).trim();
+}
+function lerPDFBasico(buf) {
+  const s = new TextDecoder('latin1').decode(new Uint8Array(buf));
+  const campo = k => { const m = s.match(new RegExp('/' + k + '\\s*(\\((?:\\\\.|[^\\\\)])*\\)|<[0-9A-Fa-f\\s]*>)')); return m ? pdfStr(m[1]) : ''; };
+  const counts = [...s.matchAll(/\/Count\s+(\d+)/g)].map(m => +m[1]);
+  const pages = (s.match(/\/Type\s*\/Page(?![s\w])/g) || []).length;
+  return { paginas: Math.max(pages, ...counts, 0) || null, titulo: limparTitulo(campo('Title')), autor: autorValido(campo('Author')), assunto: textoValido(campo('Subject')), palavras: textoValido(campo('Keywords')), texto: '', fonte: 'basico' };
+}
+async function lerPDFjs(buf) {
+  const pdfjs = await carregarPdfJs();
+  const doc = await pdfjs.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise;
+  let info = {}; try { info = (await doc.getMetadata()).info || {}; } catch {}
+  let texto = '', titulo1 = '';
+  const linhas = [];
+  for (let i = 1; i <= Math.min(3, doc.numPages); i++) {
+    const tc = await (await doc.getPage(i)).getTextContent();
+    const its = tc.items.filter(x => x.str && x.str.trim());
+    if (i === 1 && its.length) {
+      const h = x => Math.abs(x.transform?.[3] || 0) || x.height || 0, max = Math.max(...its.map(h));
+      titulo1 = limparTitulo(its.filter(x => h(x) >= max - 0.5).map(x => x.str).join(' '));
+    }
+    texto += ' ' + its.map(x => x.str).join(' ');
+    linhas.push(...its.map(x => x.str));
+  }
+  texto = texto.replace(/\s+/g, ' ').trim();
+  const r = { paginas: doc.numPages, titulo: limparTitulo(info.Title) || titulo1, autor: autorValido(info.Author) || linhas.map(autorNoTexto).find(Boolean) || '', assunto: textoValido(info.Subject), palavras: textoValido(info.Keywords), texto, fonte: 'pdfjs' };
+  try { await doc.destroy(); } catch {}
+  return r;
+}
+async function lerPDF(file) {
+  const buf = await file.arrayBuffer();
+  let r = null;
+  try { r = await lerPDFjs(buf.slice(0)); } catch (e) { console.warn('PDF.js indisponível; usando leitura básica.', e); }
+  if (!r) r = lerPDFBasico(buf);
+  if (!r.titulo) r.titulo = tituloDoArquivo(file.name);
+  r.disciplina = adivinharDisciplina(`${r.titulo} ${r.assunto} ${r.palavras} ${r.texto}`);
+  const partes = [];
+  if (r.assunto) partes.push(/[.!?]$/.test(r.assunto) ? r.assunto : r.assunto + '.');
+  partes.push(`Material em PDF${r.paginas ? ` com ${r.paginas} página${r.paginas > 1 ? 's' : ''}` : ''}${r.autor ? `, de ${r.autor}` : ''}${r.disciplina ? `, na área de ${r.disciplina}` : ''}.`);
+  r.descricao = partes.join(' ');
+  return r;
+}
+
+const CAMPOS_MAT = {
+  pdf:   { autor: 'Autor(es)', autorPh: 'Ex.: Maria Helena Souza', ex: 'paginas', exLbl: 'Número de páginas' },
+  video: { autor: 'Professor(a) ou palestrante', autorPh: 'Ex.: Prof. Carlos Lima', ex: 'duracao', exLbl: 'Duração' },
+  audio: { autor: 'Autor(a) ou narrador(a)', autorPh: 'Ex.: Prof. Carlos Lima', ex: 'duracao', exLbl: 'Duração' }
+};
 function formMaterial(m = {}) {
+  const tipo0 = m.tipo || 'pdf';
   const { el, close } = modal(m.id ? 'Editar material' : 'Novo material', `<form class="form" id="fm">
+    <div><span class="hint" style="font-weight:600;color:var(--toga);display:block;margin-bottom:6px">Tipo de material</span>
+      <div class="seg">${Object.entries(TIPOS).map(([k, t]) => `<label><input type="radio" name="tipo" value="${k}" ${tipo0 === k ? 'checked' : ''}>${ic(t.icon, 18)} ${t.nome}</label>`).join('')}</div></div>
+    <div data-t="pdf" class="form">
+      <label class="drop" id="drop">${ic('file', 26)}<span id="drop-t">${m.fileName ? `Arquivo atual: ${esc(m.fileName)}. Clique para trocar` : 'Clique ou arraste o PDF aqui'}</span>
+        <span class="hint">O portal lê o título, o autor e o número de páginas e preenche os campos.${store.modo === 'gist' ? ' Até 4 MB.' : ''}</span>
+        <input type="file" name="arquivo" accept="application/pdf,.pdf"></label>
+      <div class="pdf-info hidden" id="pdf-info"></div>
+    </div>
+    <div data-t="video audio" class="form">
+      <label><span id="lb-url">Link do YouTube ou do Google Drive</span><input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
+      <p class="hint" style="margin-top:-6px">${DICA_DRIVE}</p>
+    </div>
     <label>Título<input name="titulo" required value="${esc(m.titulo)}"></label>
-    <div class="row2"><label>Tipo<select name="tipo">${Object.entries(TIPOS).map(([k, t]) => `<option value="${k}" ${(m.tipo || 'video') === k ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></label>
-      <label>Disciplina<input name="disciplina" list="dl-disc" value="${esc(m.disciplina)}" placeholder="Ex.: Direito Civil"></label></div>
+    <div class="row2"><label>Disciplina<input name="disciplina" list="dl-disc" value="${esc(m.disciplina)}" placeholder="Ex.: Direito Civil"></label>
+      <label><span id="lb-autor">Autor(es)</span><input name="autor" value="${esc(m.autor)}"></label></div>
+    <div class="row2">
+      <label data-t="pdf">Número de páginas<input name="paginas" type="number" min="1" value="${esc(m.paginas)}"></label>
+      <label data-t="video audio">Duração<input name="duracao" value="${esc(m.duracao)}" placeholder="Ex.: 45 min ou 1h20"></label>
+      <span></span></div>
     <label>Descrição<textarea name="descricao" rows="3">${esc(m.descricao)}</textarea></label>
-    <div id="g-arq"><label>Arquivo PDF${store.modo === 'gist' ? ' (até 4 MB)' : ''}<input type="file" name="arquivo" accept="application/pdf"></label>
-      ${m.fileName ? `<p class="hint" style="margin-top:6px">Arquivo atual: <b>${esc(m.fileName)}</b>. Envie outro para substituir.</p>` : ''}</div>
-    <label><span id="lb-url">Link do YouTube ou do Google Drive</span><input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
-    <p class="hint" id="h-url">${DICA_DRIVE}</p>
+    <label data-t="pdf">Ou, em vez do arquivo, link do PDF no Google Drive<input name="urlpdf" type="url" value="${esc(m.tipo === 'pdf' ? m.url : '')}" placeholder="https://drive.google.com/file/d/…"></label>
     <div class="progress hidden" id="pg"><span></span></div>
-    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar</button></div>
-  </form><datalist id="dl-disc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist>`);
-  const f = $('#fm', el);
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar material</button></div>
+  </form><datalist id="dl-disc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist>`, { wide: true });
+  const f = $('#fm', el), info = $('#pdf-info', el);
+  const tipo = () => f.querySelector('[name=tipo]:checked').value;
   const ajusta = () => {
-    const pdf = f.tipo.value === 'pdf';
-    $('#g-arq', el).classList.toggle('hidden', !pdf);
-    $('#lb-url', el).textContent = pdf ? '…ou link do Google Drive' : `Link do ${f.tipo.value === 'video' ? 'vídeo' : 'áudio'} no YouTube ou no Google Drive`;
-    f.url.required = !pdf;
+    const t = tipo(), c = CAMPOS_MAT[t];
+    $$('[data-t]', f).forEach(x => x.classList.toggle('hidden', !x.dataset.t.split(' ').includes(t)));
+    $('#lb-autor', el).textContent = c.autor; f.autor.placeholder = c.autorPh;
+    $('#lb-url', el).textContent = `Link do ${t === 'video' ? 'vídeo' : 'áudio'} no YouTube ou no Google Drive`;
+    f.url.required = t !== 'pdf';
   };
-  f.tipo.onchange = ajusta; ajusta();
+  f.addEventListener('change', e => { if (e.target.name === 'tipo') ajusta(); });
+  ajusta();
+  // campos preenchidos automaticamente ficam destacados até serem editados
+  f.addEventListener('input', e => { if (e.target.dataset.auto) { delete e.target.dataset.auto; e.target.classList.remove('auto'); } });
+  const auto = (campo, valor) => {
+    const i = f[campo]; if (!i || valor === undefined || valor === null || valor === '') return false;
+    if (i.value.trim() && !i.dataset.auto) return false; // não sobrescreve o que você digitou
+    i.value = valor; i.dataset.auto = '1'; i.classList.add('auto'); return true;
+  };
+  const mostrar = (cls, html) => { info.className = 'pdf-info ' + cls; info.innerHTML = html; };
+  let arquivo = null;
+  const escolher = async file => {
+    if (!file) return;
+    if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) { mostrar('aviso', `${ic('file', 16)}<span>Escolha um arquivo PDF.</span>`); return; }
+    arquivo = file; $('#drop-t', el).textContent = `${file.name} (${fmtSize(file.size)})`;
+    mostrar('lendo', `${ic('spark', 16)}<span>Lendo o PDF…</span>`);
+    try {
+      const r = await lerPDF(file);
+      const preenchidos = [auto('titulo', r.titulo) && 'título', auto('autor', r.autor) && 'autor', auto('paginas', r.paginas) && 'páginas', auto('disciplina', r.disciplina) && 'disciplina', auto('descricao', r.descricao) && 'descrição'].filter(Boolean);
+      const achou = [r.paginas ? `${r.paginas} página${r.paginas > 1 ? 's' : ''}` : '', r.autor ? `autor: ${esc(r.autor)}` : 'autor não identificado', r.disciplina ? esc(r.disciplina) : ''].filter(Boolean).join(', ');
+      let html = `${ic('spark', 16)}<span><b>PDF lido.</b> ${achou}.${preenchidos.length ? ` Campos preenchidos: ${preenchidos.join(', ')}. Confira os destacados.` : ' Os campos que você já tinha preenchido foram mantidos.'}</span>`;
+      if (store.modo === 'gist' && file.size > 4 * 1024 * 1024) {
+        arquivo = null; f.arquivo.value = '';
+        html = `${ic('file', 16)}<span><b>Dados lidos, mas o arquivo tem ${fmtSize(file.size)}</b> e passa do limite de 4 MB. Publique o PDF no Google Drive e cole o link no campo do final do formulário.</span>`;
+        mostrar('aviso', html); return;
+      }
+      mostrar('ok', html);
+    } catch (e) { console.warn(e); mostrar('aviso', `${ic('file', 16)}<span>Não consegui ler os dados deste PDF. Preencha os campos manualmente.</span>`); }
+  };
+  f.arquivo.onchange = () => escolher(f.arquivo.files[0]);
+  const drop = $('#drop', el);
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+  drop.addEventListener('drop', e => escolher(e.dataTransfer.files[0]));
+
   f.onsubmit = async e => {
     e.preventDefault();
-    const tipo = f.tipo.value, url = f.url.value.trim(), file = tipo === 'pdf' ? f.arquivo.files[0] : null;
-    if (tipo !== 'pdf') { const er = validarMidia(url); if (er) return toast(er, true); }
-    else if (!file && !url && !m.fileRef) return toast('Envie o PDF ou informe o link do Google Drive.', true);
-    else if (url && !file && !embedURL(url)) return toast('Para PDF por link, use um link do Google Drive (drive.google.com/file/d/…).', true);
+    const t = tipo(), url = (t === 'pdf' ? f.urlpdf.value : f.url.value).trim();
+    if (t !== 'pdf') { const er = validarMidia(url); if (er) return toast(er, true); }
+    else if (!arquivo && !url && !m.fileRef) return toast('Escolha o arquivo PDF ou informe o link do Google Drive.', true);
+    else if (url && !arquivo && !embedURL(url)) return toast('Para PDF por link, use um link do Google Drive (drive.google.com/file/d/…).', true);
     $('#sv', el).disabled = true;
-    const o = { ...m, titulo: f.titulo.value.trim(), tipo, disciplina: f.disciplina.value.trim(), descricao: f.descricao.value.trim(), url };
+    const o = { ...m, tipo: t, titulo: f.titulo.value.trim(), disciplina: f.disciplina.value.trim(), autor: f.autor.value.trim(), descricao: f.descricao.value.trim(), url: arquivo ? '' : url,
+      paginas: t === 'pdf' && f.paginas.value ? Number(f.paginas.value) : '', duracao: t !== 'pdf' ? f.duracao.value.trim() : '' };
     try {
-      if (file) {
+      if (arquivo) {
         $('#pg', el).classList.remove('hidden');
-        const r = await store.uploadFile(file, pr => $('#pg span', el).style.width = Math.round(pr * 100) + '%');
+        const r = await store.uploadFile(arquivo, pr => $('#pg span', el).style.width = Math.round(pr * 100) + '%');
         if (m.fileRef) await store.deleteFile(m.fileRef);
-        Object.assign(o, { fileRef: r, fileName: file.name, mime: file.type, size: file.size });
-      } else if (tipo !== 'pdf' || (url && !m.fileRef)) {
+        Object.assign(o, { fileRef: r, fileName: arquivo.name, mime: arquivo.type || 'application/pdf', size: arquivo.size });
+      } else if (t !== 'pdf' || url) {
         if (m.fileRef) await store.deleteFile(m.fileRef);
         Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
       }
