@@ -437,22 +437,17 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 <script type="module">
 /* =====================================================================
    CONFIGURAÇÃO
-   - backend: 'gist'     → conteúdo (materiais, vagas, leis) num Gist do GitHub.
-                           Com a "ponte de contas" (contas-worker.js, Cloudflare
-                           Worker gratuito), os cadastros dos alunos também ficam
-                           num Gist secreto: o aluno entra em qualquer aparelho.
+   - backend: 'gist'     → conteúdo (materiais, vagas, leis) num Gist do GitHub;
+                           alunos e assinaturas ficam no aparelho de cada aluno.
                            O site pode ser hospedado no GitHub Pages.
    - backend: 'local'    → tudo salvo no navegador (IndexedDB). Ideal para testar.
    - backend: 'firebase' → Firebase Auth + Firestore + Storage (multiusuário real).
    ===================================================================== */
 const CONFIG = {
-  backend: 'local',
+  backend: 'gist',
   // Opcional: fixe aqui o Gist de dados (o assistente do portal mostra os valores).
   // Sem isso, o portal usa o Gist que vem no link: ...?gist=usuario/ID
   gist: { user: '', id: '' },
-  // Opcional: endereço da ponte de contas (ex.: 'https://agora-contas.seunome.workers.dev').
-  // Também pode ser informado no Painel → Configurações, sem editar este arquivo.
-  contasApi: '',
   firebase: {
     apiKey: "",
     authDomain: "",
@@ -705,6 +700,7 @@ function LocalStore({ seed = true } = {}) {
     async currentUser() { const s = await get('config', 'sessao'); return s ? pub(await get('users', s.userId)) : null; },
     async getUser(id) { return pub(await get('users', id)); },
     async listUsers() { return (await all('users')).map(pub); },
+    async redefinirSenha(id, nova) { if ((nova || '').length < 6) throw new Error('A senha deve ter pelo menos 6 caracteres.'); const u = await get('users', id); u.salt = uid(); u.senhaHash = await hash(nova, u.salt); await put('users', u); },
     async updateUser(id, patch) { const u = await get('users', id); Object.assign(u, patch); await put('users', u); return pub(u); },
     async list(col, filtro) { const r = await all(col); return filtro ? r.filter(x => x[filtro[0]] === filtro[1]) : r; },
     async get(col, id) { return (await get(col, id)) || null; },
@@ -777,70 +773,63 @@ async function FirebaseStore() {
 }
 
 /* ================= Camada de dados: GitHub Gist (nuvem grátis) =================
-   Conteúdo do portal → arquivo agora-dados.json num Gist do administrador.
-   - Alunos LEEM o Gist pelo endereço público "raw" (sem login no GitHub).
-   - Só o administrador ESCREVE, usando um token pessoal do GitHub que fica
-     guardado apenas no navegador dele (nunca vai para o Gist).
-   - Contas de alunos: com a ponte de contas configurada (contasApi), ficam num
-     Gist SECRETO separado, gravado só pela ponte (contas-worker.js). O aluno entra
-     com o mesmo e-mail e senha em qualquer aparelho, e um e-mail não se repete.
-     Sem a ponte, as contas ficam no aparelho do aluno (comportamento antigo).
+   Dois Gists secretos na conta do administrador:
+   1) Dados do portal  → agora-dados.json (materiais, vagas, leis, planos, códigos)
+                          + arquivos enviados (PDF/áudio em base64).
+   2) Alunos           → um arquivo por aluno (u-<código do e-mail>.json), com a
+                          senha protegida por PBKDF2. Mesmo e-mail = mesmo arquivo,
+                          então não existe cadastro duplicado nem conflito.
+   Todos leem pelo endereço "raw"; as gravações usam o token do GitHub que o
+   administrador cadastra uma única vez (guardado embaralhado nos dados do portal).
+   ATENÇÃO: quem tiver o link do portal e conhecimento técnico consegue recuperar
+   esse token. Use uma conta do GitHub exclusiva para o portal.
    ============================================================================= */
+async function sha256hex(t) { const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join(''); }
+async function pbkdf2(senha, salt, iter = 120000) {
+  const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(senha), 'PBKDF2', false, ['deriveBits']);
+  const b = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: new TextEncoder().encode(salt), iterations: iter, hash: 'SHA-256' }, k, 256);
+  return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
 function GistStore() {
   const L = LocalStore({ seed: false });
   const API = 'https://api.github.com', FILE = 'agora-dados.json';
   const GIST_COLS = ['materiais', 'publicacoes', 'codigos'];
-  let G = null, data = null, loadedAt = 0, admin = null, sess = null, alunos = [];
-  const SESS = 'sessao-nuvem';
-  const apiURL = () => String(data?.config?.contasApi || CONFIG.contasApi || '').trim().replace(/\/+$/, '');
-  async function api(path, { method = 'GET', body, adm = false, base = apiURL() } = {}) {
-    if (!base) throw new Error('As contas na nuvem ainda não foram configuradas pelo administrador.');
-    const headers = {};
-    if (body) headers['Content-Type'] = 'application/json';
-    if (adm) { if (!admin) throw new Error('Entre como administrador.'); headers['X-GitHub-Token'] = admin.token; }
-    else if (sess?.token) headers.Authorization = 'Bearer ' + sess.token;
-    let r;
-    try { r = await fetch(base + path, { method, headers, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' }); }
-    catch { const e = new Error('Sem conexão com o servidor de contas. Verifique sua internet.'); e.offline = true; throw e; }
-    const j = await r.json().catch(() => ({}));
-    if (!r.ok) { const e = new Error(j.erro || 'O servidor de contas respondeu com erro ' + r.status + '.'); e.status = r.status; throw e; }
-    return j;
-  }
-  async function guardarSessao(j) {
-    sess = { id: SESS, token: j.token || sess?.token, user: j.user, em: Date.now() };
-    try { await L.save('config', sess); } catch {}
-    return j.user;
-  }
-  async function esquecerSessao() { sess = null; try { await L.remove('config', SESS); } catch {} }
-  const novoDados = () => ({ versao: 1, config: { ...DEFAULT_CFG }, materiais: [], codigos: [], publicacoes: SEED_POSTS.map((p, i) => ({ ...p, id: uid(), criadoEm: Date.now() - i })) });
-  const parseG = s => {
-    s = String(s || '').trim();
-    const m = s.match(/gist\.github(?:usercontent)?\.com\/([\w-]+)\/([0-9a-f]{20,40})/i) || s.match(/[?&]gist=([\w-]+)\/([0-9a-f]{20,40})/i) || s.match(/^([\w-]+)\/([0-9a-f]{20,40})$/i);
+  let G = null, data = null, loadedAt = 0, TOKEN = null, sess = null;
+  const ucache = new Map(); // escritas recentes (evita ler versão antiga do cache do GitHub)
+  const enc = t => 'v1.' + btoa([...t].reverse().join(''));
+  const dec = x => { try { return x && x.startsWith('v1.') ? [...atob(x.slice(3))].reverse().join('') : null; } catch { return null; } };
+  const novoDados = () => ({ versao: 2, config: { ...DEFAULT_CFG }, materiais: [], codigos: [], publicacoes: SEED_POSTS.map((p, i) => ({ ...p, id: uid(), criadoEm: Date.now() - i })) });
+  const parseG = x => {
+    x = String(x || '').trim();
+    const m = x.match(/gist\.github(?:usercontent)?\.com\/([\w-]+)\/([0-9a-f]{20,40})/i) || x.match(/[?&]gist=([\w-]+)\/([0-9a-f]{20,40})/i) || x.match(/^([\w-]+)\/([0-9a-f]{20,40})$/i);
     return m ? { user: m[1], id: m[2] } : null;
   };
-  async function gh(path, opt = {}, token = admin?.token) {
+  async function gh(path, opt = {}, token = TOKEN) {
     let r;
     try { r = await fetch(API + path, { ...opt, headers: { Accept: 'application/vnd.github+json', ...(token ? { Authorization: 'Bearer ' + token } : {}), ...(opt.body ? { 'Content-Type': 'application/json' } : {}) } }); }
     catch { throw new Error('Sem conexão com o GitHub. Verifique sua internet.'); }
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
-      throw new Error(r.status === 401 ? 'Token do GitHub inválido ou expirado.' : r.status === 404 ? 'Gist não encontrado ou o token não tem permissão de Gist.' : r.status === 403 || r.status === 429 ? 'O GitHub recusou a operação (permissão ou limite de uso). Tente novamente em alguns minutos.' : r.status === 422 ? 'O GitHub não aceitou o arquivo (tamanho ou formato).' : (j.message || 'Erro ' + r.status));
+      throw new Error(r.status === 401 ? 'O token do GitHub do portal está inválido ou expirou. O administrador precisa atualizá-lo em Configurações.' : r.status === 404 ? 'Gist não encontrado ou o token não tem permissão de Gist.' : r.status === 403 || r.status === 429 ? 'O GitHub recusou a operação (permissão ou limite de uso). Tente novamente em alguns minutos.' : r.status === 422 ? 'O GitHub não aceitou o arquivo (tamanho ou formato).' : (j.message || 'Erro ' + r.status));
     }
     return r.status === 204 ? null : r.json();
   }
-  const raw = f => `https://gist.githubusercontent.com/${G.user}/${G.id}/raw/${encodeURIComponent(f)}`;
+  const rawOf = (g, f) => `https://gist.githubusercontent.com/${g.user}/${g.id}/raw/${encodeURIComponent(f)}`;
+  const raw = f => rawOf(G, f);
+  const UG = () => (G && data?.alunosGist) ? { user: G.user, id: data.alunosGist } : null;
+  const isAdmin = () => sess?.user?.role === 'admin';
+  async function fetchRaw(url) {
+    try { return await fetch(url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now() + Math.random().toString(36).slice(2, 6), { cache: 'no-store' }); }
+    catch { throw new Error('Sem conexão para falar com o portal. Verifique sua internet.'); }
+  }
   async function load() {
-    let d;
-    if (admin) {
-      const g = await gh('/gists/' + G.id); const f = g.files[FILE];
-      if (!f) throw new Error('O Gist não contém o arquivo ' + FILE + '.');
-      d = JSON.parse(f.truncated ? await (await fetch(f.raw_url)).text() : f.content);
-    } else {
-      let r; try { r = await fetch(raw(FILE) + '?v=' + Date.now(), { cache: 'no-store' }); } catch { throw new Error('Sem conexão para carregar o conteúdo do portal.'); }
-      if (!r.ok) throw new Error('Não foi possível carregar o conteúdo do portal. Confira o link recebido.');
-      d = await r.json();
+    let d = null;
+    if (isAdmin() && TOKEN) {
+      try { const g = await gh('/gists/' + G.id); const f = g.files[FILE]; if (f) d = JSON.parse(f.truncated ? await (await fetch(f.raw_url)).text() : f.content); } catch (e) { console.warn(e); }
     }
+    if (!d) { const r = await fetchRaw(raw(FILE)); if (!r.ok) throw new Error('Não foi possível carregar o conteúdo do portal. Confira o link recebido.'); d = await r.json(); }
     data = { config: {}, materiais: [], publicacoes: [], codigos: [], ...d }; loadedAt = Date.now();
+    TOKEN = dec(data.chave) || TOKEN;
     try { await L.save('config', { id: 'gist-cache', data }); } catch {}
   }
   async function ensure(force) {
@@ -848,18 +837,49 @@ function GistStore() {
     if (!force && data && Date.now() - loadedAt < 60000) return;
     try { await load(); }
     catch (e) {
-      if (!data) { const c = await L.get('config', 'gist-cache'); if (c?.data) { data = c.data; return; } }
+      if (!data) { const c = await L.get('config', 'gist-cache'); if (c?.data) { data = c.data; TOKEN = dec(data.chave) || TOKEN; return; } }
       if (force || !data) throw e;
     }
   }
-  async function commit() { await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [FILE]: { content: JSON.stringify(data, null, 1) } } }) }); loadedAt = Date.now(); }
-  async function mutate(fn) { if (!admin) throw new Error('Apenas o administrador pode alterar o conteúdo.'); await ensure(true); const r = fn(data); await commit(); return r; }
-  const adminUser = () => admin && ({ id: 'gh:' + admin.login, nome: admin.nome || admin.login, email: '@' + admin.login + ' (GitHub)', role: 'admin', assinatura: null, telefone: '', instituicao: '', semestre: '', criadoEm: admin.desde });
+  const semToken = () => new Error('O portal ainda não terminou a configuração. O administrador precisa concluir a configuração com o token do GitHub.');
+  async function commit() { if (!TOKEN) throw semToken(); await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [FILE]: { content: JSON.stringify(data, null, 1) } } }) }); loadedAt = Date.now(); }
+  async function mutate(fn) { if (!isAdmin()) throw new Error('Apenas o administrador pode alterar o conteúdo.'); await ensure(true); const r = fn(data); await commit(); return r; }
+
+  /* ---- Contas ---- */
+  const idDoEmail = async email => (await sha256hex(String(email).trim().toLowerCase())).slice(0, 32);
+  const ufile = id => `u-${id}.json`;
+  const pub = u => { if (!u) return null; const { senhaHash, salt, iter, ...r } = u; return r; };
+  async function readUser(id, fresh = false) {
+    const c = ucache.get(id); if (!fresh && c && Date.now() - c.at < 60000) return { ...c.u };
+    const g = UG(); if (!g) return null;
+    const r = await fetchRaw(rawOf(g, ufile(id)));
+    if (r.status === 404) return null;
+    if (!r.ok) throw new Error('Não foi possível consultar o cadastro. Tente de novo.');
+    return r.json();
+  }
+  async function writeUser(u) {
+    const g = UG(); if (!g || !TOKEN) throw semToken();
+    await gh('/gists/' + g.id, { method: 'PATCH', body: JSON.stringify({ files: { [ufile(u.id)]: { content: JSON.stringify(u) } } }) });
+    ucache.set(u.id, { u: { ...u }, at: Date.now() });
+  }
+  async function setSess(u) { sess = { id: 'sessao-gist', uid: u.id, user: pub(u), at: Date.now() }; await L.save('config', sess); }
+  async function criarConta(d, role = 'aluno') {
+    const email = d.email.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('Informe um e-mail válido.');
+    if ((d.senha || '').length < 6) throw new Error('A senha deve ter pelo menos 6 caracteres.');
+    const id = await idDoEmail(email);
+    if (await readUser(id, true)) throw new Error('Este e-mail já está cadastrado. Use “Entrar” com a sua senha.');
+    const salt = uid(), iter = 120000;
+    const u = { id, nome: d.nome.trim(), email, telefone: d.telefone || '', instituicao: d.instituicao || '', semestre: d.semestre || '', role, criadoEm: Date.now(), assinatura: d.assinatura || null, codigosUsados: [], salt, iter, senhaHash: await pbkdf2(d.senha, salt, iter) };
+    await writeUser(u); return u;
+  }
 
   return {
     modo: 'gist',
     get configurado() { return !!G; },
+    get precisaConfigurar() { return !!G && !!data && (!data.chave || !data.alunosGist); },
     get gist() { return G; },
+    get alunosGist() { return UG(); },
     async init() {
       await L.init();
       const fromURL = parseG(new URLSearchParams(location.search).get('gist'));
@@ -867,116 +887,99 @@ function GistStore() {
       const saved = await L.get('config', 'gist-ref');
       G = fromCfg || fromURL || saved?.g || null;
       if (fromURL && !fromCfg) await L.save('config', { id: 'gist-ref', g: fromURL });
-      admin = (await L.get('config', 'admin-gh')) || null;
-      if (admin && G && admin.login.toLowerCase() !== G.user.toLowerCase()) admin = null;
-      sess = (await L.get('config', SESS)) || null;
+      sess = (await L.get('config', 'sessao-gist')) || null;
+      if (sess) sess.at = 0; // revalida o cadastro na primeira tela
       if (G) { try { await ensure(true); } catch (e) { console.warn(e); } }
     },
-    get contasNuvem() { return !!apiURL(); },
-    get contasApi() { return apiURL(); },
-    async testarApi(url) {
-      const base = String(url || '').trim().replace(/\/+$/, '');
-      if (!/^https:\/\/[^\s/]+/i.test(base)) throw new Error('Informe o endereço completo da ponte, começando com https://');
-      const j = await api('/ping', { base });
-      if (j.servico !== 'agora-contas') throw new Error('Esse endereço não é uma ponte de contas do portal.');
-      if (!j.conteudo) throw new Error('A ponte está no ar, mas falta a variável CONTENT_GIST_ID.');
-      if (j.conteudoId && G && j.conteudoId !== G.id) throw new Error('A ponte aponta para outro Gist de conteúdo (' + j.conteudoId + '). Confira a variável CONTENT_GIST_ID.');
-      return base;
-    },
-    async entrarAdmin(token) {
-      token = token.trim();
+    /* Configuração inicial ou conclusão: token + conta do administrador */
+    async configurar({ token, nome, email, senha }) {
+      token = String(token || '').trim();
       if (!token) throw new Error('Cole o token do GitHub.');
-      const u = await gh('/user', {}, token);
-      if (G && u.login.toLowerCase() !== G.user.toLowerCase()) throw new Error(`Este token é da conta @${u.login}, mas o portal usa o Gist de @${G.user}.`);
-      admin = { id: 'admin-gh', token, login: u.login, nome: u.name || u.login, desde: Date.now() };
+      const gu = await gh('/user', {}, token);
+      if (G && gu.login.toLowerCase() !== G.user.toLowerCase()) throw new Error(`Este token é da conta @${gu.login}, mas o portal usa o Gist de @${G.user}.`);
+      TOKEN = token;
       let criado = false;
       if (!G) {
         const g = await gh('/gists', { method: 'POST', body: JSON.stringify({ description: 'Ágora Jurídica — dados do portal (não apague)', public: false, files: { [FILE]: { content: JSON.stringify(novoDados(), null, 1) } } }) });
-        G = { user: u.login, id: g.id }; criado = true;
+        G = { user: gu.login, id: g.id }; criado = true;
         await L.save('config', { id: 'gist-ref', g: G });
       }
-      await L.save('config', admin); await L.logout(); await ensure(true);
-      return { user: adminUser(), criado };
+      const g = await gh('/gists/' + G.id); const f = g.files[FILE];
+      data = { config: {}, materiais: [], publicacoes: [], codigos: [], ...JSON.parse(f.truncated ? await (await fetch(f.raw_url)).text() : f.content) };
+      if (!data.alunosGist) {
+        const ag = await gh('/gists', { method: 'POST', body: JSON.stringify({ description: 'Ágora Jurídica — cadastros de alunos (não apague)', public: false, files: { 'LEIA-ME.md': { content: 'Cadastros do portal Ágora Jurídica. Um arquivo por aluno. Não edite manualmente.' } } }) });
+        data.alunosGist = ag.id;
+      }
+      data.chave = enc(token);
+      await commit();
+      // conta do administrador
+      const id = await idDoEmail(email);
+      let u = await readUser(id);
+      if (u) {
+        if (u.senhaHash !== await pbkdf2(senha, u.salt, u.iter || 120000)) throw new Error('Este e-mail já tem cadastro com outra senha. Use a senha atual dele.');
+        u.role = 'admin'; u.nome = nome?.trim() || u.nome; await writeUser(u);
+      } else u = await criarConta({ nome, email, senha }, 'admin');
+      await setSess(u);
+      return { user: pub(u), criado };
+    },
+    async atualizarToken(token) {
+      if (!isAdmin()) throw new Error('Apenas o administrador pode atualizar o token.');
+      token = String(token || '').trim();
+      const gu = await gh('/user', {}, token);
+      if (gu.login.toLowerCase() !== G.user.toLowerCase()) throw new Error(`Este token é da conta @${gu.login}, mas o portal usa o Gist de @${G.user}.`);
+      TOKEN = token; await ensure(true); TOKEN = token; data.chave = enc(token); await commit();
     },
     async definirGist(txt) {
       const g = parseG(txt);
       if (!g) throw new Error('Link do Gist inválido. Exemplo: https://gist.github.com/usuario/1a2b3c…');
       const antigo = G; G = g; data = null; loadedAt = 0;
-      if (admin && admin.login.toLowerCase() !== g.user.toLowerCase()) { admin = null; await L.remove('config', 'admin-gh'); }
       try { await ensure(true); } catch (e) { G = antigo; throw new Error('Não encontrei o conteúdo do portal nesse Gist. Confira o link.'); }
       await L.save('config', { id: 'gist-ref', g });
       return g;
     },
-    async desconectarGist() { G = null; data = null; admin = null; await esquecerSessao(); await L.remove('config', 'gist-ref'); await L.remove('config', 'admin-gh'); await L.remove('config', 'gist-cache'); await L.logout(); },
-    async register(d) {
-      if (!apiURL()) return L.register(d);
-      await ensure();
-      const j = await api('/cadastro', { method: 'POST', body: { nome: d.nome, email: d.email, senha: d.senha, telefone: d.telefone, instituicao: d.instituicao, semestre: d.semestre } });
-      await L.logout();
-      return guardarSessao(j);
+    async desconectarGist() { G = null; data = null; sess = null; TOKEN = null; for (const k of ['gist-ref', 'gist-cache', 'sessao-gist']) { try { await L.remove('config', k); } catch {} } },
+    async register(d) { if (!UG() || !TOKEN) throw semToken(); const u = await criarConta(d); await setSess(u); return pub(u); },
+    async login(email, senha) {
+      if (!UG()) throw semToken();
+      const id = await idDoEmail(email); ucache.delete(id);
+      const u = await readUser(id, true);
+      if (!u || u.senhaHash !== await pbkdf2(senha, u.salt, u.iter || 120000)) throw new Error('E-mail ou senha incorretos.');
+      await setSess(u); try { await ensure(true); } catch (e) { console.warn(e); }
+      return pub(u);
     },
-    async login(e, s) {
-      if (!apiURL()) {
-        const u = await L.login(e, s);
-        if (u.role === 'admin') { await L.logout(); throw new Error('Administrador: use o botão “Sou o administrador” e entre com o token do GitHub.'); }
-        return u;
-      }
-      let j;
-      try { j = await api('/entrar', { method: 'POST', body: { email: e, senha: s } }); }
-      catch (err) {
-        if (err.status !== 401) throw err;
-        // Conta criada antes, só neste aparelho: leva para a nuvem (uma única vez).
-        const loc = await L.login(e, s).catch(() => null);
-        if (!loc || loc.role === 'admin') throw err;
-        await L.logout();
-        j = await api('/migrar', { method: 'POST', body: { ...loc, senha: s } });
-      }
-      await L.logout();
-      return guardarSessao(j);
-    },
-    async logout() { if (admin) { admin = null; await L.remove('config', 'admin-gh'); } await esquecerSessao(); await L.logout(); },
+    async logout() { sess = null; try { await L.remove('config', 'sessao-gist'); } catch {} },
     async currentUser() {
-      if (admin) return adminUser();
-      if (apiURL()) {
-        if (!sess) { if (await L.currentUser()) await L.logout(); return null; } // sessão antiga só do aparelho: entrar de novo leva a conta para a nuvem
-        if (Date.now() - (sess.em || 0) < 60000) return sess.user;
-        try { return await guardarSessao(await api('/eu')); }
-        catch (e) { if (e.status === 401) { await esquecerSessao(); return null; } return sess.user; } // sem internet: usa o último dado conhecido
+      if (!sess) return null;
+      if (Date.now() - sess.at > 60000) {
+        try { const u = await readUser(sess.uid); if (!u) { await this.logout(); return null; } sess.user = pub(u); sess.at = Date.now(); await L.save('config', sess); }
+        catch (e) { console.warn(e); }
       }
-      const u = await L.currentUser();
-      if (u?.role === 'admin') { await L.logout(); return null; } // sessão antiga do modo local
-      return u;
+      return sess.user;
     },
-    async getUser(id) {
-      if (admin && id === 'gh:' + admin.login) return adminUser();
-      if (apiURL()) {
-        if (admin) return alunos.find(u => u.id === id) || (await this.listUsers()).find(u => u.id === id) || null;
-        if (sess?.user?.id === id) return sess.user;
-      }
-      return L.getUser(id);
-    },
+    async getUser(id) { return pub(await readUser(id)); },
     async listUsers() {
-      if (!apiURL() || !admin) return L.listUsers();
-      alunos = (await api('/admin/usuarios', { adm: true })).usuarios || [];
-      return alunos.map(u => ({ ...u }));
+      const g = UG(); if (!g) return [];
+      const r = await gh('/gists/' + g.id);
+      const out = [];
+      for (const [n, f] of Object.entries(r.files || {})) {
+        if (!/^u-[0-9a-f]+\.json$/.test(n)) continue;
+        try { out.push(pub(JSON.parse(f.truncated ? await (await fetch(f.raw_url)).text() : f.content))); } catch {}
+      }
+      return out;
     },
     async updateUser(id, p) {
-      if (admin && id === 'gh:' + admin.login) { admin.nome = p.nome || admin.nome; await L.save('config', admin); return adminUser(); }
-      if (apiURL()) {
-        if (admin) { const { user } = await api('/admin/usuarios/' + encodeURIComponent(id), { method: 'PATCH', body: p, adm: true }); alunos = alunos.map(u => u.id === id ? user : u); return user; }
-        if (sess?.user?.id === id) return guardarSessao(await api('/eu', { method: 'PATCH', body: p }));
-      }
-      return L.updateUser(id, p);
+      const u = await readUser(id); if (!u) throw new Error('Cadastro não encontrado.');
+      const { senhaHash, salt, iter, id: _i, email: _e, ...seguro } = p;
+      Object.assign(u, seguro); await writeUser(u);
+      if (sess?.uid === id) await setSess(u);
+      return pub(u);
     },
-    async resgatar(codigo) {
-      if (!apiURL()) return null;
-      const j = await api('/resgatar', { method: 'POST', body: { codigo } });
-      await guardarSessao(j);
-      return j.codigo;
+    async redefinirSenha(id, nova) {
+      if (!isAdmin() && sess?.uid !== id) throw new Error('Sem permissão.');
+      if ((nova || '').length < 6) throw new Error('A senha deve ter pelo menos 6 caracteres.');
+      const u = await readUser(id); if (!u) throw new Error('Cadastro não encontrado.');
+      u.salt = uid(); u.iter = 120000; u.senhaHash = await pbkdf2(nova, u.salt, u.iter); await writeUser(u);
     },
-    async trocarSenha(atual, nova) { return guardarSessao(await api('/eu/senha', { method: 'POST', body: { atual, nova } })); },
-    async redefinirSenha(id, senha) { await api('/admin/usuarios/' + encodeURIComponent(id) + '/senha', { method: 'POST', body: { senha }, adm: true }); },
-    async removerAluno(id) { await api('/admin/usuarios/' + encodeURIComponent(id), { method: 'DELETE', adm: true }); alunos = alunos.filter(u => u.id !== id); },
     async list(col, f) { if (!GIST_COLS.includes(col)) return L.list(col, f); await ensure(); const r = (data?.[col] || []).map(x => ({ ...x })); return f ? r.filter(x => x[f[0]] === f[1]) : r; },
     async get(col, id) { if (!GIST_COLS.includes(col)) return L.get(col, id); await ensure(); const x = (data?.[col] || []).find(x => x.id === id); return x ? { ...x } : null; },
     async save(col, o) {
@@ -987,7 +990,8 @@ function GistStore() {
     },
     async remove(col, id) { if (!GIST_COLS.includes(col)) return L.remove(col, id); await mutate(d => { d[col] = (d[col] || []).filter(x => x.id !== id); }); },
     async uploadFile(file, onProgress) {
-      if (!admin) throw new Error('Apenas o administrador pode enviar arquivos.');
+      if (!isAdmin()) throw new Error('Apenas o administrador pode enviar arquivos.');
+      if (!TOKEN) throw semToken();
       if (file.size > 4 * 1024 * 1024) throw new Error('No Gist, envie arquivos de até 4 MB. Para vídeos e arquivos maiores, use um link do YouTube ou do Google Drive.');
       onProgress?.(0.15);
       const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1] || ''); fr.onerror = () => rej(fr.error); fr.readAsDataURL(file); });
@@ -1011,7 +1015,7 @@ function GistStore() {
       return trackURL(URL.createObjectURL(rec.blob));
     },
     async deleteFile(ref) {
-      if (!ref?.startsWith('gist:') || !admin) return;
+      if (!ref?.startsWith('gist:') || !isAdmin() || !TOKEN) return;
       const name = ref.slice(5);
       try { await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [name]: null } }) }); } catch (e) { console.warn(e); }
       try { await L.remove('arquivos', 'gist:' + name); } catch {}
@@ -1048,7 +1052,6 @@ function novoCodigo() {
   return `AJ-${x.slice(0, 4)}-${x.slice(4)}`;
 }
 async function resgatarCodigo(code) {
-  if (store.contasNuvem) { const r = await store.resgatar(normCode(code)); return { dias: r.dias, plano: r.plano }; }
   const h = await hash(normCode(code), 'agora-codigo');
   const c = (await store.list('codigos')).find(x => x.hash === h);
   if (!c) throw new Error('Código inválido. Confira as letras e números.');
@@ -1248,39 +1251,55 @@ async function viewHome(main) {
 }
 
 /* ======================= Configuração (modo Gist) ======================= */
-function entrarAdminModal() {
+function configurarModal() {
   const novo = !store.configurado;
-  const { el, close } = modal(novo ? 'Configurar o portal' : 'Entrar como administrador', `<form class="form" id="ftk">
-    <p style="margin:0">${novo ? 'O portal vai criar um <b>Gist secreto</b> na sua conta do GitHub para guardar materiais, vagas e leis.' : `Use o token do GitHub da conta <b>@${esc(store.gist?.user)}</b>.`}</p>
+  const { el, close } = modal(novo ? 'Criar o portal' : 'Concluir a configuração', `<form class="form" id="ftk">
+    <p style="margin:0">${novo ? 'O portal cria dois Gists secretos na conta do GitHub: um com os conteúdos e outro com os cadastros dos alunos.' : `Falta só um passo para os alunos poderem se cadastrar e entrar de qualquer aparelho. Use o token da conta <b>@${esc(store.gist?.user)}</b>.`}</p>
+    <div class="demo-hint"><b>Recomendado:</b> use uma conta do GitHub criada só para o portal. O token fica dentro do portal e pode ser descoberto por quem tiver o link, então ele não deve dar acesso aos seus outros Gists.</div>
     <ol class="small" style="padding-left:18px;margin:0;display:grid;gap:4px">
       <li>Abra <a href="https://github.com/settings/tokens/new?scopes=gist&description=Agora%20Juridica" target="_blank" rel="noopener">GitHub → Novo token (classic)</a>. A permissão <b>gist</b> já vem marcada.</li>
-      <li>Escolha a validade (ex.: 90 dias) e clique em <b>Generate token</b>.</li>
+      <li>Em <b>Expiration</b>, escolha <b>No expiration</b> (ou uma data longa) e clique em <b>Generate token</b>.</li>
       <li>Copie o token (começa com <code>ghp_</code>) e cole abaixo.</li></ol>
     <label>Token do GitHub<input name="token" type="password" required autocomplete="off" placeholder="ghp_…"></label>
-    <p class="hint">O token fica guardado só neste navegador e nunca é enviado aos alunos. Não use em computadores compartilhados.</p>
-    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">${novo ? 'Criar portal' : 'Entrar'}</button></div></form>`);
+    <h4 style="margin:6px 0 0">Sua conta de administrador</h4>
+    <p class="hint" style="margin-top:-6px">É com este e-mail e senha que você vai entrar no portal, em qualquer aparelho. O token não será pedido de novo.</p>
+    <label>Seu nome<input name="nome" required autocomplete="name"></label>
+    <div class="row2"><label>E-mail<input name="email" type="email" required autocomplete="email"></label><label>Senha<input name="senha" type="password" minlength="6" required autocomplete="new-password"></label></div>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">${novo ? 'Criar portal' : 'Concluir configuração'}</button></div></form>`, { wide: true });
   $('#ftk', el).onsubmit = async e => {
-    e.preventDefault(); const b = $('button.primary', el); b.disabled = true; b.textContent = 'Conectando…';
+    e.preventDefault(); const f = e.target, b = $('button.primary', el), t = b.textContent; b.disabled = true; b.textContent = 'Configurando…';
     try {
-      const r = await store.entrarAdmin(e.target.token.value);
+      const r = await store.configurar({ token: f.token.value, nome: f.nome.value, email: f.email.value, senha: f.senha.value });
       close(); S.config = await store.getConfig(); fixarLinkGist();
-      toast(r.criado ? 'Portal criado! Agora publique conteúdo e envie o link aos alunos.' : 'Bem-vindo(a), administrador(a).');
-      go('admin'); if (r.criado) setTimeout(mostrarLinkAlunos, 600);
-    } catch (err) { toast(err.message, true); b.disabled = false; b.textContent = novo ? 'Criar portal' : 'Entrar'; }
+      toast(r.criado ? 'Portal criado! Publique conteúdo e envie o link aos alunos.' : 'Configuração concluída. Agora você entra com e-mail e senha.');
+      go('admin'); setTimeout(mostrarLinkAlunos, 600);
+    } catch (err) { toast(err.message, true); b.disabled = false; b.textContent = t; }
+  };
+}
+function tokenModal() {
+  const { el, close } = modal('Atualizar o token do GitHub', `<form class="form" id="ftk2">
+    <p style="margin:0">Use quando o token expirar ou for desativado. O token precisa ser da conta <b>@${esc(store.gist?.user)}</b>, com a permissão <b>gist</b>.</p>
+    <p class="small"><a href="https://github.com/settings/tokens/new?scopes=gist&description=Agora%20Juridica" target="_blank" rel="noopener">Gerar novo token no GitHub ${ic('ext', 13)}</a></p>
+    <label>Novo token<input name="token" type="password" required autocomplete="off" placeholder="ghp_…"></label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar token</button></div></form>`);
+  $('#ftk2', el).onsubmit = async e => {
+    e.preventDefault(); const b = $('button.primary', el); b.disabled = true;
+    try { await store.atualizarToken(e.target.token.value); close(); toast('Token atualizado.'); render(); }
+    catch (err) { toast(err.message, true); b.disabled = false; }
   };
 }
 async function viewSemGist(main) {
   main.innerHTML = `${authOpen()}
     <h2>Portal ainda não configurado</h2>
     <p class="muted"><b>Aluno:</b> abra o link de acesso enviado pelo seu professor ou administrador.</p>
-    <p class="muted"><b>Administrador:</b> conecte sua conta do GitHub para criar o portal. Leva cerca de 2 minutos.</p>
+    <p class="muted"><b>Administrador:</b> conecte o GitHub e crie sua conta de administrador. Leva cerca de 3 minutos.</p>
     <button class="btn primary" id="cfg" style="width:100%">${ic('settings', 16)} Criar o portal com o GitHub</button>
     <div style="border-top:1px solid var(--linha);margin-top:22px;padding-top:18px">
       <h4>Já tenho o link do Gist</h4>
       <p class="small muted">Use se você já criou o portal em outro computador, ou se recebeu o link do Gist.</p>
       <form class="form" id="fgl" style="grid-template-columns:1fr auto;align-items:end"><input name="g" required placeholder="https://gist.github.com/usuario/1a2b3c…" autocomplete="off"><button class="btn dark">Conectar</button></form>
     </div>${authClose}`;
-  $('#cfg').onclick = entrarAdminModal;
+  $('#cfg').onclick = configurarModal;
   $('#fgl').onsubmit = async e => {
     e.preventDefault(); const b = $('button', e.target); b.disabled = true;
     try { await store.definirGist(e.target.g.value); S.config = await store.getConfig(); fixarLinkGist(); toast('Portal conectado ao Gist.'); go(''); }
@@ -1331,11 +1350,11 @@ async function viewLogin(main) {
       <div class="err-msg hidden" id="err"></div>
       <button class="btn primary">Entrar</button>
       ${store.modo === 'local' ? '<div class="demo-hint"><b>Modo demonstração:</b> administrador <code>admin@agora.local</code> / senha <code>admin123</code></div>' : ''}
-      ${store.modo === 'gist' ? `<button type="button" class="btn ghost" id="adm-gh">${ic('settings', 16)} Sou o administrador</button>` : ''}
-      ${store.contasNuvem ? '<p class="hint" style="text-align:center">Sua conta fica salva na nuvem: entre com o mesmo e-mail e senha no celular, no computador ou em qualquer aparelho.</p>' : ''}
+      ${store.modo === 'gist' && store.precisaConfigurar ? `<div class="demo-hint"><b>Administrador:</b> falta concluir a configuração para liberar os cadastros em qualquer aparelho.<br><button type="button" class="btn dark sm" id="adm-cfg" style="margin-top:8px">${ic('settings', 14)} Concluir configuração</button></div>` : ''}
+      <details class="small muted"><summary style="cursor:pointer">Esqueci minha senha</summary><p style="margin:8px 0 0">Peça ao administrador para redefinir sua senha${S.config.contato ? `: <b>${esc(S.config.contato)}</b>` : ''}. Depois, entre com a senha nova e altere em <b>Minha conta</b>.</p></details>
       <p class="small muted" style="text-align:center;margin:0">Ainda não tem conta? <a href="#/cadastro">Cadastre-se</a></p>
     </form>${authClose}`;
-  const ag = $('#adm-gh'); if (ag) ag.onclick = entrarAdminModal;
+  const ag = $('#adm-cfg'); if (ag) ag.onclick = configurarModal;
   $('#f').onsubmit = async e => {
     e.preventDefault(); const fd = new FormData(e.target), b = $('button', e.target);
     b.disabled = true;
@@ -1633,7 +1652,7 @@ async function viewPerfil(main) {
       <a class="mini" href="#" id="sair-m"><span class="tic" style="background:var(--err-bg);color:var(--err)">${ic('logout')}</span><div><b>Sair da conta</b><span>Encerrar a sessão neste aparelho</span></div></a>
     </div></div>
     <div class="cols">
-      <div class="card pad"><h3>Dados pessoais</h3>
+      <div style="display:grid;gap:24px;align-content:start"><div class="card pad"><h3>Dados pessoais</h3>
         <form class="form" id="f">
           <label>Nome completo<input name="nome" required value="${esc(u.nome)}"></label>
           <label>E-mail<input value="${esc(u.email)}" disabled></label>
@@ -1641,24 +1660,21 @@ async function viewPerfil(main) {
           <label>Instituição<input name="instituicao" value="${esc(u.instituicao)}"></label>
           <div class="actions"><button class="btn primary">Salvar alterações</button></div>
         </form></div>
+        ${store.redefinirSenha && store.modo !== 'firebase' ? `<div class="card pad"><h3>Alterar senha</h3><form class="form" id="fsenha">
+          <div class="row2"><label>Nova senha<input name="s1" type="password" minlength="6" required autocomplete="new-password"></label><label>Repita a nova senha<input name="s2" type="password" minlength="6" required autocomplete="new-password"></label></div>
+          <div class="actions"><button class="btn ghost">Alterar senha</button></div></form></div>` : ''}</div>
       <div style="display:grid;gap:24px;align-content:start">
         <div class="card pad"><h3>Assinatura</h3><p><span class="badge ${st.cls}">${esc(st.txt)}</span></p>
           ${u.assinatura ? `<p class="small muted">Início: ${fmtDate(u.assinatura.inicio)} · Validade: ${fmtDate(u.assinatura.validade)}</p>` : ''}
           ${u.role !== 'admin' ? `<a class="btn ${ativo(u) ? 'ghost' : 'primary'} sm" href="#/assinar">${ativo(u) ? 'Renovar antecipadamente' : 'Assinar agora'}</a>` : ''}</div>
-        ${store.contasNuvem && u.role !== 'admin' ? `<div class="card pad"><h3>Senha</h3><p class="small muted">A mesma senha vale em todos os aparelhos. Ao trocá-la, os outros aparelhos precisam entrar de novo.</p>
-          <form class="form" id="fs"><label>Senha atual<input name="atual" type="password" required autocomplete="current-password"></label>
-          <div class="row2"><label>Nova senha<input name="nova" type="password" minlength="6" required autocomplete="new-password"></label><label>Confirmar<input name="nova2" type="password" minlength="6" required autocomplete="new-password"></label></div>
-          <div class="actions"><button class="btn ghost">Alterar senha</button></div></form></div>` : ''}
         <div class="card ${store.modo === 'gist' ? 'hidden' : ''}"><div class="pad" style="padding-bottom:8px"><h3>Pagamentos</h3></div>
           ${pags.length ? `<div class="table-wrap"><table><tr><th>Data</th><th>Valor</th><th>Status</th></tr>${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td></tr>`).join('')}</table></div>` : '<p class="muted small" style="padding:0 24px 20px">Nenhum pagamento registrado.</p>'}</div>
       </div></div></div>`;
   $('#sair-m').onclick = e => { e.preventDefault(); sair(); };
-  const fs = $('#fs'); if (fs) fs.onsubmit = async e => {
-    e.preventDefault(); const d = Object.fromEntries(new FormData(fs)); const b = $('button', fs);
-    if (d.nova !== d.nova2) return toast('As senhas novas não conferem.', true);
-    b.disabled = true;
-    try { await store.trocarSenha(d.atual, d.nova); fs.reset(); toast('Senha alterada.'); } catch (err) { toast(err.message, true); }
-    b.disabled = false;
+  const fsn = $('#fsenha'); if (fsn) fsn.onsubmit = async e => {
+    e.preventDefault(); const f = e.target;
+    if (f.s1.value !== f.s2.value) return toast('As senhas não conferem.', true);
+    try { await store.redefinirSenha(u.id, f.s1.value); f.reset(); toast('Senha alterada.'); } catch (err) { toast(err.message, true); }
   };
   $('#f').onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
@@ -1671,22 +1687,17 @@ const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pen
 /* =============================== Admin =============================== */
 async function viewAdmin(main, tab = 'materiais') {
   const gist = store.modo === 'gist';
-  const nuvem = gist && store.contasNuvem;
-  const TABS = gist ? { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', ...(nuvem ? { alunos: 'Alunos' } : {}), codigos: 'Códigos de acesso', config: 'Configurações' }
+  const TABS = gist ? { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
     : { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (!TABS[tab]) tab = 'materiais';
-  const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [],
-    gist && !nuvem ? [] : store.listUsers().catch(e => { toast('Alunos: ' + e.message, true); return []; }), gist ? [] : store.list('pagamentos')]);
+  const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
   const receita = pags.filter(p => p.status === 'aprovado').reduce((s, p) => s + Number(p.valor || 0), 0);
   const pend = pags.filter(p => p.status === 'pendente').length;
   const codAtivos = codigos.filter(c => !c.validoAte || new Date(c.validoAte + 'T23:59:59') >= Date.now()).length;
-  const stats = nuvem ? [
-    [alunos.length, 'Alunos cadastrados'], [alunos.filter(ativo).length, 'Assinaturas ativas'],
-    [mats.length, `Materiais · ${posts.length} publicações`], [codAtivos, 'Códigos de acesso válidos']
-  ] : gist ? [
-    [mats.length, 'Materiais publicados'], [posts.filter(p => p.categoria !== 'lei').length, 'Vagas e concursos'],
-    [posts.filter(p => p.categoria === 'lei').length, 'Atualizações da lei'], [codAtivos, 'Códigos de acesso válidos']
+  const stats = gist ? [
+    [alunos.length, 'Alunos cadastrados'], [alunos.filter(ativo).length, 'Com acesso ativo'],
+    [mats.length, `Materiais e ${posts.length} publicações`], [codAtivos, 'Códigos de acesso válidos']
   ] : [
     [alunos.length, 'Alunos cadastrados'], [alunos.filter(ativo).length, 'Assinaturas ativas'],
     [mats.length, `Materiais · ${posts.length} publicações`], [`<span style="font-size:1.7rem">${brl(receita)}</span>`, `Receita aprovada${pend ? ` · ${pend} pendente(s)` : ''}`]
@@ -1694,11 +1705,12 @@ async function viewAdmin(main, tab = 'materiais') {
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${gist && !nuvem ? `<div class="banner gold"><div><h3>${ic('user')} Contas dos alunos presas a um aparelho</h3><p>Hoje cada aluno só entra no aparelho em que se cadastrou. Ative as contas na nuvem para que o mesmo e-mail e senha funcionem em qualquer aparelho.</p></div><a class="btn ghost" href="#/admin/config">Ativar contas na nuvem</a></div>` : ''}
-    <div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['file', 'gavel', 'scroll', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>
+    <div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>
+    ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
   const sh = $('#share'); if (sh) sh.onclick = mostrarLinkAlunos;
+  const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   ({ materiais: () => admMateriais(box, mats), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
@@ -1920,15 +1932,14 @@ function formPost(p = {}) {
 
 function admAlunos(box, users) {
   users.sort(byNewest);
-  const nuvem = store.modo === 'gist' && store.contasNuvem;
   box.innerHTML = `<div class="filters"><div class="search">${ic('search')}<input class="field" id="ub" placeholder="Buscar por nome ou e-mail…"></div></div><div class="card table-wrap" id="ut"></div>`;
   const draw = (t = '') => {
     const l = users.filter(u => `${u.nome} ${u.email}`.toLowerCase().includes(t.toLowerCase()));
     $('#ut').innerHTML = `<table><tr><th>Aluno</th><th>Instituição</th><th>Cadastro</th><th>Assinatura</th><th></th></tr>
     ${l.map(u => { const st = statusAss(u); const self = u.id === S.user.id; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}${u.telefone ? ' · ' + esc(u.telefone) : ''}</div></td><td class="small">${esc(u.instituicao || '—')}<div class="muted">${esc(u.semestre || '')}</div></td><td>${fmtDate(u.criadoEm)}</td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td>
       <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${planos()[0]?.dias || 30} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
-      ${nuvem ? `<button class="btn ghost sm" data-act="senha" data-id="${esc(u.id)}">Nova senha</button><button class="btn danger sm" data-act="excluir" data-id="${esc(u.id)}">Excluir</button>`
-        : self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('') || '<tr><td colspan="5" class="muted">Nenhum aluno encontrado.</td></tr>'}</table>`;
+      ${store.redefinirSenha ? `<button class="btn ghost sm" data-act="senha" data-id="${esc(u.id)}">Redefinir senha</button>` : ''}
+      ${self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('')}</table>`;
   };
   draw();
   $('#ub').oninput = e => draw(e.target.value);
@@ -1939,18 +1950,11 @@ function admAlunos(box, users) {
       if (b.dataset.act === 'ativar') { await ativarAssinatura(u.id); toast(`Acesso de ${u.nome} estendido.`); }
       if (b.dataset.act === 'cancelar') { if (!await confirmar(`Cancelar a assinatura de ${u.nome}? O acesso será bloqueado imediatamente.`, 'Cancelar assinatura')) return; await store.updateUser(u.id, { assinatura: { ...u.assinatura, status: 'cancelada', validade: Date.now() } }); toast('Assinatura cancelada.'); }
       if (b.dataset.act === 'senha') {
-        const nova = 'AJ' + novoCodigo().slice(3).replace('-', '').toLowerCase();
-        if (!await confirmar(`Criar uma nova senha para ${u.nome}? A senha atual deixa de funcionar e os aparelhos dele(a) precisam entrar de novo.`, 'Criar nova senha')) return;
-        await store.redefinirSenha(u.id, nova);
-        const m2 = modal('Nova senha criada', `<p>Envie a nova senha para <b>${esc(u.nome)}</b> (${esc(u.email)}). Ele(a) pode trocá-la depois em <b>Minha conta</b>.</p>
-          <div style="font:700 1.6rem var(--sans);letter-spacing:.08em;text-align:center;padding:16px;background:var(--latao-bg);border-radius:8px;color:var(--toga)">${esc(nova)}</div>
-          <div class="actions"><button class="btn primary" id="cps">Copiar senha</button></div>`);
-        $('#cps', m2.el).onclick = () => copiar(nova);
+        const { el, close } = modal('Redefinir senha', `<form class="form" id="fs"><p style="margin:0">Defina uma senha provisória para <b>${esc(u.nome)}</b> (${esc(u.email)}) e envie a ela. Depois, ela pode trocar em <b>Minha conta</b>.</p>
+          <label>Nova senha<input name="s" required minlength="6" value="${novoCodigo().replace(/-/g, '').slice(2, 10).toLowerCase()}"></label>
+          <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar senha</button></div></form>`);
+        $('#fs', el).onsubmit = async ev => { ev.preventDefault(); try { await store.redefinirSenha(u.id, ev.target.s.value); close(); toast('Senha redefinida. Envie a nova senha ao aluno.'); } catch (err) { toast(err.message, true); } };
         return;
-      }
-      if (b.dataset.act === 'excluir') {
-        if (!await confirmar(`Excluir a conta de ${u.nome} (${u.email})? Essa ação não pode ser desfeita.`, 'Excluir conta')) return;
-        await store.removerAluno(u.id); toast('Conta excluída.');
       }
       if (b.dataset.act === 'role') { const nr = u.role === 'admin' ? 'aluno' : 'admin'; if (!await confirmar(`Alterar ${u.nome} para ${nr}?`)) return; await store.updateUser(u.id, { role: nr }); toast('Perfil atualizado.'); }
       render();
@@ -1982,32 +1986,8 @@ function admConfig(box) {
         <tr><td class="muted">ID do Gist</td><td><code style="word-break:break-all">${esc(g?.id)}</code></td></tr>
         <tr><td class="muted">Link de dados</td><td><a href="https://gist.github.com/${esc(g?.user)}/${esc(g?.id)}" target="_blank" rel="noopener">Abrir o Gist no GitHub ${ic('ext', 13)}</a></td></tr>
       </table></div>
-      <div class="actions" style="justify-content:flex-start;margin-top:14px"><button class="btn primary sm" id="c-link">Link para os alunos</button><button class="btn ghost sm" id="c-troca">Trocar ou desconectar Gist</button></div>
-    </div>
-    <div class="card pad" style="max-width:760px;margin-bottom:20px" id="c-nuvem">
-      <div class="eyebrow">Contas dos alunos</div><h3 style="margin-top:6px">Login em qualquer aparelho</h3>
-      <p style="margin:0 0 10px">${store.contasNuvem ? `<span class="badge ok">${ic('check', 13)} Ativo</span> Os cadastros ficam num Gist secreto da sua conta. O mesmo e-mail não pode ser cadastrado duas vezes, e o aluno entra com o mesmo e-mail e senha no celular ou no computador.` : '<span class="badge warn">Desativado</span> Hoje cada aluno só entra no aparelho em que se cadastrou.'}</p>
-      <form class="form" id="fapi" style="grid-template-columns:1fr auto;align-items:end">
-        <label>Endereço da ponte de contas<input name="api" type="url" value="${esc(c.contasApi || '')}" placeholder="https://agora-contas.seunome.workers.dev"></label>
-        <button class="btn dark">${store.contasNuvem ? 'Testar e salvar' : 'Ativar'}</button></form>
-      ${CONFIG.contasApi ? '<p class="hint">O endereço também está fixado no index.html (CONFIG.contasApi).</p>' : ''}
-      <details style="margin-top:14px" ${store.contasNuvem ? '' : 'open'}><summary class="small" style="cursor:pointer;font-weight:600">Como criar a ponte (grátis, cerca de 5 minutos)</summary>
-        <p class="small muted" style="margin:8px 0">O GitHub só deixa gravar num Gist quem tem o token. Para os alunos poderem se cadastrar sem ver o seu token, uma pequena “ponte” guarda o token e grava as contas por eles.</p>
-        <ol class="small" style="padding-left:18px;margin:0;display:grid;gap:6px">
-          <li>Baixe o arquivo <a href="contas-worker.js" download>contas-worker.js</a>.</li>
-          <li>Crie uma conta grátis em <a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener">cloudflare.com</a>. Vá em <b>Workers &amp; Pages → Create → Create Worker</b>, dê o nome <code>agora-contas</code> e clique em <b>Deploy</b>.</li>
-          <li>Clique em <b>Edit code</b>, apague o código de exemplo, cole todo o conteúdo de <code>contas-worker.js</code> e clique em <b>Deploy</b>.</li>
-          <li>Em <b>Settings → Variables and Secrets</b>, adicione:
-            <br><code>GITHUB_TOKEN</code> (tipo <b>Secret</b>): um token <a href="https://github.com/settings/tokens/new?scopes=gist&description=Agora%20Juridica%20-%20contas" target="_blank" rel="noopener">classic com a permissão gist</a> da conta <b>@${esc(g?.user)}</b>, <b>sem data de validade</b> (se ele expirar, ninguém consegue entrar);
-            <br><code>CONTENT_GIST_ID</code> (tipo <b>Text</b>): <code style="word-break:break-all">${esc(g?.id)}</code>;
-            <br><code>SESSION_SECRET</code> (tipo <b>Secret</b>): uma frase longa qualquer, por exemplo <code>${esc(uid() + uid().slice(0, 8))}</code>;
-            <br><code>ALLOWED_ORIGIN</code> (opcional, tipo <b>Text</b>): <code>${esc(location.origin)}</code>.</li>
-          <li>Copie o endereço do Worker (termina em <code>.workers.dev</code>), cole acima e clique em <b>Ativar</b>.</li>
-        </ol>
-        <p class="hint" style="margin-top:8px">Na primeira vez, a ponte cria sozinha um Gist <b>secreto</b> chamado “contas dos alunos”. Não apague esse Gist: é nele que ficam os cadastros. As senhas são guardadas apenas como hash (PBKDF2), nunca em texto.</p>
-        <p class="hint">Quem já tinha conta só no aparelho não perde nada: ao entrar com o e-mail e a senha de sempre, a conta e a assinatura vão para a nuvem automaticamente.</p>
-      </details>
-      ${store.contasNuvem ? '<div class="actions" style="justify-content:flex-start;margin-top:10px"><button class="btn danger sm" id="api-off">Desativar contas na nuvem</button></div>' : ''}
+      <p class="small muted" style="margin:12px 0 0">${store.alunosGist ? `Cadastros dos alunos: <a href="https://gist.github.com/${esc(g?.user)}/${esc(store.alunosGist.id)}" target="_blank" rel="noopener">Gist de alunos ${ic('ext', 12)}</a>.` : 'Cadastros dos alunos: configuração pendente.'}</p>
+      <div class="actions" style="justify-content:flex-start;margin-top:14px"><button class="btn primary sm" id="c-link">Link para os alunos</button><button class="btn ghost sm" id="c-token">${store.precisaConfigurar ? 'Concluir configuração' : 'Atualizar token do GitHub'}</button><button class="btn ghost sm" id="c-troca">Trocar ou desconectar Gist</button></div>
     </div>` : ''}
   <div class="card pad" style="max-width:760px"><h3>Portal e pagamento</h3><form class="form" id="fc">
     <label>Nome do portal<input name="nomePortal" required value="${esc(c.nomePortal)}"></label>
@@ -2022,18 +2002,7 @@ function admConfig(box) {
   </form></div>`;
   const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
   const ct = $('#c-troca'); if (ct) ct.onclick = trocarGistModal;
-  const fa = $('#fapi'); if (fa) fa.onsubmit = async e => {
-    e.preventDefault(); const b = $('button', fa); b.disabled = true; b.textContent = 'Testando…';
-    try {
-      const url = await store.testarApi(fa.api.value);
-      const n = { ...S.config, contasApi: url }; await store.saveConfig(n); S.config = n;
-      toast('Contas na nuvem ativadas. Os alunos já podem entrar em qualquer aparelho.'); render();
-    } catch (err) { toast(err.message, true); b.disabled = false; b.textContent = store.contasNuvem ? 'Testar e salvar' : 'Ativar'; }
-  };
-  const ao = $('#api-off'); if (ao) ao.onclick = async () => {
-    if (!await confirmar('Desativar as contas na nuvem? Os alunos voltam a ter contas só no aparelho, e os cadastros na nuvem deixam de ser usados (nada é apagado).', 'Desativar')) return;
-    try { const n = { ...S.config, contasApi: '' }; await store.saveConfig(n); S.config = n; toast('Contas na nuvem desativadas.'); render(); } catch (err) { toast(err.message, true); }
-  };
+  const ck = $('#c-token'); if (ck) ck.onclick = store.precisaConfigurar ? configurarModal : tokenModal;
   $('#fc').onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
     const n = { ...c, ...d, diasTeste: Number(d.diasTeste) };

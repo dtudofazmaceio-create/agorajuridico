@@ -17,16 +17,21 @@
 4. Vá em **Settings → Pages**. Em *Branch*, escolha `main` e a pasta `/ (root)`. Clique em **Save**.
 5. Em 1 a 2 minutos, o site estará em `https://SEU-USUARIO.github.io/agora-juridica/`.
 
-## Passo 2: conectar o portal ao Gist (2 minutos)
-1. Abra o endereço do site. Vai aparecer **"Portal ainda não configurado"**. Clique em **Configurar com o GitHub**.
-2. Clique no link **GitHub → Novo token (classic)**. A permissão **gist** já vem marcada.
-   Escolha a validade (ex.: 90 dias), clique em **Generate token** e copie o código `ghp_...`.
-3. Cole o token no portal e clique em **Criar portal**.
-4. Pronto: o portal cria o Gist e mostra o **link para os alunos** (com botão de WhatsApp).
+## Passo 2: conectar o portal ao GitHub (3 minutos, uma única vez)
+> **Recomendado:** crie uma conta do GitHub só para o portal (ex.: `agorajuridica-dados`) e gere o token nela.
+> O token fica dentro do portal e pode ser descoberto por quem tiver o link e conhecimento técnico.
+> Numa conta exclusiva, ele só dá acesso aos dados do próprio portal.
 
-> O token fica salvo **só no seu navegador** e nunca vai para o Gist nem para os alunos.
-> Em outro computador, clique em **Entrar → Sou o administrador** e cole o token de novo.
-> Quando o token vencer, gere outro do mesmo jeito.
+1. Abra o endereço do site. Vai aparecer **"Portal ainda não configurado"**. Clique em **Criar o portal com o GitHub**.
+2. Clique em **GitHub → Novo token (classic)**. A permissão **gist** já vem marcada. Em *Expiration*, escolha **No expiration** e gere o token (`ghp_...`).
+3. Cole o token e preencha **seu nome, e-mail e senha de administrador**. Clique em **Criar portal**.
+4. O portal cria dois Gists secretos: um com os conteúdos e outro com os cadastros dos alunos. Depois mostra o **link para os alunos**.
+
+A partir daí você entra como qualquer usuário, com **e-mail e senha**, em qualquer computador ou celular. O token não é pedido de novo.
+
+**Já usava a versão anterior?** Na tela de login aparece **"Concluir configuração"**. Clique, cole o token uma última vez e crie sua conta de administrador. Os conteúdos que já estão no Gist continuam lá.
+
+**Se o token expirar ou for desativado:** entre com seu e-mail e senha e vá em **Painel → Configurações → Atualizar token do GitHub**.
 
 ## Passo 3: publicar conteúdo
 No **Painel administrativo**:
@@ -58,8 +63,15 @@ Um código pode valer para um aluno ou para a turma toda (ex.: "Turma 3º perío
 
 ---
 
-## Limites desta versão (GitHub, sem servidor)
-- **A conta do aluno fica no aparelho dele.** Se ele trocar de celular ou limpar os dados do navegador, cria a conta de novo. Também não existe, no painel, uma lista dos alunos cadastrados.
+## Contas dos alunos
+- Cada aluno se cadastra uma vez e entra com o mesmo e-mail e senha em qualquer aparelho. O mesmo e-mail não pode se cadastrar duas vezes.
+- Em **Painel → Alunos** você vê todos os cadastros, libera dias, cancela acessos e **redefine senhas** (quando alguém esquecer). O aluno troca a senha em **Minha conta**.
+- As senhas são guardadas embaralhadas (PBKDF2), nunca em texto puro.
+
+## Riscos desta versão (GitHub, sem servidor)
+- **O token do GitHub fica dentro do portal.** Ele é guardado embaralhado, mas uma pessoa com conhecimento técnico consegue recuperá-lo e alterar ou apagar os dados do portal, inclusive dar acesso grátis a si mesma ou se tornar administradora. Por isso, use uma conta do GitHub exclusiva para o portal e guarde cópias dos Gists.
+- **Os cadastros (nome, e-mail e telefone) ficam num Gist secreto** que pode ser lido por quem descobrir o endereço. Peça só os dados necessários e informe os alunos (LGPD).
+- O painel lista até 300 alunos.
 - **O controle de acesso é feito no navegador.** Basta para uma turma, mas alguém com conhecimento técnico consegue abrir os arquivos do Gist sem pagar. Para cobrança séria em escala, use o modo **Firebase** (README.md), que bloqueia de verdade no servidor.
 - O Gist é **secreto**: não aparece em buscas, mas quem tiver o endereço consegue ler. Não publique dados pessoais nele.
 - Arquivos de até 4 MB por envio. Vídeos e arquivos grandes devem ser links (YouTube ou Google Drive).
