@@ -34,7 +34,8 @@ No **Painel administrativo**:
   - **PDF e áudio:** envie direto (até 4 MB por arquivo; ficam guardados no Gist).
   - **Vídeos:** suba no YouTube (pode ser "não listado") ou no Google Drive e cole o link.
 - **Publicações:** estágios, concursos, empregos e atualizações da lei.
-- **Configurações:** preço, dias grátis, chave Pix e seu contato (WhatsApp/e-mail).
+- **Planos:** crie quantos quiser (ex.: Mensal, Semestral, Anual, Reta final OAB), com preço, dias de acesso, benefícios e um plano em destaque com o selo "Mais escolhido".
+- **Configurações:** dias grátis, chave Pix e seu contato (WhatsApp/e-mail).
 
 As mudanças aparecem para os alunos em **até 5 minutos**, por causa do cache do GitHub.
 
@@ -50,7 +51,7 @@ Assim o link vira só `https://SEU-USUARIO.github.io/agora-juridica/`, e o app i
 
 ## Passo 5: depois do mês grátis
 1. O aluno paga (Pix ou o link de pagamento que você configurar) e envia o comprovante.
-2. Em **Painel → Códigos de acesso → Gerar código**, defina os dias (ex.: 30) e a data limite de uso.
+2. Em **Painel → Códigos de acesso → Gerar código**, escolha o plano que o aluno pagou (os dias são preenchidos automaticamente) e a data limite de uso.
 3. Copie o código (ex.: `AJ-7K3P-Q9XD`) e envie ao aluno. Ele digita em **Assinatura** e o acesso é renovado.
 
 Um código pode valer para um aluno ou para a turma toda (ex.: "Turma 3º período, dezembro"). Cada aluno usa cada código só uma vez.

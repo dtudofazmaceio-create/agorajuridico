@@ -16,325 +16,418 @@
 <meta name="description" content="Videoaulas, áudios e PDFs para estudantes de Direito, com estágios, concursos, empregos e atualizações legislativas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#131a2b; --ink-2:#1c2640; --ink-3:#2a3554;
-  --paper:#f6f3ec; --card:#fffdf8; --line:#e5ded0; --line-2:#efe9dd; --muted:#6a6e7a;
-  --gold:#b8955a; --gold-2:#dcc597; --wine:#7d1f2e; --wine-2:#5e1520;
-  --ok:#2f6b4f; --ok-bg:#e6f0ea; --warn:#9a6114; --warn-bg:#f8eedd; --err:#a3222f; --err-bg:#f7e4e4;
-  --r:14px; --shadow:0 1px 2px rgba(19,26,43,.05),0 10px 30px rgba(19,26,43,.07);
-  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --toga:#13203a; --toga-2:#1c2b49; --toga-3:#2a3b5f;
+  --rubi:#8e1b2e; --rubi-2:#6f1424; --rubi-bg:#f6e7ea;
+  --latao:#b38b4b; --latao-2:#d8be8a; --latao-bg:#f4ecdc;
+  --marmore:#eef0ef; --papel:#fbf9f4; --branco:#ffffff;
+  --grafite:#232a37; --cinza:#626b7a; --linha:#d9dde0; --linha-2:#e8ebec;
+  --ok:#2c6a4d; --ok-bg:#e3f0e8; --warn:#93600f; --warn-bg:#f8edd9; --err:#a3222f; --err-bg:#f7e3e5;
+  --serif:'Libre Caslon Text',Georgia,'Times New Roman',serif;
   --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --veio:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.005 .02' numOctaves='5' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .58 0 0 0 0 .62 0 0 0 -2.2 1.25'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23m)'/%3E%3C/svg%3E");
+  --veio-escuro:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .022' numOctaves='5' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .85 0 0 0 0 .75 0 0 0 0 .55 0 0 0 -2.6 1.32'/%3E%3C/filter%3E%3Crect width='700' height='700' filter='url(%23m)'/%3E%3C/svg%3E");
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-h1,h2,h3,h4{font-family:var(--serif);font-weight:600;margin:0 0 .35em;line-height:1.12;letter-spacing:.2px}
-h1{font-size:clamp(2.2rem,4.4vw,3.6rem)} h2{font-size:2rem} h3{font-size:1.4rem} h4{font-size:1.15rem}
+body{font-family:var(--sans);background:var(--marmore);color:var(--grafite);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:700;margin:0 0 .4em;line-height:1.15;color:var(--toga);letter-spacing:-.005em}
+h1{font-size:clamp(2.2rem,4.2vw,3.5rem);line-height:1.08}
+h2{font-size:1.85rem} h3{font-size:1.3rem} h4{font-size:1.08rem}
 p{margin:0 0 1em}
-a{color:var(--wine);text-decoration:none} a:hover{text-decoration:underline}
+a{color:var(--rubi);text-decoration:none} a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--latao);outline-offset:2px}
 .ic{flex:none;vertical-align:middle}
-.muted{color:var(--muted)} .small{font-size:.86rem} .hidden{display:none!important}
-.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.muted{color:var(--cinza)} .small{font-size:.86rem} .hidden{display:none!important}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.84rem;font-weight:600;color:var(--latao)}
+.eyebrow:before{content:"";width:22px;height:1px;background:currentColor}
+.sec{font-family:var(--serif);color:var(--latao);font-weight:400}
+.art{display:block;color:var(--latao)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* Buttons & form */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;border:1px solid transparent;border-radius:999px;padding:.68em 1.25em;font:600 .92rem var(--sans);cursor:pointer;transition:.15s;text-decoration:none!important;white-space:nowrap}
-.btn.primary{background:var(--wine);color:#fff}.btn.primary:hover{background:var(--wine-2)}
-.btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:var(--ink-3)}
-.btn.gold{background:var(--gold);color:var(--ink)}.btn.gold:hover{background:var(--gold-2)}
-.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}.btn.ghost:hover{background:var(--line-2)}
-.btn.light{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}.btn.light:hover{background:rgba(255,255,255,.08)}
-.btn.sm{padding:.42em .9em;font-size:.82rem}
-.btn.danger{background:transparent;border-color:#e7c4c4;color:var(--err)}.btn.danger:hover{background:var(--err-bg)}
+/* Botões e formulários */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;border:1px solid transparent;border-radius:8px;padding:.7em 1.25em;font:600 .92rem var(--sans);cursor:pointer;transition:background .15s,border-color .15s;text-decoration:none!important;white-space:nowrap;line-height:1.2}
+.btn.primary{background:var(--rubi);color:#fff}.btn.primary:hover{background:var(--rubi-2)}
+.btn.dark{background:var(--toga);color:#fff}.btn.dark:hover{background:var(--toga-3)}
+.btn.gold{background:var(--latao);color:var(--toga)}.btn.gold:hover{background:var(--latao-2)}
+.btn.ghost{background:var(--branco);border-color:var(--linha);color:var(--toga)}.btn.ghost:hover{border-color:var(--latao)}
+.btn.light{background:transparent;border-color:rgba(216,190,138,.45);color:#f2ead9}.btn.light:hover{background:rgba(216,190,138,.1)}
+.btn.sm{padding:.45em .85em;font-size:.82rem}
+.btn.danger{background:var(--branco);border-color:#e6c3c7;color:var(--err)}.btn.danger:hover{background:var(--err-bg)}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .icon-btn{background:none;border:0;cursor:pointer;color:inherit;font-size:1.5rem;line-height:1;padding:.2em .35em;border-radius:8px}
 .form{display:grid;gap:14px}
-.form label{display:grid;gap:6px;font-size:.84rem;font-weight:600;color:var(--ink-2)}
-.form input,.form select,.form textarea,.field{font:400 .95rem var(--sans);padding:.72em .9em;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%;outline:none;transition:.15s}
-.form input:focus,.form select:focus,.form textarea:focus,.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,149,90,.18)}
+.form label{display:grid;gap:6px;font-size:.85rem;font-weight:600;color:var(--toga)}
+.form input,.form select,.form textarea,.field{font:400 .95rem var(--sans);padding:.72em .9em;border:1px solid var(--linha);border-radius:8px;background:var(--branco);color:var(--grafite);width:100%;outline:none;transition:border-color .15s,box-shadow .15s}
+.form input:focus,.form select:focus,.form textarea:focus,.field:focus{border-color:var(--latao);box-shadow:0 0 0 3px rgba(179,139,75,.18)}
 .form textarea{resize:vertical;min-height:90px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.check{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:10px!important;font-weight:400!important}
-.check input{width:auto;margin-top:3px}
-.hint{font-size:.8rem;color:var(--muted);font-weight:400;margin:0}
+.check{display:flex!important;align-items:flex-start;gap:10px!important;font-weight:400!important;color:var(--grafite)!important}
+.check input{width:auto;margin-top:3px;accent-color:var(--rubi)}
+.hint{font-size:.8rem;color:var(--cinza);font-weight:400;margin:0}
 .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
-.err-msg{background:var(--err-bg);color:var(--err);border-radius:10px;padding:.7em .9em;font-size:.88rem}
+.err-msg{background:var(--err-bg);color:var(--err);border-radius:8px;padding:.7em .9em;font-size:.88rem}
 
-/* Cards, badges */
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+/* Superfícies */
+.card{background:var(--branco);border:1px solid var(--linha);border-radius:10px}
 .pad{padding:24px}
-.badge{display:inline-flex;align-items:center;gap:.35em;font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:.28em .7em;border-radius:999px;background:var(--line-2);color:var(--ink-2);text-transform:uppercase}
+.doc{background:var(--papel);border:1px solid #e4dccb;border-radius:4px;box-shadow:0 1px 0 #fff inset,0 18px 40px -28px rgba(19,32,58,.35)}
+.badge{display:inline-flex;align-items:center;gap:.35em;font-size:.76rem;font-weight:600;padding:.25em .65em;border-radius:5px;background:var(--linha-2);color:var(--toga-2)}
 .badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.warn{background:var(--warn-bg);color:var(--warn)} .badge.err{background:var(--err-bg);color:var(--err)}
-.badge.gold{background:#f3ead7;color:#82642f} .badge.wine{background:#f3e2e4;color:var(--wine)}
-.empty{text-align:center;padding:48px 20px;color:var(--muted)}
-.empty h3{color:var(--ink)}
-.loading{padding:60px;text-align:center;color:var(--muted)}
+.badge.gold{background:var(--latao-bg);color:#7c5d26} .badge.wine{background:var(--rubi-bg);color:var(--rubi)}
+.empty{text-align:center;padding:44px 20px;color:var(--cinza)}
+.empty .art{width:84px;margin:0 auto 12px;opacity:.85}
+.empty h3{color:var(--toga)}
+.loading{padding:60px;text-align:center;color:var(--cinza)}
+.demo-hint{background:var(--latao-bg);border-radius:8px;padding:.7em .9em;font-size:.86rem;color:#5f4719}
+.orn{display:flex;align-items:center;gap:14px;color:var(--latao);margin:26px 0}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,currentColor,transparent)}
+.orn svg{width:16px;height:16px}
 
-/* Public layout */
-.topbar{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.topbar .in{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none!important}
-.brand .mark{width:36px;height:36px;border-radius:10px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center;font:700 1.3rem var(--serif)}
-.brand b{font:700 1.35rem var(--serif);letter-spacing:.3px}
-.brand small{display:block;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:-3px}
-.wrap{max-width:1180px;margin:auto;padding:0 24px}
-.hero{background:var(--ink);color:#f3efe6;position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(700px 380px at 85% 10%,rgba(184,149,90,.22),transparent 60%),radial-gradient(500px 300px at 0% 100%,rgba(125,31,46,.35),transparent 60%)}
-.hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr .9fr;gap:48px;padding-top:84px;padding-bottom:84px;align-items:center}
-.hero h1{color:#fff}.hero h1 em{color:var(--gold-2);font-style:italic}
-.hero p.lead{font-size:1.1rem;color:#c9cdd8;max-width:560px}
-.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.hero-panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px}
-.hero-panel .li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
-.hero-panel .li:last-child{border:0}
-.hero-panel .li .ic{color:var(--gold-2);margin-top:2px}
-.hero-panel .li b{display:block;color:#fff;font-weight:600}
-.hero-panel .li span{font-size:.86rem;color:#aab0bf}
-.section{padding:76px 0}
-.section-h{max-width:640px;margin-bottom:36px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.feature{padding:26px}
-.feature .ic-wrap{width:44px;height:44px;border-radius:12px;background:#f3ead7;color:#82642f;display:grid;place-items:center;margin-bottom:14px}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
-.step{padding:26px;border-top:2px solid var(--gold)}
-.step:before{counter-increment:s;content:"0" counter(s);font:600 2.4rem var(--serif);color:var(--gold);display:block;margin-bottom:6px}
-.price-card{max-width:440px;margin:auto;padding:34px;text-align:center}
-.price{font:600 3.2rem var(--serif);color:var(--ink);line-height:1}
-.price small{font:500 1rem var(--sans);color:var(--muted)}
-.ticks{list-style:none;padding:0;margin:20px 0;text-align:left;display:grid;gap:10px}
-.ticks li{display:flex;gap:10px;align-items:flex-start}.ticks .ic{color:var(--ok);margin-top:2px}
-.footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.85rem}
-.footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+/* Marca */
+.brand{display:flex;align-items:center;gap:11px;color:var(--toga);text-decoration:none!important}
+.brand .mark{width:38px;height:38px;border-radius:8px;background:var(--toga);color:var(--latao-2);display:grid;place-items:center;flex:none}
+.brand b{display:block;font:700 1.18rem var(--serif);letter-spacing:.01em;line-height:1.1}
+.brand small{display:block;font-size:.72rem;color:var(--cinza);margin-top:2px}
 
-/* Auth */
-.auth{min-height:calc(100vh - 66px);display:grid;place-items:center;padding:40px 18px}
-.auth .card{width:100%;max-width:480px;padding:34px}
-.auth h2{margin-bottom:4px}
-.demo-hint{background:#f3ead7;border-radius:10px;padding:.7em .9em;font-size:.84rem;color:#6d5428}
+/* Site público */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(238,240,239,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
+.topbar .in{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:12px 28px;gap:16px}
+.topbar nav{display:flex;gap:8px;align-items:center}
+.wrap{max-width:1200px;margin:auto;padding:0 28px}
+.hero{background:var(--toga);color:#dfe3ea;position:relative;overflow:hidden;isolation:isolate}
+.hero:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.06;z-index:-1}
+.hero:after{content:"";position:absolute;inset:auto 0 0;height:1px;background:linear-gradient(90deg,transparent,var(--latao),transparent)}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;padding-top:72px;padding-bottom:40px;align-items:end}
+.hero-copy{padding-bottom:56px}
+.hero h1{color:#fff;max-width:17ch}
+.hero .lead{font-size:1.1rem;color:#b9c1cf;max-width:46ch;margin-top:18px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero .maxim{margin-top:40px;border-left:1px solid var(--latao);padding-left:16px;max-width:44ch}
+.hero .maxim i{font-family:var(--serif);font-size:1.15rem;color:var(--latao-2)}
+.hero .maxim span{display:block;font-size:.86rem;color:#8f99ab;margin-top:2px}
+.hero .facade{width:100%;max-width:560px;margin-left:auto;color:var(--latao)}
+.facade .beam{transform-origin:260px 112px;animation:pesar 2.6s cubic-bezier(.45,0,.2,1) .3s both}
+@keyframes pesar{0%{transform:rotate(-7deg)}45%{transform:rotate(4deg)}75%{transform:rotate(-1.5deg)}100%{transform:rotate(0)}}
+.section{padding:84px 0}
+.section-h{max-width:620px;margin-bottom:40px}
+.section-h p{color:var(--cinza);font-size:1.02rem}
+.features{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--linha)}
+.feature{padding:30px 28px 30px 0;border-bottom:1px solid var(--linha);display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:start}
+.feature:not(:nth-child(3n+1)){padding-left:28px;border-left:1px solid var(--linha)}
+.feature .art{width:64px;height:64px}
+.feature h3{font-size:1.2rem;margin-bottom:6px}
+.feature p{margin:0;color:var(--cinza);font-size:.93rem}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;counter-reset:s}
+.step{padding:6px 32px 6px 0;position:relative}
+.step + .step{padding-left:32px;border-left:1px solid var(--linha)}
+.step .num{font:400 2.6rem var(--serif);color:var(--latao);line-height:1;display:block;margin-bottom:12px}
+.step p{color:var(--cinza);margin:0}
+.band{background:var(--branco);border-block:1px solid var(--linha)}
+.footer{background:var(--toga);color:#8f99ab;padding:34px 0;font-size:.86rem}
+.footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.footer .brand{color:#fff}.footer .brand small{color:#8f99ab}.footer .brand .mark{background:var(--toga-2)}
 
-/* App layout */
-.app{display:grid;grid-template-columns:268px 1fr;min-height:100vh}
-.side{background:var(--ink);color:#c6cbd8;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:22px 16px}
-.side .brand{color:#fff;padding:0 8px 22px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
-.side .brand .mark{background:var(--gold);color:var(--ink)}
-.side .brand small{color:#8c93a6}
+/* Planos (certificados) */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;align-items:stretch}
+.plan{position:relative;background:var(--papel);border:1px solid #e1d6bf;border-radius:4px;padding:30px 26px 26px;display:flex;flex-direction:column;box-shadow:inset 0 0 0 6px var(--papel),inset 0 0 0 7px #e6d9bd}
+.plan h3{font-size:1.45rem;margin-bottom:4px}
+.plan .desc{color:var(--cinza);font-size:.9rem;margin:0 0 18px;min-height:2.8em}
+.plan .valor{display:flex;align-items:baseline;gap:4px 8px;color:var(--toga);flex-wrap:wrap}
+.plan .valor b{font:700 clamp(1.9rem,2.3vw,2.4rem) var(--serif);letter-spacing:-.02em;white-space:nowrap}
+.plan .valor small{color:var(--cinza);font-size:.9rem;white-space:nowrap}
+.plan .equiv{font-size:.82rem;color:var(--ok);margin:4px 0 0;font-weight:600}
+.plan .ticks{margin:20px 0 22px;flex:1}
+.plan .btn{width:100%}
+.plan.featured{background:var(--toga);border-color:var(--toga);color:#dfe3ea;box-shadow:inset 0 0 0 6px var(--toga),inset 0 0 0 7px rgba(216,190,138,.5),0 24px 50px -30px rgba(19,32,58,.7)}
+.plan.featured h3,.plan.featured .valor{color:#fff}
+.plan.featured .desc,.plan.featured .valor small{color:#a9b2c2}
+.plan.featured .equiv{color:var(--latao-2)}
+.plan.featured .ticks li{color:#dfe3ea}.plan.featured .ticks .ic{color:var(--latao-2)}
+.seal{position:absolute;top:-22px;right:18px;width:78px;height:78px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+label.plan{cursor:pointer;transition:transform .15s}
+label.plan input{position:absolute;opacity:0;pointer-events:none}
+label.plan:has(input:checked){outline:2px solid var(--rubi);outline-offset:3px}
+label.plan.featured:has(input:checked){outline-color:var(--latao)}
+label.plan .pick{margin-top:auto;display:flex;align-items:center;gap:8px;font-weight:600;font-size:.88rem;color:var(--rubi)}
+label.plan.featured .pick{color:var(--latao-2)}
+label.plan .pick .dot{width:18px;height:18px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center}
+label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.ticks{list-style:none;padding:0;margin:20px 0;display:grid;gap:9px;font-size:.92rem}
+.ticks li{display:flex;gap:10px;align-items:flex-start}.ticks .ic{color:var(--ok);margin-top:3px}
+
+/* Autenticação */
+.auth{min-height:calc(100vh - 63px);display:grid;grid-template-columns:minmax(320px,.9fr) 1.1fr}
+.auth-art{background:var(--toga);color:#c9d0dc;padding:56px 48px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;isolation:isolate}
+.auth-art:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.06;z-index:-1}
+.auth-art .scales{width:min(260px,70%);margin:20px auto;color:var(--latao)}
+.auth-art blockquote{margin:0;font-family:var(--serif);font-size:1.4rem;color:var(--latao-2);line-height:1.3}
+.auth-art cite{display:block;font:400 .9rem var(--sans);color:#8f99ab;margin-top:8px;font-style:normal}
+.auth-art h3{color:#fff;font-size:1.5rem}
+.auth-form{display:grid;place-items:center;padding:48px 28px;background:var(--marmore)}
+.auth-form .card{width:100%;max-width:470px;padding:34px;box-shadow:0 30px 60px -40px rgba(19,32,58,.45)}
+.auth-form .card.wide{max-width:600px}
+
+/* Aplicativo */
+.app{display:grid;grid-template-columns:272px 1fr;min-height:100vh}
+.side{background:var(--toga);color:#b9c1cf;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:22px 14px;overflow-y:auto;isolation:isolate}
+.side:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.08;z-index:-1;pointer-events:none}
+.side .brand{color:#fff;padding:0 8px 20px;border-bottom:1px solid rgba(216,190,138,.18);margin-bottom:14px}
+.side .brand .mark{background:var(--latao);color:var(--toga)}
+.side .brand small{color:#8f99ab}
 .nav{display:grid;gap:2px}
-.nav a{display:flex;align-items:center;gap:12px;padding:.68em .8em;border-radius:10px;color:#c6cbd8;font-weight:500;font-size:.92rem;text-decoration:none!important}
-.nav a:hover{background:rgba(255,255,255,.05);color:#fff}
-.nav a.on{background:rgba(184,149,90,.16);color:#fff}
-.nav a.on .ic{color:var(--gold-2)}
-.nav a .lk{margin-left:auto;opacity:.6}
-.nav .sep{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#6f7790;padding:16px 12px 6px}
-.side .me{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:16px 8px 0;display:flex;align-items:center;gap:10px}
-.avatar{width:36px;height:36px;border-radius:50%;background:var(--ink-3);color:var(--gold-2);display:grid;place-items:center;font-weight:700;flex:none}
+.nav a{display:flex;align-items:center;gap:12px;padding:.66em .8em;border-radius:7px;color:#b9c1cf;font-weight:500;font-size:.92rem;text-decoration:none!important;border-left:2px solid transparent}
+.nav a:hover{background:rgba(255,255,255,.04);color:#fff}
+.nav a.on{background:rgba(179,139,75,.13);color:#fff;border-left-color:var(--latao)}
+.nav a.on .ic{color:var(--latao-2)}
+.nav a .lk{margin-left:auto;opacity:.55}
+.nav .sep{font-size:.76rem;color:#6f7a8f;padding:18px 12px 6px;font-weight:600}
+.side .me{margin-top:auto;border-top:1px solid rgba(216,190,138,.18);padding:16px 8px 0;display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--toga-3);color:var(--latao-2);display:grid;place-items:center;font-weight:700;flex:none;font-size:.85rem}
 .side .me .nm{color:#fff;font-weight:600;font-size:.88rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.side .me .st{font-size:.74rem;color:#8c93a6}
-.side .me button{margin-left:auto;color:#8c93a6}
+.side .me .st{font-size:.76rem;color:#8f99ab}
+.side .me button{margin-left:auto;color:#8f99ab}
 .side .me button:hover{color:#fff;background:rgba(255,255,255,.06)}
-.mainwrap{min-width:0}
-.mobilebar{display:none}
-.page{padding:36px 40px 60px;max-width:1240px}
+.mainwrap{min-width:0;background:var(--marmore)}
+.page{padding:34px 40px 64px;max-width:1260px}
 .page-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:26px;flex-wrap:wrap}
-.page-h h2{margin:0}
-.page-h p{margin:.3em 0 0;color:var(--muted)}
+.page-h h2{margin:6px 0 0}
+.page-h p{margin:.35em 0 0;color:var(--cinza)}
 
-/* Dashboard */
-.banner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;border-radius:var(--r);background:var(--ink);color:#e9e6dd;margin-bottom:24px;flex-wrap:wrap}
-.banner h3{color:#fff;margin:0}
-.banner p{margin:.25em 0 0;color:#b6bccb;font-size:.92rem}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.stat{padding:20px 22px}
-.stat .n{font:600 2.2rem var(--serif);line-height:1}
-.stat .l{font-size:.8rem;color:var(--muted);margin-top:6px}
-.cols{display:grid;grid-template-columns:1.35fr 1fr;gap:24px}
-.list-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
-.list-h h3{margin:0}
+/* Painel do aluno */
+.tribuna{position:relative;overflow:hidden;isolation:isolate;background:var(--toga);color:#c9d0dc;border-radius:10px;padding:30px 34px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;margin-bottom:24px}
+.tribuna:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.06;z-index:-1}
+.tribuna h2{color:#fff;margin:4px 0 6px;font-size:2rem}
+.tribuna .data{font-size:.86rem;color:#8f99ab}
+.tribuna .maxim{margin-top:16px;border-left:1px solid var(--latao);padding-left:14px}
+.tribuna .maxim i{font-family:var(--serif);color:var(--latao-2);font-size:1.08rem}
+.tribuna .maxim span{display:block;font-size:.84rem;color:#8f99ab}
+.tribuna .facade{width:230px;color:var(--latao);opacity:.9;margin-bottom:-34px}
+.tribuna .badge{margin-top:12px}
+.banner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 24px;border-radius:10px;background:var(--branco);border:1px solid var(--linha);border-left:3px solid var(--rubi);margin-bottom:22px;flex-wrap:wrap}
+.banner.gold{border-left-color:var(--latao)}
+.banner h3{margin:0;font-size:1.15rem;display:flex;align-items:center;gap:8px}
+.banner p{margin:.3em 0 0;color:var(--cinza);font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--branco);border:1px solid var(--linha);border-radius:10px;margin-bottom:28px}
+.stat{padding:18px 22px;display:flex;gap:14px;align-items:center}
+.stat + .stat{border-left:1px solid var(--linha-2)}
+.stat .si{width:40px;height:40px;border-radius:8px;background:var(--latao-bg);color:#7c5d26;display:grid;place-items:center;flex:none}
+.stat .n{font:700 1.7rem var(--serif);line-height:1;color:var(--toga)}
+.stat .l{font-size:.8rem;color:var(--cinza);margin-top:4px}
+.cols{display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
+.list-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px;gap:12px}
+.list-h h3{margin:0;display:flex;align-items:center;gap:8px}
 
-/* Materials */
+/* Materiais */
 .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;align-items:center}
 .search{position:relative;flex:1;min-width:220px}
-.search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--cinza)}
 .search input{padding-left:38px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.45em 1em;font:500 .85rem var(--sans);cursor:pointer;color:var(--ink-2)}
-.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip{border:1px solid var(--linha);background:var(--branco);border-radius:7px;padding:.48em .95em;font:500 .85rem var(--sans);cursor:pointer;color:var(--toga-2);display:inline-flex;gap:6px;align-items:center}
+.chip.on{background:var(--toga);border-color:var(--toga);color:#fff}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
-.mcard{display:flex;flex-direction:column;overflow:hidden;color:inherit;text-decoration:none!important;transition:.18s}
-.mcard:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(19,26,43,.12)}
-.mthumb{height:118px;display:grid;place-items:center;position:relative}
-.mthumb.video{background:linear-gradient(135deg,#1c2640,#33406a)}
-.mthumb.audio{background:linear-gradient(135deg,#5e1520,#8f3141)}
-.mthumb.pdf{background:linear-gradient(135deg,#6d5428,#b8955a)}
-.mthumb .ic{color:rgba(255,255,255,.9)}
-.mthumb .badge{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92)}
-.mbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
-.mbody h4{margin:0;font-size:1.2rem}
-.mbody .d{font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.mbody p{font-size:.87rem;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.player{background:#0d1220;border-radius:var(--r);overflow:hidden}
+.mcard{display:flex;flex-direction:column;overflow:hidden;color:inherit;text-decoration:none!important;transition:border-color .15s,box-shadow .15s}
+.mcard:hover{border-color:var(--latao);box-shadow:0 16px 34px -24px rgba(19,32,58,.5)}
+.mthumb{height:132px;display:grid;place-items:center;position:relative;background:var(--toga);color:var(--latao);overflow:hidden;isolation:isolate}
+.mthumb:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.07;z-index:-1}
+.mthumb.audio{background:#3a1520}.mthumb.pdf{background:#2b2a24}
+.mthumb .art{width:150px;height:96px}
+.mthumb .badge{position:absolute;top:10px;left:10px;background:rgba(251,249,244,.94);color:var(--toga)}
+.mbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:5px;flex:1}
+.mbody h4{margin:0;font-size:1.12rem}
+.mbody .d{font-size:.8rem;color:#8c6a2f;font-weight:600}
+.mbody p{font-size:.87rem;color:var(--cinza);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.player{background:#0d1424;border-radius:10px;overflow:hidden}
 .player video{width:100%;display:block;max-height:72vh;background:#000}
 .player iframe{width:100%;border:0;display:block}
 .embed{position:relative;padding-top:56.25%}.embed iframe{position:absolute;inset:0;height:100%}
 .pdf-frame{height:78vh;background:#fff}
-.audio-box{padding:46px 30px;text-align:center;background:linear-gradient(135deg,#1c2640,#5e1520);color:#fff}
+.audio-box{padding:40px 30px;text-align:center;background:var(--toga);color:#fff;position:relative;isolation:isolate}
+.audio-box:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.06;z-index:-1}
+.audio-box .art{width:200px;height:120px;margin:0 auto}
 .audio-box audio{width:100%;max-width:560px;margin-top:20px}
 .mini-list{display:grid}
-.mini{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--line-2);color:inherit;text-decoration:none!important}
+.mini{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--linha-2);color:inherit;text-decoration:none!important}
 .mini:last-child{border-bottom:0}
-.mini:hover{background:#fbf8f1}
-.mini .tic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;background:#f3ead7;color:#82642f}
-.mini b{display:block;font-weight:600;font-size:.93rem}
-.mini span{font-size:.8rem;color:var(--muted)}
+.mini:hover{background:#f7f8f8}
+.mini .tic{width:38px;height:38px;border-radius:8px;display:grid;place-items:center;flex:none;background:var(--latao-bg);color:#7c5d26}
+.mini b{display:block;font-weight:600;font-size:.93rem;color:var(--toga)}
+.mini span{font-size:.8rem;color:var(--cinza)}
 
-/* Opportunities / posts */
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto}
-.tab{padding:.75em 1.1em;border:0;background:none;font:600 .9rem var(--sans);color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-decoration:none!important}
-.tab.on{color:var(--ink);border-color:var(--wine)}
+/* Oportunidades e leis */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--linha);margin-bottom:22px;overflow-x:auto}
+.tab{padding:.75em 1.05em;border:0;background:none;font:600 .9rem var(--sans);color:var(--cinza);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-decoration:none!important;display:inline-flex;gap:7px;align-items:center}
+.tab.on{color:var(--toga);border-color:var(--rubi)}
 .plist{display:grid;gap:14px}
-.post{padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
-.post h4{margin:6px 0 4px;font-size:1.3rem}
-.post h4 a{color:var(--ink)}
-.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.83rem;color:var(--muted);margin:6px 0 8px}
+.post{padding:22px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start}
+.post .pi{width:46px;height:46px;border-radius:8px;background:var(--latao-bg);color:#7c5d26;display:grid;place-items:center}
+.post h4{margin:6px 0 4px;font-size:1.22rem}
+.post h4 a{color:var(--toga)}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.84rem;color:var(--cinza);margin:6px 0 8px}
 .meta span{display:inline-flex;align-items:center;gap:5px}
-.post p{margin:0;color:#3d4252;font-size:.92rem}
-.timeline{position:relative;padding-left:28px;display:grid;gap:16px}
-.timeline:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.post p{margin:0;color:#3e4656;font-size:.92rem}
+.timeline{position:relative;padding-left:30px;display:grid;gap:16px}
+.timeline:before{content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--latao)}
 .tl-item{position:relative}
-.tl-item:before{content:"";position:absolute;left:-26px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--wine)}
+.tl-item:before{content:"§";position:absolute;left:-30px;top:22px;width:20px;height:20px;border-radius:50%;background:var(--marmore);color:var(--latao);font:400 .95rem/20px var(--serif);text-align:center}
 .article{max-width:820px}
-.article .body{font-size:1rem;line-height:1.75;color:#2a2f3d}
+.article .body{font-family:var(--serif);font-size:1.05rem;line-height:1.8;color:#2a3140}
 .article .body p{margin:0 0 1.1em}
+.article .doc{padding:34px 38px}
 
-/* Tables / admin */
+/* Tabelas e admin */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
-th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line);background:#fbf8f1}
-td{padding:13px 16px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+th{text-align:left;font-size:.78rem;color:var(--cinza);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--linha);background:#f6f7f7}
+td{padding:13px 16px;border-bottom:1px solid var(--linha-2);vertical-align:middle}
 tr:last-child td{border-bottom:0}
 td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.progress{height:8px;background:var(--line-2);border-radius:99px;overflow:hidden}
-.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+.progress{height:8px;background:var(--linha-2);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--latao);transition:width .2s}
 
-/* Modal, toast */
-.modal-bg{position:fixed;inset:0;background:rgba(13,18,32,.55);display:grid;place-items:center;z-index:100;padding:18px;animation:fade .15s}
-.modal{background:var(--card);border-radius:18px;width:100%;max-width:560px;max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+/* Modal e avisos */
+.modal-bg{position:fixed;inset:0;background:rgba(10,16,30,.6);display:grid;place-items:center;z-index:100;padding:18px;animation:fade .15s}
+.modal{background:var(--branco);border-radius:12px;width:100%;max-width:560px;max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35);border-top:3px solid var(--latao)}
 .modal.wide{max-width:760px}
-.modal-h{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--linha)}
 .modal-h h3{margin:0}
 .modal-b{padding:22px 24px}
 #toasts{position:fixed;bottom:22px;right:22px;display:grid;gap:10px;z-index:200}
-.toast{background:var(--ink);color:#fff;padding:.85em 1.15em;border-radius:12px;box-shadow:var(--shadow);font-size:.9rem;max-width:360px;animation:up .2s;border-left:3px solid var(--gold)}
+.toast{background:var(--toga);color:#fff;padding:.85em 1.15em;border-radius:8px;box-shadow:0 12px 30px rgba(0,0,0,.2);font-size:.9rem;max-width:380px;animation:up .2s;border-left:3px solid var(--latao)}
 .toast.err{border-color:#e06b78}
 @keyframes fade{from{opacity:0}}@keyframes up{from{opacity:0;transform:translateY(8px)}}
 
-/* Plan / checkout */
-.checkout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+/* Assinatura */
+.checkout{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;align-items:start}
 .methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.method{border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;cursor:pointer;font-weight:600;font-size:.88rem;background:#fff}
+.method{border:1px solid var(--linha);border-radius:8px;padding:13px;text-align:center;cursor:pointer;font-weight:600;font-size:.88rem;background:var(--branco)}
 .method input{display:none}
-.method:has(input:checked){border-color:var(--wine);box-shadow:0 0 0 3px rgba(125,31,46,.12);color:var(--wine)}
-.mode-tag{font-size:.74rem;color:var(--muted)}
+.method:has(input:checked){border-color:var(--rubi);box-shadow:0 0 0 3px rgba(142,27,46,.12);color:var(--rubi)}
+.resumo{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-block:1px dashed var(--linha);margin:4px 0 6px}
+.resumo b{font:700 1.4rem var(--serif);color:var(--toga)}
+.mode-tag{font-size:.78rem;color:#6f7a8f}
 
-@media (max-width:1000px){
-  .hero .wrap,.cols,.checkout{grid-template-columns:1fr}
-  .grid3,.steps{grid-template-columns:1fr 1fr}
-  .stats{grid-template-columns:1fr 1fr}
-}
-/* ---------- Desktop: barra superior de sistema ---------- */
-.deskbar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:20px;padding:12px 40px;background:rgba(246,243,236,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+/* Barra superior (computador) */
+.deskbar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:20px;padding:12px 40px;background:rgba(238,240,239,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--linha)}
 .crumb{font-size:.86rem;display:flex;gap:8px;align-items:center;white-space:nowrap}
-.crumb .sl{color:var(--line)}
+.crumb .sl{color:var(--latao)}
 .gsearch{position:relative;margin-left:auto;width:min(420px,40vw)}
-.gsearch .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
-.gsearch input{width:100%;padding:.55em 4.2em .55em 2.4em;border:1px solid var(--line);border-radius:10px;background:#fff;font:400 .88rem var(--sans);outline:none}
-.gsearch input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,149,90,.18)}
-.gsearch kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:600 .68rem var(--sans);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px;background:var(--paper)}
-.uchip{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600;font-size:.88rem;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid var(--line);background:#fff;text-decoration:none!important}
+.gsearch .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--cinza)}
+.gsearch input{width:100%;padding:.55em 4.2em .55em 2.4em;border:1px solid var(--linha);border-radius:8px;background:var(--branco);font:400 .88rem var(--sans);outline:none}
+.gsearch input:focus{border-color:var(--latao);box-shadow:0 0 0 3px rgba(179,139,75,.18)}
+.gsearch kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:600 .7rem var(--sans);color:var(--cinza);border:1px solid var(--linha);border-radius:5px;padding:2px 6px;background:var(--marmore)}
+.uchip{display:flex;align-items:center;gap:8px;color:var(--toga);font-weight:600;font-size:.88rem;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid var(--linha);background:var(--branco);text-decoration:none!important}
 .avatar.sm{width:28px;height:28px;font-size:.72rem}
 .apphead,.tabbar,.mback,.mobile-only{display:none}
 .install{display:flex;gap:16px;align-items:center;margin-bottom:20px}
-.install .ico{width:48px;height:48px;border-radius:12px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center;font:700 1.4rem var(--serif);flex:none}
+.install .ico{width:48px;height:48px;border-radius:10px;background:var(--toga);color:var(--latao-2);display:grid;place-items:center;flex:none}
 .install p{margin:0}
 .install .x{margin-left:auto}
-.welcome{min-height:100vh;min-height:100dvh;background:var(--ink);color:#e9e6dd;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 48px) 26px calc(env(safe-area-inset-bottom) + 28px);position:relative;overflow:hidden}
-.welcome:before{content:"";position:absolute;inset:0;background:radial-gradient(420px 300px at 90% 0%,rgba(184,149,90,.25),transparent 60%),radial-gradient(380px 300px at 0% 100%,rgba(125,31,46,.4),transparent 60%)}
-.welcome>*{position:relative}
-.welcome .bigmark{width:76px;height:76px;border-radius:22px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font:700 2.6rem var(--serif);margin-bottom:28px}
-.welcome h1{color:#fff;font-size:2.5rem}.welcome h1 em{color:var(--gold-2)}
-.welcome .wl{display:grid;gap:14px;margin:26px 0}
-.welcome .wl div{display:flex;gap:12px;align-items:center;color:#c9cdd8}
-.welcome .wl .ic{color:var(--gold-2)}
+
+/* Boas-vindas (celular) */
+.welcome{min-height:100vh;min-height:100dvh;background:var(--toga);color:#c9d0dc;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 24px);position:relative;overflow:hidden;isolation:isolate}
+.welcome:before{content:"";position:absolute;inset:0;background:var(--veio-escuro) center/cover no-repeat;opacity:.06;z-index:-1}
+.welcome .facade{width:72%;max-width:280px;margin:0 auto 4px;color:var(--latao)}
+@media (max-height:740px){.welcome .facade{max-width:200px}.welcome .wl{gap:8px;margin:14px 0}}
+.welcome h1{color:#fff;font-size:1.95rem}
+.welcome .wl{display:grid;gap:12px;margin:20px 0 22px}
+.welcome .wl div{display:flex;gap:12px;align-items:center;color:#c9d0dc}
+.welcome .wl .ic{color:var(--latao-2)}
 .welcome .acts{margin-top:auto;display:grid;gap:10px}
 .welcome .btn{padding:1em;font-size:1rem}
 
-/* ---------- Celular: experiência de aplicativo ---------- */
+@media (max-width:1000px){
+  .hero .wrap,.cols,.checkout{grid-template-columns:1fr}
+  .hero-copy{padding-bottom:0}
+  .hero .facade{max-width:460px;margin:0 auto}
+  .features{grid-template-columns:1fr 1fr}
+  .feature,.feature:not(:nth-child(3n+1)){padding:26px 22px 26px 0;border-left:0}
+  .feature:nth-child(2n){padding-left:22px;border-left:1px solid var(--linha)}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3){border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--linha-2)}
+  .auth{grid-template-columns:1fr}
+  .auth-art{display:none}
+  .tribuna{grid-template-columns:1fr}
+  .tribuna .facade{display:none}
+}
+
+/* Celular: experiência de aplicativo */
 @media (max-width:820px){
   html,body{overscroll-behavior-y:none}
   body{-webkit-tap-highlight-color:transparent;font-size:15.5px}
   .side,.deskbar{display:none}
   .app{display:block;min-height:100vh}
   .mobile-only{display:block}
-  .apphead{display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:30;background:var(--ink);color:#fff;padding:calc(env(safe-area-inset-top) + 8px) 8px 8px;min-height:56px;user-select:none;-webkit-user-select:none}
-  .apphead h1{font:600 1.08rem var(--sans);margin:0 0 0 6px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
-  .apphead .mark{width:32px;height:32px;border-radius:9px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font:700 1.15rem var(--serif);margin-left:6px}
+  .apphead{display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:30;background:var(--toga);color:#fff;padding:calc(env(safe-area-inset-top) + 8px) 8px 8px;min-height:56px;user-select:none;-webkit-user-select:none;border-bottom:1px solid rgba(216,190,138,.25)}
+  .apphead h1{font:600 1.05rem var(--sans);margin:0 0 0 6px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;letter-spacing:0}
+  .apphead .mark{width:32px;height:32px;border-radius:7px;background:var(--latao);color:var(--toga);display:grid;place-items:center;margin-left:6px}
   .apphead .icon-btn{width:42px;height:42px;display:grid;place-items:center;color:#fff;border-radius:50%}
   .apphead .icon-btn:active{background:rgba(255,255,255,.1)}
-  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,253,248,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);user-select:none;-webkit-user-select:none}
-  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.68rem;font-weight:600;color:var(--muted);padding:6px 0;border-radius:12px;text-decoration:none!important;position:relative}
-  .tabbar a.on{color:var(--wine)}
-  .tabbar a.on:before{content:"";position:absolute;top:2px;width:44px;height:30px;border-radius:15px;background:#f3e2e4;z-index:-1}
-  .tabbar a .lk{position:absolute;top:2px;right:calc(50% - 20px);color:var(--muted)}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--linha);padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);user-select:none;-webkit-user-select:none}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.7rem;font-weight:600;color:var(--cinza);padding:6px 0;border-radius:12px;text-decoration:none!important;position:relative;isolation:isolate}
+  .tabbar a.on{color:var(--rubi)}
+  .tabbar a.on:before{content:"";position:absolute;top:2px;width:46px;height:30px;border-radius:15px;background:var(--rubi-bg);z-index:-1}
+  .tabbar a .lk{position:absolute;top:2px;right:calc(50% - 20px);color:var(--cinza)}
   .mainwrap main{padding-bottom:calc(env(safe-area-inset-bottom) + 84px);animation:fade .18s}
   .page{padding:18px 16px 24px}
   .page-h{margin-bottom:16px}
   .page-h:not(.keep) h2,.page-h:not(.keep) .eyebrow{display:none}
   .page-h:not(.keep) p{margin:0}
-  .page-h h2{font-size:1.75rem}
-  h2{font-size:1.6rem}
+  .page-h h2{font-size:1.6rem}
+  h2{font-size:1.5rem}
   .btn{min-height:44px}.btn.sm{min-height:36px}
   .btn:active,.chip:active,.mcard:active,.mini:active,.post:active{transform:scale(.98)}
-  .mcard:hover{transform:none}
-  .grid3,.steps,.row2,.methods{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-  .stat{padding:14px 16px}.stat .n{font-size:1.8rem}
+  .features{grid-template-columns:1fr}
+  .feature,.feature:nth-child(2n),.feature:not(:nth-child(3n+1)){padding:22px 0;border-left:0}
+  .steps{grid-template-columns:1fr;gap:24px}
+  .step,.step + .step{padding:0;border:0}
+  .row2,.methods{grid-template-columns:1fr}
+  .stat{padding:14px 14px;gap:10px}.stat .si{width:34px;height:34px}.stat .n{font-size:1.45rem}
+  .tribuna{padding:22px 20px;border-radius:10px}
+  .tribuna h2{font-size:1.6rem}
   .cols{gap:20px}
-  .filters{position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10;background:var(--paper);margin:-18px -16px 14px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .filters{position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10;background:var(--marmore);margin:-18px -16px 14px;padding:12px 16px;border-bottom:1px solid var(--linha)}
   .filters .field{font-size:16px}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}
   .chips::-webkit-scrollbar{display:none}
-  .tabs{margin:-18px -16px 16px;padding:0 8px;background:var(--card);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10}
+  .tabs{margin:-18px -16px 16px;padding:0 8px;background:var(--branco);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10}
   .mgrid{grid-template-columns:1fr;gap:10px}
   .mcard{flex-direction:row;align-items:stretch}
-  .mthumb{width:92px;height:auto;min-height:92px;flex:none}
+  .mthumb{width:96px;height:auto;min-height:96px;flex:none}
   .mthumb .badge{display:none}
-  .mthumb .ic{width:30px;height:30px}
+  .mthumb .art{width:88px;height:60px}
   .mbody{padding:12px 14px}
-  .mbody h4{font-size:1.08rem}
-  .post{grid-template-columns:1fr;padding:16px 18px}
+  .mbody h4{font-size:1.02rem}
+  .post{grid-template-columns:auto 1fr;padding:16px 16px;gap:12px}
+  .post .pi{width:38px;height:38px}
   .post>.btn{display:none}
-  .post h4{font-size:1.15rem}
-  .timeline{padding-left:20px}.tl-item:before{left:-18px}
+  .post h4{font-size:1.08rem}
+  .timeline{padding-left:24px}.tl-item:before{left:-25px}
   .pdf-frame{height:70vh}
   .player{margin:0 -16px;border-radius:0}
-  .banner{padding:18px}
+  .banner{padding:16px 18px}
   .card.pad,.pad{padding:18px}
+  .article .doc{padding:22px 20px}
   .form input,.form select,.form textarea{font-size:16px;padding:.8em .9em}
+  .plans{grid-template-columns:1fr;gap:26px}
   .modal-bg{align-items:end;padding:0}
-  .modal{max-width:none!important;border-radius:20px 20px 0 0;max-height:94vh;padding-bottom:env(safe-area-inset-bottom);animation:sheet .22s ease-out}
-  .modal:before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 0}
+  .modal{max-width:none!important;border-radius:18px 18px 0 0;max-height:94vh;padding-bottom:env(safe-area-inset-bottom);animation:sheet .22s ease-out;border-top:0}
+  .modal:before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--linha);margin:8px auto 0}
   .modal-h{padding:12px 18px}.modal-b{padding:16px 18px 22px}
   #toasts{left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 80px)}
   .toast{max-width:none}
-  .table-wrap{margin:0 -1px}
-  .topbar .hide-sm,.topbar nav{display:none}
+  .topbar nav{display:none}
   .topbar .in{padding:calc(env(safe-area-inset-top) + 10px) 12px 10px}
   .mback{display:grid}
-  .auth{min-height:auto;padding:12px 4px 30px;place-items:stretch}
-  .auth .card{border:0;box-shadow:none;background:transparent;padding:16px}
+  .auth{min-height:auto}
+  .auth-form{padding:12px 4px 30px;place-items:stretch;background:var(--marmore)}
+  .auth-form .card{border:0;box-shadow:none;background:transparent;padding:16px}
 }
 @keyframes sheet{from{transform:translateY(100%)}}
-html.standalone .apphead{padding-top:calc(env(safe-area-inset-top) + 8px)}
 </style>
 </head>
 <body>
@@ -371,14 +464,19 @@ const DAY = 86400000;
 const DEFAULT_CFG = {
   id: 'geral', nomePortal: 'Ágora Jurídica', planoNome: 'Assinatura Mensal',
   preco: 39.90, diasAcesso: 30, diasTeste: 30, linkPagamento: '', chavePix: '', contato: '',
-  instrucoesPagamento: 'Após o pagamento, seu acesso é liberado assim que a confirmação for registrada.'
+  instrucoesPagamento: 'Após o pagamento, seu acesso é liberado assim que a confirmação for registrada.',
+  planos: [
+    { id: 'mensal', nome: 'Mensal', preco: 39.90, dias: 30, descricao: 'Para estudar no seu ritmo, mês a mês.', beneficios: [], destaque: false, ativo: true },
+    { id: 'semestral', nome: 'Semestral', preco: 199.90, dias: 180, descricao: 'Acompanha um semestre letivo inteiro.', beneficios: [], destaque: true, ativo: true },
+    { id: 'anual', nome: 'Anual', preco: 359.90, dias: 365, descricao: 'O ano todo, inclusive a preparação para a OAB.', beneficios: [], destaque: false, ativo: true }
+  ]
 };
 const DISCIPLINAS = ['Direito Constitucional','Direito Civil','Direito Penal','Processo Civil','Processo Penal','Direito Administrativo','Direito Tributário','Direito do Trabalho','Processo do Trabalho','Direito Empresarial','Direito do Consumidor','Direito Ambiental','Direito Internacional','Direitos Humanos','Ética e Estatuto da OAB','Filosofia e Teoria do Direito','Prática Jurídica'];
 const CATS = {
-  estagio:  { nome: 'Estágio',  plural: 'Estágios',  icon: 'book' },
-  concurso: { nome: 'Concurso', plural: 'Concursos', icon: 'shield' },
+  estagio:  { nome: 'Estágio',  plural: 'Estágios',  icon: 'gavel' },
+  concurso: { nome: 'Concurso', plural: 'Concursos', icon: 'columns' },
   emprego:  { nome: 'Emprego',  plural: 'Empregos',  icon: 'briefcase' },
-  lei:      { nome: 'Atualização legislativa', plural: 'Legislação', icon: 'scale' }
+  lei:      { nome: 'Atualização legislativa', plural: 'Legislação', icon: 'scroll' }
 };
 const TIPOS = { video: { nome: 'Vídeo', icon: 'play' }, audio: { nome: 'Áudio', icon: 'audio' }, pdf: { nome: 'PDF', icon: 'file' } };
 
@@ -439,9 +537,94 @@ const I = {
   settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
   download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
   arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
-  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>'
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  gavel: '<path d="M12 6l3-3 6 6-3 3z"/><path d="M15 9l-9 9"/><path d="M3 21h9"/>',
+  columns: '<path d="M3 9l9-5 9 5M4 9h16M6 9v8M10 9v8M14 9v8M18 9v8M4 17h16M3 20h18"/>',
+  scroll: '<path d="M8 21h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8"/><path d="M8 3a2 2 0 0 0-2 2v14a2 2 0 1 1-4 0v-2h4"/><path d="M10 8h6M10 12h6M10 16h4"/>',
+  tag: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
+
+/* ===================== Arte vetorial (identidade jurídica) ===================== */
+const MARK = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-5 9 5M4 9h16M6.5 9v8M10 9v8M14 9v8M17.5 9v8M4 17h16M3 20h18"/></svg>';
+const ART = {
+  facade(insc = '') {
+    const cols = [0, 1, 2, 3, 4, 5].map(i => { const x = 114 + i * 58; return `<path d="M${x - 16} 196h32M${x - 13} 204h26"/><path d="M${x - 11} 204v168M${x + 11} 204v168"/><path d="M${x - 4} 212v152M${x + 4} 212v152" opacity=".4"/><path d="M${x - 14} 372h28M${x - 16} 380h32"/>`; }).join('');
+    return `<svg class="art facade" viewBox="0 0 520 440" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Fachada de tribunal com balança da justiça">
+      <path d="M70 160 260 70 450 160z"/><path d="M104 152 260 80 416 152z" opacity=".45"/>
+      <circle cx="260" cy="93" r="3"/><path d="M260 96v52M249 150h22"/>
+      <g class="beam"><path d="M226 106h68"/><path d="M226 106l-9 19M226 106l9 19M215 125h22a11 5 0 0 1-22 0z"/><path d="M294 106l-9 19M294 106l9 19M283 125h22a11 5 0 0 1-22 0z"/></g>
+      <rect x="76" y="160" width="368" height="36"/><path d="M76 168h368" opacity=".45"/>
+      <text x="260" y="189" text-anchor="middle" fill="currentColor" stroke="none" font-family="Libre Caslon Text, Georgia, serif" font-size="14" letter-spacing="5">${esc(String(insc).toUpperCase())}</text>
+      ${cols}
+      <path d="M78 388h364M64 400h392M50 412h420M36 424h448"/><path d="M14 436h492" opacity=".35"/>
+    </svg>`;
+  },
+  scales() {
+    return `<svg class="art scales" viewBox="0 0 240 240" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="120" cy="30" r="7"/><path d="M120 37v158"/><path d="M80 210h80M92 198h56l10 12H82z"/>
+      <path d="M112 60h16M108 68h24" opacity=".6"/>
+      <path d="M38 60h164"/><circle cx="38" cy="60" r="3"/><circle cx="202" cy="60" r="3"/>
+      <path d="M38 60l-26 64M38 60l26 64M6 124h64a32 15 0 0 1-64 0z"/>
+      <path d="M202 60l-26 64M202 60l26 64M170 124h64a32 15 0 0 1-64 0z"/>
+    </svg>`;
+  },
+  thumb(tipo) {
+    const a = {
+      video: '<rect x="42" y="16" width="76" height="52" rx="3"/><path d="M73 31v22l18-11z" fill="currentColor"/><path d="M60 86h40M80 68v18"/><path d="M28 22v58M132 22v58" opacity=".4"/><path d="M24 22h8M128 22h8M24 80h8M128 80h8" opacity=".4"/>',
+      audio: '<rect x="67" y="10" width="26" height="46" rx="13"/><path d="M58 38v6a22 22 0 0 0 44 0v-6M80 66v16M66 84h28"/><path d="M67 24h9M67 32h9M67 40h9" opacity=".5"/><path d="M116 26a28 28 0 0 1 0 34M126 18a40 40 0 0 1 0 50M44 26a28 28 0 0 0 0 34M34 18a40 40 0 0 0 0 50" opacity=".55"/>',
+      pdf: '<path d="M54 8h40l16 16v68H54z"/><path d="M94 8v16h16"/><path d="M64 34h36M64 44h36M64 54h24" opacity=".55"/><path d="M92 86l-4 12 9-5 9 5-4-12" fill="#8e1b2e" stroke="none"/><circle cx="97" cy="78" r="12" fill="#8e1b2e" stroke="none"/><text x="97" y="83" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="13" fill="#f3e6c8" stroke="none">§</text>'
+    }[tipo] || '';
+    return `<svg class="art" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${a}</svg>`;
+  },
+  medal(name) {
+    return `<svg class="art" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="30" stroke-width="1.2"/><circle cx="32" cy="32" r="25.5" stroke-width=".8" opacity=".5"/><g transform="translate(17 17) scale(1.25)" stroke-width="1.3">${I[name] || ''}</g></svg>`;
+  },
+  seal(a = 'Mais', b = 'escolhido') {
+    const pts = [...Array(56)].map((_, i) => { const r = i % 2 ? 35.5 : 39, t = i * Math.PI / 28; return `${(40 + r * Math.cos(t)).toFixed(1)},${(40 + r * Math.sin(t)).toFixed(1)}`; }).join(' ');
+    return `<svg class="seal" viewBox="0 0 80 80" aria-hidden="true"><polygon points="${pts}" fill="#8e1b2e"/><circle cx="40" cy="40" r="30" fill="none" stroke="#d8be8a" stroke-width="1"/><circle cx="40" cy="40" r="27" fill="none" stroke="#d8be8a" stroke-width=".5" opacity=".6"/><text x="40" y="38" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="11" fill="#f3e6c8">${a}</text><text x="40" y="51" text-anchor="middle" font-family="Libre Caslon Text, Georgia, serif" font-size="9.5" fill="#f3e6c8">${b}</text></svg>`;
+  },
+  orn() { return `<div class="orn" aria-hidden="true"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l2 7-2 7-2-7z"/></svg></div>`; }
+};
+const BROCARDOS = [
+  ['Dura lex, sed lex.', 'A lei é dura, mas é a lei.'],
+  ['Pacta sunt servanda.', 'Os pactos devem ser cumpridos.'],
+  ['In dubio pro reo.', 'Na dúvida, decide-se a favor do réu.'],
+  ['Ubi societas, ibi ius.', 'Onde há sociedade, há direito.'],
+  ['Audiatur et altera pars.', 'Ouça-se também a outra parte.'],
+  ['Nullum crimen, nulla poena sine praevia lege.', 'Não há crime nem pena sem lei anterior que os defina.'],
+  ['Dormientibus non succurrit ius.', 'O direito não socorre os que dormem.'],
+  ['Ignorantia legis neminem excusat.', 'Ninguém se escusa de cumprir a lei alegando não conhecê-la.'],
+  ['Da mihi factum, dabo tibi ius.', 'Dá-me os fatos, e eu te darei o direito.'],
+  ['Summum ius, summa iniuria.', 'O excesso de rigor na lei pode gerar a maior injustiça.']
+];
+const brocardo = () => BROCARDOS[Math.floor(Date.now() / DAY) % BROCARDOS.length];
+
+/* ============================== Planos ============================== */
+const BENEF_PADRAO = ['Videoaulas, áudios e PDFs', 'Estágios, concursos e empregos', 'Atualizações da lei comentadas'];
+function planos(todos = false) {
+  let ps = Array.isArray(S.config.planos) && S.config.planos.length ? S.config.planos
+    : [{ id: 'mensal', nome: S.config.planoNome || 'Mensal', preco: Number(S.config.preco) || 39.9, dias: Number(S.config.diasAcesso) || 30, descricao: 'Acesso completo ao portal.', beneficios: [], destaque: false, ativo: true }];
+  ps = ps.map(p => ({ beneficios: [], ativo: true, descricao: '', ...p, preco: Number(p.preco) || 0, dias: Number(p.dias) || 30 }));
+  return (todos ? ps : ps.filter(p => p.ativo !== false)).sort((a, b) => a.dias - b.dias || a.preco - b.preco);
+}
+const periodo = d => (d >= 28 && d <= 31) ? 'por mês' : (d >= 89 && d <= 92) ? 'por trimestre' : (d >= 180 && d <= 184) ? 'por semestre' : (d >= 365 && d <= 366) ? 'por ano' : `por ${d} dias`;
+const mensal = p => p.preco / (p.dias / 30);
+const menorMensal = () => { const ps = planos(); return ps.length ? Math.min(...ps.map(mensal)) : 0; };
+const planoPadrao = () => planos().find(p => p.destaque) || planos()[0];
+function planCard(p, { cta = false, pick = false, checked = false } = {}) {
+  const tag = pick ? 'label' : 'div';
+  const ben = p.beneficios?.length ? p.beneficios : BENEF_PADRAO;
+  return `<${tag} class="plan ${p.destaque ? 'featured' : ''}">${p.destaque ? ART.seal() : ''}
+    ${pick ? `<input type="radio" name="plano" value="${esc(p.id)}" ${checked ? 'checked' : ''}>` : ''}
+    <h3>${esc(p.nome)}</h3><p class="desc">${esc(p.descricao)}</p>
+    <div class="valor"><b>${brl(p.preco)}</b><small>${periodo(p.dias)}</small></div>
+    ${p.dias > 31 ? `<p class="equiv">Equivale a ${brl(mensal(p))} por mês</p>` : '<p class="equiv">&nbsp;</p>'}
+    <ul class="ticks">${ben.map(b => `<li>${ic('check', 16)}${esc(b)}</li>`).join('')}<li>${ic('check', 16)}${p.dias} dias de acesso completo</li></ul>
+    ${cta ? `<a class="btn ${p.destaque ? 'gold' : 'primary'}" href="#/cadastro">${diasTeste() ? 'Começar grátis' : 'Assinar o plano ' + esc(p.nome.toLowerCase())}</a>` : ''}
+    ${pick ? '<span class="pick"><span class="dot"></span>Escolher este plano</span>' : ''}
+  </${tag}>`;
+}
 
 function toast(msg, err = false) {
   const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
@@ -601,7 +784,11 @@ function GistStore() {
   const GIST_COLS = ['materiais', 'publicacoes', 'codigos'];
   let G = null, data = null, loadedAt = 0, admin = null;
   const novoDados = () => ({ versao: 1, config: { ...DEFAULT_CFG }, materiais: [], codigos: [], publicacoes: SEED_POSTS.map((p, i) => ({ ...p, id: uid(), criadoEm: Date.now() - i })) });
-  const parseG = s => { const m = String(s || '').trim().match(/^([\w-]+)\/([0-9a-f]{20,40})$/i); return m ? { user: m[1], id: m[2] } : null; };
+  const parseG = s => {
+    s = String(s || '').trim();
+    const m = s.match(/gist\.github(?:usercontent)?\.com\/([\w-]+)\/([0-9a-f]{20,40})/i) || s.match(/[?&]gist=([\w-]+)\/([0-9a-f]{20,40})/i) || s.match(/^([\w-]+)\/([0-9a-f]{20,40})$/i);
+    return m ? { user: m[1], id: m[2] } : null;
+  };
   async function gh(path, opt = {}, token = admin?.token) {
     let r;
     try { r = await fetch(API + path, { ...opt, headers: { Accept: 'application/vnd.github+json', ...(token ? { Authorization: 'Bearer ' + token } : {}), ...(opt.body ? { 'Content-Type': 'application/json' } : {}) } }); }
@@ -670,10 +857,29 @@ function GistStore() {
       await L.save('config', admin); await L.logout(); await ensure(true);
       return { user: adminUser(), criado };
     },
+    async definirGist(txt) {
+      const g = parseG(txt);
+      if (!g) throw new Error('Link do Gist inválido. Exemplo: https://gist.github.com/usuario/1a2b3c…');
+      const antigo = G; G = g; data = null; loadedAt = 0;
+      if (admin && admin.login.toLowerCase() !== g.user.toLowerCase()) { admin = null; await L.remove('config', 'admin-gh'); }
+      try { await ensure(true); } catch (e) { G = antigo; throw new Error('Não encontrei o conteúdo do portal nesse Gist. Confira o link.'); }
+      await L.save('config', { id: 'gist-ref', g });
+      return g;
+    },
+    async desconectarGist() { G = null; data = null; admin = null; await L.remove('config', 'gist-ref'); await L.remove('config', 'admin-gh'); await L.remove('config', 'gist-cache'); await L.logout(); },
     register: d => L.register(d),
-    login: (e, s) => L.login(e, s),
+    async login(e, s) {
+      const u = await L.login(e, s);
+      if (u.role === 'admin') { await L.logout(); throw new Error('Administrador: use o botão “Sou o administrador” e entre com o token do GitHub.'); }
+      return u;
+    },
     async logout() { if (admin) { admin = null; await L.remove('config', 'admin-gh'); } await L.logout(); },
-    async currentUser() { return admin ? adminUser() : L.currentUser(); },
+    async currentUser() {
+      if (admin) return adminUser();
+      const u = await L.currentUser();
+      if (u?.role === 'admin') { await L.logout(); return null; } // sessão antiga do modo local
+      return u;
+    },
     async getUser(id) { return admin && id === 'gh:' + admin.login ? adminUser() : L.getUser(id); },
     listUsers: () => L.listUsers(),
     async updateUser(id, p) {
@@ -734,14 +940,14 @@ function statusAss(u) {
   const a = u.assinatura;
   if (!a) return { txt: 'Sem assinatura', cls: 'warn' };
   if (a.status === 'cancelada') return { txt: 'Cancelada', cls: 'err' };
-  if (a.validade > Date.now()) return a.tipo === 'teste' ? { txt: 'Grátis até ' + fmtDate(a.validade), cls: 'gold' } : { txt: 'Ativa até ' + fmtDate(a.validade), cls: 'ok' };
+  if (a.validade > Date.now()) return a.tipo === 'teste' ? { txt: 'Grátis até ' + fmtDate(a.validade), cls: 'gold' } : { txt: (a.plano ? a.plano + ', até ' : 'Ativa até ') + fmtDate(a.validade), cls: 'ok' };
   return { txt: 'Expirada em ' + fmtDate(a.validade), cls: 'err' };
 }
-async function ativarAssinatura(userId, dias = Number(S.config.diasAcesso) || 30) {
+async function ativarAssinatura(userId, dias = planos()[0]?.dias || 30, plano = '') {
   const u = await store.getUser(userId);
   const vigente = u.assinatura?.status === 'ativa' && u.assinatura.validade > Date.now();
   const base = vigente ? u.assinatura.validade : Date.now();
-  return store.updateUser(userId, { assinatura: { status: 'ativa', tipo: 'pago', inicio: vigente ? u.assinatura.inicio : Date.now(), validade: base + dias * DAY } });
+  return store.updateUser(userId, { assinatura: { status: 'ativa', tipo: 'pago', plano: plano || '', inicio: vigente ? u.assinatura.inicio : Date.now(), validade: base + dias * DAY } });
 }
 const diasTeste = () => Math.max(0, Number(S.config.diasTeste) || 0);
 const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -757,13 +963,13 @@ async function resgatarCodigo(code) {
   if (c.validoAte && new Date(c.validoAte + 'T23:59:59') < Date.now()) throw new Error('Este código expirou. Peça um novo ao administrador.');
   const u = await store.getUser(S.user.id), usados = u.codigosUsados || [];
   if (usados.includes(c.id)) throw new Error('Você já usou este código.');
-  await ativarAssinatura(u.id, Number(c.dias) || Number(S.config.diasAcesso) || 30);
+  await ativarAssinatura(u.id, Number(c.dias) || planos()[0]?.dias || 30, c.plano || '');
   await store.updateUser(u.id, { codigosUsados: [...usados, c.id] });
   return c;
 }
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado!'); } catch { toast('Selecione o texto e copie manualmente.', true); } }
 function prazoBadge(p) {
-  if (p.categoria === 'lei') return `<span class="badge wine">${ic('scale', 12)} ${fmtDate(p.prazo)}</span>`;
+  if (p.categoria === 'lei') return `<span class="badge wine">${ic('scroll', 12)} ${fmtDate(p.prazo)}</span>`;
   if (!p.prazo) return '';
   const d = Math.ceil((new Date(p.prazo + 'T23:59:59') - Date.now()) / DAY);
   if (d < 0) return '<span class="badge err">Encerrado</span>';
@@ -803,7 +1009,8 @@ async function render() {
   if (r.ativo && !ativo(S.user)) { toast('Assine o portal para acessar este conteúdo.'); return go('assinar'); }
 
   const app = $('#app');
-  if (store.modo === 'gist' && !store.configurado && !S.user) {
+  if (store.modo === 'gist' && !store.configurado && S.user?.role !== 'admin') {
+    if (S.user) { await store.logout(); S.user = null; }
     app.innerHTML = publicHTML('setup'); bindShell(); await viewSemGist($('#main')); return;
   }
   app.innerHTML = S.user ? shellHTML(name) : publicHTML(name);
@@ -816,7 +1023,7 @@ async function render() {
 }
 
 function brandHTML(href = '#/') {
-  return `<a class="brand" href="${href}"><span class="mark">Á</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
+  return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
 const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
 const DETAIL = { material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
@@ -850,6 +1057,7 @@ function shellHTML(name) {
         ${item('perfil', 'Minha conta', 'user')}
         ${!at ? item('assinar', 'Assinar o portal', 'card') : ''}
         ${u.role === 'admin' ? item('admin', 'Painel administrativo', 'settings') : ''}
+        ${u.role === 'admin' && store.modo === 'gist' ? `<a href="#/admin/config" class="${name === 'admin' && location.hash.includes('config') ? 'on' : ''}">${ic('ext')} Gist e link dos alunos</a>` : ''}
       </nav>
       <div class="me"><div class="avatar">${esc(initials(u.nome))}</div><div style="min-width:0"><div class="nm">${esc(u.nome)}</div><div class="st">${esc(st.txt)}</div></div><button class="icon-btn" id="logout" title="Sair">${ic('logout')}</button></div>
     </aside>
@@ -860,7 +1068,7 @@ function shellHTML(name) {
         <a class="uchip" href="#/perfil"><span class="avatar sm">${esc(initials(u.nome))}</span>${esc(u.nome.split(' ')[0])}</a>
       </header>
       <header class="apphead">
-        ${DETAIL[name] ? `<button class="icon-btn" id="back" aria-label="Voltar">${ic('back', 22)}</button>` : '<span class="mark">Á</span>'}
+        ${DETAIL[name] ? `<button class="icon-btn" id="back" aria-label="Voltar">${ic('back', 22)}</button>` : `<span class="mark">${MARK}</span>`}
         <h1>${esc(TITLES[name] || S.config.nomePortal)}</h1>
         ${at && name !== 'busca' ? `<a class="icon-btn" href="#/busca" aria-label="Buscar">${ic('search', 21)}</a>` : ''}
         ${u.role === 'admin' && name !== 'admin' ? `<a class="icon-btn" href="#/admin" aria-label="Administração">${ic('settings', 21)}</a>` : ''}
@@ -888,8 +1096,8 @@ window.addEventListener('appinstalled', () => { deferredPrompt = null; toast('Ap
 function installCard(force = false) {
   if (isStandalone()) return '';
   if (!force && lsGet('agora-install-dismiss')) return '';
-  if (deferredPrompt) return `<div class="card pad install"><span class="ico">Á</span><div><b>Instale o aplicativo</b><p class="small muted">Acesso rápido pela tela inicial, em tela cheia, como um app.</p></div><button class="btn primary sm x" id="inst">Instalar</button></div>`;
-  if (isIOS) return `<div class="card pad install"><span class="ico">Á</span><div><b>Instale no iPhone</b><p class="small muted">Toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.</p></div><button class="icon-btn x" id="inst-x" aria-label="Dispensar">×</button></div>`;
+  if (deferredPrompt) return `<div class="card pad install"><span class="ico">${MARK}</span><div><b>Instale o aplicativo</b><p class="small muted">Acesso rápido pela tela inicial, em tela cheia, como um app.</p></div><button class="btn primary sm x" id="inst">Instalar</button></div>`;
+  if (isIOS) return `<div class="card pad install"><span class="ico">${MARK}</span><div><b>Instale no iPhone</b><p class="small muted">Toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.</p></div><button class="icon-btn x" id="inst-x" aria-label="Dispensar">×</button></div>`;
   return '';
 }
 function bindInstall() {
@@ -899,62 +1107,52 @@ function bindInstall() {
 
 /* ============================ Página pública ============================ */
 async function viewHome(main) {
-  const c = S.config;
+  const c = S.config, dt = diasTeste(), mx = brocardo();
   if (isMobile()) {
-    main.innerHTML = `<div class="welcome"><div class="bigmark">Á</div><div class="eyebrow">${esc(c.nomePortal)}</div>
-      <h1 style="margin-top:10px">O Direito, <em>organizado</em> para quem estuda.</h1>
-      <div class="wl">${diasTeste() ? `<div>${ic('check', 20)} <b style="color:#fff">${diasTeste()} dias grátis</b>&nbsp;para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('briefcase', 20)} Estágios, concursos e empregos</div><div>${ic('scale', 20)} Atualizações da lei</div><div>${ic('card', 20)} ${brl(c.preco)}/mês, acesso completo</div></div>
-      <div class="acts"><a class="btn gold" href="#/cadastro">${diasTeste() ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div></div>`;
+    main.innerHTML = `<div class="welcome">${ART.facade(c.nomePortal)}
+      <h1>O Direito, organizado para quem estuda.</h1>
+      <div class="wl">${dt ? `<div>${ic('check', 20)} ${dt} dias grátis para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('gavel', 20)} Estágios, concursos e empregos</div><div>${ic('scroll', 20)} Atualizações da lei</div></div>
+      <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div></div>`;
     return;
   }
   const feat = [
-    ['play', 'Videoaulas', 'Aulas gravadas por disciplina, com player integrado e acesso em qualquer dispositivo.'],
-    ['audio', 'Áudios', 'Resumos e aulas em áudio para revisar no trânsito, na academia ou antes da prova.'],
-    ['file', 'PDFs e apostilas', 'Materiais de apoio, mapas mentais, peças práticas e roteiros de estudo.'],
-    ['book', 'Estágios', 'Oportunidades em escritórios, tribunais, defensorias e departamentos jurídicos.'],
-    ['shield', 'Concursos', 'Editais, prazos de inscrição e orientações para carreiras públicas.'],
-    ['scale', 'Atualizações da lei', 'Novas normas e alterações legislativas explicadas de forma objetiva.']
+    ['play', 'Videoaulas', 'Aulas gravadas por disciplina, para assistir no computador ou no celular.'],
+    ['audio', 'Áudios', 'Resumos para revisar no ônibus, na academia ou antes da prova.'],
+    ['file', 'PDFs e apostilas', 'Roteiros de estudo, mapas mentais e modelos de peças.'],
+    ['gavel', 'Estágios', 'Vagas em escritórios, tribunais, defensorias e departamentos jurídicos.'],
+    ['columns', 'Concursos', 'Editais, prazos de inscrição e conteúdo programático.'],
+    ['scroll', 'Atualizações da lei', 'O que mudou, quando entra em vigor e o link para o texto oficial.']
   ];
   main.innerHTML = `
   <section class="hero"><div class="wrap">
-    <div>
-      <div class="eyebrow">Portal de estudos jurídicos</div>
-      <h1 style="margin-top:14px">O Direito, <em>organizado</em> para quem estuda.</h1>
-      <p class="lead">Videoaulas, áudios e PDFs reunidos em um só lugar, com vagas de estágio, concursos, empregos e as atualizações legislativas que importam para a sua formação.</p>
-      <div class="cta"><a class="btn gold" href="#/cadastro">${diasTeste() ? `Começar ${diasTeste()} dias grátis` : 'Começar agora'} ${ic('arrow', 16)}</a><a class="btn light" href="#/entrar">Já sou aluno</a></div>
+    <div class="hero-copy">
+      <h1>O Direito, organizado para quem estuda.</h1>
+      <p class="lead">Videoaulas, áudios e PDFs por disciplina, com vagas de estágio, concursos, empregos e as mudanças na lei explicadas com a fonte oficial.</p>
+      <div class="cta"><a class="btn gold" href="#/cadastro">${dt ? `Começar com ${dt} dias grátis` : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já sou aluno</a></div>
+      <div class="maxim"><i>${mx[0]}</i><span>${mx[1]}</span></div>
     </div>
-    <div class="hero-panel">
-      <div class="li">${ic('play')}<div><b>Conteúdo multimídia</b><span>Vídeo, áudio e PDF por disciplina</span></div></div>
-      <div class="li">${ic('briefcase')}<div><b>Carreira</b><span>Estágios, concursos e empregos na área</span></div></div>
-      <div class="li">${ic('scale')}<div><b>Legislação em dia</b><span>Mudanças na lei com contexto e fonte oficial</span></div></div>
-      <div class="li">${ic('card')}<div><b>${diasTeste() ? `${diasTeste()} dias grátis` : brl(c.preco) + '/mês'}</b><span>${diasTeste() ? `Depois, ${brl(c.preco)}/mês com acesso completo` : 'Acesso completo a todo o portal'}</span></div></div>
-    </div>
+    ${ART.facade(c.nomePortal)}
   </div></section>
 
   <section class="section"><div class="wrap">
-    <div class="section-h"><div class="eyebrow">O que você encontra</div><h2>Tudo o que a graduação pede, num só portal</h2></div>
-    <div class="grid3">${feat.map(f => `<div class="card feature"><div class="ic-wrap">${ic(f[0], 22)}</div><h3>${f[1]}</h3><p class="muted" style="margin:0">${f[2]}</p></div>`).join('')}</div>
+    <div class="section-h"><span class="eyebrow">O acervo</span><h2>Tudo o que a graduação pede, num só lugar</h2><p>Do primeiro período à OAB, organizado pelas disciplinas do curso.</p></div>
+    <div class="features">${feat.map(f => `<div class="feature">${ART.medal(f[0])}<div><h3>${f[1]}</h3><p>${f[2]}</p></div></div>`).join('')}</div>
   </div></section>
 
-  <section class="section" style="background:#efeadf;border-block:1px solid var(--line)"><div class="wrap">
-    <div class="section-h"><div class="eyebrow">Como funciona</div><h2>Três passos para começar</h2></div>
+  <section class="section band"><div class="wrap">
+    <div class="section-h"><span class="eyebrow">Como funciona</span><h2>Do cadastro à primeira aula em minutos</h2></div>
     <div class="steps">
-      <div class="card step"><h3>Crie sua conta</h3><p class="muted" style="margin:0">Cadastro rápido com seus dados acadêmicos.</p></div>
-      <div class="card step"><h3>${diasTeste() ? 'Estude grátis' : 'Ative a assinatura'}</h3><p class="muted" style="margin:0">${diasTeste() ? `${diasTeste()} dias de acesso completo; depois, assine o plano mensal.` : 'Aceite o plano mensal e conclua o pagamento.'}</p></div>
-      <div class="card step"><h3>Acesse tudo</h3><p class="muted" style="margin:0">Todo o conteúdo liberado enquanto a assinatura estiver ativa.</p></div>
+      <div class="step"><span class="num">I</span><h3>Crie sua conta</h3><p>Nome, e-mail e o período em que você está.</p></div>
+      <div class="step"><span class="num">II</span><h3>${dt ? 'Estude grátis' : 'Escolha um plano'}</h3><p>${dt ? `${dt} dias com acesso completo, sem precisar pagar nada.` : 'Mensal, semestral ou anual. Todos dão acesso completo.'}</p></div>
+      <div class="step"><span class="num">III</span><h3>${dt ? 'Escolha um plano' : 'Acesse tudo'}</h3><p>${dt ? 'Gostou? Continue com o plano que cabe no seu semestre.' : 'Todo o conteúdo liberado enquanto o plano estiver ativo.'}</p></div>
     </div>
   </div></section>
 
   <section class="section"><div class="wrap">
-    <div class="card price-card">
-      <div class="eyebrow">${esc(c.planoNome)}</div>
-      ${diasTeste() ? `<div class="badge ok" style="margin-top:10px">${diasTeste()} primeiros dias grátis</div>` : ''}
-      <div class="price" style="margin-top:12px">${brl(c.preco)}<small> /mês</small></div>
-      <ul class="ticks">${['Acesso ilimitado a vídeos, áudios e PDFs', 'Vagas de estágio e emprego atualizadas', 'Editais e prazos de concursos', 'Atualizações legislativas comentadas', `Renovação a cada ${c.diasAcesso} dias`].map(t => `<li>${ic('check')}${t}</li>`).join('')}</ul>
-      <a class="btn primary" style="width:100%" href="#/cadastro">${diasTeste() ? 'Criar conta e testar grátis' : 'Quero assinar'}</a>
-    </div>
+    <div class="section-h"><span class="eyebrow">Planos</span><h2>Escolha como quer estudar</h2><p>${dt ? `Todo aluno novo começa com ${dt} dias grátis. Depois, escolha o plano que cabe no seu semestre.` : 'Todos os planos dão acesso completo ao portal.'}</p></div>
+    <div class="plans">${planos().map(p => planCard(p, { cta: true })).join('')}</div>
   </div></section>
-  <footer class="footer"><div class="wrap"><span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}. Todos os direitos reservados.</span><span class="mode-tag">Modo: ${store.modo === 'local' ? 'local (IndexedDB)' : 'nuvem (Firebase)'}</span></div></footer>`;
+  <footer class="footer"><div class="wrap">${brandHTML()}<span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}</span><span class="mode-tag">${store.modo === 'local' ? 'Modo local' : store.modo === 'gist' ? 'Dados no GitHub' : 'Dados no Firebase'}</span></div></footer>`;
 }
 
 /* ======================= Configuração (modo Gist) ======================= */
@@ -980,12 +1178,41 @@ function entrarAdminModal() {
   };
 }
 async function viewSemGist(main) {
-  main.innerHTML = `<div class="auth"><div class="card">
-    <div class="eyebrow">${esc(S.config.nomePortal)}</div><h2>Portal ainda não configurado</h2>
+  main.innerHTML = `${authOpen()}
+    <h2>Portal ainda não configurado</h2>
     <p class="muted"><b>Aluno:</b> abra o link de acesso enviado pelo seu professor ou administrador.</p>
     <p class="muted"><b>Administrador:</b> conecte sua conta do GitHub para criar o portal. Leva cerca de 2 minutos.</p>
-    <button class="btn primary" id="cfg" style="width:100%">${ic('settings', 16)} Configurar com o GitHub</button></div></div>`;
+    <button class="btn primary" id="cfg" style="width:100%">${ic('settings', 16)} Criar o portal com o GitHub</button>
+    <div style="border-top:1px solid var(--linha);margin-top:22px;padding-top:18px">
+      <h4>Já tenho o link do Gist</h4>
+      <p class="small muted">Use se você já criou o portal em outro computador, ou se recebeu o link do Gist.</p>
+      <form class="form" id="fgl" style="grid-template-columns:1fr auto;align-items:end"><input name="g" required placeholder="https://gist.github.com/usuario/1a2b3c…" autocomplete="off"><button class="btn dark">Conectar</button></form>
+    </div>${authClose}`;
   $('#cfg').onclick = entrarAdminModal;
+  $('#fgl').onsubmit = async e => {
+    e.preventDefault(); const b = $('button', e.target); b.disabled = true;
+    try { await store.definirGist(e.target.g.value); S.config = await store.getConfig(); fixarLinkGist(); toast('Portal conectado ao Gist.'); go(''); }
+    catch (err) { toast(err.message, true); b.disabled = false; }
+  };
+}
+function trocarGistModal() {
+  const g = store.gist;
+  const { el, close } = modal('Trocar o Gist de dados', `<form class="form" id="ftg">
+    <p style="margin:0">Gist atual: <b>${g ? `${esc(g.user)}/${esc(g.id)}` : 'nenhum'}</b></p>
+    <label>Link do outro Gist<input name="g" required placeholder="https://gist.github.com/usuario/1a2b3c…" autocomplete="off"></label>
+    <p class="hint">O conteúdo do portal passa a vir desse Gist. O Gist atual não é apagado.</p>
+    <div class="actions"><button type="button" class="btn danger" id="desc">Desconectar</button><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Conectar</button></div></form>`);
+  $('#ftg', el).onsubmit = async e => {
+    e.preventDefault();
+    try { await store.definirGist(e.target.g.value); close(); S.config = await store.getConfig(); fixarLinkGist(); toast('Gist alterado.'); render(); }
+    catch (err) { toast(err.message, true); }
+  };
+  $('#desc', el).onclick = async () => {
+    if (!await confirmar('Desconectar este navegador do Gist? Nada é apagado no GitHub.', 'Desconectar')) return;
+    await store.desconectarGist(); close();
+    try { history.replaceState(null, '', location.pathname + '#/'); } catch {}
+    go('');
+  };
 }
 function fixarLinkGist() {
   if (store.modo !== 'gist' || !store.gist || CONFIG.gist?.id) return;
@@ -996,9 +1223,16 @@ function fixarLinkGist() {
 }
 
 /* ================================ Auth ================================ */
+function authOpen(wide = false) {
+  const mx = brocardo();
+  return `<div class="auth"><aside class="auth-art"><div><h3>${esc(S.config.nomePortal)}</h3><p>Materiais, oportunidades e legislação para quem estuda Direito.</p></div>
+    ${ART.scales()}<blockquote>${mx[0]}<cite>${mx[1]}</cite></blockquote></aside>
+    <div class="auth-form"><div class="card ${wide ? 'wide' : ''}">`;
+}
+const authClose = '</div></div></div>';
 async function viewLogin(main) {
-  main.innerHTML = `<div class="auth"><div class="card">
-    <div class="eyebrow">Área do aluno</div><h2>Entrar</h2><p class="muted">Acesse seus materiais e oportunidades.</p>
+  main.innerHTML = `${authOpen()}
+    <h2>Entrar</h2><p class="muted">Acesse seus materiais e oportunidades.</p>
     <form class="form" id="f">
       <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
       <label>Senha<input name="senha" type="password" required autocomplete="current-password"></label>
@@ -1007,7 +1241,7 @@ async function viewLogin(main) {
       ${store.modo === 'local' ? '<div class="demo-hint"><b>Modo demonstração:</b> administrador <code>admin@agora.local</code> / senha <code>admin123</code></div>' : ''}
       ${store.modo === 'gist' ? `<button type="button" class="btn ghost" id="adm-gh">${ic('settings', 16)} Sou o administrador</button>` : ''}
       <p class="small muted" style="text-align:center;margin:0">Ainda não tem conta? <a href="#/cadastro">Cadastre-se</a></p>
-    </form></div></div>`;
+    </form>${authClose}`;
   const ag = $('#adm-gh'); if (ag) ag.onclick = entrarAdminModal;
   $('#f').onsubmit = async e => {
     e.preventDefault(); const fd = new FormData(e.target), b = $('button', e.target);
@@ -1018,8 +1252,8 @@ async function viewLogin(main) {
 }
 async function viewCadastro(main) {
   const sem = [...Array(10)].map((_, i) => `<option>${i + 1}º semestre</option>`).join('') + '<option>Bacharel(a)</option><option>Pós-graduação</option>';
-  main.innerHTML = `<div class="auth"><div class="card" style="max-width:560px">
-    <div class="eyebrow">Novo aluno</div><h2>Criar conta</h2><p class="muted">${diasTeste() ? `Ganhe <b>${diasTeste()} dias grátis</b> com acesso a todo o portal. Sem cartão.` : 'Depois do cadastro você escolhe o plano e libera o acesso.'}</p>
+  main.innerHTML = `${authOpen(true)}
+    <h2>Criar conta</h2><p class="muted">${diasTeste() ? `Ganhe <b>${diasTeste()} dias grátis</b> com acesso a todo o portal. Sem cartão.` : 'Depois do cadastro você escolhe o plano e libera o acesso.'}</p>
     <form class="form" id="f">
       <label>Nome completo<input name="nome" required autocomplete="name"></label>
       <div class="row2"><label>E-mail<input name="email" type="email" required autocomplete="email"></label><label>Telefone / WhatsApp<input name="telefone" autocomplete="tel"></label></div>
@@ -1029,7 +1263,7 @@ async function viewCadastro(main) {
       <div class="err-msg hidden" id="err"></div>
       <button class="btn primary">Criar minha conta</button>
       <p class="small muted" style="text-align:center;margin:0">Já tem conta? <a href="#/entrar">Entrar</a></p>
-    </form></div></div>`;
+    </form>${authClose}`;
   $('#f').onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); const b = $('button', e.target);
     const showErr = m => { $('#err').textContent = m; $('#err').classList.remove('hidden'); };
@@ -1045,120 +1279,129 @@ async function viewCadastro(main) {
 
 /* ============================= Assinatura ============================= */
 async function viewAssinar(main) {
-  const c = S.config, u = S.user, st = statusAss(u), at = ativo(u);
+  const c = S.config, u = S.user, st = statusAss(u), at = ativo(u), ps = planos();
   const teste = u.assinatura?.tipo === 'teste' && at;
+  let sel = planoPadrao();
   let pendente = null;
   if (store.modo === 'firebase') {
     try { pendente = (await store.list('pagamentos', ['userId', u.id])).find(p => p.status === 'pendente'); } catch {}
   }
-  const plano = `<div class="card price-card" style="margin:0;max-width:none">
-        <div class="eyebrow">${esc(c.planoNome)}</div>
-        <div class="price" style="margin-top:12px">${brl(c.preco)}<small> /mês</small></div>
-        <ul class="ticks">${['Todas as videoaulas, áudios e PDFs', 'Estágios, concursos e empregos', 'Atualizações legislativas', `${c.diasAcesso} dias de acesso por pagamento`, 'Cancele quando quiser'].map(t => `<li>${ic('check')}${t}</li>`).join('')}</ul>
-      </div>`;
   const pixHTML = c.chavePix ? `<div class="demo-hint" style="display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap"><span>Chave Pix: <b>${esc(c.chavePix)}</b></span><button type="button" class="btn ghost sm" id="cp-pix">Copiar</button></div>` : '';
-  const contatoHTML = c.contato ? `<p class="hint">Contato do administrador: <b>${esc(c.contato)}</b></p>` : '';
-  let pagar;
-  if (store.modo === 'gist') {
-    pagar = `<h3>Como assinar</h3>
-      <ol class="small" style="padding-left:18px;margin:0 0 14px;display:grid;gap:6px">
-        <li>Pague a mensalidade de <b>${brl(c.preco)}</b>${c.chavePix ? ' via Pix' : ''}${c.linkPagamento ? ' ou pelo link abaixo' : ''}.</li>
-        <li>Envie o comprovante ao administrador.</li>
-        <li>Você recebe um <b>código de acesso</b>. Digite-o abaixo para liberar ${c.diasAcesso} dias.</li></ol>
+  const contatoHTML = c.contato ? `<p class="hint">Envie o comprovante para: <b>${esc(c.contato)}</b></p>` : '';
+  const payHTML = () => {
+    const resumo = `<div class="resumo"><span>Plano ${esc(sel.nome)}<br><span class="hint">${sel.dias} dias de acesso</span></span><b>${brl(sel.preco)}</b></div>`;
+    if (store.modo === 'gist') return `<h3>Pagamento</h3>${resumo}
+      <ol class="small" style="padding-left:18px;margin:12px 0 14px;display:grid;gap:6px">
+        <li>Pague <b>${brl(sel.preco)}</b>${c.chavePix ? ' via Pix' : ''}${c.linkPagamento ? ' ou pelo link abaixo' : ''}.</li>
+        <li>Envie o comprovante ao administrador e informe o plano <b>${esc(sel.nome)}</b>.</li>
+        <li>Você recebe um código de acesso. Digite-o no quadro ao lado.</li></ol>
       <div style="display:grid;gap:10px">${pixHTML}${c.linkPagamento ? `<a class="btn primary" href="${esc(safeURL(c.linkPagamento))}" target="_blank" rel="noopener">Pagar online ${ic('ext', 15)}</a>` : ''}${contatoHTML}</div>`;
-  } else {
-    pagar = `${pendente ? `<div class="demo-hint" style="margin-bottom:16px"><b>Pagamento em análise.</b> Recebemos sua solicitação em ${fmtDate(pendente.criadoEm)}. O acesso será liberado assim que o pagamento for confirmado.</div>` : ''}
-        <h3>Forma de pagamento</h3>
-        <form class="form" id="f">
-          <div class="methods">
-            <label class="method"><input type="radio" name="metodo" value="pix" checked>Pix</label>
-            <label class="method"><input type="radio" name="metodo" value="cartao">Cartão</label>
-            <label class="method"><input type="radio" name="metodo" value="boleto">Boleto</label>
-          </div>
-          ${pixHTML}
-          <p class="hint">${esc(c.instrucoesPagamento)}</p>
-          <label class="check"><input type="checkbox" name="aceite" required> <span>Concordo com a cobrança mensal de <b>${brl(c.preco)}</b> referente ao ${esc(c.planoNome)}, renovável a cada ${c.diasAcesso} dias.</span></label>
-          <button class="btn primary">${store.modo === 'local' ? 'Confirmar assinatura' : (c.linkPagamento ? 'Ir para o pagamento' : 'Solicitar assinatura')} ${ic('arrow', 16)}</button>
-          ${store.modo === 'local' ? '<p class="hint">Modo local: o pagamento é simulado e o acesso é liberado na hora.</p>' : ''}
-        </form>`;
-  }
-  const codigo = store.modo !== 'firebase' ? `<div style="border-top:1px solid var(--line);margin-top:22px;padding-top:20px">
-      <h4>Tenho um código de acesso</h4>
-      <form class="form" id="fcod" style="grid-template-columns:1fr auto;align-items:end"><input name="codigo" placeholder="AJ-XXXX-XXXX" required autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.08em"><button class="btn dark">Ativar</button></form></div>` : '';
+    return `${pendente ? `<div class="demo-hint" style="margin-bottom:14px"><b>Pagamento em análise.</b> Recebemos sua solicitação em ${fmtDate(pendente.criadoEm)}. O acesso é liberado assim que o pagamento for confirmado.</div>` : ''}
+      <h3>Pagamento</h3>${resumo}
+      <form class="form" id="f" style="margin-top:12px">
+        <div class="methods">
+          <label class="method"><input type="radio" name="metodo" value="pix" checked>Pix</label>
+          <label class="method"><input type="radio" name="metodo" value="cartao">Cartão</label>
+          <label class="method"><input type="radio" name="metodo" value="boleto">Boleto</label>
+        </div>
+        ${pixHTML}
+        <p class="hint">${esc(c.instrucoesPagamento)}</p>
+        <label class="check"><input type="checkbox" name="aceite" required> <span>Concordo com a cobrança de <b>${brl(sel.preco)}</b> ${periodo(sel.dias)} pelo plano ${esc(sel.nome)}.</span></label>
+        <button class="btn primary">${store.modo === 'local' ? `Assinar o plano ${esc(sel.nome)}` : (c.linkPagamento ? 'Ir para o pagamento' : 'Solicitar assinatura')}</button>
+        ${store.modo === 'local' ? '<p class="hint">Modo local: o pagamento é simulado e o acesso é liberado na hora.</p>' : ''}
+      </form>`;
+  };
+  const codigo = store.modo !== 'firebase' ? `<div class="card pad">
+      <h3>${ic('tag', 18)} Tenho um código de acesso</h3>
+      <p class="small muted">Recebeu um código do administrador? Digite abaixo para liberar o acesso.</p>
+      <form class="form" id="fcod"><input name="codigo" placeholder="AJ-XXXX-XXXX" required autocomplete="off" autocapitalize="characters" style="text-transform:uppercase;letter-spacing:.08em;font-size:1.05rem"><button class="btn dark">Ativar código</button></form></div>` : '';
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Assinatura</div><h2>${teste ? 'Continue depois do período grátis' : at ? 'Renovar assinatura' : 'Ative seu acesso'}</h2><p>Situação atual: <span class="badge ${st.cls}">${esc(st.txt)}</span></p></div></div>
-    <div class="checkout">${plano}<div class="card pad">${pagar}${codigo}</div></div></div>`;
-  const cp = $('#cp-pix'); if (cp) cp.onclick = () => copiar(c.chavePix);
+    <div class="page-h"><div><span class="eyebrow">Assinatura</span><h2>${teste ? 'Escolha seu plano para depois do período grátis' : at ? 'Renove ou mude de plano' : 'Escolha seu plano'}</h2><p>Situação atual: <span class="badge ${st.cls}">${esc(st.txt)}</span></p></div></div>
+    <div class="plans" id="plist" style="margin:30px 0 30px">${ps.map(p => planCard(p, { pick: true, checked: p.id === sel.id })).join('')}</div>
+    <div class="checkout" style="grid-template-columns:${codigo ? '1.3fr 1fr' : '1fr'}"><div class="card pad" id="pay">${payHTML()}</div>${codigo}</div></div>`;
+  const bindPay = () => {
+    const cp = $('#cp-pix'); if (cp) cp.onclick = () => copiar(c.chavePix);
+    const f = $('#f'); if (f) f.onsubmit = async e => {
+      e.preventDefault(); const metodo = new FormData(e.target).get('metodo'); const b = $('button', e.target); b.disabled = true;
+      const base = { userId: u.id, nome: u.nome, email: u.email, valor: Number(sel.preco), metodo, plano: sel.nome, planoId: sel.id, dias: sel.dias };
+      try {
+        if (store.modo === 'local') {
+          await store.save('pagamentos', { ...base, status: 'aprovado', obs: 'Pagamento simulado (modo local)' });
+          await ativarAssinatura(u.id, sel.dias, sel.nome);
+          toast(`Plano ${sel.nome} ativado. Bons estudos!`); go('painel');
+        } else {
+          await store.save('pagamentos', { ...base, status: 'pendente' });
+          if (c.linkPagamento) window.open(safeURL(c.linkPagamento), '_blank', 'noopener');
+          toast('Solicitação registrada. Conclua o pagamento para liberar o acesso.'); render();
+        }
+      } catch (err) { toast(err.message, true); b.disabled = false; }
+    };
+  };
+  bindPay();
+  $('#plist').onchange = e => { if (e.target.name !== 'plano') return; sel = ps.find(p => p.id === e.target.value) || sel; $('#pay').innerHTML = payHTML(); bindPay(); };
   const fc = $('#fcod'); if (fc) fc.onsubmit = async e => {
     e.preventDefault(); const b = $('button', fc); b.disabled = true;
-    try { const k = await resgatarCodigo(fc.codigo.value); toast(`Código aceito! +${k.dias || c.diasAcesso} dias de acesso.`); go('painel'); }
+    try { const k = await resgatarCodigo(fc.codigo.value); toast(`Código aceito: +${k.dias} dias de acesso.`); go('painel'); }
     catch (err) { toast(err.message, true); b.disabled = false; }
-  };
-  const f = $('#f'); if (f) f.onsubmit = async e => {
-    e.preventDefault(); const metodo = new FormData(e.target).get('metodo'); const b = $('button', e.target); b.disabled = true;
-    const base = { userId: u.id, nome: u.nome, email: u.email, valor: Number(c.preco), metodo, plano: c.planoNome };
-    try {
-      if (store.modo === 'local') {
-        await store.save('pagamentos', { ...base, status: 'aprovado', obs: 'Pagamento simulado (modo local)' });
-        await ativarAssinatura(u.id);
-        toast('Assinatura ativada! Bom estudo.'); go('painel');
-      } else {
-        await store.save('pagamentos', { ...base, status: 'pendente' });
-        if (c.linkPagamento) window.open(safeURL(c.linkPagamento), '_blank', 'noopener');
-        toast('Solicitação registrada. Conclua o pagamento para liberar o acesso.'); render();
-      }
-    } catch (err) { toast(err.message, true); b.disabled = false; }
   };
 }
 
 /* =============================== Painel =============================== */
 async function viewPainel(main) {
-  const u = S.user, at = ativo(u), st = statusAss(u);
+  const u = S.user, at = ativo(u), st = statusAss(u), mx = brocardo();
   const first = u.nome.split(' ')[0];
   let mats = [], posts = [];
   if (at) [mats, posts] = await Promise.all([store.list('materiais'), store.list('publicacoes')]);
   mats.sort(byNewest); posts.sort(byNewest);
   const opps = posts.filter(p => p.categoria !== 'lei'), leis = posts.filter(p => p.categoria === 'lei');
   const expiraEm = u.assinatura ? Math.ceil((u.assinatura.validade - Date.now()) / DAY) : null;
+  const abertas = opps.filter(p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= Date.now()).length;
+  const min = menorMensal();
+  const vazio = (t, a = 'scales') => `<div class="empty">${a === 'scales' ? ART.scales() : ART.medal(a)}<p style="margin:0">${t}</p></div>`;
 
   main.innerHTML = `<div class="page">
     <div data-install-slot class="mobile-only">${installCard()}</div>
-    <div class="page-h keep"><div><div class="eyebrow">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</div><h2>Olá, ${esc(first)}.</h2><p>Bom ver você por aqui. Aqui está o que há de novo no portal.</p></div>
-      <span class="badge ${st.cls}">${esc(st.txt)}</span></div>
-    ${!at ? `<div class="banner"><div><h3>${ic('lock')} Seu acesso ainda não está liberado</h3><p>Ative a assinatura mensal de ${brl(S.config.preco)} para acessar todos os materiais e oportunidades.</p></div><a class="btn gold" href="#/assinar">Assinar agora</a></div>` : ''}
-    ${at && u.assinatura?.tipo === 'teste' ? `<div class="banner"><div><h3>${ic('check')} Você está no período grátis</h3><p>${expiraEm > 1 ? `Restam ${expiraEm} dias` : 'Último dia'} de acesso completo. Depois, ${brl(S.config.preco)}/mês para continuar.</p></div><a class="btn gold" href="#/assinar">Ver como assinar</a></div>` : ''}
-    ${at && u.role !== 'admin' && u.assinatura?.tipo !== 'teste' && expiraEm !== null && expiraEm <= 5 ? `<div class="banner"><div><h3>Sua assinatura vence em ${expiraEm} dia${expiraEm !== 1 ? 's' : ''}</h3><p>Renove para não perder o acesso ao conteúdo.</p></div><a class="btn gold" href="#/assinar">Renovar</a></div>` : ''}
+    <section class="tribuna"><div>
+      <div class="data">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+      <h2>Olá, ${esc(first)}.</h2>
+      <span class="badge ${st.cls}">${esc(st.txt)}</span>
+      <div class="maxim"><i>${mx[0]}</i><span>${mx[1]}</span></div>
+    </div>${ART.facade(S.config.nomePortal)}</section>
+    ${!at ? `<div class="banner"><div><h3>${ic('lock')} Seu acesso ainda não está liberado</h3><p>Escolha um plano a partir de ${brl(min)} por mês para acessar todos os materiais e oportunidades.</p></div><a class="btn primary" href="#/assinar">Ver planos</a></div>` : ''}
+    ${at && u.assinatura?.tipo === 'teste' ? `<div class="banner gold"><div><h3>${ic('check')} Você está no período grátis</h3><p>${expiraEm > 1 ? `Restam ${expiraEm} dias` : 'Hoje é o último dia'} de acesso completo. Para continuar, os planos começam em ${brl(min)} por mês.</p></div><a class="btn ghost" href="#/assinar">Ver planos</a></div>` : ''}
+    ${at && u.role !== 'admin' && u.assinatura?.tipo !== 'teste' && expiraEm !== null && expiraEm <= 5 ? `<div class="banner"><div><h3>Sua assinatura vence em ${expiraEm} dia${expiraEm !== 1 ? 's' : ''}</h3><p>Renove para não perder o acesso ao conteúdo.</p></div><a class="btn primary" href="#/assinar">Renovar</a></div>` : ''}
     ${at ? `
     <div class="stats">
-      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div>
-      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div>
-      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div>
-      <div class="card stat"><div class="n">${opps.filter(p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= Date.now()).length}</div><div class="l">Oportunidades abertas</div></div>
+      <div class="stat"><span class="si">${ic('play', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div></div>
+      <div class="stat"><span class="si">${ic('audio', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div></div>
+      <div class="stat"><span class="si">${ic('file', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div></div>
+      <div class="stat"><span class="si">${ic('gavel', 20)}</span><div><div class="n">${abertas}</div><div class="l">Oportunidades abertas</div></div></div>
     </div>
     <div class="cols">
       <div>
-        <div class="list-h"><h3>Materiais recentes</h3><a href="#/materiais" class="small">Ver todos</a></div>
-        ${mats.length ? `<div class="mgrid">${mats.slice(0, 4).map(matCard).join('')}</div>` : `<div class="card empty"><p>Nenhum material publicado ainda.</p></div>`}
+        <div class="list-h"><h3>Materiais recentes</h3><a href="#/materiais" class="small">Ver biblioteca</a></div>
+        ${mats.length ? `<div class="mgrid">${mats.slice(0, 4).map(matCard).join('')}</div>` : `<div class="card">${vazio('Os materiais publicados aparecem aqui.')}</div>`}
       </div>
       <div style="display:grid;gap:24px;align-content:start">
         <div><div class="list-h"><h3>Oportunidades</h3><a href="#/oportunidades" class="small">Ver todas</a></div>
-          <div class="card mini-list">${opps.slice(0, 4).map(miniPost).join('') || '<div class="empty small">Nada publicado ainda.</div>'}</div></div>
+          <div class="card mini-list">${opps.slice(0, 4).map(miniPost).join('') || vazio('Nenhuma vaga publicada ainda.', 'gavel')}</div></div>
         <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/legislacao" class="small">Ver todas</a></div>
-          <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || '<div class="empty small">Nada publicado ainda.</div>'}</div></div>
+          <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || vazio('Nenhuma atualização publicada ainda.', 'scroll')}</div></div>
       </div>
     </div>` : `
-    <div class="grid3">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['book', 'Estágios'], ['shield', 'Concursos'], ['scale', 'Atualizações da lei']].map(x => `<div class="card feature" style="opacity:.75"><div class="ic-wrap">${ic(x[0], 22)}</div><h3>${x[1]}</h3><p class="muted small" style="margin:0">${ic('lock', 14)} Disponível para assinantes</p></div>`).join('')}</div>`}
+    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['gavel', 'Estágios'], ['columns', 'Concursos'], ['scroll', 'Atualizações da lei']].map(x => `<div class="feature" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></div>`).join('')}</div>`}
   </div>`;
 }
 function matCard(m) {
   const t = TIPOS[m.tipo] || TIPOS.pdf;
   return `<a class="card mcard" href="#/material/${encodeURIComponent(m.id)}">
-    <div class="mthumb ${esc(m.tipo)}"><span class="badge">${t.nome}</span>${ic(t.icon, 40)}</div>
+    <div class="mthumb ${esc(m.tipo)}"><span class="badge">${t.nome}</span>${ART.thumb(m.tipo)}</div>
     <div class="mbody"><span class="d">${esc(m.disciplina || 'Geral')}</span><h4>${esc(m.titulo)}</h4><p>${esc(m.descricao || '')}</p></div></a>`;
 }
 function miniPost(p) {
   const c = CATS[p.categoria] || CATS.estagio;
-  return `<a class="mini" href="#/publicacao/${encodeURIComponent(p.id)}"><span class="tic">${ic(c.icon)}</span><div style="min-width:0"><b>${esc(p.titulo)}</b><span>${esc(c.nome)} · ${esc(p.instituicao || '')} ${p.prazo ? '· ' + (p.categoria === 'lei' ? '' : 'até ') + fmtDate(p.prazo) : ''}</span></div></a>`;
+  const quando = p.prazo ? (p.categoria === 'lei' ? `publicada em ${fmtDate(p.prazo)}` : `inscrições até ${fmtDate(p.prazo)}`) : '';
+  return `<a class="mini" href="#/publicacao/${encodeURIComponent(p.id)}"><span class="tic">${ic(c.icon)}</span><div style="min-width:0"><b>${esc(p.titulo)}</b><span>${esc(p.instituicao || c.nome)}${quando ? `, ${quando}` : ''}</span></div></a>`;
 }
 
 /* ============================== Materiais ============================== */
@@ -1177,7 +1420,7 @@ async function viewMateriais(main, _, q) {
   const draw = () => {
     const t = termo.toLowerCase();
     const r = mats.filter(m => (!tipo || m.tipo === tipo) && (!disc || m.disciplina === disc) && (!t || `${m.titulo} ${m.descricao} ${m.disciplina}`.toLowerCase().includes(t)));
-    $('#grid').innerHTML = r.length ? `<div class="mgrid">${r.map(matCard).join('')}</div>` : `<div class="card empty"><h3>Nenhum material encontrado</h3><p>${mats.length ? 'Ajuste os filtros ou a busca.' : 'Os materiais publicados aparecerão aqui.'}</p></div>`;
+    $('#grid').innerHTML = r.length ? `<div class="mgrid">${r.map(matCard).join('')}</div>` : `<div class="card empty">${ART.medal('book')}<h3>Nenhum material encontrado</h3><p>${mats.length ? 'Ajuste os filtros ou a busca.' : 'Os materiais publicados aparecerão aqui.'}</p></div>`;
   };
   $('#busca').oninput = e => { termo = e.target.value; draw(); };
   $('#disc').onchange = e => { disc = e.target.value; draw(); };
@@ -1204,7 +1447,7 @@ async function viewMaterial(main, id) {
   if (!src) player = `<div class="card empty"><p>Arquivo indisponível.</p></div>`;
   else if (emb) player = `<div class="player embed"><iframe src="${esc(emb)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
   else if (m.tipo === 'video') player = `<div class="player"><video controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></video></div>`;
-  else if (m.tipo === 'audio') player = `<div class="player audio-box">${ic('audio', 48)}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
+  else if (m.tipo === 'audio') player = `<div class="player audio-box">${ART.thumb('audio')}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
   else player = `<div class="player"><iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}"></iframe></div>`;
 
   main.innerHTML = `<div class="page">
@@ -1218,7 +1461,7 @@ async function viewMaterial(main, id) {
 /* =========================== Oportunidades/Leis =========================== */
 function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
-  return `<article class="card post">
+  return `<article class="card post"><span class="pi">${ic(c.icon, 22)}</span>
     <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
       <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
       <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo && p.categoria !== 'lei' ? `<span>${ic('calendar', 14)} Até ${fmtDate(p.prazo)}</span>` : ''}</div>
@@ -1233,15 +1476,15 @@ async function viewOportunidades(main, _, q) {
   const count = k => all.filter(p => p.categoria === k && aberto(p)).length;
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Carreira</div><h2>Estágios, concursos e empregos</h2><p>Oportunidades selecionadas para estudantes e recém-formados em Direito.</p></div></div>
-    <div class="tabs">${['estagio', 'concurso', 'emprego'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/oportunidades?tipo=${k}">${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
-    <div class="plist">${list.map(postCard).join('') || `<div class="card empty"><h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
+    <div class="tabs">${['estagio', 'concurso', 'emprego'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/oportunidades?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
+    <div class="plist">${list.map(postCard).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
   </div>`;
 }
 async function viewLegislacao(main) {
   const leis = (await store.list('publicacoes')).filter(p => p.categoria === 'lei').sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Legislação</div><h2>Atualizações da lei</h2><p>Novas normas e alterações relevantes, em ordem cronológica.</p></div></div>
-    ${leis.length ? `<div class="timeline">${leis.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="card empty"><h3>Nenhuma atualização publicada</h3></div>`}
+    ${leis.length ? `<div class="timeline">${leis.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="card empty">${ART.medal('scroll')}<h3>Nenhuma atualização publicada</h3></div>`}
   </div>`;
 }
 async function viewPublicacao(main, id) {
@@ -1253,7 +1496,7 @@ async function viewPublicacao(main, id) {
     <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
     <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
     <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo ? `<span>${ic('calendar', 14)} ${p.categoria === 'lei' ? 'Publicada em' : 'Inscrições até'} ${fmtDate(p.prazo)}</span>` : ''}</div>
-    <div class="card pad" style="margin-top:16px">${p.resumo ? `<p style="font-size:1.05rem;color:var(--ink-2)"><b>${esc(p.resumo)}</b></p>` : ''}<div class="article body">${paras(p.conteudo || '')}</div>
+    <div class="doc" style="margin-top:16px;padding:34px 38px">${p.resumo ? `<p style="font-size:1.05rem;color:var(--toga)"><b>${esc(p.resumo)}</b></p>` : ''}<div class="article body">${paras(p.conteudo || '')}</div>
     ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${p.categoria === 'lei' ? 'Ler texto oficial' : 'Acessar / candidatar-se'} ${ic('ext', 15)}</a>` : ''}</div>
     <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
   </div></div>`;
@@ -1324,8 +1567,8 @@ const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pen
 /* =============================== Admin =============================== */
 async function viewAdmin(main, tab = 'materiais') {
   const gist = store.modo === 'gist';
-  const TABS = gist ? { materiais: 'Materiais', publicacoes: 'Publicações', codigos: 'Códigos de acesso', config: 'Configurações' }
-    : { materiais: 'Materiais', publicacoes: 'Publicações', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = gist ? { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', codigos: 'Códigos de acesso', config: 'Configurações' }
+    : { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (!TABS[tab]) tab = 'materiais';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], gist ? [] : store.listUsers(), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
@@ -1342,12 +1585,12 @@ async function viewAdmin(main, tab = 'materiais') {
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    <div class="stats">${stats.map(([n, l]) => `<div class="card stat"><div class="n">${n}</div><div class="l">${l}</div></div>`).join('')}</div>
+    <div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['file', 'gavel', 'scroll', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>
     <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
   const sh = $('#share'); if (sh) sh.onclick = mostrarLinkAlunos;
   const box = $('#adm');
-  ({ materiais: () => admMateriais(box, mats), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ materiais: () => admMateriais(box, mats), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -1356,7 +1599,7 @@ function linkAlunos() {
 }
 function mostrarLinkAlunos() {
   const link = linkAlunos(), g = store.gist;
-  const { el } = modal('Link para os alunos', `<p>Envie este link pelo WhatsApp, e-mail ou grupo da turma. Cada aluno cria a conta e ganha ${diasTeste() ? `<b>${diasTeste()} dias grátis</b>` : 'acesso conforme o plano'}.</p>
+  const { el } = modal('Link para os alunos', `<p>Envie este link pelo WhatsApp, e-mail ou grupo da turma. Cada aluno cria a conta e ganha ${diasTeste() ? `<b>${diasTeste()} dias grátis</b>` : 'acesso conforme o plano escolhido'}.</p>
     <div class="form"><input class="field" readonly value="${esc(link)}" id="lk"></div>
     <div class="actions"><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent('Acesse o portal ' + S.config.nomePortal + ' e ganhe acesso grátis: ' + link)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn primary" id="cp">Copiar link</button></div>
     ${g && !CONFIG.gist?.id ? `<details style="margin-top:18px"><summary class="small" style="cursor:pointer;font-weight:600">Deixar o link mais curto (opcional)</summary>
@@ -1366,29 +1609,76 @@ function mostrarLinkAlunos() {
   $('#lk', el).onclick = e => e.target.select();
 }
 
+function admPlanos(box) {
+  const ps = planos(true);
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:640px">Os planos ativos aparecem na página inicial e na tela de assinatura. O plano em destaque recebe o selo “Mais escolhido”.</p>
+    <button class="btn primary sm" id="novo">${ic('plus', 15)} Novo plano</button></div>
+    <div class="plans" style="margin:26px 0 22px">${ps.filter(p => p.ativo !== false).map(p => planCard(p)).join('') || ''}</div>
+    <div class="card table-wrap"><table><tr><th>Plano</th><th>Preço</th><th>Período</th><th>Por mês</th><th>Situação</th><th></th></tr>
+    ${ps.map(p => `<tr><td><b>${esc(p.nome)}</b>${p.destaque ? ' <span class="badge wine">Destaque</span>' : ''}<div class="small muted">${esc(p.descricao)}</div></td><td>${brl(p.preco)}</td><td>${p.dias} dias</td><td>${brl(mensal(p))}</td>
+      <td>${p.ativo !== false ? '<span class="badge ok">Ativo</span>' : '<span class="badge">Oculto</span>'}</td>
+      <td><div class="acts"><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table></div>`;
+  const salvar = async lista => { const n = { ...S.config, planos: lista }; await store.saveConfig(n); S.config = n; };
+  const form = (p = {}) => {
+    const { el, close } = modal(p.id ? 'Editar plano' : 'Novo plano', `<form class="form" id="fpl">
+      <label>Nome do plano<input name="nome" required value="${esc(p.nome)}" placeholder="Ex.: Semestral, Reta final OAB"></label>
+      <label>Descrição curta<input name="descricao" maxlength="90" value="${esc(p.descricao)}" placeholder="Ex.: Acompanha um semestre letivo inteiro."></label>
+      <div class="row2"><label>Preço (R$)<input name="preco" type="number" step="0.01" min="0" required value="${esc(p.preco ?? '')}"></label>
+        <label>Dias de acesso<input name="dias" type="number" min="1" required value="${esc(p.dias ?? 30)}" list="dl-dias"><span class="hint">30 = mês, 180 = semestre, 365 = ano</span></label></div>
+      <label>Benefícios (um por linha)<textarea name="beneficios" rows="4" placeholder="${esc(BENEF_PADRAO.join('\n'))}">${esc((p.beneficios || []).join('\n'))}</textarea><span class="hint">Deixe em branco para usar os benefícios padrão.</span></label>
+      <label class="check"><input type="checkbox" name="destaque" ${p.destaque ? 'checked' : ''}> <span>Destacar este plano com o selo “Mais escolhido”</span></label>
+      <label class="check"><input type="checkbox" name="ativo" ${p.ativo !== false ? 'checked' : ''}> <span>Mostrar este plano para os alunos</span></label>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar plano</button></div></form>
+      <datalist id="dl-dias"><option value="30"><option value="90"><option value="180"><option value="365"></datalist>`);
+    $('#fpl', el).onsubmit = async e => {
+      e.preventDefault(); const f = e.target;
+      const np = { id: p.id || uid().slice(0, 8), nome: f.nome.value.trim(), descricao: f.descricao.value.trim(), preco: Number(f.preco.value), dias: Number(f.dias.value),
+        beneficios: f.beneficios.value.split('\n').map(x => x.trim()).filter(Boolean), destaque: f.destaque.checked, ativo: f.ativo.checked };
+      let lista = planos(true).filter(x => x.id !== np.id);
+      if (np.destaque) lista = lista.map(x => ({ ...x, destaque: false }));
+      lista.push(np);
+      if (!lista.some(x => x.ativo !== false)) return toast('Mantenha pelo menos um plano visível para os alunos.', true);
+      try { await salvar(lista); close(); toast(`Plano ${np.nome} salvo.`); render(); } catch (err) { toast(err.message, true); }
+    };
+  };
+  $('#novo').onclick = () => form();
+  box.querySelector('.table-wrap').onclick = async e => {
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    if (ed) form(ps.find(p => p.id === ed.dataset.ed));
+    if (dl) {
+      const p = ps.find(x => x.id === dl.dataset.del), resto = ps.filter(x => x.id !== p.id);
+      if (!resto.some(x => x.ativo !== false)) return toast('Mantenha pelo menos um plano visível para os alunos.', true);
+      if (!await confirmar(`Excluir o plano ${p.nome}? Quem já assinou mantém o acesso até o fim do período.`, 'Excluir')) return;
+      try { await salvar(resto); toast('Plano excluído.'); render(); } catch (err) { toast(err.message, true); }
+    }
+  };
+}
+
 function admCodigos(box, codigos) {
   codigos.sort(byNewest);
   const valido = c => !c.validoAte || new Date(c.validoAte + 'T23:59:59') >= Date.now();
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:640px">Depois de confirmar o pagamento, envie ao aluno um código. Ele digita o código em <b>Assinatura</b> e ganha os dias de acesso. Cada aluno usa cada código uma única vez.</p>
     <button class="btn primary sm" id="novo">${ic('plus', 15)} Gerar código</button></div>
     <div class="card table-wrap">${codigos.length ? `<table><tr><th>Identificação</th><th>Dias</th><th>Válido até</th><th>Criado</th><th>Situação</th><th></th></tr>
-    ${codigos.map(c => `<tr><td><b>${esc(c.rotulo || 'Código')}</b><div class="small muted">${esc(c.dica || '')}</div></td><td>${esc(c.dias)}</td><td>${fmtDate(c.validoAte)}</td><td>${fmtDate(c.criadoEm)}</td><td>${valido(c) ? '<span class="badge ok">Válido</span>' : '<span class="badge err">Expirado</span>'}</td>
+    ${codigos.map(c => `<tr><td><b>${esc(c.rotulo || 'Código')}</b><div class="small muted">${esc(c.plano ? 'Plano ' + c.plano + ', ' : '')}${esc(c.dica || '')}</div></td><td>${esc(c.dias)}</td><td>${fmtDate(c.validoAte)}</td><td>${fmtDate(c.criadoEm)}</td><td>${valido(c) ? '<span class="badge ok">Válido</span>' : '<span class="badge err">Expirado</span>'}</td>
       <td><div class="acts"><button class="btn danger sm" data-del="${esc(c.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum código gerado</h3><p>Gere um código para cada turma, mês ou aluno.</p></div>'}</div>`;
   $('#novo').onclick = () => {
     const { el, close } = modal('Gerar código de acesso', `<form class="form" id="fg">
-      <label>Identificação (para você)<input name="rotulo" required placeholder="Ex.: Turma 3º período — dezembro"></label>
-      <div class="row2"><label>Dias de acesso<input name="dias" type="number" min="1" required value="${esc(S.config.diasAcesso)}"></label>
+      <label>Plano pago<select name="plano">${planos(true).map(p => `<option value="${esc(p.id)}" ${p.id === planoPadrao().id ? 'selected' : ''}>${esc(p.nome)} (${p.dias} dias, ${brl(p.preco)})</option>`).join('')}</select></label>
+      <label>Identificação (para você)<input name="rotulo" required placeholder="Ex.: Ana Ribeiro, ou Turma do 3º período"></label>
+      <div class="row2"><label>Dias de acesso<input name="dias" type="number" min="1" required value="${esc(planoPadrao().dias)}"></label>
         <label>Pode ser usado até<input name="validoAte" type="date" required value="${isoIn(45)}"></label></div>
       <p class="hint">Um código pode ser enviado para um aluno ou para a turma toda. Depois da data limite, ele deixa de funcionar.</p>
       <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Gerar</button></div></form>`);
+    $('#fg', el).plano.onchange = e => { const p = planos(true).find(x => x.id === e.target.value); if (p) e.target.form.dias.value = p.dias; };
     $('#fg', el).onsubmit = async e => {
-      e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); const b = $('button.primary', el); b.disabled = true;
+      e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); const pl = planos(true).find(x => x.id === d.plano); const b = $('button.primary', el); b.disabled = true;
       const code = novoCodigo();
       try {
-        await store.save('codigos', { rotulo: d.rotulo.trim(), dias: Number(d.dias), validoAte: d.validoAte, hash: await hash(normCode(code), 'agora-codigo'), dica: code.slice(0, 4) + '••••' + code.slice(-2) });
+        await store.save('codigos', { rotulo: d.rotulo.trim(), plano: pl?.nome || '', dias: Number(d.dias), validoAte: d.validoAte, hash: await hash(normCode(code), 'agora-codigo'), dica: code.slice(0, 4) + '••••' + code.slice(-2) });
         close();
         const m2 = modal('Código gerado', `<p>Envie este código ao aluno. <b>Copie agora:</b> por segurança, ele não aparece de novo.</p>
-          <div style="font:700 2rem var(--sans);letter-spacing:.12em;text-align:center;padding:18px;background:#f3ead7;border-radius:12px;color:var(--ink)">${code}</div>
+          <div style="font:700 2rem var(--sans);letter-spacing:.12em;text-align:center;padding:18px;background:var(--latao-bg);border-radius:8px;color:var(--toga)">${code}</div>
           <p class="hint" style="margin-top:10px">Vale ${esc(d.dias)} dias de acesso. Pode ser usado até ${fmtDate(d.validoAte)}.</p>
           <div class="actions"><button class="btn primary" id="cpc">Copiar código</button></div>`);
         $('#cpc', m2.el).onclick = () => copiar(code);
@@ -1498,7 +1788,7 @@ function admAlunos(box, users) {
     const l = users.filter(u => `${u.nome} ${u.email}`.toLowerCase().includes(t.toLowerCase()));
     $('#ut').innerHTML = `<table><tr><th>Aluno</th><th>Instituição</th><th>Cadastro</th><th>Assinatura</th><th></th></tr>
     ${l.map(u => { const st = statusAss(u); const self = u.id === S.user.id; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}${u.telefone ? ' · ' + esc(u.telefone) : ''}</div></td><td class="small">${esc(u.instituicao || '—')}<div class="muted">${esc(u.semestre || '')}</div></td><td>${fmtDate(u.criadoEm)}</td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td>
-      <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${S.config.diasAcesso} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
+      <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${planos()[0]?.dias || 30} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
       ${self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('')}</table>`;
   };
   draw();
@@ -1517,25 +1807,34 @@ function admAlunos(box, users) {
 function admPagamentos(box, pags) {
   pags.sort(byNewest);
   box.innerHTML = `<div class="card table-wrap">${pags.length ? `<table><tr><th>Data</th><th>Aluno</th><th>Método</th><th>Valor</th><th>Status</th><th></th></tr>
-    ${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td><b>${esc(p.nome)}</b><div class="small muted">${esc(p.email)}</div></td><td>${esc({ pix: 'Pix', cartao: 'Cartão', boleto: 'Boleto' }[p.metodo] || p.metodo)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td>
+    ${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td><b>${esc(p.nome)}</b><div class="small muted">${esc(p.email)}${p.plano ? ', plano ' + esc(p.plano) : ''}</div></td><td>${esc({ pix: 'Pix', cartao: 'Cartão', boleto: 'Boleto' }[p.metodo] || p.metodo)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td>
     <td><div class="acts">${p.status === 'pendente' ? `<button class="btn primary sm" data-ok="${esc(p.id)}">Confirmar e liberar</button><button class="btn danger sm" data-no="${esc(p.id)}">Recusar</button>` : ''}</div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum pagamento registrado</h3></div>'}</div>
-    <p class="hint" style="margin-top:12px">Ao confirmar um pagamento pendente, o acesso do aluno é liberado por ${S.config.diasAcesso} dias. Para automatizar, configure o webhook do seu gateway (veja o README).</p>`;
+    <p class="hint" style="margin-top:12px">Ao confirmar um pagamento pendente, o acesso do aluno é liberado pelos dias do plano escolhido. Para automatizar, configure o webhook do seu gateway (veja o README).</p>`;
   box.onclick = async e => {
     const ok = e.target.closest('[data-ok]'), no = e.target.closest('[data-no]');
     const p = pags.find(x => x.id === (ok || no)?.dataset[ok ? 'ok' : 'no']); if (!p) return;
     try {
-      if (ok) { await store.save('pagamentos', { ...p, status: 'aprovado' }); await ativarAssinatura(p.userId); toast('Pagamento confirmado e acesso liberado.'); }
+      if (ok) { await store.save('pagamentos', { ...p, status: 'aprovado' }); await ativarAssinatura(p.userId, Number(p.dias) || planos()[0]?.dias || 30, p.plano || ''); toast('Pagamento confirmado e acesso liberado.'); }
       else { await store.save('pagamentos', { ...p, status: 'recusado' }); toast('Pagamento recusado.'); }
       render();
     } catch (err) { toast(err.message, true); }
   };
 }
 function admConfig(box) {
-  const c = S.config;
-  box.innerHTML = `<div class="card pad" style="max-width:760px"><form class="form" id="fc">
+  const c = S.config, g = store.gist;
+  box.innerHTML = `${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
+      <div class="eyebrow">Conexão com o GitHub</div><h3 style="margin-top:6px">Gist de dados do portal</h3>
+      <div class="table-wrap"><table>
+        <tr><td class="muted" style="width:150px">Conta</td><td><b>@${esc(g?.user)}</b></td></tr>
+        <tr><td class="muted">ID do Gist</td><td><code style="word-break:break-all">${esc(g?.id)}</code></td></tr>
+        <tr><td class="muted">Link de dados</td><td><a href="https://gist.github.com/${esc(g?.user)}/${esc(g?.id)}" target="_blank" rel="noopener">Abrir o Gist no GitHub ${ic('ext', 13)}</a></td></tr>
+      </table></div>
+      <div class="actions" style="justify-content:flex-start;margin-top:14px"><button class="btn primary sm" id="c-link">Link para os alunos</button><button class="btn ghost sm" id="c-troca">Trocar ou desconectar Gist</button></div>
+    </div>` : ''}
+  <div class="card pad" style="max-width:760px"><h3>Portal e pagamento</h3><form class="form" id="fc">
     <label>Nome do portal<input name="nomePortal" required value="${esc(c.nomePortal)}"></label>
-    <div class="row2"><label>Nome do plano<input name="planoNome" required value="${esc(c.planoNome)}"></label><label>Mensalidade (R$)<input name="preco" type="number" step="0.01" min="0" required value="${esc(c.preco)}"></label></div>
-    <div class="row2"><label>Dias de acesso por pagamento<input name="diasAcesso" type="number" min="1" required value="${esc(c.diasAcesso)}"></label><label>Dias grátis para novos alunos<input name="diasTeste" type="number" min="0" required value="${esc(c.diasTeste)}"><span class="hint">Use 0 para não oferecer período grátis.</span></label></div>
+    <p class="hint">Preços e períodos ficam na aba <a href="#/admin/planos">Planos</a>.</p>
+    <div class="row2"><label>Dias grátis para novos alunos<input name="diasTeste" type="number" min="0" required value="${esc(c.diasTeste)}"><span class="hint">Use 0 para não oferecer período grátis.</span></label><span></span></div>
     <div class="row2"><label>Chave Pix (opcional)<input name="chavePix" value="${esc(c.chavePix)}"></label><label>Contato para enviar comprovante<input name="contato" value="${esc(c.contato)}" placeholder="WhatsApp ou e-mail"></label></div>
     <label>Link de pagamento (Mercado Pago, PagSeguro, Stripe…)<input name="linkPagamento" type="url" value="${esc(c.linkPagamento)}" placeholder="https://"></label>
     <label>Instruções de pagamento<textarea name="instrucoesPagamento" rows="3">${esc(c.instrucoesPagamento)}</textarea></label>
@@ -1543,9 +1842,11 @@ function admConfig(box) {
     <p class="hint">Banco de dados em uso: <b>${store.modo === 'local' ? 'IndexedDB (local, neste navegador)' : store.modo === 'gist' ? `GitHub Gist de @${esc(store.gist?.user)}` : 'Firebase Firestore + Storage (nuvem)'}</b>.
     ${store.modo === 'gist' ? ` <a href="https://gist.github.com/${esc(store.gist?.user)}/${esc(store.gist?.id)}" target="_blank" rel="noopener">Abrir o Gist</a>. As alterações podem levar alguns minutos para aparecer para os alunos.` : ''}</p>
   </form></div>`;
+  const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
+  const ct = $('#c-troca'); if (ct) ct.onclick = trocarGistModal;
   $('#fc').onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
-    const n = { ...c, ...d, preco: Number(d.preco), diasAcesso: Number(d.diasAcesso), diasTeste: Number(d.diasTeste) };
+    const n = { ...c, ...d, diasTeste: Number(d.diasTeste) };
     try { await store.saveConfig(n); S.config = n; toast('Configurações salvas.'); render(); } catch (err) { toast(err.message, true); }
   };
 }
