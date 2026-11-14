@@ -297,6 +297,48 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .minfo{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--cinza);margin-top:2px}
 .minfo span{display:inline-flex;gap:4px;align-items:center}
 
+/* Capas */
+.mthumb.tem-capa .art{display:none}
+.mthumb img.capa{display:block;opacity:0;transition:opacity .25s}
+.mthumb img.capa.ok{opacity:1}
+.mthumb.pdf.tem-capa img.capa{height:116px;width:auto;max-width:78%;border-radius:2px;background:#fff;box-shadow:0 10px 22px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08)}
+.mthumb.yt img.capa{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+.mthumb.yt:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,32,58,.1),rgba(19,32,58,.55));z-index:-1}
+.mthumb.yt .play{width:44px;height:44px;border-radius:50%;background:rgba(251,249,244,.92);color:var(--toga);display:grid;place-items:center}
+.capa-prev{display:flex;gap:14px;align-items:center}
+.capa-prev img{height:110px;width:auto;border-radius:2px;box-shadow:0 6px 16px rgba(19,32,58,.3);background:#fff}
+.capa-prev .acts{display:grid;gap:6px}
+@media (max-width:820px){.mthumb.pdf.tem-capa img.capa{height:80px}.mthumb.yt .play{width:34px;height:34px}}
+
+/* Leitor de PDF */
+.leitor{background:#4b5363;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;height:min(82vh,1100px)}
+.lt-bar{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--toga);color:#fff;flex:none}
+.lt-bar .icon-btn{color:#fff;width:38px;height:38px;display:grid;place-items:center;font-size:1.1rem;border-radius:8px;text-decoration:none!important}
+.lt-bar .icon-btn:hover,.lt-bar .icon-btn:active{background:rgba(255,255,255,.1)}
+.lt-pg{font-size:.86rem;color:#c9d0dc;margin-right:auto;white-space:nowrap;padding-left:4px}
+.lt-pg b{color:#fff}
+.lt-zoom{display:flex;align-items:center;background:rgba(255,255,255,.08);border-radius:8px}
+.lt-zoom button{background:none;border:0;color:#fff;width:36px;height:36px;font-size:1.25rem;line-height:1;cursor:pointer;border-radius:8px}
+.lt-zoom button:disabled{opacity:.35}
+.lt-zoom span{font-size:.76rem;min-width:44px;text-align:center;color:#dfe3ea}
+.lt-pages{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:12px 10px 24px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.lt-page{flex:none;margin:0 auto;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.35);position:relative}
+.lt-page canvas{display:block;width:100%;height:100%}
+.lt-page .lt-ph{position:absolute;inset:0;display:grid;place-items:center;color:#9aa1ad;font-size:.8rem}
+.lt-page:has(canvas) .lt-ph{display:none}
+.leitor [data-a=fechar]{display:none}
+.leitor.cheio{position:fixed;inset:0;z-index:95;border-radius:0;height:100vh;height:100dvh;margin:0!important}
+.leitor.cheio .lt-bar{padding-top:calc(env(safe-area-inset-top) + 8px)}
+.leitor.cheio .lt-pages{padding-bottom:calc(env(safe-area-inset-bottom) + 24px)}
+.leitor.cheio [data-a=fechar]{display:grid}
+.lt-retomar{position:absolute;left:50%;transform:translateX(-50%);bottom:18px;background:var(--toga);color:#fff;border-radius:999px;padding:.55em 1em;font-size:.84rem;box-shadow:0 8px 20px rgba(0,0,0,.35);border:1px solid rgba(216,190,138,.4);cursor:pointer;z-index:2}
+.leitor{position:relative}
+@media (max-width:820px){
+  .leitor:not(.cheio){height:calc(100vh - 200px);height:calc(100dvh - 200px);min-height:420px;margin:0 -16px;border-radius:0}
+  .lt-pages{padding:8px 6px 20px;gap:8px}
+  .lt-zoom span{min-width:38px}
+}
+
 /* Tabelas e admin */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
@@ -567,6 +609,9 @@ const I = {
   news: '<path d="M4 5h13v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v10a2 2 0 0 1-2 2"/><path d="M7 9h7M7 13h7M7 17h4"/>',
   mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  shrink: '<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
+  share: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
@@ -1052,7 +1097,7 @@ function GistStore() {
 }
 
 /* ============================ Estado/regras ============================ */
-const S = { user: null, config: { ...DEFAULT_CFG }, navCount: 0 };
+const S = { user: null, config: { ...DEFAULT_CFG }, navCount: 0, limpar: [] };
 let store;
 const ativo = u => !!u && (u.role === 'admin' || (u.assinatura?.status === 'ativa' && u.assinatura.validade > Date.now()));
 function statusAss(u) {
@@ -1121,6 +1166,7 @@ const ROUTES = {
 function go(h) { const t = '#/' + h; if (location.hash === t) render(); else location.hash = t; }
 
 async function render() {
+  S.limpar.splice(0).forEach(f => { try { f(); } catch {} });
   revokeURLs(); S.navCount++;
   const [path, qs] = location.hash.replace(/^#\/?/, '').split('?');
   const [name = '', param] = path.split('/');
@@ -1565,13 +1611,15 @@ async function viewPainel(main) {
   </div>`;
 }
 function matCard(m) {
-  const t = TIPOS[m.tipo] || TIPOS.pdf;
+  const t = TIPOS[m.tipo] || TIPOS.pdf, yt = !m.capaRef && m.tipo !== 'pdf' ? ytId(m.url) : null;
+  const capa = m.capaRef ? `<img class="capa" data-capa="${esc(m.capaRef)}" alt="Capa de ${esc(m.titulo)}">`
+    : yt ? `<img class="capa" src="https://i.ytimg.com/vi/${esc(yt)}/hqdefault.jpg" alt="" loading="lazy" onload="this.classList.add('ok')" onerror="const t=this.closest('.mthumb');t.classList.remove('tem-capa','yt');t.querySelector('.play')?.remove();this.remove()"><span class="play">${ic(m.tipo === 'audio' ? 'audio' : 'play', 20)}</span>` : '';
   return `<a class="card mcard" href="#/material/${encodeURIComponent(m.id)}">
-    <div class="mthumb ${esc(m.tipo)}"><span class="badge">${t.nome}</span>${ART.thumb(m.tipo)}</div>
+    <div class="mthumb ${esc(m.tipo)} ${capa ? 'tem-capa' : ''} ${yt ? 'yt' : ''}"><span class="badge">${t.nome}</span>${capa}${ART.thumb(m.tipo)}</div>
     <div class="mbody"><span class="d">${esc(m.disciplina || 'Geral')}</span><h4>${esc(m.titulo)}</h4>${infoMat(m)}<p>${esc(m.descricao || '')}</p></div></a>`;
 }
 function infoMat(m) {
-  const it = [m.autor ? `<span>${ic('user', 13)} ${esc(m.autor)}</span>` : '', m.tipo === 'pdf' && m.paginas ? `<span>${ic('file', 13)} ${esc(m.paginas)} páginas</span>` : '', m.tipo !== 'pdf' && m.duracao ? `<span>${ic('clock', 13)} ${esc(m.duracao)}</span>` : ''].filter(Boolean);
+  const it = [m.autor ? `<span>${ic('user', 13)} ${esc(m.autor)}</span>` : '', m.tipo === 'pdf' && m.paginas ? `<span>${ic('file', 13)} ${esc(m.paginas)} página${Number(m.paginas) === 1 ? '' : 's'}</span>` : '', m.tipo !== 'pdf' && m.duracao ? `<span>${ic('clock', 13)} ${esc(m.duracao)}</span>` : ''].filter(Boolean);
   return it.length ? `<div class="minfo">${it.join('')}</div>` : '';
 }
 function miniPost(p) {
@@ -1640,16 +1688,116 @@ async function viewMaterial(main, id) {
   if (!src) player = `<div class="card empty"><p>Arquivo indisponível.</p></div>`;
   else if (emb && m.tipo !== 'pdf') player = midiaPlayer(m.url, m.tipo, m.titulo, m.disciplina || '');
   else if (emb) player = `<div class="player"><iframe class="pdf-frame" src="${esc(emb)}" title="${esc(m.titulo)}"></iframe></div>`;
+  else if (m.tipo === 'pdf') player = '<div id="leitor-box"></div>';
   else if (m.tipo === 'video') player = `<div class="player"><video controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></video></div>`;
   else if (m.tipo === 'audio') player = `<div class="player audio-box">${ART.thumb('audio')}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
   else player = `<div class="player"><iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}"></iframe></div>`;
 
   main.innerHTML = `<div class="page">
     <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')}, ${t.nome.toLowerCase()}</div><h2>${esc(m.titulo)}</h2>${infoMat(m)}</div>
-      ${m.tipo === 'pdf' && src ? `<a class="btn ghost sm" href="${esc(safeURL(src))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir em nova aba</a>` : ''}</div>
+      ${m.tipo === 'pdf' && emb ? `<a class="btn ghost sm" href="${esc(safeURL(m.url))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir no Google Drive</a>` : ''}</div>
     ${player}
     ${m.descricao ? `<div class="card pad article" style="margin-top:22px"><h4>Sobre este material</h4><div class="body">${paras(m.descricao)}</div></div>` : ''}
   </div>`;
+  const lb = $('#leitor-box'); if (lb && src) await montarLeitor(lb, src, m);
+}
+
+
+/* ============================ Leitor de PDF ============================
+   Mostra as páginas na largura da tela, com zoom, tela cheia e retomada
+   da leitura. Só as páginas perto da tela ficam desenhadas (economiza memória). */
+const ZOOMS = [1, 1.25, 1.5, 2, 2.5, 3];
+async function montarLeitor(box, src, m) {
+  const chave = 'agora-pg-' + m.id;
+  const compartilhar = isIOS && isStandalone();
+  box.innerHTML = `<div class="leitor" id="leitor">
+    <div class="lt-bar">
+      <button class="icon-btn" data-a="fechar" aria-label="Sair da tela cheia">${ic('back', 20)}</button>
+      <span class="lt-pg" aria-live="polite">Página <b id="lt-n">1</b> de <span id="lt-t">…</span></span>
+      <div class="lt-zoom"><button data-a="menos" aria-label="Diminuir zoom">−</button><span id="lt-z">Ajustado</span><button data-a="mais" aria-label="Aumentar zoom">+</button></div>
+      <button class="icon-btn" data-a="cheia" aria-label="Ler em tela cheia" title="Tela cheia">${ic('expand', 19)}</button>
+      ${compartilhar ? `<button class="icon-btn" data-a="share" aria-label="Abrir em outro app" title="Abrir em outro app">${ic('share', 19)}</button>`
+        : `<a class="icon-btn" data-a="aba" href="${esc(safeURL(src))}" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">${ic('ext', 19)}</a>`}
+    </div>
+    <div class="lt-pages" id="lt-pages"><div class="loading" style="color:#dfe3ea;width:100%">Abrindo o PDF…</div></div>
+  </div>`;
+  const L = $('#leitor', box), cont = $('#lt-pages', box);
+  let doc;
+  try { const pdfjs = await carregarPdfJs(); doc = await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise; }
+  catch (e) {
+    console.warn('Leitor indisponível; usando o visualizador do navegador.', e);
+    cont.outerHTML = `<iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}" style="flex:1;border:0;width:100%;background:#fff"></iframe>`;
+    return;
+  }
+  const n = doc.numPages; $('#lt-t', box).textContent = n;
+  let zi = 0, ratio = 1.414, atual = 1;
+  const p1 = await doc.getPage(1); { const v = p1.getViewport({ scale: 1 }); ratio = v.height / v.width; }
+  const razoes = new Map([[1, ratio]]);
+  const largura = () => Math.min(cont.clientWidth - (isMobile() ? 12 : 20), isMobile() ? 9999 : 920) * ZOOMS[zi];
+  cont.innerHTML = Array.from({ length: n }, (_, i) => `<div class="lt-page" data-i="${i + 1}"><span class="lt-ph">${i + 1}</span></div>`).join('');
+  const pags = $$('.lt-page', cont);
+  const desenhadas = new Map(); // página -> tarefa
+  const dimensionar = () => { const w = largura(); pags.forEach(el => { const r = razoes.get(+el.dataset.i) || ratio; el.style.width = w + 'px'; el.style.height = Math.round(w * r) + 'px'; }); };
+  const apagar = i => { const el = pags[i - 1], cv = el.querySelector('canvas'); if (cv) { cv.width = 0; cv.height = 0; cv.remove(); } desenhadas.delete(i); };
+  async function desenhar(i) {
+    if (desenhadas.has(i)) return;
+    const el = pags[i - 1], w = largura(); desenhadas.set(i, w);
+    try {
+      const pg = i === 1 ? p1 : await doc.getPage(i), v1 = pg.getViewport({ scale: 1 });
+      if (!razoes.has(i)) { razoes.set(i, v1.height / v1.width); el.style.height = Math.round(w * v1.height / v1.width) + 'px'; }
+      const dpr = Math.min(window.devicePixelRatio || 1, 2), vp = pg.getViewport({ scale: (w / v1.width) * dpr });
+      const cv = document.createElement('canvas'); cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+      await pg.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      if (desenhadas.get(i) !== w) return; // zoom mudou durante o desenho
+      el.querySelector('canvas')?.remove(); el.appendChild(cv);
+      // mantém no máximo 8 páginas desenhadas: libera as mais distantes
+      if (desenhadas.size > 8) [...desenhadas.keys()].sort((a, b) => Math.abs(b - atual) - Math.abs(a - atual)).slice(0, desenhadas.size - 8).forEach(apagar);
+    } catch (e) { desenhadas.delete(i); console.warn(e); }
+  }
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) desenhar(+e.target.dataset.i); }), { root: cont, rootMargin: '800px 0px' });
+  dimensionar(); pags.forEach(el => io.observe(el));
+  const paginaAtual = () => { const y = cont.scrollTop + cont.clientHeight / 3; let k = 1; for (const el of pags) { if (el.offsetTop <= y) k = +el.dataset.i; else break; } return k; };
+  let tSalva;
+  cont.addEventListener('scroll', () => {
+    const k = paginaAtual(); if (k !== atual) { atual = k; $('#lt-n', box).textContent = k; clearTimeout(tSalva); tSalva = setTimeout(() => lsSet(chave, String(k)), 400); }
+    const r = $('.lt-retomar', L); if (r && cont.scrollTop > 40) r.remove();
+  }, { passive: true });
+  const irPara = k => { const el = pags[k - 1]; if (el) cont.scrollTop = el.offsetTop - 8; };
+  const zoom = d => {
+    const ni = Math.max(0, Math.min(ZOOMS.length - 1, zi + d)); if (ni === zi) return;
+    const frac = cont.scrollTop / Math.max(1, cont.scrollHeight), fx = cont.scrollLeft / Math.max(1, cont.scrollWidth);
+    zi = ni; [...desenhadas.keys()].forEach(apagar); dimensionar();
+    cont.scrollTop = frac * cont.scrollHeight; cont.scrollLeft = fx * cont.scrollWidth;
+    $('#lt-z', box).textContent = zi === 0 ? 'Ajustado' : Math.round(ZOOMS[zi] * 100) + '%';
+    $('[data-a=menos]', box).disabled = zi === 0; $('[data-a=mais]', box).disabled = zi === ZOOMS.length - 1;
+    pags.forEach(el => { io.unobserve(el); io.observe(el); });
+  };
+  $('[data-a=menos]', box).disabled = true;
+  const cheia = on => {
+    L.classList.toggle('cheio', on); document.body.style.overflow = on ? 'hidden' : '';
+    const b = $('[data-a=cheia]', box); b.innerHTML = ic(on ? 'shrink' : 'expand', 19); b.setAttribute('aria-label', on ? 'Sair da tela cheia' : 'Ler em tela cheia');
+    const k = atual; requestAnimationFrame(() => { [...desenhadas.keys()].forEach(apagar); dimensionar(); irPara(k); pags.forEach(el => { io.unobserve(el); io.observe(el); }); });
+  };
+  L.addEventListener('click', async e => {
+    const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return;
+    if (a === 'mais') zoom(1); if (a === 'menos') zoom(-1);
+    if (a === 'cheia') cheia(!L.classList.contains('cheio')); if (a === 'fechar') cheia(false);
+    if (a === 'share') {
+      try { const b = await (await fetch(src)).blob(); const f = new File([b], (m.titulo || 'material').replace(/[\\/:*?"<>|]/g, '') + '.pdf', { type: 'application/pdf' });
+        if (navigator.canShare?.({ files: [f] })) await navigator.share({ files: [f], title: m.titulo }); else window.open(src, '_blank'); }
+      catch (err) { if (err?.name !== 'AbortError') toast('Não foi possível abrir em outro app.', true); }
+    }
+  });
+  const esc_ = e => { if (e.key === 'Escape' && L.classList.contains('cheio')) cheia(false); };
+  document.addEventListener('keydown', esc_);
+  let tRes; const onRes = () => { clearTimeout(tRes); tRes = setTimeout(() => { const k = atual; [...desenhadas.keys()].forEach(apagar); dimensionar(); irPara(k); pags.forEach(el => { io.unobserve(el); io.observe(el); }); }, 200); };
+  window.addEventListener('resize', onRes);
+  S.limpar.push(() => { io.disconnect(); document.removeEventListener('keydown', esc_); window.removeEventListener('resize', onRes); document.body.style.overflow = ''; try { doc.destroy(); } catch {} });
+  const salva = Number(lsGet(chave)) || 0;
+  if (salva > 1 && salva <= n) {
+    const r = document.createElement('button'); r.className = 'lt-retomar'; r.textContent = `Continuar da página ${salva}`;
+    r.onclick = () => { irPara(salva); r.remove(); }; L.appendChild(r); setTimeout(() => r.remove(), 9000);
+  }
 }
 
 /* =========================== Oportunidades/Leis =========================== */
@@ -1944,17 +2092,32 @@ function admCodigos(box, codigos) {
 
 function admMateriais(box, mats) {
   mats.sort(byNewest);
+  const semCapa = mats.filter(m => m.tipo === 'pdf' && m.fileRef && !m.capaRef);
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
+    ${semCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${semCapa.length} PDF${semCapa.length > 1 ? 's' : ''} sem capa</h3><p>Gere a capa a partir da primeira página de cada arquivo já enviado.</p></div><button class="btn primary" id="gerar-capas">Gerar capas</button></div>` : ''}
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
     ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
+  const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
+    gc.disabled = true; let ok = 0, falha = 0;
+    for (const [i, m] of semCapa.entries()) {
+      gc.textContent = `Gerando ${i + 1} de ${semCapa.length}…`;
+      try {
+        const u = await store.fileURL(m.fileRef, 'application/pdf');
+        const capa = await capaDoPDF(await (await fetch(u)).blob());
+        const ref = await store.uploadFile(new File([capa], 'capa.jpg', { type: 'image/jpeg' }));
+        await store.save('materiais', { ...m, capaRef: ref }); ok++;
+      } catch (e) { console.warn(e); falha++; }
+    }
+    toast(`${ok} capa${ok !== 1 ? 's' : ''} gerada${ok !== 1 ? 's' : ''}${falha ? `, ${falha} com erro` : ''}.`, !!falha && !ok); render();
+  };
   box.onclick = async e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
     if (ed) formMaterial(mats.find(m => m.id === ed.dataset.ed));
     if (dl && await confirmar('Excluir este material? O arquivo também será removido.', 'Excluir')) {
       const m = mats.find(x => x.id === dl.dataset.del);
-      try { if (m.fileRef) await store.deleteFile(m.fileRef); await store.remove('materiais', m.id); toast('Material excluído.'); render(); } catch (err) { toast(err.message, true); }
+      try { if (m.fileRef) await store.deleteFile(m.fileRef); if (m.capaRef) await store.deleteFile(m.capaRef); await store.remove('materiais', m.id); toast('Material excluído.'); render(); } catch (err) { toast(err.message, true); }
     }
   };
 }
@@ -2060,6 +2223,38 @@ function separarTitulo(t) {
   const m = String(t || '').match(/^(.{4,}?)\s*[:–—]\s+(.{4,})$/);
   return m ? { titulo: m[1].trim(), subtitulo: m[2].trim() } : null;
 }
+/* Capa: desenha a página 1 numa imagem JPEG pequena (≈300 px de largura). */
+async function renderCapa(page, largura = 300) {
+  const v0 = page.getViewport({ scale: 1 }), vp = page.getViewport({ scale: largura / v0.width });
+  const cv = document.createElement('canvas'); cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+  const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+  await page.render({ canvasContext: ctx, viewport: vp }).promise;
+  return await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.8));
+}
+async function capaDeImagem(file, largura = 300) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const k = Math.min(1, largura / img.naturalWidth), cv = document.createElement('canvas');
+    cv.width = Math.round(img.naturalWidth * k); cv.height = Math.round(img.naturalHeight * k);
+    const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.drawImage(img, 0, 0, cv.width, cv.height);
+    return await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.82));
+  } finally { URL.revokeObjectURL(url); }
+}
+async function capaDoPDF(blob) {
+  const pdfjs = await carregarPdfJs();
+  const doc = await pdfjs.getDocument({ data: new Uint8Array(await blob.arrayBuffer()), isEvalSupported: false }).promise;
+  try { return await renderCapa(await doc.getPage(1)); } finally { try { await doc.destroy(); } catch {} }
+}
+const ytId = url => (String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
+/* Carrega as capas guardadas assim que os cartões aparecem na tela */
+new MutationObserver(() => {
+  for (const img of document.querySelectorAll('img.capa[data-capa]:not([data-carregando])')) {
+    img.dataset.carregando = '1';
+    store.fileURL(img.dataset.capa, 'image/jpeg').then(u => { if (!u) throw 0; img.onload = () => img.classList.add('ok'); img.src = u; })
+      .catch(() => { const t = img.closest('.mthumb'); if (t) { t.classList.remove('tem-capa'); } img.remove(); });
+  }
+}).observe(document.documentElement, { childList: true, subtree: true });
 async function lerPDFjs(buf) {
   const pdfjs = await carregarPdfJs();
   const doc = await pdfjs.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise;
@@ -2074,7 +2269,8 @@ async function lerPDFjs(buf) {
     linhas.push(...its.map(x => x.str));
   }
   texto = texto.replace(/\s+/g, ' ').trim();
-  const r = { paginas: doc.numPages, subtitulo: subtitulo1, titulo: limparTitulo(info.Title) || titulo1, autor: autorValido(info.Author) || linhas.map(autorNoTexto).find(Boolean) || '', assunto: textoValido(info.Subject), palavras: textoValido(info.Keywords), texto, fonte: 'pdfjs' };
+  let capa = null; try { capa = await renderCapa(await doc.getPage(1)); } catch (e) { console.warn('capa', e); }
+  const r = { capa, paginas: doc.numPages, subtitulo: subtitulo1, titulo: limparTitulo(info.Title) || titulo1, autor: autorValido(info.Author) || linhas.map(autorNoTexto).find(Boolean) || '', assunto: textoValido(info.Subject), palavras: textoValido(info.Keywords), texto, fonte: 'pdfjs' };
   try { await doc.destroy(); } catch {}
   return r;
 }
@@ -2110,6 +2306,10 @@ function formMaterial(m = {}) {
         <span class="hint">O portal lê o título, o autor e o número de páginas e preenche os campos.${store.modo === 'gist' ? ' Até 4 MB.' : ''}</span>
         <input type="file" name="arquivo" accept="application/pdf,.pdf"></label>
       <div class="pdf-info hidden" id="pdf-info"></div>
+      <div class="capa-prev ${m.capaRef ? '' : 'hidden'}" id="capa-prev"><img id="capa-img" alt="Capa do material" ${m.capaRef ? `data-capa="${esc(m.capaRef)}" class="capa ok"` : ''}>
+        <div class="acts"><b class="small" style="color:var(--toga)">Capa do material</b><span class="hint" id="capa-txt">${m.capaRef ? 'Capa atual.' : ''}</span>
+          <label class="btn ghost sm" style="display:inline-flex">${ic('file', 14)} Usar outra imagem<input type="file" id="capa-file" accept="image/*" hidden></label>
+          <button type="button" class="btn ghost sm" id="capa-rm">Remover capa</button></div></div>
     </div>
     <div data-t="video audio" class="form">
       <label><span id="lb-url">Link do YouTube ou do Google Drive</span><input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
@@ -2146,7 +2346,16 @@ function formMaterial(m = {}) {
     i.value = valor; i.dataset.auto = '1'; i.classList.add('auto'); return true;
   };
   const mostrar = (cls, html) => { info.className = 'pdf-info ' + cls; info.innerHTML = html; };
-  let arquivo = null;
+  let arquivo = null, capaNova = null, capaRemover = false;
+  const prev = $('#capa-prev', el), pimg = $('#capa-img', el);
+  const usarCapa = (blob, txt) => {
+    capaNova = blob; capaRemover = false;
+    if (pimg.src?.startsWith('blob:')) URL.revokeObjectURL(pimg.src);
+    pimg.removeAttribute('data-capa'); pimg.src = URL.createObjectURL(blob); pimg.className = '';
+    $('#capa-txt', el).textContent = txt; prev.classList.remove('hidden');
+  };
+  $('#capa-file', el).onchange = async e => { const fl = e.target.files[0]; if (!fl) return; try { usarCapa(await capaDeImagem(fl), 'Imagem escolhida por você.'); } catch { toast('Não consegui abrir essa imagem.', true); } };
+  $('#capa-rm', el).onclick = () => { capaNova = null; capaRemover = true; prev.classList.add('hidden'); };
   const escolher = async file => {
     if (!file) return;
     if (!/pdf$/i.test(file.type) && !/\.pdf$/i.test(file.name)) { mostrar('aviso', `${ic('file', 16)}<span>Escolha um arquivo PDF.</span>`); return; }
@@ -2154,6 +2363,7 @@ function formMaterial(m = {}) {
     mostrar('lendo', `${ic('spark', 16)}<span>Lendo o PDF…</span>`);
     try {
       const r = await lerPDF(file);
+      if (r.capa) usarCapa(r.capa, 'Primeira página do PDF.');
       const preenchidos = [auto('titulo', r.titulo) && 'título', auto('autor', r.autor) && 'autor', auto('paginas', r.paginas) && 'páginas', auto('disciplina', r.disciplina) && 'disciplina', auto('descricao', r.descricao) && `descrição (${r.origemDescricao})`].filter(Boolean);
       const achou = [r.paginas ? `${r.paginas} página${r.paginas > 1 ? 's' : ''}` : '', r.autor ? `autor: ${esc(r.autor)}` : 'autor não identificado', r.disciplina ? esc(r.disciplina) : ''].filter(Boolean).join(', ');
       let html = `${ic('spark', 16)}<span><b>PDF lido.</b> ${achou}.${preenchidos.length ? ` Campos preenchidos: ${preenchidos.join(', ')}. Confira os destacados.` : ' Os campos que você já tinha preenchido foram mantidos.'}</span>`;
@@ -2191,6 +2401,12 @@ function formMaterial(m = {}) {
         Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
       }
       if (!o.fileRef) Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
+      if (t !== 'pdf') capaRemover = !!m.capaRef;
+      if (capaNova) {
+        const ref = await store.uploadFile(new File([capaNova], 'capa.jpg', { type: 'image/jpeg' }));
+        if (m.capaRef) await store.deleteFile(m.capaRef);
+        o.capaRef = ref;
+      } else if (capaRemover && m.capaRef) { await store.deleteFile(m.capaRef); o.capaRef = ''; }
       await store.save('materiais', o);
       close(); toast('Material salvo.'); render();
     } catch (err) { toast(err.message, true); $('#sv', el).disabled = false; }

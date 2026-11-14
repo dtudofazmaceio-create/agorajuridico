@@ -37,7 +37,7 @@ A partir daí você entra como qualquer usuário, com **e-mail e senha**, em qua
 No **Painel administrativo**:
 - **Materiais:**
   - **Vídeos e áudios:** sempre por link do **YouTube** (pode ser "não listado") ou do **Google Drive**. No Drive, abra o arquivo, clique em **Compartilhar** e mude para **Qualquer pessoa com o link**.
-  - **PDFs:** escolha ou arraste o arquivo (até 4 MB). O portal lê sozinho o **título/tema, o autor e o número de páginas**, preenche a **descrição com o subtítulo** do PDF e sugere a **disciplina**, e destaca os campos preenchidos para você conferir. PDFs maiores: publique no Google Drive e cole o link (os dados lidos continuam preenchidos).
+  - **PDFs:** escolha ou arraste o arquivo (até 4 MB). O portal lê sozinho o **título/tema, o autor e o número de páginas**, preenche a **descrição com o subtítulo** do PDF e sugere a **disciplina**, e extrai a **capa real** (primeira página) para mostrar no lugar da ilustração genérica. Você pode trocar a capa por outra imagem. PDFs enviados antes desta versão ganham capa pelo botão **Gerar capas**, em Painel → Materiais, e destaca os campos preenchidos para você conferir. PDFs maiores: publique no Google Drive e cole o link (os dados lidos continuam preenchidos).
   - Os campos mudam conforme o tipo: **PDF** pede autor e páginas; **vídeo** pede link, professor/palestrante e duração; **áudio** pede link, autor/narrador e duração.
 - **Publicações:** escolha a categoria:
   - **Estágio, Concurso, Emprego:** vagas e editais com prazo de inscrição.
@@ -48,6 +48,8 @@ No **Painel administrativo**:
 - **Configurações:** dias grátis, chave Pix e seu contato (WhatsApp/e-mail).
 
 Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam juntas na aba **Notícias**.
+
+**Leitura dos PDFs:** os alunos leem dentro do portal, com as páginas ajustadas à largura da tela (sem precisar de zoom), botões de zoom, **tela cheia** e **abrir em nova aba**. No app instalado no iPhone, esse botão vira **abrir em outro app** (Arquivos, Livros etc.). O portal lembra a página em que o aluno parou.
 
 ## Passo 4: enviar aos alunos
 Clique em **Link para os alunos** no painel e envie pelo WhatsApp ou e-mail.
