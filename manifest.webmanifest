@@ -6,61 +6,19 @@
   "start_url": "./index.html#/painel",
   "scope": "./",
   "display": "standalone",
-  "display_override": [
-    "standalone",
-    "minimal-ui"
-  ],
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#131a2b",
   "theme_color": "#131a2b",
-  "categories": [
-    "education",
-    "books"
-  ],
+  "categories": ["education", "books"],
   "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "icon-maskable.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
-    }
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
   "shortcuts": [
-    {
-      "name": "Materiais de estudo",
-      "url": "./index.html#/materiais",
-      "icons": [
-        {
-          "src": "icon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "Estágios e concursos",
-      "url": "./index.html#/oportunidades",
-      "icons": [
-        {
-          "src": "icon.svg",
-          "sizes": "any"
-        }
-      ]
-    },
-    {
-      "name": "Atualizações da lei",
-      "url": "./index.html#/legislacao",
-      "icons": [
-        {
-          "src": "icon.svg",
-          "sizes": "any"
-        }
-      ]
-    }
+    { "name": "Materiais de estudo", "url": "./index.html#/materiais", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Estágios e concursos", "url": "./index.html#/oportunidades", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Atualizações da lei", "url": "./index.html#/legislacao", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }
