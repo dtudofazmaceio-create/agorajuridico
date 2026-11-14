@@ -51,6 +51,12 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
 
 **Leitura dos PDFs:** os alunos leem dentro do portal, com as páginas ajustadas à largura da tela (sem precisar de zoom), botões de zoom, **tela cheia** e **abrir em nova aba**. No app instalado no iPhone, esse botão vira **abrir em outro app** (Arquivos, Livros etc.). O portal lembra a página em que o aluno parou.
 
+## Downloads e análises
+- **Download:** na página de cada material há o botão **Baixar** (PDFs enviados e arquivos do Google Drive). No app do iPhone, ele abre o menu para salvar em Arquivos ou compartilhar. Para impedir o download de um material, desmarque **Permitir que os alunos baixem este arquivo** ao editá-lo. Vídeos do YouTube não podem ser baixados.
+- **Painel → Análises** (primeira aba): alunos cadastrados e novos, acesso ativo (pagantes e em teste), acessos ao portal por dia, novos cadastros por dia, materiais mais vistos e mais baixados, notícias e vagas mais lidas, aparelhos usados (celular, app instalado, computador), assinantes por plano, conversão para plano pago, receita estimada e alunos mais ativos. Filtre por 7, 30 ou 90 dias e exporte a lista de alunos em **CSV** (abre no Excel).
+- Na aba **Materiais**, cada material mostra o número de acessos e de downloads.
+- O uso de cada aluno é enviado em lotes (a cada 10 minutos ou quando ele fecha o portal), por isso os números podem levar alguns minutos para aparecer. Os acessos do administrador não são contados.
+
 ## Passo 4: enviar aos alunos
 Clique em **Link para os alunos** no painel e envie pelo WhatsApp ou e-mail.
 No celular, o aluno pode instalar o portal como aplicativo:

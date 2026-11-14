@@ -342,6 +342,35 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
   .lt-zoom span{min-width:38px}
 }
 
+/* Análises */
+.an-filtros{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:18px}
+.an-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px;align-items:start}
+.an-card{padding:20px 22px}
+.an-card h3{font-size:1.1rem;margin:0 0 2px}
+.an-card .sub{font-size:.82rem;color:var(--cinza);margin:0 0 14px}
+.cols-chart{position:relative;height:180px;display:flex;align-items:flex-end;gap:2px;padding:0 0 0 34px;border-bottom:1px solid var(--linha)}
+.cols-chart .gl{position:absolute;left:34px;right:0;border-top:1px solid var(--linha-2);font-size:.7rem;color:var(--cinza)}
+.cols-chart .gl span{position:absolute;left:-34px;top:-.6em;width:28px;text-align:right}
+.cols-chart .c{flex:1;display:flex;align-items:flex-end;justify-content:center;height:100%;position:relative;cursor:default;outline:none}
+.cols-chart .c i{display:block;width:100%;max-width:24px;background:#1c2b49;border-radius:4px 4px 0 0;min-height:0}
+.cols-chart .c:hover i,.cols-chart .c:focus i{background:#8e1b2e}
+.cols-x{display:flex;gap:2px;padding-left:34px;margin-top:6px;font-size:.7rem;color:var(--cinza)}
+.cols-x span{flex:1;text-align:center;white-space:nowrap;overflow:visible}
+.tip{position:fixed;z-index:120;background:var(--toga);color:#fff;font-size:.8rem;padding:.45em .7em;border-radius:6px;pointer-events:none;box-shadow:0 6px 16px rgba(0,0,0,.25);white-space:nowrap}
+.rank{display:grid;gap:10px}
+.rank .r{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;font-size:.88rem}
+.rank .r b{font-weight:600;color:var(--toga);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank .r .v{font-variant-numeric:tabular-nums;color:var(--grafite);font-weight:600}
+.rank .r .bar{grid-column:1/-1;height:6px;background:var(--linha-2);border-radius:3px;overflow:hidden}
+.rank .r .bar i{display:block;height:100%;background:#1c2b49;border-radius:0 3px 3px 0}
+.disp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.disp div{background:var(--marmore);border-radius:8px;padding:12px;text-align:center}
+.disp b{display:block;font:700 1.4rem var(--serif);color:var(--toga)}
+.disp span{font-size:.78rem;color:var(--cinza)}
+.tabela-dados{margin-top:10px;font-size:.82rem}
+.tabela-dados summary{cursor:pointer;color:var(--cinza)}
+@media (max-width:1000px){.an-grid{grid-template-columns:1fr}}
+
 /* Tabelas e admin */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
@@ -615,6 +644,9 @@ const I = {
   expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
   shrink: '<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
   share: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
+  monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
@@ -1176,6 +1208,7 @@ async function render() {
   const q = new URLSearchParams(qs || '');
   const r = ROUTES[name] || ROUTES[''];
   try { S.user = await store.currentUser(); } catch (e) { console.error(e); S.user = null; }
+  if (S.user && S.sessaoReg !== S.user.id) { S.sessaoReg = S.user.id; registrar('sessao'); }
   if (r.auth && !S.user) return go('entrar');
   if (r.guest && S.user) return go('painel');
   if (name === '' && S.user) return go('painel');
@@ -1268,7 +1301,7 @@ function marcarNav(sideHref, tabHref) {
   $$('.nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === sideHref));
   $$('.tabbar a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === tabHref));
 }
-async function sair() { await store.logout(); toast('Sessão encerrada.'); go(''); }
+async function sair() { try { await enviarAtividade(); } catch {} S.sessaoReg = null; await store.logout(); toast('Sessão encerrada.'); go(''); }
 document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { const i = $('#gs input'); if (i) { e.preventDefault(); i.focus(); i.select(); } }
   if (e.key === 'Escape') { const m = $$('.modal-bg').pop(); if (m) m.remove(); }
@@ -1698,10 +1731,13 @@ async function viewMaterial(main, id) {
 
   main.innerHTML = `<div class="page">
     <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')}, ${t.nome.toLowerCase()}</div><h2>${esc(m.titulo)}</h2>${infoMat(m)}</div>
-      ${m.tipo === 'pdf' && emb ? `<a class="btn ghost sm" href="${esc(safeURL(m.url))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir no Google Drive</a>` : ''}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">${m.tipo === 'pdf' && emb ? `<a class="btn ghost sm" href="${esc(safeURL(m.url))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir no Google Drive</a>` : ''}
+      ${podeBaixar(m) && (src || !m.fileRef) ? `<button class="btn primary sm" id="baixar">${ic('download', 15)} Baixar${m.size ? ` (${fmtSize(m.size)})` : ''}</button>` : ''}</div></div>
     ${player}
     ${m.descricao ? `<div class="card pad article" style="margin-top:22px"><h4>Sobre este material</h4><div class="body">${paras(m.descricao)}</div></div>` : ''}
   </div>`;
+  registrar('view', m.id);
+  const bx = $('#baixar'); if (bx) bx.onclick = () => baixarMaterial(m, src);
   const lb = $('#leitor-box'); if (lb && src) await montarLeitor(lb, src, m);
 }
 
@@ -1803,6 +1839,79 @@ async function montarLeitor(box, src, m) {
   }
 }
 
+
+/* ======================= Atividade dos alunos (análises) =======================
+   Cada aluno acumula o próprio uso no aparelho e envia no máximo a cada 10 min,
+   gravando no próprio cadastro (sem conflito com outros alunos e poupando o
+   limite de gravações do GitHub). */
+const hojeISO = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const kAtv = () => 'agora-atv-' + S.user?.id, kEnvio = () => 'agora-atvf-' + S.user?.id;
+function mesclarAtv(a, p) {
+  a = JSON.parse(JSON.stringify(a || {})); p = p || {};
+  for (const k of ['dias', 'views', 'downloads', 'pubs', 'disp']) { a[k] = a[k] || {}; for (const [x, n] of Object.entries(p[k] || {})) a[k][x] = (a[k][x] || 0) + n; }
+  a.sessoes = (a.sessoes || 0) + (p.sessoes || 0);
+  a.ultimo = Math.max(a.ultimo || 0, p.ultimo || 0) || undefined;
+  a.primeiro = Math.min(...[a.primeiro, p.primeiro].filter(Boolean)) || undefined;
+  const corte = hojeISO(new Date(Date.now() - 180 * DAY));
+  for (const d of Object.keys(a.dias)) if (d < corte) delete a.dias[d];
+  return JSON.parse(JSON.stringify(a));
+}
+function registrar(tipo, id) {
+  if (!S.user || S.user.role === 'admin') return;
+  let p; try { p = JSON.parse(lsGet(kAtv()) || '{}'); } catch { p = {}; }
+  const d = hojeISO(), add = (k, x) => { p[k] = p[k] || {}; p[k][x] = (p[k][x] || 0) + 1; };
+  p.dias = p.dias || {}; p.dias[d] = p.dias[d] || 0;
+  if (tipo === 'sessao') { p.sessoes = (p.sessoes || 0) + 1; p.dias[d]++; add('disp', isStandalone() ? 'app' : isMobile() ? 'celular' : 'computador'); }
+  if (tipo === 'view') add('views', id);
+  if (tipo === 'download') add('downloads', id);
+  if (tipo === 'pub') add('pubs', id);
+  p.ultimo = Date.now(); p.primeiro = p.primeiro || Date.now();
+  lsSet(kAtv(), JSON.stringify(p));
+  agendarEnvio();
+}
+let tEnvio = null, enviando = false;
+function agendarEnvio(ja = false) {
+  clearTimeout(tEnvio);
+  const ult = Number(lsGet(kEnvio())) || 0;
+  tEnvio = setTimeout(enviarAtividade, ja ? 0 : Math.max(4000, 10 * 60000 - (Date.now() - ult)));
+}
+async function enviarAtividade() {
+  if (enviando || !S.user || S.user.role === 'admin') return;
+  const raw = lsGet(kAtv()); if (!raw || raw === '{}') return;
+  enviando = true; const id = S.user.id, p = JSON.parse(raw);
+  lsSet(kAtv(), '{}');
+  try {
+    const u = await store.getUser(id);
+    await store.updateUser(id, { atividade: mesclarAtv(u?.atividade, p) });
+    lsSet(kEnvio(), String(Date.now()));
+  } catch (e) {
+    console.warn('atividade não enviada', e);
+    let cur = {}; try { cur = JSON.parse(lsGet(kAtv()) || '{}'); } catch {}
+    lsSet(kAtv(), JSON.stringify(mesclarAtv(cur, p)));
+  } finally { enviando = false; }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden' && S.user && (Date.now() - (Number(lsGet(kEnvio())) || 0)) > 120000) enviarAtividade();
+});
+
+/* ============================== Download ============================== */
+const driveId = url => (String(url || '').match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=)([\w-]{10,})/) || [])[1];
+function podeBaixar(m) { return m.permitirDownload !== false && (!!m.fileRef || !!driveId(m.url)); }
+async function baixarMaterial(m, src) {
+  registrar('download', m.id);
+  const ext = m.fileName?.match(/\.\w+$/)?.[0] || (m.tipo === 'pdf' ? '.pdf' : m.tipo === 'audio' ? '.mp3' : '');
+  const nome = (m.titulo || 'material').replace(/[\\/:*?"<>|]/g, '').slice(0, 80) + ext;
+  if (!m.fileRef) { const a = document.createElement('a'); a.href = `https://drive.google.com/uc?export=download&id=${driveId(m.url)}`; a.target = '_blank'; a.rel = 'noopener'; a.click(); return; }
+  try {
+    if (isIOS && isStandalone() && navigator.canShare) {
+      const b = await (await fetch(src)).blob(), f = new File([b], nome, { type: b.type || m.mime || 'application/pdf' });
+      if (navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: m.titulo }); return; }
+    }
+    const a = document.createElement('a'); a.href = src; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+    toast('Download iniciado.');
+  } catch (e) { if (e?.name !== 'AbortError') toast('Não foi possível baixar o arquivo.', true); }
+}
+
 /* =========================== Oportunidades/Leis =========================== */
 function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
@@ -1864,6 +1973,7 @@ async function viewPublicacao(main, id) {
     <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
   </div></div>`;
   if (CAT_INFO.includes(p.categoria)) marcarNav(`#/noticias?tipo=${p.categoria}`, '#/noticias');
+  registrar('pub', p.id);
 }
 
 /* ================================ Busca ================================ */
@@ -1937,11 +2047,11 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-async function viewAdmin(main, tab = 'materiais') {
+async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = gist ? { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
-    : { materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
-  if (!TABS[tab]) tab = 'materiais';
+  const TABS = gist ? { analises: 'Análises', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
+    : { analises: 'Análises', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
   const receita = pags.filter(p => p.status === 'aprovado').reduce((s, p) => s + Number(p.valor || 0), 0);
@@ -1957,14 +2067,15 @@ async function viewAdmin(main, tab = 'materiais') {
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    <div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>
+    ${tab === 'analises' ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
   const sh = $('#share'); if (sh) sh.onclick = mostrarLinkAlunos;
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
-  ({ materiais: () => admMateriais(box, mats), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  const ag = agregar(users);
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), materiais: () => admMateriais(box, mats, ag), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -2093,15 +2204,130 @@ function admCodigos(box, codigos) {
   };
 }
 
-function admMateriais(box, mats) {
+
+/* ============================== Análises ============================== */
+function agregar(users) {
+  const ag = { views: {}, downloads: {}, pubs: {}, disp: {}, dias: {}, ativosDia: {}, sessoes: 0 };
+  for (const u of users) {
+    if (u.role === 'admin') continue; const a = u.atividade || {};
+    for (const k of ['views', 'downloads', 'pubs', 'disp']) for (const [x, n] of Object.entries(a[k] || {})) ag[k][x] = (ag[k][x] || 0) + n;
+    for (const [d, n] of Object.entries(a.dias || {})) { ag.dias[d] = (ag.dias[d] || 0) + n; ag.ativosDia[d] = (ag.ativosDia[d] || 0) + 1; }
+    ag.sessoes += a.sessoes || 0;
+  }
+  return ag;
+}
+const fmtN = n => Number(n || 0).toLocaleString('pt-BR');
+const diasPeriodo = n => Array.from({ length: n }, (_, i) => hojeISO(new Date(Date.now() - (n - 1 - i) * DAY)));
+function graficoColunas(serie, rotulo) {
+  const max = Math.max(1, ...serie.map(x => x.v));
+  const passo = max <= 4 ? 1 : Math.pow(10, Math.floor(Math.log10(max / 2))) * ([1, 2, 5].find(k => max / (Math.pow(10, Math.floor(Math.log10(max / 2))) * k) <= 4) || 10);
+  const topo = Math.ceil(max / passo) * passo, linhas = [];
+  for (let v = passo; v <= topo; v += passo) linhas.push(v);
+  const cada = Math.ceil(serie.length / 6);
+  return `<div class="cols-chart" role="img" aria-label="${esc(rotulo)}">
+      ${linhas.map(v => `<div class="gl" style="bottom:${v / topo * 100}%"><span>${fmtN(v)}</span></div>`).join('')}<div class="gl" style="bottom:0;border:0"><span>0</span></div>
+      ${serie.map(x => `<div class="c" tabindex="0" data-tip="${esc(x.tip)}"><i style="height:${x.v / topo * 100}%"></i></div>`).join('')}
+    </div>
+    <div class="cols-x">${serie.map((x, i) => `<span>${i % cada === 0 || i === serie.length - 1 ? x.rot : ''}</span>`).join('')}</div>
+    <details class="tabela-dados"><summary>Ver dados em tabela</summary><div class="table-wrap"><table><tr><th>Dia</th><th>${esc(rotulo)}</th></tr>${serie.map(x => `<tr><td>${x.rot}</td><td>${fmtN(x.v)}</td></tr>`).join('')}</table></div></details>`;
+}
+function ranking(itens, vazio) {
+  if (!itens.length) return `<p class="muted small" style="margin:0">${vazio}</p>`;
+  const max = Math.max(...itens.map(x => x.v));
+  return `<div class="rank">${itens.map(x => `<div class="r"><b title="${esc(x.t)}">${esc(x.t)}</b><span class="v">${fmtN(x.v)}</span><span class="bar"><i style="width:${x.v / max * 100}%"></i></span></div>`).join('')}</div>`;
+}
+function ativarTooltips(root) {
+  let tip = null;
+  const mostra = el => { tip?.remove(); tip = document.createElement('div'); tip.className = 'tip'; tip.textContent = el.dataset.tip; document.body.appendChild(tip);
+    const r = el.getBoundingClientRect(), w = tip.offsetWidth; tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + 'px'; tip.style.top = (r.top - tip.offsetHeight - 8) + 'px'; };
+  const some = () => { tip?.remove(); tip = null; };
+  root.addEventListener('mouseover', e => { const c = e.target.closest('[data-tip]'); if (c) mostra(c); });
+  root.addEventListener('mouseout', e => { if (e.target.closest('[data-tip]')) some(); });
+  root.addEventListener('focusin', e => { const c = e.target.closest('[data-tip]'); if (c) mostra(c); });
+  root.addEventListener('focusout', some);
+  root.addEventListener('touchstart', e => { const c = e.target.closest('[data-tip]'); if (c) mostra(c); }, { passive: true });
+  S.limpar.push(some);
+}
+function admAnalises(box, { users, mats, posts, pags, codigos, ag }, periodo = 30) {
+  const alunos = users.filter(u => u.role !== 'admin'), now = Date.now(), ini = now - periodo * DAY;
+  const dias = diasPeriodo(periodo), iniISO = dias[0];
+  const pago = u => u.assinatura?.tipo === 'pago', ativosAgora = alunos.filter(ativo);
+  const emTeste = ativosAgora.filter(u => u.assinatura?.tipo === 'teste').length, pagantes = ativosAgora.filter(pago).length;
+  const novos = alunos.filter(u => u.criadoEm >= ini).length;
+  const ativosPeriodo = alunos.filter(u => Object.keys(u.atividade?.dias || {}).some(d => d >= iniISO)).length;
+  const acessosPeriodo = dias.reduce((s, d) => s + (ag.dias[d] || 0), 0);
+  const totV = Object.values(ag.views).reduce((a, b) => a + b, 0), totD = Object.values(ag.downloads).reduce((a, b) => a + b, 0);
+  const jaPagaram = alunos.filter(pago).length, conv = alunos.length ? Math.round(jaPagaram / alunos.length * 100) : 0;
+  let receita, recLbl;
+  if (store.modo === 'gist') {
+    const porCod = new Map(codigos.map(c => [c.id, c])), preco = nome => planos(true).find(p => p.nome === nome)?.preco || 0;
+    receita = alunos.reduce((s, u) => s + (u.codigosUsados || []).reduce((t, id) => t + preco(porCod.get(id)?.plano), 0), 0);
+    recLbl = 'Receita estimada pelos códigos resgatados';
+  } else { receita = pags.filter(p => p.status === 'aprovado' && p.criadoEm >= ini).reduce((s, p) => s + Number(p.valor || 0), 0); recLbl = `Receita aprovada nos últimos ${periodo} dias`; }
+  const titulo = (col, id) => (col.find(x => x.id === id) || {}).titulo || 'Item removido';
+  const top = (obj, col) => Object.entries(obj).map(([id, v]) => ({ t: titulo(col, id), v })).sort((a, b) => b.v - a.v).slice(0, 8);
+  const porPlano = {}; ativosAgora.filter(pago).forEach(u => { const k = u.assinatura.plano || 'Plano'; porPlano[k] = (porPlano[k] || 0) + 1; });
+  const disp = ag.disp, totDisp = Math.max(1, (disp.celular || 0) + (disp.computador || 0) + (disp.app || 0));
+  const acessosAluno = u => Object.entries(u.atividade?.dias || {}).filter(([d]) => d >= iniISO).reduce((s, [, n]) => s + n, 0);
+  const maisAtivos = [...alunos].sort((a, b) => acessosAluno(b) - acessosAluno(a) || (b.atividade?.ultimo || 0) - (a.atividade?.ultimo || 0)).slice(0, 10);
+  const tile = (icn, n, l, sub = '') => `<div class="stat"><span class="si">${ic(icn, 20)}</span><div><div class="n">${n}</div><div class="l">${l}${sub ? `<br><span style="color:var(--grafite)">${sub}</span>` : ''}</div></div></div>`;
+  const rot = d => d.slice(8, 10) + '/' + d.slice(5, 7);
+
+  box.innerHTML = `
+    <div class="an-filtros"><div class="chips" id="per">${[7, 30, 90].map(n => `<button class="chip ${n === periodo ? 'on' : ''}" data-p="${n}">Últimos ${n} dias</button>`).join('')}</div>
+      <button class="btn ghost sm" id="csv">${ic('download', 15)} Exportar alunos (CSV)</button></div>
+    <div class="stats">
+      ${tile('user', fmtN(alunos.length), 'Alunos cadastrados', `+${fmtN(novos)} no período`)}
+      ${tile('check', fmtN(ativosAgora.length), 'Com acesso ativo', `${fmtN(pagantes)} pagantes, ${fmtN(emTeste)} em teste`)}
+      ${tile('chart', fmtN(acessosPeriodo), 'Acessos ao portal', `${fmtN(ativosPeriodo)} alunos acessaram`)}
+      ${tile('download', fmtN(totD), 'Downloads', `${fmtN(totV)} visualizações de materiais`)}
+    </div>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+      ${tile('tag', conv + '%', 'Conversão para plano pago', `${fmtN(jaPagaram)} de ${fmtN(alunos.length)} alunos já pagaram`)}
+      ${tile('card', brl(receita), recLbl)}
+      ${tile('clock', fmtN(alunos.filter(u => (u.atividade?.ultimo || 0) >= now - 7 * DAY).length), 'Ativos nos últimos 7 dias', `${fmtN(alunos.filter(u => !u.atividade?.ultimo).length)} nunca acessaram depois do cadastro`)}
+    </div>
+    <div class="an-grid">
+      <div class="card an-card"><h3>Acessos por dia</h3><p class="sub">Vezes em que os alunos abriram o portal</p>${graficoColunas(dias.map(d => ({ rot: rot(d), v: ag.dias[d] || 0, tip: `${rot(d)}: ${fmtN(ag.dias[d] || 0)} acessos, ${fmtN(ag.ativosDia[d] || 0)} alunos` })), 'Acessos')}</div>
+      <div class="card an-card"><h3>Novos cadastros por dia</h3><p class="sub">Alunos que criaram conta</p>${graficoColunas(dias.map(d => { const n = alunos.filter(u => u.criadoEm && hojeISO(new Date(u.criadoEm)) === d).length; return { rot: rot(d), v: n, tip: `${rot(d)}: ${fmtN(n)} cadastro${n === 1 ? '' : 's'}` }; }), 'Cadastros')}</div>
+    </div>
+    <div class="an-grid">
+      <div class="card an-card"><h3>Materiais mais acessados</h3><p class="sub">Total de visualizações</p>${ranking(top(ag.views, mats), 'Nenhuma visualização registrada ainda.')}</div>
+      <div class="card an-card"><h3>Materiais mais baixados</h3><p class="sub">Total de downloads</p>${ranking(top(ag.downloads, mats), 'Nenhum download registrado ainda.')}</div>
+    </div>
+    <div class="an-grid">
+      <div class="card an-card"><h3>Notícias, entrevistas e vagas mais lidas</h3><p class="sub">Total de leituras</p>${ranking(top(ag.pubs, posts), 'Nenhuma leitura registrada ainda.')}</div>
+      <div style="display:grid;gap:22px;align-content:start">
+        <div class="card an-card"><h3>Aparelhos usados</h3><p class="sub">Acessos por tipo de aparelho</p>
+          <div class="disp"><div><b>${Math.round((disp.celular || 0) / totDisp * 100)}%</b><span>${ic('phone', 13)} Navegador do celular</span></div><div><b>${Math.round((disp.app || 0) / totDisp * 100)}%</b><span>${ic('phone', 13)} App instalado</span></div><div><b>${Math.round((disp.computador || 0) / totDisp * 100)}%</b><span>${ic('monitor', 13)} Computador</span></div></div></div>
+        <div class="card an-card"><h3>Assinantes por plano</h3><p class="sub">Alunos pagantes com acesso ativo</p>${ranking(Object.entries(porPlano).map(([t, v]) => ({ t, v })).sort((a, b) => b.v - a.v), 'Nenhum assinante pagante no momento.')}</div>
+      </div>
+    </div>
+    <div class="card"><div class="pad" style="padding-bottom:8px"><h3 style="margin:0">Alunos mais ativos</h3><p class="sub muted small" style="margin:4px 0 0">Acessos nos últimos ${periodo} dias</p></div>
+      <div class="table-wrap"><table><tr><th>Aluno</th><th>Situação</th><th>Acessos</th><th>Materiais vistos</th><th>Downloads</th><th>Último acesso</th></tr>
+      ${maisAtivos.map(u => { const st = statusAss(u), a = u.atividade || {}; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}</div></td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td><td>${fmtN(acessosAluno(u))}</td><td>${fmtN(Object.keys(a.views || {}).length)}</td><td>${fmtN(Object.values(a.downloads || {}).reduce((x, y) => x + y, 0))}</td><td>${a.ultimo ? fmtDate(a.ultimo) : '<span class="muted">Nunca</span>'}</td></tr>`; }).join('') || '<tr><td colspan="6" class="muted">Nenhum aluno cadastrado ainda.</td></tr>'}</table></div></div>
+    <p class="hint" style="margin-top:12px">${store.modo === 'gist' ? 'O uso de cada aluno é enviado em lotes, a cada 10 minutos ou quando ele fecha o portal. Os números podem levar alguns minutos para aparecer.' : 'Os números são atualizados conforme os alunos usam o portal.'} Acessos do administrador não são contados.</p>`;
+  $('#per', box).onclick = e => { const b = e.target.closest('[data-p]'); if (b) admAnalises(box, { users, mats, posts, pags, codigos, ag }, Number(b.dataset.p)); };
+  $('#csv', box).onclick = () => {
+    const col = ['Nome', 'E-mail', 'Telefone', 'Instituição', 'Período', 'Situação', 'Plano', 'Válido até', 'Cadastro', 'Último acesso', 'Acessos (total)', 'Materiais vistos', 'Downloads'];
+    const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const linhas = alunos.map(u => { const a = u.atividade || {}; return [u.nome, u.email, u.telefone, u.instituicao, u.semestre, statusAss(u).txt, u.assinatura?.plano || (u.assinatura?.tipo === 'teste' ? 'Teste grátis' : ''), u.assinatura?.validade ? fmtDate(u.assinatura.validade) : '', fmtDate(u.criadoEm), a.ultimo ? fmtDate(a.ultimo) : '', Object.values(a.dias || {}).reduce((x, y) => x + y, 0), Object.keys(a.views || {}).length, Object.values(a.downloads || {}).reduce((x, y) => x + y, 0)].map(q).join(';'); });
+    const blob = new Blob(['﻿' + [col.map(q).join(';'), ...linhas].join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `alunos-${hojeISO()}.csv`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    toast('Planilha de alunos exportada.');
+  };
+  ativarTooltips(box);
+}
+
+function admMateriais(box, mats, ag = { views: {}, downloads: {} }) {
   mats.sort(byNewest);
   const semCapa = mats.filter(m => m.tipo === 'pdf' && m.fileRef && !m.capaRef);
   const driveSemCapa = mats.filter(m => m.tipo === 'pdf' && !m.fileRef && m.url && !m.capaRef);
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
     ${semCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${semCapa.length} PDF${semCapa.length > 1 ? 's' : ''} sem capa</h3><p>As capas são extraídas automaticamente da primeira página. Se ainda não apareceram, clique no botão.</p></div><button class="btn primary" id="gerar-capas">Gerar capas</button></div>` : ''}
     ${driveSemCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${driveSemCapa.length} PDF${driveSemCapa.length > 1 ? 's' : ''} do Google Drive sem capa</h3><p>O Drive não permite ler o arquivo para extrair a capa. Em <b>Editar</b>, use <b>Escolher imagem de capa</b> ou escolha o PDF do seu computador só para gerar a capa e os dados.</p></div></div>` : ''}
-    <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
-    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${fmtDate(m.criadoEm)}</td>
+    <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Acessos</th><th>Downloads</th><th>Data</th><th></th></tr>
+    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${ag.views[m.id] || 0}</td><td>${m.permitirDownload === false ? '<span class="muted small">bloqueado</span>' : ag.downloads[m.id] || 0}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
@@ -2350,6 +2576,7 @@ function formMaterial(m = {}) {
       <label data-t="video audio">Duração<input name="duracao" value="${esc(m.duracao)}" placeholder="Ex.: 45 min ou 1h20"></label>
       <span></span></div>
     <label>Descrição<textarea name="descricao" rows="3">${esc(m.descricao)}</textarea></label>
+    <label class="check"><input type="checkbox" name="permitirDownload" ${m.permitirDownload !== false ? 'checked' : ''}> <span>Permitir que os alunos baixem este arquivo <span class="hint" style="display:inline">(vale para PDFs e arquivos do Google Drive; vídeos do YouTube não podem ser baixados)</span></span></label>
     <label data-t="pdf">Ou, em vez do arquivo, link do PDF no Google Drive<input name="urlpdf" type="url" value="${esc(m.tipo === 'pdf' ? m.url : '')}" placeholder="https://drive.google.com/file/d/…"></label>
     <div class="progress hidden" id="pg"><span></span></div>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar material</button></div>
@@ -2416,7 +2643,7 @@ function formMaterial(m = {}) {
     else if (url && !arquivo && !embedURL(url)) return toast('Para PDF por link, use um link do Google Drive (drive.google.com/file/d/…).', true);
     $('#sv', el).disabled = true;
     const o = { ...m, tipo: t, titulo: f.titulo.value.trim(), disciplina: f.disciplina.value.trim(), autor: f.autor.value.trim(), descricao: f.descricao.value.trim(), url: arquivo ? '' : url,
-      paginas: t === 'pdf' && f.paginas.value ? Number(f.paginas.value) : '', duracao: t !== 'pdf' ? f.duracao.value.trim() : '' };
+      paginas: t === 'pdf' && f.paginas.value ? Number(f.paginas.value) : '', duracao: t !== 'pdf' ? f.duracao.value.trim() : '', permitirDownload: f.permitirDownload.checked };
     try {
       if (arquivo) {
         $('#pg', el).classList.remove('hidden');
