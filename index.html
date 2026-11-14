@@ -2030,24 +2030,51 @@ function lerPDFBasico(buf) {
   const pages = (s.match(/\/Type\s*\/Page(?![s\w])/g) || []).length;
   return { paginas: Math.max(pages, ...counts, 0) || null, titulo: limparTitulo(campo('Title')), autor: autorValido(campo('Author')), assunto: textoValido(campo('Subject')), palavras: textoValido(campo('Keywords')), texto: '', fonte: 'basico' };
 }
+/* Capa (página 1): o título é a linha de letra maior; o subtítulo é a primeira
+   linha abaixo dele com letra maior que a do texto comum. */
+function capaPDF(its) {
+  const h = x => Math.round((Math.abs(x.transform?.[3] || 0) || x.height || 0) * 2) / 2;
+  const mapa = new Map();
+  for (const x of its) {
+    const y = Math.round((x.transform?.[5] || 0) / 2) * 2;
+    const l = mapa.get(y) || { y, h: 0, partes: [] };
+    l.h = Math.max(l.h, h(x)); l.partes.push(x); mapa.set(y, l);
+  }
+  const linhas = [...mapa.values()].sort((a, b) => b.y - a.y).map(l => ({ ...l, t: l.partes.sort((a, b) => (a.transform?.[4] || 0) - (b.transform?.[4] || 0)).map(x => x.str).join(' ').replace(/\s+/g, ' ').trim() })).filter(l => l.t);
+  if (!linhas.length) return { titulo: '', subtitulo: '' };
+  const peso = new Map(); for (const l of linhas) peso.set(l.h, (peso.get(l.h) || 0) + l.t.length);
+  const corpo = [...peso.entries()].sort((a, b) => b[1] - a[1])[0][0];
+  const max = Math.max(...linhas.map(l => l.h));
+  const idxT = linhas.map((l, i) => l.h >= max - 0.5 ? i : -1).filter(i => i >= 0);
+  const titulo = limparTitulo(idxT.map(i => linhas[i].t).join(' '));
+  const ehAutor = t => !!autorNoTexto(t) || /^(por|by)\s/i.test(t);
+  const candidata = l => l.h > corpo + 0.25 && l.h < max - 0.25 && l.t.length >= 4 && !ehAutor(l.t) && l.t !== titulo;
+  let sub = linhas.slice(idxT[idxT.length - 1] + 1).find(candidata) || null;
+  if (sub) { // junta a linha seguinte do mesmo tamanho (subtítulo em duas linhas)
+    const j = linhas.indexOf(sub), prox = linhas[j + 1];
+    if (prox && prox.h === sub.h && candidata(prox)) sub = { t: sub.t + ' ' + prox.t };
+  }
+  return { titulo, subtitulo: sub ? sub.t.slice(0, 300) : '' };
+}
+function separarTitulo(t) {
+  const m = String(t || '').match(/^(.{4,}?)\s*[:–—]\s+(.{4,})$/);
+  return m ? { titulo: m[1].trim(), subtitulo: m[2].trim() } : null;
+}
 async function lerPDFjs(buf) {
   const pdfjs = await carregarPdfJs();
   const doc = await pdfjs.getDocument({ data: new Uint8Array(buf), isEvalSupported: false }).promise;
   let info = {}; try { info = (await doc.getMetadata()).info || {}; } catch {}
-  let texto = '', titulo1 = '';
+  let texto = '', titulo1 = '', subtitulo1 = '';
   const linhas = [];
   for (let i = 1; i <= Math.min(3, doc.numPages); i++) {
     const tc = await (await doc.getPage(i)).getTextContent();
     const its = tc.items.filter(x => x.str && x.str.trim());
-    if (i === 1 && its.length) {
-      const h = x => Math.abs(x.transform?.[3] || 0) || x.height || 0, max = Math.max(...its.map(h));
-      titulo1 = limparTitulo(its.filter(x => h(x) >= max - 0.5).map(x => x.str).join(' '));
-    }
+    if (i === 1 && its.length) { const c = capaPDF(its); titulo1 = c.titulo; subtitulo1 = c.subtitulo; }
     texto += ' ' + its.map(x => x.str).join(' ');
     linhas.push(...its.map(x => x.str));
   }
   texto = texto.replace(/\s+/g, ' ').trim();
-  const r = { paginas: doc.numPages, titulo: limparTitulo(info.Title) || titulo1, autor: autorValido(info.Author) || linhas.map(autorNoTexto).find(Boolean) || '', assunto: textoValido(info.Subject), palavras: textoValido(info.Keywords), texto, fonte: 'pdfjs' };
+  const r = { paginas: doc.numPages, subtitulo: subtitulo1, titulo: limparTitulo(info.Title) || titulo1, autor: autorValido(info.Author) || linhas.map(autorNoTexto).find(Boolean) || '', assunto: textoValido(info.Subject), palavras: textoValido(info.Keywords), texto, fonte: 'pdfjs' };
   try { await doc.destroy(); } catch {}
   return r;
 }
@@ -2057,11 +2084,14 @@ async function lerPDF(file) {
   try { r = await lerPDFjs(buf.slice(0)); } catch (e) { console.warn('PDF.js indisponível; usando leitura básica.', e); }
   if (!r) r = lerPDFBasico(buf);
   if (!r.titulo) r.titulo = tituloDoArquivo(file.name);
-  r.disciplina = adivinharDisciplina(`${r.titulo} ${r.assunto} ${r.palavras} ${r.texto}`);
-  const partes = [];
-  if (r.assunto) partes.push(/[.!?]$/.test(r.assunto) ? r.assunto : r.assunto + '.');
-  partes.push(`Material em PDF${r.paginas ? ` com ${r.paginas} página${r.paginas > 1 ? 's' : ''}` : ''}${r.autor ? `, de ${r.autor}` : ''}${r.disciplina ? `, na área de ${r.disciplina}` : ''}.`);
-  r.descricao = partes.join(' ');
+  const sep = separarTitulo(r.titulo);
+  if (sep) { r.titulo = sep.titulo; if (!r.subtitulo) r.subtitulo = sep.subtitulo; }
+  if (r.subtitulo && r.subtitulo.toLowerCase() === r.titulo.toLowerCase()) r.subtitulo = '';
+  r.disciplina = adivinharDisciplina(`${r.titulo} ${r.subtitulo || ''} ${r.assunto} ${r.palavras} ${r.texto}`);
+  // Descrição = subtítulo do PDF; sem subtítulo, o assunto gravado; por último, um resumo gerado.
+  r.origemDescricao = r.subtitulo ? 'subtítulo' : r.assunto ? 'assunto do PDF' : 'resumo gerado';
+  const cap = t => t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
+  r.descricao = cap(r.subtitulo) || cap(r.assunto) || `Material em PDF${r.paginas ? ` com ${r.paginas} página${r.paginas > 1 ? 's' : ''}` : ''}${r.autor ? `, de ${r.autor}` : ''}${r.disciplina ? `, na área de ${r.disciplina}` : ''}.`;
   return r;
 }
 
@@ -2124,7 +2154,7 @@ function formMaterial(m = {}) {
     mostrar('lendo', `${ic('spark', 16)}<span>Lendo o PDF…</span>`);
     try {
       const r = await lerPDF(file);
-      const preenchidos = [auto('titulo', r.titulo) && 'título', auto('autor', r.autor) && 'autor', auto('paginas', r.paginas) && 'páginas', auto('disciplina', r.disciplina) && 'disciplina', auto('descricao', r.descricao) && 'descrição'].filter(Boolean);
+      const preenchidos = [auto('titulo', r.titulo) && 'título', auto('autor', r.autor) && 'autor', auto('paginas', r.paginas) && 'páginas', auto('disciplina', r.disciplina) && 'disciplina', auto('descricao', r.descricao) && `descrição (${r.origemDescricao})`].filter(Boolean);
       const achou = [r.paginas ? `${r.paginas} página${r.paginas > 1 ? 's' : ''}` : '', r.autor ? `autor: ${esc(r.autor)}` : 'autor não identificado', r.disciplina ? esc(r.disciplina) : ''].filter(Boolean).join(', ');
       let html = `${ic('spark', 16)}<span><b>PDF lido.</b> ${achou}.${preenchidos.length ? ` Campos preenchidos: ${preenchidos.join(', ')}. Confira os destacados.` : ' Os campos que você já tinha preenchido foram mantidos.'}</span>`;
       if (store.modo === 'gist' && file.size > 4 * 1024 * 1024) {

@@ -37,7 +37,7 @@ A partir daí você entra como qualquer usuário, com **e-mail e senha**, em qua
 No **Painel administrativo**:
 - **Materiais:**
   - **Vídeos e áudios:** sempre por link do **YouTube** (pode ser "não listado") ou do **Google Drive**. No Drive, abra o arquivo, clique em **Compartilhar** e mude para **Qualquer pessoa com o link**.
-  - **PDFs:** escolha ou arraste o arquivo (até 4 MB). O portal lê sozinho o **título/tema, o autor e o número de páginas**, sugere a **disciplina** e uma **descrição**, e destaca os campos preenchidos para você conferir. PDFs maiores: publique no Google Drive e cole o link (os dados lidos continuam preenchidos).
+  - **PDFs:** escolha ou arraste o arquivo (até 4 MB). O portal lê sozinho o **título/tema, o autor e o número de páginas**, preenche a **descrição com o subtítulo** do PDF e sugere a **disciplina**, e destaca os campos preenchidos para você conferir. PDFs maiores: publique no Google Drive e cole o link (os dados lidos continuam preenchidos).
   - Os campos mudam conforme o tipo: **PDF** pede autor e páginas; **vídeo** pede link, professor/palestrante e duração; **áudio** pede link, autor/narrador e duração.
 - **Publicações:** escolha a categoria:
   - **Estágio, Concurso, Emprego:** vagas e editais com prazo de inscrição.
