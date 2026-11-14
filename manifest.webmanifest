@@ -1,0 +1,66 @@
+{
+  "name": "Ágora Jurídica — Portal de Estudos em Direito",
+  "short_name": "Ágora Jurídica",
+  "description": "Videoaulas, áudios e PDFs para estudantes de Direito, com estágios, concursos, empregos e atualizações da lei.",
+  "lang": "pt-BR",
+  "start_url": "./index.html#/painel",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "orientation": "portrait",
+  "background_color": "#131a2b",
+  "theme_color": "#131a2b",
+  "categories": [
+    "education",
+    "books"
+  ],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Materiais de estudo",
+      "url": "./index.html#/materiais",
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "Estágios e concursos",
+      "url": "./index.html#/oportunidades",
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "Atualizações da lei",
+      "url": "./index.html#/legislacao",
+      "icons": [
+        {
+          "src": "icon.svg",
+          "sizes": "any"
+        }
+      ]
+    }
+  ]
+}

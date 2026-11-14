@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ágora Jurídica — Portal de Estudos em Direito</title>
+<meta name="theme-color" content="#131a2b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Ágora Jurídica">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<meta name="description" content="Videoaulas, áudios e PDFs para estudantes de Direito, com estágios, concursos, empregos e atualizações legislativas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#131a2b; --ink-2:#1c2640; --ink-3:#2a3554;
+  --paper:#f6f3ec; --card:#fffdf8; --line:#e5ded0; --line-2:#efe9dd; --muted:#6a6e7a;
+  --gold:#b8955a; --gold-2:#dcc597; --wine:#7d1f2e; --wine-2:#5e1520;
+  --ok:#2f6b4f; --ok-bg:#e6f0ea; --warn:#9a6114; --warn-bg:#f8eedd; --err:#a3222f; --err-bg:#f7e4e4;
+  --r:14px; --shadow:0 1px 2px rgba(19,26,43,.05),0 10px 30px rgba(19,26,43,.07);
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;margin:0 0 .35em;line-height:1.12;letter-spacing:.2px}
+h1{font-size:clamp(2.2rem,4.4vw,3.6rem)} h2{font-size:2rem} h3{font-size:1.4rem} h4{font-size:1.15rem}
+p{margin:0 0 1em}
+a{color:var(--wine);text-decoration:none} a:hover{text-decoration:underline}
+.ic{flex:none;vertical-align:middle}
+.muted{color:var(--muted)} .small{font-size:.86rem} .hidden{display:none!important}
+.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+
+/* Buttons & form */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;border:1px solid transparent;border-radius:999px;padding:.68em 1.25em;font:600 .92rem var(--sans);cursor:pointer;transition:.15s;text-decoration:none!important;white-space:nowrap}
+.btn.primary{background:var(--wine);color:#fff}.btn.primary:hover{background:var(--wine-2)}
+.btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:var(--ink-3)}
+.btn.gold{background:var(--gold);color:var(--ink)}.btn.gold:hover{background:var(--gold-2)}
+.btn.ghost{background:transparent;border-color:var(--line);color:var(--ink)}.btn.ghost:hover{background:var(--line-2)}
+.btn.light{background:transparent;border-color:rgba(255,255,255,.3);color:#fff}.btn.light:hover{background:rgba(255,255,255,.08)}
+.btn.sm{padding:.42em .9em;font-size:.82rem}
+.btn.danger{background:transparent;border-color:#e7c4c4;color:var(--err)}.btn.danger:hover{background:var(--err-bg)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.icon-btn{background:none;border:0;cursor:pointer;color:inherit;font-size:1.5rem;line-height:1;padding:.2em .35em;border-radius:8px}
+.form{display:grid;gap:14px}
+.form label{display:grid;gap:6px;font-size:.84rem;font-weight:600;color:var(--ink-2)}
+.form input,.form select,.form textarea,.field{font:400 .95rem var(--sans);padding:.72em .9em;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%;outline:none;transition:.15s}
+.form input:focus,.form select:focus,.form textarea:focus,.field:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,149,90,.18)}
+.form textarea{resize:vertical;min-height:90px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.check{display:flex!important;grid-template-columns:none!important;align-items:flex-start;gap:10px!important;font-weight:400!important}
+.check input{width:auto;margin-top:3px}
+.hint{font-size:.8rem;color:var(--muted);font-weight:400;margin:0}
+.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:6px}
+.err-msg{background:var(--err-bg);color:var(--err);border-radius:10px;padding:.7em .9em;font-size:.88rem}
+
+/* Cards, badges */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.pad{padding:24px}
+.badge{display:inline-flex;align-items:center;gap:.35em;font-size:.72rem;font-weight:600;letter-spacing:.04em;padding:.28em .7em;border-radius:999px;background:var(--line-2);color:var(--ink-2);text-transform:uppercase}
+.badge.ok{background:var(--ok-bg);color:var(--ok)} .badge.warn{background:var(--warn-bg);color:var(--warn)} .badge.err{background:var(--err-bg);color:var(--err)}
+.badge.gold{background:#f3ead7;color:#82642f} .badge.wine{background:#f3e2e4;color:var(--wine)}
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty h3{color:var(--ink)}
+.loading{padding:60px;text-align:center;color:var(--muted)}
+
+/* Public layout */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(246,243,236,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none!important}
+.brand .mark{width:36px;height:36px;border-radius:10px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center;font:700 1.3rem var(--serif)}
+.brand b{font:700 1.35rem var(--serif);letter-spacing:.3px}
+.brand small{display:block;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:-3px}
+.wrap{max-width:1180px;margin:auto;padding:0 24px}
+.hero{background:var(--ink);color:#f3efe6;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(700px 380px at 85% 10%,rgba(184,149,90,.22),transparent 60%),radial-gradient(500px 300px at 0% 100%,rgba(125,31,46,.35),transparent 60%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr .9fr;gap:48px;padding-top:84px;padding-bottom:84px;align-items:center}
+.hero h1{color:#fff}.hero h1 em{color:var(--gold-2);font-style:italic}
+.hero p.lead{font-size:1.1rem;color:#c9cdd8;max-width:560px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.hero-panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:26px}
+.hero-panel .li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.hero-panel .li:last-child{border:0}
+.hero-panel .li .ic{color:var(--gold-2);margin-top:2px}
+.hero-panel .li b{display:block;color:#fff;font-weight:600}
+.hero-panel .li span{font-size:.86rem;color:#aab0bf}
+.section{padding:76px 0}
+.section-h{max-width:640px;margin-bottom:36px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature{padding:26px}
+.feature .ic-wrap{width:44px;height:44px;border-radius:12px;background:#f3ead7;color:#82642f;display:grid;place-items:center;margin-bottom:14px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
+.step{padding:26px;border-top:2px solid var(--gold)}
+.step:before{counter-increment:s;content:"0" counter(s);font:600 2.4rem var(--serif);color:var(--gold);display:block;margin-bottom:6px}
+.price-card{max-width:440px;margin:auto;padding:34px;text-align:center}
+.price{font:600 3.2rem var(--serif);color:var(--ink);line-height:1}
+.price small{font:500 1rem var(--sans);color:var(--muted)}
+.ticks{list-style:none;padding:0;margin:20px 0;text-align:left;display:grid;gap:10px}
+.ticks li{display:flex;gap:10px;align-items:flex-start}.ticks .ic{color:var(--ok);margin-top:2px}
+.footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:.85rem}
+.footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* Auth */
+.auth{min-height:calc(100vh - 66px);display:grid;place-items:center;padding:40px 18px}
+.auth .card{width:100%;max-width:480px;padding:34px}
+.auth h2{margin-bottom:4px}
+.demo-hint{background:#f3ead7;border-radius:10px;padding:.7em .9em;font-size:.84rem;color:#6d5428}
+
+/* App layout */
+.app{display:grid;grid-template-columns:268px 1fr;min-height:100vh}
+.side{background:var(--ink);color:#c6cbd8;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:22px 16px}
+.side .brand{color:#fff;padding:0 8px 22px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.side .brand .mark{background:var(--gold);color:var(--ink)}
+.side .brand small{color:#8c93a6}
+.nav{display:grid;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:.68em .8em;border-radius:10px;color:#c6cbd8;font-weight:500;font-size:.92rem;text-decoration:none!important}
+.nav a:hover{background:rgba(255,255,255,.05);color:#fff}
+.nav a.on{background:rgba(184,149,90,.16);color:#fff}
+.nav a.on .ic{color:var(--gold-2)}
+.nav a .lk{margin-left:auto;opacity:.6}
+.nav .sep{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:#6f7790;padding:16px 12px 6px}
+.side .me{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding:16px 8px 0;display:flex;align-items:center;gap:10px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--ink-3);color:var(--gold-2);display:grid;place-items:center;font-weight:700;flex:none}
+.side .me .nm{color:#fff;font-weight:600;font-size:.88rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .me .st{font-size:.74rem;color:#8c93a6}
+.side .me button{margin-left:auto;color:#8c93a6}
+.side .me button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.mainwrap{min-width:0}
+.mobilebar{display:none}
+.page{padding:36px 40px 60px;max-width:1240px}
+.page-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+.page-h h2{margin:0}
+.page-h p{margin:.3em 0 0;color:var(--muted)}
+
+/* Dashboard */
+.banner{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 26px;border-radius:var(--r);background:var(--ink);color:#e9e6dd;margin-bottom:24px;flex-wrap:wrap}
+.banner h3{color:#fff;margin:0}
+.banner p{margin:.25em 0 0;color:#b6bccb;font-size:.92rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat{padding:20px 22px}
+.stat .n{font:600 2.2rem var(--serif);line-height:1}
+.stat .l{font-size:.8rem;color:var(--muted);margin-top:6px}
+.cols{display:grid;grid-template-columns:1.35fr 1fr;gap:24px}
+.list-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
+.list-h h3{margin:0}
+
+/* Materials */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;align-items:center}
+.search{position:relative;flex:1;min-width:220px}
+.search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search input{padding-left:38px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.45em 1em;font:500 .85rem var(--sans);cursor:pointer;color:var(--ink-2)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.mcard{display:flex;flex-direction:column;overflow:hidden;color:inherit;text-decoration:none!important;transition:.18s}
+.mcard:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(19,26,43,.12)}
+.mthumb{height:118px;display:grid;place-items:center;position:relative}
+.mthumb.video{background:linear-gradient(135deg,#1c2640,#33406a)}
+.mthumb.audio{background:linear-gradient(135deg,#5e1520,#8f3141)}
+.mthumb.pdf{background:linear-gradient(135deg,#6d5428,#b8955a)}
+.mthumb .ic{color:rgba(255,255,255,.9)}
+.mthumb .badge{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92)}
+.mbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.mbody h4{margin:0;font-size:1.2rem}
+.mbody .d{font-size:.78rem;color:var(--gold);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.mbody p{font-size:.87rem;color:var(--muted);margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.player{background:#0d1220;border-radius:var(--r);overflow:hidden}
+.player video{width:100%;display:block;max-height:72vh;background:#000}
+.player iframe{width:100%;border:0;display:block}
+.embed{position:relative;padding-top:56.25%}.embed iframe{position:absolute;inset:0;height:100%}
+.pdf-frame{height:78vh;background:#fff}
+.audio-box{padding:46px 30px;text-align:center;background:linear-gradient(135deg,#1c2640,#5e1520);color:#fff}
+.audio-box audio{width:100%;max-width:560px;margin-top:20px}
+.mini-list{display:grid}
+.mini{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--line-2);color:inherit;text-decoration:none!important}
+.mini:last-child{border-bottom:0}
+.mini:hover{background:#fbf8f1}
+.mini .tic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;flex:none;background:#f3ead7;color:#82642f}
+.mini b{display:block;font-weight:600;font-size:.93rem}
+.mini span{font-size:.8rem;color:var(--muted)}
+
+/* Opportunities / posts */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto}
+.tab{padding:.75em 1.1em;border:0;background:none;font:600 .9rem var(--sans);color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;text-decoration:none!important}
+.tab.on{color:var(--ink);border-color:var(--wine)}
+.plist{display:grid;gap:14px}
+.post{padding:22px 24px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start}
+.post h4{margin:6px 0 4px;font-size:1.3rem}
+.post h4 a{color:var(--ink)}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:.83rem;color:var(--muted);margin:6px 0 8px}
+.meta span{display:inline-flex;align-items:center;gap:5px}
+.post p{margin:0;color:#3d4252;font-size:.92rem}
+.timeline{position:relative;padding-left:28px;display:grid;gap:16px}
+.timeline:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl-item{position:relative}
+.tl-item:before{content:"";position:absolute;left:-26px;top:26px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--wine)}
+.article{max-width:820px}
+.article .body{font-size:1rem;line-height:1.75;color:#2a2f3d}
+.article .body p{margin:0 0 1.1em}
+
+/* Tables / admin */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line);background:#fbf8f1}
+td{padding:13px 16px;border-bottom:1px solid var(--line-2);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.progress{height:8px;background:var(--line-2);border-radius:99px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+
+/* Modal, toast */
+.modal-bg{position:fixed;inset:0;background:rgba(13,18,32,.55);display:grid;place-items:center;z-index:100;padding:18px;animation:fade .15s}
+.modal{background:var(--card);border-radius:18px;width:100%;max-width:560px;max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.modal.wide{max-width:760px}
+.modal-h{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+.modal-h h3{margin:0}
+.modal-b{padding:22px 24px}
+#toasts{position:fixed;bottom:22px;right:22px;display:grid;gap:10px;z-index:200}
+.toast{background:var(--ink);color:#fff;padding:.85em 1.15em;border-radius:12px;box-shadow:var(--shadow);font-size:.9rem;max-width:360px;animation:up .2s;border-left:3px solid var(--gold)}
+.toast.err{border-color:#e06b78}
+@keyframes fade{from{opacity:0}}@keyframes up{from{opacity:0;transform:translateY(8px)}}
+
+/* Plan / checkout */
+.checkout{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.method{border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;cursor:pointer;font-weight:600;font-size:.88rem;background:#fff}
+.method input{display:none}
+.method:has(input:checked){border-color:var(--wine);box-shadow:0 0 0 3px rgba(125,31,46,.12);color:var(--wine)}
+.mode-tag{font-size:.74rem;color:var(--muted)}
+
+@media (max-width:1000px){
+  .hero .wrap,.cols,.checkout{grid-template-columns:1fr}
+  .grid3,.steps{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+}
+/* ---------- Desktop: barra superior de sistema ---------- */
+.deskbar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:20px;padding:12px 40px;background:rgba(246,243,236,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.crumb{font-size:.86rem;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.crumb .sl{color:var(--line)}
+.gsearch{position:relative;margin-left:auto;width:min(420px,40vw)}
+.gsearch .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.gsearch input{width:100%;padding:.55em 4.2em .55em 2.4em;border:1px solid var(--line);border-radius:10px;background:#fff;font:400 .88rem var(--sans);outline:none}
+.gsearch input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,149,90,.18)}
+.gsearch kbd{position:absolute;right:10px;top:50%;transform:translateY(-50%);font:600 .68rem var(--sans);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 6px;background:var(--paper)}
+.uchip{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600;font-size:.88rem;padding:4px 10px 4px 4px;border-radius:999px;border:1px solid var(--line);background:#fff;text-decoration:none!important}
+.avatar.sm{width:28px;height:28px;font-size:.72rem}
+.apphead,.tabbar,.mback,.mobile-only{display:none}
+.install{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+.install .ico{width:48px;height:48px;border-radius:12px;background:var(--ink);color:var(--gold-2);display:grid;place-items:center;font:700 1.4rem var(--serif);flex:none}
+.install p{margin:0}
+.install .x{margin-left:auto}
+.welcome{min-height:100vh;min-height:100dvh;background:var(--ink);color:#e9e6dd;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 48px) 26px calc(env(safe-area-inset-bottom) + 28px);position:relative;overflow:hidden}
+.welcome:before{content:"";position:absolute;inset:0;background:radial-gradient(420px 300px at 90% 0%,rgba(184,149,90,.25),transparent 60%),radial-gradient(380px 300px at 0% 100%,rgba(125,31,46,.4),transparent 60%)}
+.welcome>*{position:relative}
+.welcome .bigmark{width:76px;height:76px;border-radius:22px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font:700 2.6rem var(--serif);margin-bottom:28px}
+.welcome h1{color:#fff;font-size:2.5rem}.welcome h1 em{color:var(--gold-2)}
+.welcome .wl{display:grid;gap:14px;margin:26px 0}
+.welcome .wl div{display:flex;gap:12px;align-items:center;color:#c9cdd8}
+.welcome .wl .ic{color:var(--gold-2)}
+.welcome .acts{margin-top:auto;display:grid;gap:10px}
+.welcome .btn{padding:1em;font-size:1rem}
+
+/* ---------- Celular: experiência de aplicativo ---------- */
+@media (max-width:820px){
+  html,body{overscroll-behavior-y:none}
+  body{-webkit-tap-highlight-color:transparent;font-size:15.5px}
+  .side,.deskbar{display:none}
+  .app{display:block;min-height:100vh}
+  .mobile-only{display:block}
+  .apphead{display:flex;align-items:center;gap:6px;position:sticky;top:0;z-index:30;background:var(--ink);color:#fff;padding:calc(env(safe-area-inset-top) + 8px) 8px 8px;min-height:56px;user-select:none;-webkit-user-select:none}
+  .apphead h1{font:600 1.08rem var(--sans);margin:0 0 0 6px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:0}
+  .apphead .mark{width:32px;height:32px;border-radius:9px;background:var(--gold);color:var(--ink);display:grid;place-items:center;font:700 1.15rem var(--serif);margin-left:6px}
+  .apphead .icon-btn{width:42px;height:42px;display:grid;place-items:center;color:#fff;border-radius:50%}
+  .apphead .icon-btn:active{background:rgba(255,255,255,.1)}
+  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,253,248,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(env(safe-area-inset-bottom) + 6px);user-select:none;-webkit-user-select:none}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.68rem;font-weight:600;color:var(--muted);padding:6px 0;border-radius:12px;text-decoration:none!important;position:relative}
+  .tabbar a.on{color:var(--wine)}
+  .tabbar a.on:before{content:"";position:absolute;top:2px;width:44px;height:30px;border-radius:15px;background:#f3e2e4;z-index:-1}
+  .tabbar a .lk{position:absolute;top:2px;right:calc(50% - 20px);color:var(--muted)}
+  .mainwrap main{padding-bottom:calc(env(safe-area-inset-bottom) + 84px);animation:fade .18s}
+  .page{padding:18px 16px 24px}
+  .page-h{margin-bottom:16px}
+  .page-h:not(.keep) h2,.page-h:not(.keep) .eyebrow{display:none}
+  .page-h:not(.keep) p{margin:0}
+  .page-h h2{font-size:1.75rem}
+  h2{font-size:1.6rem}
+  .btn{min-height:44px}.btn.sm{min-height:36px}
+  .btn:active,.chip:active,.mcard:active,.mini:active,.post:active{transform:scale(.98)}
+  .mcard:hover{transform:none}
+  .grid3,.steps,.row2,.methods{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .stat{padding:14px 16px}.stat .n{font-size:1.8rem}
+  .cols{gap:20px}
+  .filters{position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10;background:var(--paper);margin:-18px -16px 14px;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .filters .field{font-size:16px}
+  .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}
+  .chips::-webkit-scrollbar{display:none}
+  .tabs{margin:-18px -16px 16px;padding:0 8px;background:var(--card);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10}
+  .mgrid{grid-template-columns:1fr;gap:10px}
+  .mcard{flex-direction:row;align-items:stretch}
+  .mthumb{width:92px;height:auto;min-height:92px;flex:none}
+  .mthumb .badge{display:none}
+  .mthumb .ic{width:30px;height:30px}
+  .mbody{padding:12px 14px}
+  .mbody h4{font-size:1.08rem}
+  .post{grid-template-columns:1fr;padding:16px 18px}
+  .post>.btn{display:none}
+  .post h4{font-size:1.15rem}
+  .timeline{padding-left:20px}.tl-item:before{left:-18px}
+  .pdf-frame{height:70vh}
+  .player{margin:0 -16px;border-radius:0}
+  .banner{padding:18px}
+  .card.pad,.pad{padding:18px}
+  .form input,.form select,.form textarea{font-size:16px;padding:.8em .9em}
+  .modal-bg{align-items:end;padding:0}
+  .modal{max-width:none!important;border-radius:20px 20px 0 0;max-height:94vh;padding-bottom:env(safe-area-inset-bottom);animation:sheet .22s ease-out}
+  .modal:before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 0}
+  .modal-h{padding:12px 18px}.modal-b{padding:16px 18px 22px}
+  #toasts{left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom) + 80px)}
+  .toast{max-width:none}
+  .table-wrap{margin:0 -1px}
+  .topbar .hide-sm,.topbar nav{display:none}
+  .topbar .in{padding:calc(env(safe-area-inset-top) + 10px) 12px 10px}
+  .mback{display:grid}
+  .auth{min-height:auto;padding:12px 4px 30px;place-items:stretch}
+  .auth .card{border:0;box-shadow:none;background:transparent;padding:16px}
+}
+@keyframes sheet{from{transform:translateY(100%)}}
+html.standalone .apphead{padding-top:calc(env(safe-area-inset-top) + 8px)}
+</style>
+</head>
+<body>
+<div id="app"><div class="loading">Carregando portal…</div></div>
+<div id="toasts"></div>
+
+<script type="module">
+/* =====================================================================
+   CONFIGURAÇÃO
+   - backend: 'local'    → tudo salvo no navegador (IndexedDB). Ideal para testar.
+   - backend: 'firebase' → Firebase Auth + Firestore + Storage (multiusuário real).
+   Para usar o Firebase, cole as credenciais do seu projeto (Console do
+   Firebase → Configurações do projeto → Seus apps → Web) e troque o backend.
+   ===================================================================== */
+const CONFIG = {
+  backend: 'local',
+  firebase: {
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+  },
+  firebaseVersion: '10.12.2'
+};
+
+/* ============================ Constantes ============================ */
+const DAY = 86400000;
+const DEFAULT_CFG = {
+  id: 'geral', nomePortal: 'Ágora Jurídica', planoNome: 'Assinatura Mensal',
+  preco: 39.90, diasAcesso: 30, linkPagamento: '', chavePix: '',
+  instrucoesPagamento: 'Após o pagamento, seu acesso é liberado assim que a confirmação for registrada.'
+};
+const DISCIPLINAS = ['Direito Constitucional','Direito Civil','Direito Penal','Processo Civil','Processo Penal','Direito Administrativo','Direito Tributário','Direito do Trabalho','Processo do Trabalho','Direito Empresarial','Direito do Consumidor','Direito Ambiental','Direito Internacional','Direitos Humanos','Ética e Estatuto da OAB','Filosofia e Teoria do Direito','Prática Jurídica'];
+const CATS = {
+  estagio:  { nome: 'Estágio',  plural: 'Estágios',  icon: 'book' },
+  concurso: { nome: 'Concurso', plural: 'Concursos', icon: 'shield' },
+  emprego:  { nome: 'Emprego',  plural: 'Empregos',  icon: 'briefcase' },
+  lei:      { nome: 'Atualização legislativa', plural: 'Legislação', icon: 'scale' }
+};
+const TIPOS = { video: { nome: 'Vídeo', icon: 'play' }, audio: { nome: 'Áudio', icon: 'audio' }, pdf: { nome: 'PDF', icon: 'file' } };
+
+const isoIn = d => { const x = new Date(Date.now() + d * DAY); return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; };
+const SEED_POSTS = [
+  { categoria: 'estagio', titulo: '[Exemplo] Programa de estágio em escritório de advocacia', instituicao: 'Escritório Exemplo Advogados', local: 'São Paulo/SP · Híbrido', prazo: isoIn(20), link: '', resumo: 'Publicação de demonstração. Edite ou exclua no Painel administrativo.', conteudo: 'Esta é uma publicação de exemplo criada automaticamente para mostrar como as vagas aparecem para os alunos.\n\nRequisitos (exemplo): cursando a partir do 5º semestre, disponibilidade de 6 horas diárias.\n\nBenefícios (exemplo): bolsa-auxílio, vale-transporte e programa de mentoria.' },
+  { categoria: 'concurso', titulo: '[Exemplo] Edital de concurso para Analista Judiciário', instituicao: 'Tribunal Exemplo', local: 'Nacional', prazo: isoIn(35), link: '', resumo: 'Publicação de demonstração para a seção de concursos.', conteudo: 'Use esta seção para divulgar editais, cronogramas e conteúdos programáticos.\n\nInclua sempre o link para o edital oficial.' },
+  { categoria: 'emprego', titulo: '[Exemplo] Advogado(a) júnior — área cível', instituicao: 'Empresa Exemplo S.A.', local: 'Belo Horizonte/MG · Presencial', prazo: isoIn(15), link: '', resumo: 'Publicação de demonstração para a seção de empregos.', conteudo: 'Descreva atividades, requisitos (ex.: inscrição na OAB) e forma de candidatura.' },
+  { categoria: 'lei', titulo: '[Exemplo] Como publicar uma atualização legislativa', instituicao: 'Norma / Ato normativo', local: 'Federal', prazo: isoIn(0), link: '', resumo: 'Modelo de publicação para a seção de atualizações da lei.', conteudo: 'Informe o número da norma, a data de publicação, o que mudou e quais disciplinas são afetadas.\n\nInclua o link para o texto oficial no portal do Planalto ou no Diário Oficial.' }
+];
+
+/* ============================== Utils =============================== */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).slice(2));
+const fmtDate = v => { if (!v) return '—'; const d = typeof v === 'string' ? new Date(v + 'T12:00:00') : new Date(v); return isNaN(d) ? '—' : d.toLocaleDateString('pt-BR'); };
+const brl = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const fmtSize = b => !b ? '' : b > 1e9 ? (b / 1e9).toFixed(1) + ' GB' : b > 1e6 ? (b / 1e6).toFixed(1) + ' MB' : Math.round(b / 1e3) + ' KB';
+const safeURL = u => /^(https?:|blob:)/i.test(String(u || '')) ? u : '#';
+const paras = t => esc(t).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+const initials = n => String(n || '?').trim().split(/\s+/).slice(0, 2).map(x => x[0]).join('').toUpperCase();
+const byNewest = (a, b) => (b.criadoEm || 0) - (a.criadoEm || 0);
+
+async function hash(senha, salt) {
+  const data = new TextEncoder().encode(salt + ':' + senha);
+  if (crypto.subtle) {
+    const b = await crypto.subtle.digest('SHA-256', data);
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  }
+  let h = 0; for (const c of data) h = (h * 31 + c) | 0; return 'x' + h;
+}
+
+let objectURLs = [];
+const trackURL = u => (objectURLs.push(u), u);
+const revokeURLs = () => { objectURLs.forEach(u => URL.revokeObjectURL(u)); objectURLs = []; };
+
+const I = {
+  home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/>',
+  briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
+  scale: '<path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+  logout: '<path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/>',
+  play: '<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/>',
+  audio: '<path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>',
+  file: '<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M8 13h8M8 17h6"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  check: '<path d="M5 12l5 5 9-10"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  pin: '<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+  ext: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  card: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  download: '<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>'
+};
+const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
+
+function toast(msg, err = false) {
+  const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
+  const box = $('#toasts'); while (box.children.length >= 3) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 3800);
+}
+function modal(title, body, { wide = false } = {}) {
+  const el = document.createElement('div'); el.className = 'modal-bg';
+  el.innerHTML = `<div class="modal ${wide ? 'wide' : ''}" role="dialog" aria-modal="true"><div class="modal-h"><h3>${esc(title)}</h3><button class="icon-btn" data-close aria-label="Fechar">×</button></div><div class="modal-b">${body}</div></div>`;
+  document.body.appendChild(el);
+  const close = () => el.remove();
+  el.addEventListener('click', e => { if (e.target === el || e.target.closest('[data-close]')) close(); });
+  return { el, close };
+}
+function confirmar(msg, ok = 'Confirmar') {
+  return new Promise(res => {
+    const { el, close } = modal('Confirmação', `<p>${esc(msg)}</p><div class="actions"><button class="btn ghost" data-no>Cancelar</button><button class="btn primary" data-yes>${esc(ok)}</button></div>`);
+    $('[data-yes]', el).onclick = () => { close(); res(true); };
+    $('[data-no]', el).onclick = () => { close(); res(false); };
+  });
+}
+
+/* ===================== Camada de dados: IndexedDB ===================== */
+function LocalStore() {
+  let db;
+  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config'];
+  const open = () => new Promise((res, rej) => {
+    const r = indexedDB.open('agora-juridica', 1);
+    r.onupgradeneeded = () => { for (const s of STORES) if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); };
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  });
+  const op = (s, mode, fn) => new Promise((res, rej) => {
+    const t = db.transaction(s, mode); const req = fn(t.objectStore(s));
+    t.oncomplete = () => res(req ? req.result : undefined); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+  });
+  const all = s => op(s, 'readonly', o => o.getAll());
+  const get = (s, id) => op(s, 'readonly', o => o.get(id));
+  const put = (s, v) => op(s, 'readwrite', o => o.put(v));
+  const del = (s, id) => op(s, 'readwrite', o => o.delete(id));
+  const pub = u => { if (!u) return null; const { senhaHash, salt, ...r } = u; return r; };
+
+  return {
+    modo: 'local',
+    async init() {
+      db = await open();
+      if (!(await all('users')).length) {
+        const salt = uid();
+        await put('users', { id: uid(), nome: 'Administrador', email: 'admin@agora.local', role: 'admin', criadoEm: Date.now(), assinatura: null, telefone: '', instituicao: '', semestre: '', salt, senhaHash: await hash('admin123', salt) });
+      }
+      if (!(await get('config', 'seed'))) {
+        let t = Date.now();
+        for (const p of SEED_POSTS) await put('publicacoes', { ...p, id: uid(), criadoEm: t-- });
+        await put('config', { id: 'seed', ok: true });
+      }
+    },
+    async register(d) {
+      const email = d.email.trim().toLowerCase();
+      if ((await all('users')).some(u => u.email === email)) throw new Error('Este e-mail já está cadastrado.');
+      if (d.senha.length < 6) throw new Error('A senha deve ter pelo menos 6 caracteres.');
+      const salt = uid();
+      const u = { id: uid(), nome: d.nome.trim(), email, telefone: d.telefone || '', instituicao: d.instituicao || '', semestre: d.semestre || '', role: 'aluno', criadoEm: Date.now(), assinatura: null, salt, senhaHash: await hash(d.senha, salt) };
+      await put('users', u); await put('config', { id: 'sessao', userId: u.id });
+      return pub(u);
+    },
+    async login(email, senha) {
+      email = email.trim().toLowerCase();
+      const u = (await all('users')).find(x => x.email === email);
+      if (!u || u.senhaHash !== await hash(senha, u.salt)) throw new Error('E-mail ou senha incorretos.');
+      await put('config', { id: 'sessao', userId: u.id });
+      return pub(u);
+    },
+    async logout() { await del('config', 'sessao'); },
+    async currentUser() { const s = await get('config', 'sessao'); return s ? pub(await get('users', s.userId)) : null; },
+    async getUser(id) { return pub(await get('users', id)); },
+    async listUsers() { return (await all('users')).map(pub); },
+    async updateUser(id, patch) { const u = await get('users', id); Object.assign(u, patch); await put('users', u); return pub(u); },
+    async list(col, filtro) { const r = await all(col); return filtro ? r.filter(x => x[filtro[0]] === filtro[1]) : r; },
+    async get(col, id) { return (await get(col, id)) || null; },
+    async save(col, o) { o = { ...o }; if (!o.id) { o.id = uid(); o.criadoEm = Date.now(); } o.atualizadoEm = Date.now(); await put(col, o); return o; },
+    remove: (col, id) => del(col, id),
+    async uploadFile(file, onProgress) { const id = uid(); onProgress?.(0.4); await put('arquivos', { id, blob: file, nome: file.name, mime: file.type }); onProgress?.(1); return 'idb:' + id; },
+    async fileURL(ref) { if (!ref?.startsWith('idb:')) return ref; const f = await get('arquivos', ref.slice(4)); return f ? trackURL(URL.createObjectURL(f.blob)) : null; },
+    async deleteFile(ref) { if (ref?.startsWith('idb:')) await del('arquivos', ref.slice(4)); },
+    async getConfig() { return { ...DEFAULT_CFG, ...((await get('config', 'geral')) || {}) }; },
+    async saveConfig(c) { await put('config', { ...c, id: 'geral' }); }
+  };
+}
+
+/* ================== Camada de dados: Firebase (nuvem) ================= */
+async function FirebaseStore() {
+  const base = `https://www.gstatic.com/firebasejs/${CONFIG.firebaseVersion}/`;
+  const [AppM, A, F, ST] = await Promise.all(['firebase-app.js', 'firebase-auth.js', 'firebase-firestore.js', 'firebase-storage.js'].map(f => import(base + f)));
+  const app = AppM.initializeApp(CONFIG.firebase);
+  const auth = A.getAuth(app), db = F.getFirestore(app), st = ST.getStorage(app);
+  await new Promise(r => { const un = A.onAuthStateChanged(auth, () => { un(); r(); }); });
+
+  const MSG = {
+    'auth/email-already-in-use': 'Este e-mail já está cadastrado.', 'auth/invalid-credential': 'E-mail ou senha incorretos.',
+    'auth/wrong-password': 'E-mail ou senha incorretos.', 'auth/user-not-found': 'E-mail ou senha incorretos.',
+    'auth/weak-password': 'A senha deve ter pelo menos 6 caracteres.', 'auth/invalid-email': 'E-mail inválido.',
+    'auth/too-many-requests': 'Muitas tentativas. Aguarde alguns minutos.', 'permission-denied': 'Acesso negado. Verifique sua assinatura ou permissões.',
+    'storage/unauthorized': 'Sem permissão para acessar este arquivo.'
+  };
+  const wrap = fn => async (...a) => { try { return await fn(...a); } catch (e) { console.error(e); throw new Error(MSG[e.code] || e.message); } };
+  const col = c => F.collection(db, c);
+  const ref = (c, id) => F.doc(db, c, id);
+  const clean = o => JSON.parse(JSON.stringify(o)); // remove undefined
+
+  const s = {
+    modo: 'firebase',
+    async init() {},
+    register: wrap(async d => {
+      const c = await A.createUserWithEmailAndPassword(auth, d.email.trim(), d.senha);
+      const u = { id: c.user.uid, nome: d.nome.trim(), email: d.email.trim().toLowerCase(), telefone: d.telefone || '', instituicao: d.instituicao || '', semestre: d.semestre || '', role: 'aluno', criadoEm: Date.now(), assinatura: null };
+      await F.setDoc(ref('users', u.id), u);
+      return u;
+    }),
+    login: wrap(async (e, p) => { await A.signInWithEmailAndPassword(auth, e.trim(), p); return s.currentUser(); }),
+    logout: () => A.signOut(auth),
+    async currentUser() {
+      const fu = auth.currentUser; if (!fu) return null;
+      const snap = await F.getDoc(ref('users', fu.uid));
+      if (snap.exists()) return snap.data();
+      const u = { id: fu.uid, nome: fu.displayName || fu.email.split('@')[0], email: (fu.email || '').toLowerCase(), telefone: '', instituicao: '', semestre: '', role: 'aluno', criadoEm: Date.now(), assinatura: null };
+      await F.setDoc(ref('users', fu.uid), u); return u;
+    },
+    getUser: wrap(async id => { const d = await F.getDoc(ref('users', id)); return d.exists() ? d.data() : null; }),
+    listUsers: wrap(async () => (await F.getDocs(col('users'))).docs.map(d => d.data())),
+    updateUser: wrap(async (id, p) => { await F.updateDoc(ref('users', id), clean(p)); return s.getUser(id); }),
+    list: wrap(async (c, f) => { const q = f ? F.query(col(c), F.where(f[0], '==', f[1])) : col(c); return (await F.getDocs(q)).docs.map(d => ({ ...d.data(), id: d.id })); }),
+    get: wrap(async (c, id) => { const d = await F.getDoc(ref(c, id)); return d.exists() ? { ...d.data(), id: d.id } : null; }),
+    save: wrap(async (c, o) => { o = { ...o }; if (!o.id) { o.id = F.doc(col(c)).id; o.criadoEm = Date.now(); } o.atualizadoEm = Date.now(); await F.setDoc(ref(c, o.id), clean(o)); return o; }),
+    remove: wrap((c, id) => F.deleteDoc(ref(c, id))),
+    uploadFile: (file, onProgress) => new Promise((res, rej) => {
+      const path = `materiais/${uid()}-${file.name.replace(/[^\w.\-]/g, '_')}`;
+      const t = ST.uploadBytesResumable(ST.ref(st, path), file, { contentType: file.type });
+      t.on('state_changed', sn => onProgress?.(sn.bytesTransferred / sn.totalBytes), e => rej(new Error(MSG[e.code] || e.message)), () => res('st:' + path));
+    }),
+    async fileURL(r) { if (!r?.startsWith('st:')) return r; return ST.getDownloadURL(ST.ref(st, r.slice(3))); },
+    async deleteFile(r) { if (r?.startsWith('st:')) { try { await ST.deleteObject(ST.ref(st, r.slice(3))); } catch (e) { console.warn(e); } } },
+    async getConfig() { try { const d = await F.getDoc(ref('config', 'geral')); return { ...DEFAULT_CFG, ...(d.exists() ? d.data() : {}) }; } catch { return { ...DEFAULT_CFG }; } },
+    saveConfig: wrap(c => F.setDoc(ref('config', 'geral'), clean({ ...c, id: 'geral' })))
+  };
+  return s;
+}
+
+/* ============================ Estado/regras ============================ */
+const S = { user: null, config: { ...DEFAULT_CFG }, navCount: 0 };
+let store;
+const ativo = u => !!u && (u.role === 'admin' || (u.assinatura?.status === 'ativa' && u.assinatura.validade > Date.now()));
+function statusAss(u) {
+  if (!u) return { txt: '—', cls: '' };
+  if (u.role === 'admin') return { txt: 'Administrador', cls: 'gold' };
+  const a = u.assinatura;
+  if (!a) return { txt: 'Sem assinatura', cls: 'warn' };
+  if (a.status === 'cancelada') return { txt: 'Cancelada', cls: 'err' };
+  if (a.validade > Date.now()) return { txt: 'Ativa até ' + fmtDate(a.validade), cls: 'ok' };
+  return { txt: 'Expirada em ' + fmtDate(a.validade), cls: 'err' };
+}
+async function ativarAssinatura(userId) {
+  const u = await store.getUser(userId);
+  const vigente = u.assinatura?.status === 'ativa' && u.assinatura.validade > Date.now();
+  const base = vigente ? u.assinatura.validade : Date.now();
+  return store.updateUser(userId, { assinatura: { status: 'ativa', inicio: vigente ? u.assinatura.inicio : Date.now(), validade: base + (Number(S.config.diasAcesso) || 30) * DAY } });
+}
+function prazoBadge(p) {
+  if (p.categoria === 'lei') return `<span class="badge wine">${ic('scale', 12)} ${fmtDate(p.prazo)}</span>`;
+  if (!p.prazo) return '';
+  const d = Math.ceil((new Date(p.prazo + 'T23:59:59') - Date.now()) / DAY);
+  if (d < 0) return '<span class="badge err">Encerrado</span>';
+  if (d <= 7) return `<span class="badge warn">${d === 0 ? 'Último dia' : `Faltam ${d} dia${d > 1 ? 's' : ''}`}</span>`;
+  return '<span class="badge ok">Inscrições abertas</span>';
+}
+
+/* =============================== Router =============================== */
+const ROUTES = {
+  '':            { view: viewHome },
+  entrar:        { view: viewLogin, guest: true },
+  cadastro:      { view: viewCadastro, guest: true },
+  assinar:       { view: viewAssinar, auth: true },
+  painel:        { view: viewPainel, auth: true },
+  materiais:     { view: viewMateriais, auth: true, ativo: true },
+  material:      { view: viewMaterial, auth: true, ativo: true },
+  oportunidades: { view: viewOportunidades, auth: true, ativo: true },
+  legislacao:    { view: viewLegislacao, auth: true, ativo: true },
+  publicacao:    { view: viewPublicacao, auth: true, ativo: true },
+  perfil:        { view: viewPerfil, auth: true },
+  busca:         { view: viewBusca, auth: true, ativo: true },
+  admin:         { view: viewAdmin, auth: true, admin: true }
+};
+function go(h) { const t = '#/' + h; if (location.hash === t) render(); else location.hash = t; }
+
+async function render() {
+  revokeURLs(); S.navCount++;
+  const [path, qs] = location.hash.replace(/^#\/?/, '').split('?');
+  const [name = '', param] = path.split('/');
+  const q = new URLSearchParams(qs || '');
+  const r = ROUTES[name] || ROUTES[''];
+  try { S.user = await store.currentUser(); } catch (e) { console.error(e); S.user = null; }
+  if (r.auth && !S.user) return go('entrar');
+  if (r.guest && S.user) return go('painel');
+  if (name === '' && S.user) return go('painel');
+  if (r.admin && S.user?.role !== 'admin') return go('painel');
+  if (r.ativo && !ativo(S.user)) { toast('Assine o portal para acessar este conteúdo.'); return go('assinar'); }
+
+  const app = $('#app');
+  app.innerHTML = S.user ? shellHTML(name) : publicHTML(name);
+  const main = $('#main');
+  main.innerHTML = '<div class="loading">Carregando…</div>';
+  bindShell();
+  try { await r.view(main, param, q); bindInstall(); }
+  catch (e) { console.error(e); main.innerHTML = `<div class="page"><div class="card empty"><h3>Não foi possível carregar</h3><p>${esc(e.message)}</p></div></div>`; }
+  window.scrollTo(0, 0);
+}
+
+function brandHTML(href = '#/') {
+  return `<a class="brand" href="${href}"><span class="mark">Á</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
+}
+const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const DETAIL = { material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
+const isMobile = () => matchMedia('(max-width: 820px)').matches;
+const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+let deferredPrompt = null;
+const lsGet = k => { try { return localStorage.getItem(k); } catch { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+
+function publicHTML(name) {
+  if (name === '' && isMobile()) return '<main id="main"></main>';
+  return `<header class="topbar"><div class="in">${name ? `<a class="icon-btn mback" href="#/" aria-label="Voltar">${ic('back', 22)}</a>` : ''}${brandHTML()}
+    <nav style="display:flex;gap:10px;align-items:center">
+      <a class="btn ghost sm hide-sm" href="#/" ${name === '' ? 'style="display:none"' : ''}>Início</a>
+      <a class="btn ghost sm" href="#/entrar">Entrar</a><a class="btn primary sm" href="#/cadastro">Criar conta</a>
+    </nav></div></header><main id="main"></main>`;
+}
+function shellHTML(name) {
+  const u = S.user, at = ativo(u), st = statusAss(u);
+  const item = (r, label, icon, gated) => `<a href="#/${r}" class="${name === r || (r === 'materiais' && name === 'material') || (r === 'oportunidades' && name === 'publicacao') ? 'on' : ''}">${ic(icon)} ${label}${gated && !at ? `<span class="lk">${ic('lock', 14)}</span>` : ''}</a>`;
+  return `<div class="app" id="shell">
+    <aside class="side">${brandHTML('#/painel')}
+      <nav class="nav">
+        ${item('painel', 'Início', 'home')}
+        <div class="sep">Conteúdo</div>
+        ${item('materiais', 'Materiais de estudo', 'book', true)}
+        ${item('oportunidades', 'Estágios, concursos e empregos', 'briefcase', true)}
+        ${item('legislacao', 'Atualizações da lei', 'scale', true)}
+        <div class="sep">Conta</div>
+        ${item('perfil', 'Minha conta', 'user')}
+        ${!at ? item('assinar', 'Assinar o portal', 'card') : ''}
+        ${u.role === 'admin' ? item('admin', 'Painel administrativo', 'settings') : ''}
+      </nav>
+      <div class="me"><div class="avatar">${esc(initials(u.nome))}</div><div style="min-width:0"><div class="nm">${esc(u.nome)}</div><div class="st">${esc(st.txt)}</div></div><button class="icon-btn" id="logout" title="Sair">${ic('logout')}</button></div>
+    </aside>
+    <div class="mainwrap">
+      <header class="deskbar">
+        <div class="crumb"><span class="muted">${esc(S.config.nomePortal)}</span>${DETAIL[name] && name !== 'assinar' && name !== 'admin' ? `<span class="sl">/</span><a href="#/${DETAIL[name]}">${esc(TITLES[DETAIL[name]])}</a>` : ''}<span class="sl">/</span><b>${esc(TITLES[name] || 'Início')}</b></div>
+        ${at ? `<form class="gsearch" id="gs" role="search">${ic('search', 16)}<input name="q" placeholder="Buscar materiais, vagas, editais e leis…" autocomplete="off"><kbd>Ctrl K</kbd></form>` : '<span style="margin-left:auto"></span>'}
+        <a class="uchip" href="#/perfil"><span class="avatar sm">${esc(initials(u.nome))}</span>${esc(u.nome.split(' ')[0])}</a>
+      </header>
+      <header class="apphead">
+        ${DETAIL[name] ? `<button class="icon-btn" id="back" aria-label="Voltar">${ic('back', 22)}</button>` : '<span class="mark">Á</span>'}
+        <h1>${esc(TITLES[name] || S.config.nomePortal)}</h1>
+        ${at && name !== 'busca' ? `<a class="icon-btn" href="#/busca" aria-label="Buscar">${ic('search', 21)}</a>` : ''}
+        ${u.role === 'admin' && name !== 'admin' ? `<a class="icon-btn" href="#/admin" aria-label="Administração">${ic('settings', 21)}</a>` : ''}
+      </header>
+      <main id="main"></main>
+    </div>
+    <nav class="tabbar">${[['painel', 'Início', 'home', ['painel']], ['materiais', 'Estudar', 'book', ['materiais', 'material']], ['oportunidades', 'Carreira', 'briefcase', ['oportunidades', 'publicacao']], ['legislacao', 'Leis', 'scale', ['legislacao']], ['perfil', 'Conta', 'user', ['perfil', 'assinar', 'admin']]]
+      .map(([r, l, i, act]) => `<a href="#/${r}" class="${act.includes(name) ? 'on' : ''}">${ic(i, 22)}${l}${r !== 'painel' && r !== 'perfil' && !at ? `<span class="lk">${ic('lock', 11)}</span>` : ''}</a>`).join('')}</nav>
+  </div>`;
+}
+function bindShell() {
+  const lo = $('#logout'); if (lo) lo.onclick = sair;
+  const bk = $('#back'); if (bk) bk.onclick = () => { const [n] = location.hash.replace(/^#\/?/, '').split(/[/?]/); if (history.length > 1 && S.navCount > 1) history.back(); else go(DETAIL[n] || 'painel'); };
+  const gs = $('#gs'); if (gs) gs.onsubmit = e => { e.preventDefault(); const q = gs.q.value.trim(); if (q) go('busca?q=' + encodeURIComponent(q)); };
+}
+async function sair() { await store.logout(); toast('Sessão encerrada.'); go(''); }
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { const i = $('#gs input'); if (i) { e.preventDefault(); i.focus(); i.select(); } }
+  if (e.key === 'Escape') { const m = $$('.modal-bg').pop(); if (m) m.remove(); }
+});
+
+/* ---- Instalação como aplicativo (PWA) ---- */
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; $$('[data-install-slot]').forEach(s => { s.innerHTML = installCard(true); bindInstall(); }); });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; toast('Aplicativo instalado! Abra pela tela inicial.'); });
+function installCard(force = false) {
+  if (isStandalone()) return '';
+  if (!force && lsGet('agora-install-dismiss')) return '';
+  if (deferredPrompt) return `<div class="card pad install"><span class="ico">Á</span><div><b>Instale o aplicativo</b><p class="small muted">Acesso rápido pela tela inicial, em tela cheia, como um app.</p></div><button class="btn primary sm x" id="inst">Instalar</button></div>`;
+  if (isIOS) return `<div class="card pad install"><span class="ico">Á</span><div><b>Instale no iPhone</b><p class="small muted">Toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.</p></div><button class="icon-btn x" id="inst-x" aria-label="Dispensar">×</button></div>`;
+  return '';
+}
+function bindInstall() {
+  const b = $('#inst'); if (b) b.onclick = async () => { if (!deferredPrompt) return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; $$('[data-install-slot]').forEach(s => s.innerHTML = ''); };
+  const x = $('#inst-x'); if (x) x.onclick = () => { lsSet('agora-install-dismiss', '1'); x.closest('.install').remove(); };
+}
+
+/* ============================ Página pública ============================ */
+async function viewHome(main) {
+  const c = S.config;
+  if (isMobile()) {
+    main.innerHTML = `<div class="welcome"><div class="bigmark">Á</div><div class="eyebrow">${esc(c.nomePortal)}</div>
+      <h1 style="margin-top:10px">O Direito, <em>organizado</em> para quem estuda.</h1>
+      <div class="wl"><div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('briefcase', 20)} Estágios, concursos e empregos</div><div>${ic('scale', 20)} Atualizações da lei</div><div>${ic('card', 20)} ${brl(c.preco)}/mês, acesso completo</div></div>
+      <div class="acts"><a class="btn gold" href="#/cadastro">Criar minha conta</a><a class="btn light" href="#/entrar">Já tenho conta</a></div></div>`;
+    return;
+  }
+  const feat = [
+    ['play', 'Videoaulas', 'Aulas gravadas por disciplina, com player integrado e acesso em qualquer dispositivo.'],
+    ['audio', 'Áudios', 'Resumos e aulas em áudio para revisar no trânsito, na academia ou antes da prova.'],
+    ['file', 'PDFs e apostilas', 'Materiais de apoio, mapas mentais, peças práticas e roteiros de estudo.'],
+    ['book', 'Estágios', 'Oportunidades em escritórios, tribunais, defensorias e departamentos jurídicos.'],
+    ['shield', 'Concursos', 'Editais, prazos de inscrição e orientações para carreiras públicas.'],
+    ['scale', 'Atualizações da lei', 'Novas normas e alterações legislativas explicadas de forma objetiva.']
+  ];
+  main.innerHTML = `
+  <section class="hero"><div class="wrap">
+    <div>
+      <div class="eyebrow">Portal de estudos jurídicos</div>
+      <h1 style="margin-top:14px">O Direito, <em>organizado</em> para quem estuda.</h1>
+      <p class="lead">Videoaulas, áudios e PDFs reunidos em um só lugar, com vagas de estágio, concursos, empregos e as atualizações legislativas que importam para a sua formação.</p>
+      <div class="cta"><a class="btn gold" href="#/cadastro">Começar agora ${ic('arrow', 16)}</a><a class="btn light" href="#/entrar">Já sou aluno</a></div>
+    </div>
+    <div class="hero-panel">
+      <div class="li">${ic('play')}<div><b>Conteúdo multimídia</b><span>Vídeo, áudio e PDF por disciplina</span></div></div>
+      <div class="li">${ic('briefcase')}<div><b>Carreira</b><span>Estágios, concursos e empregos na área</span></div></div>
+      <div class="li">${ic('scale')}<div><b>Legislação em dia</b><span>Mudanças na lei com contexto e fonte oficial</span></div></div>
+      <div class="li">${ic('card')}<div><b>${brl(c.preco)}/mês</b><span>Acesso completo a todo o portal</span></div></div>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="section-h"><div class="eyebrow">O que você encontra</div><h2>Tudo o que a graduação pede, num só portal</h2></div>
+    <div class="grid3">${feat.map(f => `<div class="card feature"><div class="ic-wrap">${ic(f[0], 22)}</div><h3>${f[1]}</h3><p class="muted" style="margin:0">${f[2]}</p></div>`).join('')}</div>
+  </div></section>
+
+  <section class="section" style="background:#efeadf;border-block:1px solid var(--line)"><div class="wrap">
+    <div class="section-h"><div class="eyebrow">Como funciona</div><h2>Três passos para começar</h2></div>
+    <div class="steps">
+      <div class="card step"><h3>Crie sua conta</h3><p class="muted" style="margin:0">Cadastro rápido com seus dados acadêmicos.</p></div>
+      <div class="card step"><h3>Ative a assinatura</h3><p class="muted" style="margin:0">Aceite o plano mensal e conclua o pagamento.</p></div>
+      <div class="card step"><h3>Acesse tudo</h3><p class="muted" style="margin:0">Todo o conteúdo liberado enquanto a assinatura estiver ativa.</p></div>
+    </div>
+  </div></section>
+
+  <section class="section"><div class="wrap">
+    <div class="card price-card">
+      <div class="eyebrow">${esc(c.planoNome)}</div>
+      <div class="price" style="margin-top:12px">${brl(c.preco)}<small> /mês</small></div>
+      <ul class="ticks">${['Acesso ilimitado a vídeos, áudios e PDFs', 'Vagas de estágio e emprego atualizadas', 'Editais e prazos de concursos', 'Atualizações legislativas comentadas', `Renovação a cada ${c.diasAcesso} dias`].map(t => `<li>${ic('check')}${t}</li>`).join('')}</ul>
+      <a class="btn primary" style="width:100%" href="#/cadastro">Quero assinar</a>
+    </div>
+  </div></section>
+  <footer class="footer"><div class="wrap"><span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}. Todos os direitos reservados.</span><span class="mode-tag">Modo: ${store.modo === 'local' ? 'local (IndexedDB)' : 'nuvem (Firebase)'}</span></div></footer>`;
+}
+
+/* ================================ Auth ================================ */
+async function viewLogin(main) {
+  main.innerHTML = `<div class="auth"><div class="card">
+    <div class="eyebrow">Área do aluno</div><h2>Entrar</h2><p class="muted">Acesse seus materiais e oportunidades.</p>
+    <form class="form" id="f">
+      <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+      <label>Senha<input name="senha" type="password" required autocomplete="current-password"></label>
+      <div class="err-msg hidden" id="err"></div>
+      <button class="btn primary">Entrar</button>
+      ${store.modo === 'local' ? '<div class="demo-hint"><b>Modo demonstração:</b> administrador <code>admin@agora.local</code> / senha <code>admin123</code></div>' : ''}
+      <p class="small muted" style="text-align:center;margin:0">Ainda não tem conta? <a href="#/cadastro">Cadastre-se</a></p>
+    </form></div></div>`;
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); const fd = new FormData(e.target), b = $('button', e.target);
+    b.disabled = true;
+    try { await store.login(fd.get('email'), fd.get('senha')); toast('Bem-vindo(a) de volta!'); go('painel'); }
+    catch (err) { $('#err').textContent = err.message; $('#err').classList.remove('hidden'); b.disabled = false; }
+  };
+}
+async function viewCadastro(main) {
+  const sem = [...Array(10)].map((_, i) => `<option>${i + 1}º semestre</option>`).join('') + '<option>Bacharel(a)</option><option>Pós-graduação</option>';
+  main.innerHTML = `<div class="auth"><div class="card" style="max-width:560px">
+    <div class="eyebrow">Novo aluno</div><h2>Criar conta</h2><p class="muted">Depois do cadastro você escolhe o plano e libera o acesso.</p>
+    <form class="form" id="f">
+      <label>Nome completo<input name="nome" required autocomplete="name"></label>
+      <div class="row2"><label>E-mail<input name="email" type="email" required autocomplete="email"></label><label>Telefone / WhatsApp<input name="telefone" autocomplete="tel"></label></div>
+      <div class="row2"><label>Instituição de ensino<input name="instituicao"></label><label>Período<select name="semestre"><option value="">Selecione</option>${sem}</select></label></div>
+      <div class="row2"><label>Senha<input name="senha" type="password" minlength="6" required autocomplete="new-password"></label><label>Confirmar senha<input name="senha2" type="password" minlength="6" required autocomplete="new-password"></label></div>
+      <label class="check"><input type="checkbox" name="termos" required> <span>Li e aceito os termos de uso e a política de privacidade.</span></label>
+      <div class="err-msg hidden" id="err"></div>
+      <button class="btn primary">Criar minha conta</button>
+      <p class="small muted" style="text-align:center;margin:0">Já tem conta? <a href="#/entrar">Entrar</a></p>
+    </form></div></div>`;
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); const d = Object.fromEntries(new FormData(e.target)); const b = $('button', e.target);
+    const showErr = m => { $('#err').textContent = m; $('#err').classList.remove('hidden'); };
+    if (d.senha !== d.senha2) return showErr('As senhas não conferem.');
+    b.disabled = true;
+    try { await store.register(d); toast('Conta criada! Agora ative sua assinatura.'); go('assinar'); }
+    catch (err) { showErr(err.message); b.disabled = false; }
+  };
+}
+
+/* ============================= Assinatura ============================= */
+async function viewAssinar(main) {
+  const c = S.config, u = S.user, st = statusAss(u), at = ativo(u);
+  let pendente = null;
+  if (store.modo === 'firebase') {
+    try { pendente = (await store.list('pagamentos', ['userId', u.id])).find(p => p.status === 'pendente'); } catch {}
+  }
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Assinatura</div><h2>${at ? 'Renovar assinatura' : 'Ative seu acesso'}</h2><p>Situação atual: <span class="badge ${st.cls}">${esc(st.txt)}</span></p></div></div>
+    <div class="checkout">
+      <div class="card price-card" style="margin:0;max-width:none">
+        <div class="eyebrow">${esc(c.planoNome)}</div>
+        <div class="price" style="margin-top:12px">${brl(c.preco)}<small> /mês</small></div>
+        <ul class="ticks">${['Todas as videoaulas, áudios e PDFs', 'Estágios, concursos e empregos', 'Atualizações legislativas', `${c.diasAcesso} dias de acesso por pagamento`, 'Cancele quando quiser'].map(t => `<li>${ic('check')}${t}</li>`).join('')}</ul>
+      </div>
+      <div class="card pad">
+        ${pendente ? `<div class="demo-hint" style="margin-bottom:16px"><b>Pagamento em análise.</b> Recebemos sua solicitação em ${fmtDate(pendente.criadoEm)}. O acesso será liberado assim que o pagamento for confirmado.</div>` : ''}
+        <h3>Forma de pagamento</h3>
+        <form class="form" id="f">
+          <div class="methods">
+            <label class="method"><input type="radio" name="metodo" value="pix" checked>Pix</label>
+            <label class="method"><input type="radio" name="metodo" value="cartao">Cartão</label>
+            <label class="method"><input type="radio" name="metodo" value="boleto">Boleto</label>
+          </div>
+          ${c.chavePix ? `<p class="hint">Chave Pix: <b>${esc(c.chavePix)}</b></p>` : ''}
+          <p class="hint">${esc(c.instrucoesPagamento)}</p>
+          <label class="check"><input type="checkbox" name="aceite" required> <span>Concordo com a cobrança mensal de <b>${brl(c.preco)}</b> referente ao ${esc(c.planoNome)}, renovável a cada ${c.diasAcesso} dias.</span></label>
+          <button class="btn primary">${store.modo === 'local' ? 'Confirmar assinatura' : (c.linkPagamento ? 'Ir para o pagamento' : 'Solicitar assinatura')} ${ic('arrow', 16)}</button>
+          ${store.modo === 'local' ? '<p class="hint">Modo local: o pagamento é simulado e o acesso é liberado na hora. No Firebase, conecte seu link de pagamento (Mercado Pago, PagSeguro, Stripe etc.).</p>' : ''}
+        </form>
+      </div>
+    </div></div>`;
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); const metodo = new FormData(e.target).get('metodo'); const b = $('button', e.target); b.disabled = true;
+    const base = { userId: u.id, nome: u.nome, email: u.email, valor: Number(c.preco), metodo, plano: c.planoNome };
+    try {
+      if (store.modo === 'local') {
+        await store.save('pagamentos', { ...base, status: 'aprovado', obs: 'Pagamento simulado (modo local)' });
+        await ativarAssinatura(u.id);
+        toast('Assinatura ativada! Bom estudo.'); go('painel');
+      } else {
+        await store.save('pagamentos', { ...base, status: 'pendente' });
+        if (c.linkPagamento) window.open(safeURL(c.linkPagamento), '_blank', 'noopener');
+        toast('Solicitação registrada. Conclua o pagamento para liberar o acesso.'); render();
+      }
+    } catch (err) { toast(err.message, true); b.disabled = false; }
+  };
+}
+
+/* =============================== Painel =============================== */
+async function viewPainel(main) {
+  const u = S.user, at = ativo(u), st = statusAss(u);
+  const first = u.nome.split(' ')[0];
+  let mats = [], posts = [];
+  if (at) [mats, posts] = await Promise.all([store.list('materiais'), store.list('publicacoes')]);
+  mats.sort(byNewest); posts.sort(byNewest);
+  const opps = posts.filter(p => p.categoria !== 'lei'), leis = posts.filter(p => p.categoria === 'lei');
+  const expiraEm = u.assinatura ? Math.ceil((u.assinatura.validade - Date.now()) / DAY) : null;
+
+  main.innerHTML = `<div class="page">
+    <div data-install-slot class="mobile-only">${installCard()}</div>
+    <div class="page-h keep"><div><div class="eyebrow">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</div><h2>Olá, ${esc(first)}.</h2><p>Bom ver você por aqui. Aqui está o que há de novo no portal.</p></div>
+      <span class="badge ${st.cls}">${esc(st.txt)}</span></div>
+    ${!at ? `<div class="banner"><div><h3>${ic('lock')} Seu acesso ainda não está liberado</h3><p>Ative a assinatura mensal de ${brl(S.config.preco)} para acessar todos os materiais e oportunidades.</p></div><a class="btn gold" href="#/assinar">Assinar agora</a></div>` : ''}
+    ${at && u.role !== 'admin' && expiraEm !== null && expiraEm <= 5 ? `<div class="banner"><div><h3>Sua assinatura vence em ${expiraEm} dia${expiraEm !== 1 ? 's' : ''}</h3><p>Renove para não perder o acesso ao conteúdo.</p></div><a class="btn gold" href="#/assinar">Renovar</a></div>` : ''}
+    ${at ? `
+    <div class="stats">
+      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div>
+      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div>
+      <div class="card stat"><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div>
+      <div class="card stat"><div class="n">${opps.filter(p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= Date.now()).length}</div><div class="l">Oportunidades abertas</div></div>
+    </div>
+    <div class="cols">
+      <div>
+        <div class="list-h"><h3>Materiais recentes</h3><a href="#/materiais" class="small">Ver todos</a></div>
+        ${mats.length ? `<div class="mgrid">${mats.slice(0, 4).map(matCard).join('')}</div>` : `<div class="card empty"><p>Nenhum material publicado ainda.</p></div>`}
+      </div>
+      <div style="display:grid;gap:24px;align-content:start">
+        <div><div class="list-h"><h3>Oportunidades</h3><a href="#/oportunidades" class="small">Ver todas</a></div>
+          <div class="card mini-list">${opps.slice(0, 4).map(miniPost).join('') || '<div class="empty small">Nada publicado ainda.</div>'}</div></div>
+        <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/legislacao" class="small">Ver todas</a></div>
+          <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || '<div class="empty small">Nada publicado ainda.</div>'}</div></div>
+      </div>
+    </div>` : `
+    <div class="grid3">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['book', 'Estágios'], ['shield', 'Concursos'], ['scale', 'Atualizações da lei']].map(x => `<div class="card feature" style="opacity:.75"><div class="ic-wrap">${ic(x[0], 22)}</div><h3>${x[1]}</h3><p class="muted small" style="margin:0">${ic('lock', 14)} Disponível para assinantes</p></div>`).join('')}</div>`}
+  </div>`;
+}
+function matCard(m) {
+  const t = TIPOS[m.tipo] || TIPOS.pdf;
+  return `<a class="card mcard" href="#/material/${encodeURIComponent(m.id)}">
+    <div class="mthumb ${esc(m.tipo)}"><span class="badge">${t.nome}</span>${ic(t.icon, 40)}</div>
+    <div class="mbody"><span class="d">${esc(m.disciplina || 'Geral')}</span><h4>${esc(m.titulo)}</h4><p>${esc(m.descricao || '')}</p></div></a>`;
+}
+function miniPost(p) {
+  const c = CATS[p.categoria] || CATS.estagio;
+  return `<a class="mini" href="#/publicacao/${encodeURIComponent(p.id)}"><span class="tic">${ic(c.icon)}</span><div style="min-width:0"><b>${esc(p.titulo)}</b><span>${esc(c.nome)} · ${esc(p.instituicao || '')} ${p.prazo ? '· ' + (p.categoria === 'lei' ? '' : 'até ') + fmtDate(p.prazo) : ''}</span></div></a>`;
+}
+
+/* ============================== Materiais ============================== */
+async function viewMateriais(main, _, q) {
+  const mats = (await store.list('materiais')).sort(byNewest);
+  const discs = [...new Set(mats.map(m => m.disciplina).filter(Boolean))].sort();
+  let tipo = q.get('tipo') || '', disc = '', termo = '';
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Biblioteca</div><h2>Materiais de estudo</h2><p>${mats.length} materiais disponíveis em vídeo, áudio e PDF.</p></div></div>
+    <div class="filters">
+      <div class="search">${ic('search')}<input class="field" id="busca" placeholder="Buscar por título, tema ou descrição…"></div>
+      <select class="field" id="disc" style="width:auto;min-width:210px"><option value="">Todas as disciplinas</option>${discs.map(d => `<option>${esc(d)}</option>`).join('')}</select>
+      <div class="chips" id="chips">${[['', 'Todos'], ['video', 'Vídeos'], ['audio', 'Áudios'], ['pdf', 'PDFs']].map(([v, l]) => `<button class="chip ${v === tipo ? 'on' : ''}" data-v="${v}">${l}</button>`).join('')}</div>
+    </div>
+    <div id="grid"></div></div>`;
+  const draw = () => {
+    const t = termo.toLowerCase();
+    const r = mats.filter(m => (!tipo || m.tipo === tipo) && (!disc || m.disciplina === disc) && (!t || `${m.titulo} ${m.descricao} ${m.disciplina}`.toLowerCase().includes(t)));
+    $('#grid').innerHTML = r.length ? `<div class="mgrid">${r.map(matCard).join('')}</div>` : `<div class="card empty"><h3>Nenhum material encontrado</h3><p>${mats.length ? 'Ajuste os filtros ou a busca.' : 'Os materiais publicados aparecerão aqui.'}</p></div>`;
+  };
+  $('#busca').oninput = e => { termo = e.target.value; draw(); };
+  $('#disc').onchange = e => { disc = e.target.value; draw(); };
+  $('#chips').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; tipo = b.dataset.v; $$('.chip', $('#chips')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
+  draw();
+}
+function embedURL(url) {
+  const yt = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
+  const vm = String(url).match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
+  const gd = String(url).match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+  if (gd) return `https://drive.google.com/file/d/${gd[1]}/preview`;
+  return null;
+}
+async function viewMaterial(main, id) {
+  const m = await store.get('materiais', decodeURIComponent(id || ''));
+  if (!m) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Material não encontrado</h3><a href="#/materiais">Voltar à biblioteca</a></div></div>`; return; }
+  const src = m.fileRef ? await store.fileURL(m.fileRef) : m.url;
+  const emb = !m.fileRef && m.url ? embedURL(m.url) : null;
+  const t = TIPOS[m.tipo] || TIPOS.pdf;
+  let player;
+  if (!src) player = `<div class="card empty"><p>Arquivo indisponível.</p></div>`;
+  else if (emb) player = `<div class="player embed"><iframe src="${esc(emb)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+  else if (m.tipo === 'video') player = `<div class="player"><video controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></video></div>`;
+  else if (m.tipo === 'audio') player = `<div class="player audio-box">${ic('audio', 48)}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
+  else player = `<div class="player"><iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}"></iframe></div>`;
+
+  main.innerHTML = `<div class="page">
+    <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')} · ${t.nome}</div><h2>${esc(m.titulo)}</h2></div>
+      ${m.tipo === 'pdf' && src ? `<a class="btn ghost sm" href="${esc(safeURL(src))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir em nova aba</a>` : ''}</div>
+    ${player}
+    ${m.descricao ? `<div class="card pad article" style="margin-top:22px"><h4>Sobre este material</h4><div class="body">${paras(m.descricao)}</div></div>` : ''}
+  </div>`;
+}
+
+/* =========================== Oportunidades/Leis =========================== */
+function postCard(p) {
+  const c = CATS[p.categoria] || CATS.estagio;
+  return `<article class="card post">
+    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
+      <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
+      <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo && p.categoria !== 'lei' ? `<span>${ic('calendar', 14)} Até ${fmtDate(p.prazo)}</span>` : ''}</div>
+      ${p.resumo ? `<p>${esc(p.resumo)}</p>` : ''}</div>
+    <a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Detalhes</a></article>`;
+}
+async function viewOportunidades(main, _, q) {
+  const cat = ['estagio', 'concurso', 'emprego'].includes(q.get('tipo')) ? q.get('tipo') : 'estagio';
+  const all = await store.list('publicacoes');
+  const now = Date.now(), aberto = p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= now;
+  const list = all.filter(p => p.categoria === cat).sort((a, b) => (aberto(b) - aberto(a)) || String(a.prazo || '9').localeCompare(String(b.prazo || '9')));
+  const count = k => all.filter(p => p.categoria === k && aberto(p)).length;
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Carreira</div><h2>Estágios, concursos e empregos</h2><p>Oportunidades selecionadas para estudantes e recém-formados em Direito.</p></div></div>
+    <div class="tabs">${['estagio', 'concurso', 'emprego'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/oportunidades?tipo=${k}">${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
+    <div class="plist">${list.map(postCard).join('') || `<div class="card empty"><h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
+  </div>`;
+}
+async function viewLegislacao(main) {
+  const leis = (await store.list('publicacoes')).filter(p => p.categoria === 'lei').sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Legislação</div><h2>Atualizações da lei</h2><p>Novas normas e alterações relevantes, em ordem cronológica.</p></div></div>
+    ${leis.length ? `<div class="timeline">${leis.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="card empty"><h3>Nenhuma atualização publicada</h3></div>`}
+  </div>`;
+}
+async function viewPublicacao(main, id) {
+  const p = await store.get('publicacoes', decodeURIComponent(id || ''));
+  if (!p) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Publicação não encontrada</h3></div></div>`; return; }
+  const c = CATS[p.categoria] || CATS.estagio, back = p.categoria === 'lei' ? '#/legislacao' : `#/oportunidades?tipo=${p.categoria}`;
+  main.innerHTML = `<div class="page"><div class="article">
+    <a href="${back}" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} ${c.plural}</a>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
+    <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
+    <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo ? `<span>${ic('calendar', 14)} ${p.categoria === 'lei' ? 'Publicada em' : 'Inscrições até'} ${fmtDate(p.prazo)}</span>` : ''}</div>
+    <div class="card pad" style="margin-top:16px">${p.resumo ? `<p style="font-size:1.05rem;color:var(--ink-2)"><b>${esc(p.resumo)}</b></p>` : ''}<div class="article body">${paras(p.conteudo || '')}</div>
+    ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${p.categoria === 'lei' ? 'Ler texto oficial' : 'Acessar / candidatar-se'} ${ic('ext', 15)}</a>` : ''}</div>
+    <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
+  </div></div>`;
+}
+
+/* ================================ Busca ================================ */
+async function viewBusca(main, _, q) {
+  const termo = (q.get('q') || '').trim();
+  const [mats, posts] = await Promise.all([store.list('materiais'), store.list('publicacoes')]);
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Busca</div><h2>Buscar no portal</h2></div></div>
+    <form class="filters" id="bf"><div class="search">${ic('search')}<input class="field" name="q" value="${esc(termo)}" placeholder="Materiais, vagas, editais, leis…" autocomplete="off"></div></form>
+    <div id="res"></div></div>`;
+  const draw = t => {
+    t = t.toLowerCase().trim();
+    if (!t) { $('#res').innerHTML = '<div class="empty"><p>Digite um termo para buscar em todo o portal.</p></div>'; return; }
+    const hit = o => Object.values(o).some(v => typeof v === 'string' && v.toLowerCase().includes(t));
+    const m = mats.filter(hit).sort(byNewest), p = posts.filter(hit).sort(byNewest);
+    $('#res').innerHTML = (!m.length && !p.length) ? `<div class="card empty"><h3>Nada encontrado</h3><p>Tente outro termo.</p></div>` :
+      `${m.length ? `<div class="list-h"><h3>Materiais <span class="badge">${m.length}</span></h3></div><div class="mgrid" style="margin-bottom:26px">${m.map(matCard).join('')}</div>` : ''}
+       ${p.length ? `<div class="list-h"><h3>Publicações <span class="badge">${p.length}</span></h3></div><div class="plist">${p.map(postCard).join('')}</div>` : ''}`;
+  };
+  const inp = $('#bf input');
+  $('#bf').onsubmit = e => { e.preventDefault(); history.replaceState(null, '', '#/busca?q=' + encodeURIComponent(inp.value.trim())); };
+  inp.oninput = () => draw(inp.value);
+  draw(termo);
+  if (!termo) inp.focus();
+}
+
+/* ================================ Perfil ================================ */
+async function viewPerfil(main) {
+  const u = S.user, st = statusAss(u);
+  let pags = [];
+  try { pags = (await store.list('pagamentos', ['userId', u.id])).sort(byNewest); } catch {}
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Conta</div><h2>Minha conta</h2></div></div>
+    <div data-install-slot>${installCard(true)}</div>
+    <div class="mobile-only" style="margin-bottom:20px"><div class="card mini-list">
+      <div class="mini" style="cursor:default"><span class="avatar">${esc(initials(u.nome))}</span><div><b>${esc(u.nome)}</b><span>${esc(u.email)}</span></div></div>
+      ${u.role === 'admin' ? `<a class="mini" href="#/admin"><span class="tic">${ic('settings')}</span><div><b>Painel administrativo</b><span>Materiais, publicações, alunos e pagamentos</span></div></a>` : ''}
+      <a class="mini" href="#" id="sair-m"><span class="tic" style="background:var(--err-bg);color:var(--err)">${ic('logout')}</span><div><b>Sair da conta</b><span>Encerrar a sessão neste aparelho</span></div></a>
+    </div></div>
+    <div class="cols">
+      <div class="card pad"><h3>Dados pessoais</h3>
+        <form class="form" id="f">
+          <label>Nome completo<input name="nome" required value="${esc(u.nome)}"></label>
+          <label>E-mail<input value="${esc(u.email)}" disabled></label>
+          <div class="row2"><label>Telefone<input name="telefone" value="${esc(u.telefone)}"></label><label>Período<input name="semestre" value="${esc(u.semestre)}"></label></div>
+          <label>Instituição<input name="instituicao" value="${esc(u.instituicao)}"></label>
+          <div class="actions"><button class="btn primary">Salvar alterações</button></div>
+        </form></div>
+      <div style="display:grid;gap:24px;align-content:start">
+        <div class="card pad"><h3>Assinatura</h3><p><span class="badge ${st.cls}">${esc(st.txt)}</span></p>
+          ${u.assinatura ? `<p class="small muted">Início: ${fmtDate(u.assinatura.inicio)} · Validade: ${fmtDate(u.assinatura.validade)}</p>` : ''}
+          ${u.role !== 'admin' ? `<a class="btn ${ativo(u) ? 'ghost' : 'primary'} sm" href="#/assinar">${ativo(u) ? 'Renovar antecipadamente' : 'Assinar agora'}</a>` : ''}</div>
+        <div class="card"><div class="pad" style="padding-bottom:8px"><h3>Pagamentos</h3></div>
+          ${pags.length ? `<div class="table-wrap"><table><tr><th>Data</th><th>Valor</th><th>Status</th></tr>${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td></tr>`).join('')}</table></div>` : '<p class="muted small" style="padding:0 24px 20px">Nenhum pagamento registrado.</p>'}</div>
+      </div></div></div>`;
+  $('#sair-m').onclick = e => { e.preventDefault(); sair(); };
+  $('#f').onsubmit = async e => {
+    e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
+    try { await store.updateUser(u.id, { nome: d.nome.trim(), telefone: d.telefone, semestre: d.semestre, instituicao: d.instituicao }); toast('Dados atualizados.'); render(); }
+    catch (err) { toast(err.message, true); }
+  };
+}
+const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
+
+/* =============================== Admin =============================== */
+async function viewAdmin(main, tab = 'materiais') {
+  const TABS = { materiais: 'Materiais', publicacoes: 'Publicações', alunos: 'Alunos', pagamentos: 'Pagamentos', config: 'Configurações' };
+  if (!TABS[tab]) tab = 'materiais';
+  const [mats, posts, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), store.listUsers(), store.list('pagamentos')]);
+  const alunos = users.filter(u => u.role !== 'admin');
+  const receita = pags.filter(p => p.status === 'aprovado').reduce((s, p) => s + Number(p.valor || 0), 0);
+  const pend = pags.filter(p => p.status === 'pendente').length;
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>Gerencie conteúdo, alunos, assinaturas e configurações.</p></div></div>
+    <div class="stats">
+      <div class="card stat"><div class="n">${alunos.length}</div><div class="l">Alunos cadastrados</div></div>
+      <div class="card stat"><div class="n">${alunos.filter(ativo).length}</div><div class="l">Assinaturas ativas</div></div>
+      <div class="card stat"><div class="n">${mats.length}</div><div class="l">Materiais · ${posts.length} publicações</div></div>
+      <div class="card stat"><div class="n" style="font-size:1.7rem">${brl(receita)}</div><div class="l">Receita aprovada${pend ? ` · ${pend} pendente(s)` : ''}</div></div>
+    </div>
+    <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
+    <div id="adm"></div></div>`;
+  const box = $('#adm');
+  ({ materiais: () => admMateriais(box, mats), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), config: () => admConfig(box) })[tab]();
+}
+
+function admMateriais(box, mats) {
+  mats.sort(byNewest);
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Envie arquivos de vídeo, áudio e PDF ou cadastre links (YouTube, Vimeo, Google Drive).</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
+    <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
+    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ' · ' + fmtSize(m.size) : 'Link externo'}</td><td>${fmtDate(m.criadoEm)}</td>
+      <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
+  $('#novo').onclick = () => formMaterial();
+  box.onclick = async e => {
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    if (ed) formMaterial(mats.find(m => m.id === ed.dataset.ed));
+    if (dl && await confirmar('Excluir este material? O arquivo também será removido.', 'Excluir')) {
+      const m = mats.find(x => x.id === dl.dataset.del);
+      try { if (m.fileRef) await store.deleteFile(m.fileRef); await store.remove('materiais', m.id); toast('Material excluído.'); render(); } catch (err) { toast(err.message, true); }
+    }
+  };
+}
+function formMaterial(m = {}) {
+  const { el, close } = modal(m.id ? 'Editar material' : 'Novo material', `<form class="form" id="fm">
+    <label>Título<input name="titulo" required value="${esc(m.titulo)}"></label>
+    <div class="row2"><label>Tipo<select name="tipo">${Object.entries(TIPOS).map(([k, t]) => `<option value="${k}" ${m.tipo === k ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></label>
+      <label>Disciplina<input name="disciplina" list="dl-disc" value="${esc(m.disciplina)}" placeholder="Ex.: Direito Civil"></label></div>
+    <label>Descrição<textarea name="descricao" rows="3">${esc(m.descricao)}</textarea></label>
+    <label>Arquivo (vídeo, áudio ou PDF)<input type="file" name="arquivo" accept="video/*,audio/*,application/pdf"></label>
+    ${m.fileName ? `<p class="hint">Arquivo atual: <b>${esc(m.fileName)}</b>. Envie outro para substituir.</p>` : ''}
+    <label>…ou link externo<input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtube.com/watch?v=…"></label>
+    <div class="progress hidden" id="pg"><span></span></div>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar</button></div>
+  </form><datalist id="dl-disc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist>`);
+  const f = $('#fm', el);
+  f.arquivo.onchange = () => { const t = f.arquivo.files[0]?.type || ''; f.tipo.value = t.startsWith('video') ? 'video' : t.startsWith('audio') ? 'audio' : t === 'application/pdf' ? 'pdf' : f.tipo.value; };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const file = f.arquivo.files[0], url = f.url.value.trim();
+    if (!file && !url && !m.fileRef) return toast('Envie um arquivo ou informe um link.', true);
+    $('#sv', el).disabled = true;
+    const o = { ...m, titulo: f.titulo.value.trim(), tipo: f.tipo.value, disciplina: f.disciplina.value.trim(), descricao: f.descricao.value.trim(), url };
+    try {
+      if (file) {
+        $('#pg', el).classList.remove('hidden');
+        const r = await store.uploadFile(file, p => $('#pg span', el).style.width = Math.round(p * 100) + '%');
+        if (m.fileRef) await store.deleteFile(m.fileRef);
+        Object.assign(o, { fileRef: r, fileName: file.name, mime: file.type, size: file.size });
+      }
+      if (!o.fileRef) Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
+      await store.save('materiais', o);
+      close(); toast('Material salvo.'); render();
+    } catch (err) { toast(err.message, true); $('#sv', el).disabled = false; }
+  };
+}
+
+function admPublicacoes(box, posts) {
+  let filtro = '';
+  const draw = () => {
+    const l = posts.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
+    $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>Prazo / data</th><th>Publicado</th><th></th></tr>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td>${esc((CATS[p.categoria] || {}).nome)}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
+      <td><div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><p>Nenhuma publicação nesta categoria.</p></div>';
+  };
+  box.innerHTML = `<div class="list-h"><div class="chips" id="pf">${[['', 'Todas'], ...Object.entries(CATS).map(([k, c]) => [k, c.plural])].map(([v, l]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l}</button>`).join('')}</div>
+    <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova publicação</button></div><div class="card table-wrap" id="ptab"></div>`;
+  draw();
+  $('#pf').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.v; $$('.chip', $('#pf')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
+  $('#novo').onclick = () => formPost({ categoria: filtro || 'estagio' });
+  $('#ptab').onclick = async e => {
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    if (ed) formPost(posts.find(p => p.id === ed.dataset.ed));
+    if (dl && await confirmar('Excluir esta publicação?', 'Excluir')) { try { await store.remove('publicacoes', dl.dataset.del); toast('Publicação excluída.'); render(); } catch (err) { toast(err.message, true); } }
+  };
+}
+function formPost(p = {}) {
+  const { el, close } = modal(p.id ? 'Editar publicação' : 'Nova publicação', `<form class="form" id="fp">
+    <div class="row2"><label>Categoria<select name="categoria">${Object.entries(CATS).map(([k, c]) => `<option value="${k}" ${p.categoria === k ? 'selected' : ''}>${c.nome}</option>`).join('')}</select></label>
+      <label><span id="lb-prazo">Prazo de inscrição</span><input type="date" name="prazo" value="${esc(p.prazo)}"></label></div>
+    <label>Título<input name="titulo" required value="${esc(p.titulo)}"></label>
+    <div class="row2"><label><span id="lb-inst">Instituição / órgão</span><input name="instituicao" value="${esc(p.instituicao)}"></label><label>Local / abrangência<input name="local" value="${esc(p.local)}" placeholder="Ex.: Recife/PE · Remoto"></label></div>
+    <label>Resumo<input name="resumo" value="${esc(p.resumo)}" maxlength="220"></label>
+    <label>Conteúdo completo<textarea name="conteudo" rows="7">${esc(p.conteudo)}</textarea></label>
+    <label>Link oficial (edital, vaga ou texto da lei)<input type="url" name="link" value="${esc(p.link)}" placeholder="https://"></label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Publicar</button></div></form>`, { wide: true });
+  const f = $('#fp', el);
+  const lbl = () => { const lei = f.categoria.value === 'lei'; $('#lb-prazo', el).textContent = lei ? 'Data de publicação' : 'Prazo de inscrição'; $('#lb-inst', el).textContent = lei ? 'Norma (ex.: Lei nº …)' : 'Instituição / órgão'; };
+  f.categoria.onchange = lbl; lbl();
+  f.onsubmit = async e => {
+    e.preventDefault(); const d = Object.fromEntries(new FormData(f));
+    try { await store.save('publicacoes', { ...p, ...d }); close(); toast('Publicação salva.'); render(); } catch (err) { toast(err.message, true); }
+  };
+}
+
+function admAlunos(box, users) {
+  users.sort(byNewest);
+  box.innerHTML = `<div class="filters"><div class="search">${ic('search')}<input class="field" id="ub" placeholder="Buscar por nome ou e-mail…"></div></div><div class="card table-wrap" id="ut"></div>`;
+  const draw = (t = '') => {
+    const l = users.filter(u => `${u.nome} ${u.email}`.toLowerCase().includes(t.toLowerCase()));
+    $('#ut').innerHTML = `<table><tr><th>Aluno</th><th>Instituição</th><th>Cadastro</th><th>Assinatura</th><th></th></tr>
+    ${l.map(u => { const st = statusAss(u); const self = u.id === S.user.id; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}${u.telefone ? ' · ' + esc(u.telefone) : ''}</div></td><td class="small">${esc(u.instituicao || '—')}<div class="muted">${esc(u.semestre || '')}</div></td><td>${fmtDate(u.criadoEm)}</td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td>
+      <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${S.config.diasAcesso} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
+      ${self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('')}</table>`;
+  };
+  draw();
+  $('#ub').oninput = e => draw(e.target.value);
+  $('#ut').onclick = async e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const u = users.find(x => x.id === b.dataset.id);
+    try {
+      if (b.dataset.act === 'ativar') { await ativarAssinatura(u.id); toast(`Acesso de ${u.nome} estendido.`); }
+      if (b.dataset.act === 'cancelar') { if (!await confirmar(`Cancelar a assinatura de ${u.nome}? O acesso será bloqueado imediatamente.`, 'Cancelar assinatura')) return; await store.updateUser(u.id, { assinatura: { ...u.assinatura, status: 'cancelada', validade: Date.now() } }); toast('Assinatura cancelada.'); }
+      if (b.dataset.act === 'role') { const nr = u.role === 'admin' ? 'aluno' : 'admin'; if (!await confirmar(`Alterar ${u.nome} para ${nr}?`)) return; await store.updateUser(u.id, { role: nr }); toast('Perfil atualizado.'); }
+      render();
+    } catch (err) { toast(err.message, true); }
+  };
+}
+function admPagamentos(box, pags) {
+  pags.sort(byNewest);
+  box.innerHTML = `<div class="card table-wrap">${pags.length ? `<table><tr><th>Data</th><th>Aluno</th><th>Método</th><th>Valor</th><th>Status</th><th></th></tr>
+    ${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td><b>${esc(p.nome)}</b><div class="small muted">${esc(p.email)}</div></td><td>${esc({ pix: 'Pix', cartao: 'Cartão', boleto: 'Boleto' }[p.metodo] || p.metodo)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td>
+    <td><div class="acts">${p.status === 'pendente' ? `<button class="btn primary sm" data-ok="${esc(p.id)}">Confirmar e liberar</button><button class="btn danger sm" data-no="${esc(p.id)}">Recusar</button>` : ''}</div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum pagamento registrado</h3></div>'}</div>
+    <p class="hint" style="margin-top:12px">Ao confirmar um pagamento pendente, o acesso do aluno é liberado por ${S.config.diasAcesso} dias. Para automatizar, configure o webhook do seu gateway (veja o README).</p>`;
+  box.onclick = async e => {
+    const ok = e.target.closest('[data-ok]'), no = e.target.closest('[data-no]');
+    const p = pags.find(x => x.id === (ok || no)?.dataset[ok ? 'ok' : 'no']); if (!p) return;
+    try {
+      if (ok) { await store.save('pagamentos', { ...p, status: 'aprovado' }); await ativarAssinatura(p.userId); toast('Pagamento confirmado e acesso liberado.'); }
+      else { await store.save('pagamentos', { ...p, status: 'recusado' }); toast('Pagamento recusado.'); }
+      render();
+    } catch (err) { toast(err.message, true); }
+  };
+}
+function admConfig(box) {
+  const c = S.config;
+  box.innerHTML = `<div class="card pad" style="max-width:760px"><form class="form" id="fc">
+    <label>Nome do portal<input name="nomePortal" required value="${esc(c.nomePortal)}"></label>
+    <div class="row2"><label>Nome do plano<input name="planoNome" required value="${esc(c.planoNome)}"></label><label>Mensalidade (R$)<input name="preco" type="number" step="0.01" min="0" required value="${esc(c.preco)}"></label></div>
+    <div class="row2"><label>Dias de acesso por pagamento<input name="diasAcesso" type="number" min="1" required value="${esc(c.diasAcesso)}"></label><label>Chave Pix (opcional)<input name="chavePix" value="${esc(c.chavePix)}"></label></div>
+    <label>Link de pagamento (Mercado Pago, PagSeguro, Stripe…)<input name="linkPagamento" type="url" value="${esc(c.linkPagamento)}" placeholder="https://"></label>
+    <label>Instruções de pagamento<textarea name="instrucoesPagamento" rows="3">${esc(c.instrucoesPagamento)}</textarea></label>
+    <div class="actions"><button class="btn primary">Salvar configurações</button></div>
+    <p class="hint">Banco de dados em uso: <b>${store.modo === 'local' ? 'IndexedDB (local, neste navegador)' : 'Firebase Firestore + Storage (nuvem)'}</b>.</p>
+  </form></div>`;
+  $('#fc').onsubmit = async e => {
+    e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
+    const n = { ...c, ...d, preco: Number(d.preco), diasAcesso: Number(d.diasAcesso) };
+    try { await store.saveConfig(n); S.config = n; toast('Configurações salvas.'); render(); } catch (err) { toast(err.message, true); }
+  };
+}
+
+/* ================================ Boot ================================ */
+(async function boot() {
+  try {
+    store = CONFIG.backend === 'firebase' ? await FirebaseStore() : LocalStore();
+    await store.init();
+    S.config = await store.getConfig();
+  } catch (e) {
+    console.error(e);
+    $('#app').innerHTML = `<div class="auth"><div class="card"><h2>Não foi possível iniciar</h2><p class="muted">${esc(e.message)}</p><p class="small">${CONFIG.backend === 'firebase' ? 'Verifique as credenciais do Firebase em CONFIG.' : 'Seu navegador precisa permitir IndexedDB (desative a navegação anônima restrita).'}</p></div></div>`;
+    return;
+  }
+  if (isStandalone()) document.documentElement.classList.add('standalone');
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    try { navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW:', e)); } catch (e) { console.warn(e); }
+  }
+  window.addEventListener('hashchange', render);
+  let wasMobile = isMobile();
+  window.addEventListener('resize', () => { if (isMobile() !== wasMobile) { wasMobile = isMobile(); render(); } });
+  render();
+})();
+</script>
+</body>
+</html>
