@@ -1613,12 +1613,38 @@ function admPlanos(box) {
   const ps = planos(true);
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:640px">Os planos ativos aparecem na página inicial e na tela de assinatura. O plano em destaque recebe o selo “Mais escolhido”.</p>
     <button class="btn primary sm" id="novo">${ic('plus', 15)} Novo plano</button></div>
-    <div class="plans" style="margin:26px 0 22px">${ps.filter(p => p.ativo !== false).map(p => planCard(p)).join('') || ''}</div>
-    <div class="card table-wrap"><table><tr><th>Plano</th><th>Preço</th><th>Período</th><th>Por mês</th><th>Situação</th><th></th></tr>
-    ${ps.map(p => `<tr><td><b>${esc(p.nome)}</b>${p.destaque ? ' <span class="badge wine">Destaque</span>' : ''}<div class="small muted">${esc(p.descricao)}</div></td><td>${brl(p.preco)}</td><td>${p.dias} dias</td><td>${brl(mensal(p))}</td>
-      <td>${p.ativo !== false ? '<span class="badge ok">Ativo</span>' : '<span class="badge">Oculto</span>'}</td>
-      <td><div class="acts"><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table></div>`;
+    <div class="plans" style="margin:26px 0 22px" id="prev">${ps.filter(p => p.ativo !== false).map(p => planCard(p).replace(/<\/div>\s*$/, `<button class="btn ${p.destaque ? 'gold' : 'ghost'} sm" data-ed="${esc(p.id)}" style="margin-top:4px">${ic('settings', 14)} Editar este plano</button></div>`)).join('')}</div>
+    <div class="card" id="valores">
+      <div class="list-h pad" style="padding-bottom:6px;margin:0"><div><h3>${ic('tag', 18)} Valores dos planos</h3><p class="small muted" style="margin:0">Altere o preço e os dias direto na tabela e clique em <b>Salvar valores</b>.</p></div>
+        <button class="btn primary sm" id="salvar-val" disabled>Salvar valores</button></div>
+      <div class="table-wrap"><table><tr><th>Plano</th><th style="width:150px">Preço (R$)</th><th style="width:130px">Dias de acesso</th><th>Equivale por mês</th><th>Situação</th><th></th></tr>
+      ${ps.map(p => `<tr data-id="${esc(p.id)}"><td><b>${esc(p.nome)}</b>${p.destaque ? ' <span class="badge wine">Destaque</span>' : ''}<div class="small muted">${esc(p.descricao)}</div></td>
+        <td><input class="field" data-k="preco" type="number" step="0.01" min="0" inputmode="decimal" value="${p.preco.toFixed(2)}" aria-label="Preço do plano ${esc(p.nome)}" style="padding:.5em .6em"></td>
+        <td><input class="field" data-k="dias" type="number" min="1" step="1" inputmode="numeric" value="${p.dias}" aria-label="Dias de acesso do plano ${esc(p.nome)}" style="padding:.5em .6em"></td>
+        <td><span data-eq>${brl(mensal(p))}</span><div class="small muted" data-per>${periodo(p.dias)}</div></td>
+        <td>${p.ativo !== false ? '<span class="badge ok">Visível</span>' : '<span class="badge">Oculto</span>'}</td>
+        <td><div class="acts"><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar tudo</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table></div></div>`;
   const salvar = async lista => { const n = { ...S.config, planos: lista }; await store.saveConfig(n); S.config = n; };
+  const vbox = $('#valores', box), sv = $('#salvar-val', box);
+  vbox.addEventListener('input', e => {
+    const tr = e.target.closest('tr[data-id]'); if (!tr) return;
+    const pr = Number($('[data-k=preco]', tr).value), di = Number($('[data-k=dias]', tr).value);
+    $('[data-eq]', tr).textContent = pr >= 0 && di > 0 ? brl(pr / (di / 30)) : '—';
+    $('[data-per]', tr).textContent = di > 0 ? periodo(di) : '';
+    sv.disabled = false; sv.textContent = 'Salvar valores';
+  });
+  sv.onclick = async () => {
+    const vals = {};
+    for (const tr of $$('tr[data-id]', vbox)) {
+      const pr = Number($('[data-k=preco]', tr).value), di = Math.round(Number($('[data-k=dias]', tr).value));
+      if (!(pr >= 0) || $('[data-k=preco]', tr).value === '') return toast('Informe um preço válido em todos os planos.', true);
+      if (!(di >= 1)) return toast('Os dias de acesso precisam ser pelo menos 1.', true);
+      vals[tr.dataset.id] = { preco: Math.round(pr * 100) / 100, dias: di };
+    }
+    sv.disabled = true; sv.textContent = 'Salvando…';
+    try { await salvar(planos(true).map(p => vals[p.id] ? { ...p, ...vals[p.id] } : p)); toast('Valores dos planos salvos.'); render(); }
+    catch (err) { toast(err.message, true); sv.disabled = false; sv.textContent = 'Salvar valores'; }
+  };
   const form = (p = {}) => {
     const { el, close } = modal(p.id ? 'Editar plano' : 'Novo plano', `<form class="form" id="fpl">
       <label>Nome do plano<input name="nome" required value="${esc(p.nome)}" placeholder="Ex.: Semestral, Reta final OAB"></label>
@@ -1642,7 +1668,8 @@ function admPlanos(box) {
     };
   };
   $('#novo').onclick = () => form();
-  box.querySelector('.table-wrap').onclick = async e => {
+  $('#prev', box).onclick = e => { const ed = e.target.closest('[data-ed]'); if (ed) form(ps.find(p => p.id === ed.dataset.ed)); };
+  vbox.onclick = async e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
     if (ed) form(ps.find(p => p.id === ed.dataset.ed));
     if (dl) {
