@@ -22,27 +22,31 @@
 > O token fica dentro do portal e pode ser descoberto por quem tiver o link e conhecimento técnico.
 > Numa conta exclusiva, ele só dá acesso aos dados do próprio portal.
 
-1. Abra o endereço do site. Vai aparecer **"Portal ainda não configurado"**. Clique em **Criar o portal com o GitHub**.
+1. Abra o endereço do site terminando em **`#/configurar`** (ex.: `https://SEU-USUARIO.github.io/agorajuridico/#/configurar`). Essa tela é só para o administrador e não aparece para os alunos. Clique em **Criar o portal com o GitHub**.
 2. Clique em **GitHub → Novo token (classic)**. A permissão **gist** já vem marcada. Em *Expiration*, escolha **No expiration** e gere o token (`ghp_...`).
 3. Cole o token e preencha **seu nome, e-mail e senha de administrador**. Clique em **Criar portal**.
 4. O portal cria dois Gists secretos: um com os conteúdos e outro com os cadastros dos alunos. Depois mostra o **link para os alunos**.
 
 A partir daí você entra como qualquer usuário, com **e-mail e senha**, em qualquer computador ou celular. O token não é pedido de novo.
 
-**Já usava a versão anterior?** Na tela de login aparece **"Concluir configuração"**. Clique, cole o token uma última vez e crie sua conta de administrador. Os conteúdos que já estão no Gist continuam lá.
+**Já usava a versão anterior?** Abra o site terminando em **`#/configurar`** e clique em **Concluir configuração**. Cole o token uma última vez e crie sua conta de administrador. Os conteúdos que já estão no Gist continuam lá.
 
 **Se o token expirar ou for desativado:** entre com seu e-mail e senha e vá em **Painel → Configurações → Atualizar token do GitHub**.
 
 ## Passo 3: publicar conteúdo
 No **Painel administrativo**:
 - **Materiais:**
-  - **PDF e áudio:** envie direto (até 4 MB por arquivo; ficam guardados no Gist).
-  - **Vídeos:** suba no YouTube (pode ser "não listado") ou no Google Drive e cole o link.
-- **Publicações:** estágios, concursos, empregos e atualizações da lei.
-- **Planos:** crie quantos quiser (ex.: Mensal, Semestral, Anual, Reta final OAB), com preço, dias de acesso, benefícios e um plano em destaque com o selo "Mais escolhido".
+  - **Vídeos e áudios:** sempre por link do **YouTube** (pode ser "não listado") ou do **Google Drive**. No Drive, abra o arquivo, clique em **Compartilhar** e mude para **Qualquer pessoa com o link**.
+  - **PDFs:** envie o arquivo (até 4 MB) ou cole o link do Google Drive.
+- **Publicações:** escolha a categoria:
+  - **Estágio, Concurso, Emprego:** vagas e editais com prazo de inscrição.
+  - **Atualização legislativa:** norma, data de publicação e link do texto oficial.
+  - **Notícia:** título, fonte, tema, texto e link da matéria original.
+  - **Entrevista:** vídeo ou áudio por link do YouTube ou do Google Drive, com nome e cargo do entrevistado.
+- **Planos:** crie quantos quiser, com preço, dias de acesso, benefícios e um plano em destaque.
 - **Configurações:** dias grátis, chave Pix e seu contato (WhatsApp/e-mail).
 
-As mudanças aparecem para os alunos em **até 5 minutos**, por causa do cache do GitHub.
+Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam juntas na aba **Notícias**.
 
 ## Passo 4: enviar aos alunos
 Clique em **Link para os alunos** no painel e envie pelo WhatsApp ou e-mail.

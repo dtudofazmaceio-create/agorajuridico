@@ -114,9 +114,10 @@ a{color:var(--rubi);text-decoration:none} a:hover{text-decoration:underline;text
 .section{padding:84px 0}
 .section-h{max-width:620px;margin-bottom:40px}
 .section-h p{color:var(--cinza);font-size:1.02rem}
-.features{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--linha)}
+.features{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--linha)}
 .feature{padding:30px 28px 30px 0;border-bottom:1px solid var(--linha);display:grid;grid-template-columns:64px 1fr;gap:18px;align-items:start}
-.feature:not(:nth-child(3n+1)){padding-left:28px;border-left:1px solid var(--linha)}
+.feature:not(:nth-child(4n+1)){padding-left:24px;border-left:1px solid var(--linha)}
+.feature{grid-template-columns:1fr;gap:12px}
 .feature .art{width:64px;height:64px}
 .feature h3{font-size:1.2rem;margin-bottom:6px}
 .feature p{margin:0;color:var(--cinza);font-size:.93rem}
@@ -344,7 +345,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .hero-copy{padding-bottom:0}
   .hero .facade{max-width:460px;margin:0 auto}
   .features{grid-template-columns:1fr 1fr}
-  .feature,.feature:not(:nth-child(3n+1)){padding:26px 22px 26px 0;border-left:0}
+  .feature,.feature:not(:nth-child(4n+1)){padding:26px 22px 26px 0;border-left:0}
   .feature:nth-child(2n){padding-left:22px;border-left:1px solid var(--linha)}
   .stats{grid-template-columns:1fr 1fr}
   .stat:nth-child(3){border-left:0}
@@ -382,7 +383,8 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .btn{min-height:44px}.btn.sm{min-height:36px}
   .btn:active,.chip:active,.mcard:active,.mini:active,.post:active{transform:scale(.98)}
   .features{grid-template-columns:1fr}
-  .feature,.feature:nth-child(2n),.feature:not(:nth-child(3n+1)){padding:22px 0;border-left:0}
+  .feature,.feature:nth-child(2n),.feature:not(:nth-child(4n+1)){padding:22px 0;border-left:0}
+  .feature{grid-template-columns:56px 1fr}
   .steps{grid-template-columns:1fr;gap:24px}
   .step,.step + .step{padding:0;border:0}
   .row2,.methods{grid-template-columns:1fr}
@@ -447,7 +449,7 @@ const CONFIG = {
   backend: 'gist',
   // Opcional: fixe aqui o Gist de dados (o assistente do portal mostra os valores).
   // Sem isso, o portal usa o Gist que vem no link: ...?gist=usuario/ID
-  gist: { user: '', id: '' },
+  gist: { user: 'dtudofazmaceio-create', id: '6627159da9dff3e79a2af2c9da3892ad' },
   firebase: {
     apiKey: "",
     authDomain: "",
@@ -476,7 +478,9 @@ const CATS = {
   estagio:  { nome: 'Estágio',  plural: 'Estágios',  icon: 'gavel' },
   concurso: { nome: 'Concurso', plural: 'Concursos', icon: 'columns' },
   emprego:  { nome: 'Emprego',  plural: 'Empregos',  icon: 'briefcase' },
-  lei:      { nome: 'Atualização legislativa', plural: 'Legislação', icon: 'scroll' }
+  lei:      { nome: 'Atualização legislativa', plural: 'Atualizações da lei', icon: 'scroll' },
+  noticia:  { nome: 'Notícia', plural: 'Notícias', icon: 'news' },
+  entrevista: { nome: 'Entrevista', plural: 'Entrevistas', icon: 'mic' }
 };
 const TIPOS = { video: { nome: 'Vídeo', icon: 'play' }, audio: { nome: 'Áudio', icon: 'audio' }, pdf: { nome: 'PDF', icon: 'file' } };
 
@@ -541,7 +545,9 @@ const I = {
   gavel: '<path d="M12 6l3-3 6 6-3 3z"/><path d="M15 9l-9 9"/><path d="M3 21h9"/>',
   columns: '<path d="M3 9l9-5 9 5M4 9h16M6 9v8M10 9v8M14 9v8M18 9v8M4 17h16M3 20h18"/>',
   scroll: '<path d="M8 21h10a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8"/><path d="M8 3a2 2 0 0 0-2 2v14a2 2 0 1 1-4 0v-2h4"/><path d="M10 8h6M10 12h6M10 16h4"/>',
-  tag: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>'
+  tag: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/>',
+  news: '<path d="M4 5h13v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2z"/><path d="M17 9h3v10a2 2 0 0 1-2 2"/><path d="M7 9h7M7 13h7M7 17h4"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
 
@@ -1063,8 +1069,10 @@ async function resgatarCodigo(code) {
   return c;
 }
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado!'); } catch { toast('Selecione o texto e copie manualmente.', true); } }
+const CAT_DATA = ['lei', 'noticia', 'entrevista'];
+const CAT_INFO = ['noticia', 'entrevista', 'lei'];
 function prazoBadge(p) {
-  if (p.categoria === 'lei') return `<span class="badge wine">${ic('scroll', 12)} ${fmtDate(p.prazo)}</span>`;
+  if (CAT_DATA.includes(p.categoria)) return p.prazo ? `<span class="badge wine">${ic('calendar', 12)} ${fmtDate(p.prazo)}</span>` : '';
   if (!p.prazo) return '';
   const d = Math.ceil((new Date(p.prazo + 'T23:59:59') - Date.now()) / DAY);
   if (d < 0) return '<span class="badge err">Encerrado</span>';
@@ -1083,6 +1091,8 @@ const ROUTES = {
   material:      { view: viewMaterial, auth: true, ativo: true },
   oportunidades: { view: viewOportunidades, auth: true, ativo: true },
   legislacao:    { view: viewLegislacao, auth: true, ativo: true },
+  noticias:      { view: viewNoticias, auth: true, ativo: true },
+  configurar:    { view: viewConfigurar },
   publicacao:    { view: viewPublicacao, auth: true, ativo: true },
   perfil:        { view: viewPerfil, auth: true },
   busca:         { view: viewBusca, auth: true, ativo: true },
@@ -1104,9 +1114,9 @@ async function render() {
   if (r.ativo && !ativo(S.user)) { toast('Assine o portal para acessar este conteúdo.'); return go('assinar'); }
 
   const app = $('#app');
-  if (store.modo === 'gist' && !store.configurado && S.user?.role !== 'admin') {
+  if (store.modo === 'gist' && !store.configurado && S.user?.role !== 'admin' && name !== 'configurar') {
     if (S.user) { await store.logout(); S.user = null; }
-    app.innerHTML = publicHTML('setup'); bindShell(); await viewSemGist($('#main')); return;
+    app.innerHTML = publicHTML('setup'); bindShell(); await viewIndisponivel($('#main')); return;
   }
   app.innerHTML = S.user ? shellHTML(name) : publicHTML(name);
   const main = $('#main');
@@ -1120,8 +1130,9 @@ async function render() {
 function brandHTML(href = '#/') {
   return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
-const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
 const DETAIL = { material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
+const naInfo = () => /[?&]tipo=(noticia|entrevista|lei)/.test(location.hash) || location.hash.startsWith('#/legislacao');
 const isMobile = () => matchMedia('(max-width: 820px)').matches;
 const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -1132,14 +1143,16 @@ const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 function publicHTML(name) {
   if (name === '' && isMobile()) return '<main id="main"></main>';
   return `<header class="topbar"><div class="in">${name && name !== 'setup' ? `<a class="icon-btn mback" href="#/" aria-label="Voltar">${ic('back', 22)}</a>` : ''}${brandHTML()}
-    <nav style="display:flex;gap:10px;align-items:center">
+    <nav>
       <a class="btn ghost sm hide-sm" href="#/" ${name === '' ? 'style="display:none"' : ''}>Início</a>
       <a class="btn ghost sm" href="#/entrar">Entrar</a><a class="btn primary sm" href="#/cadastro">Criar conta</a>
     </nav></div></header><main id="main"></main>`;
 }
 function shellHTML(name) {
   const u = S.user, at = ativo(u), st = statusAss(u);
-  const item = (r, label, icon, gated) => `<a href="#/${r}" class="${name === r || (r === 'materiais' && name === 'material') || (r === 'oportunidades' && name === 'publicacao') ? 'on' : ''}">${ic(icon)} ${label}${gated && !at ? `<span class="lk">${ic('lock', 14)}</span>` : ''}</a>`;
+  const tipoAtual = (location.hash.match(/[?&]tipo=(\w+)/) || [])[1];
+  const isOn = r => { const [rn, rq] = r.split('?'), rt = (rq || '').replace('tipo=', ''); if (rn === 'noticias') return (name === 'noticias' && (tipoAtual || 'noticia') === rt) || (name === 'legislacao' && rt === 'lei'); return name === rn || (rn === 'materiais' && name === 'material') || (rn === 'oportunidades' && name === 'publicacao'); };
+  const item = (r, label, icon, gated) => `<a href="#/${r}" class="${isOn(r) ? 'on' : ''}">${ic(icon)} ${label}${gated && !at ? `<span class="lk">${ic('lock', 14)}</span>` : ''}</a>`;
   return `<div class="app" id="shell">
     <aside class="side">${brandHTML('#/painel')}
       <nav class="nav">
@@ -1147,7 +1160,10 @@ function shellHTML(name) {
         <div class="sep">Conteúdo</div>
         ${item('materiais', 'Materiais de estudo', 'book', true)}
         ${item('oportunidades', 'Estágios, concursos e empregos', 'briefcase', true)}
-        ${item('legislacao', 'Atualizações da lei', 'scale', true)}
+        <div class="sep">Atualidades</div>
+        ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
+        ${item('noticias?tipo=entrevista', 'Entrevistas', 'mic', true)}
+        ${item('noticias?tipo=lei', 'Atualizações da lei', 'scroll', true)}
         <div class="sep">Conta</div>
         ${item('perfil', 'Minha conta', 'user')}
         ${!at ? item('assinar', 'Assinar o portal', 'card') : ''}
@@ -1159,7 +1175,7 @@ function shellHTML(name) {
     <div class="mainwrap">
       <header class="deskbar">
         <div class="crumb"><span class="muted">${esc(S.config.nomePortal)}</span>${DETAIL[name] && name !== 'assinar' && name !== 'admin' ? `<span class="sl">/</span><a href="#/${DETAIL[name]}">${esc(TITLES[DETAIL[name]])}</a>` : ''}<span class="sl">/</span><b>${esc(TITLES[name] || 'Início')}</b></div>
-        ${at ? `<form class="gsearch" id="gs" role="search">${ic('search', 16)}<input name="q" placeholder="Buscar materiais, vagas, editais e leis…" autocomplete="off"><kbd>Ctrl K</kbd></form>` : '<span style="margin-left:auto"></span>'}
+        ${at ? `<form class="gsearch" id="gs" role="search">${ic('search', 16)}<input name="q" placeholder="Buscar materiais, vagas, notícias e entrevistas…" autocomplete="off"><kbd>Ctrl K</kbd></form>` : '<span style="margin-left:auto"></span>'}
         <a class="uchip" href="#/perfil"><span class="avatar sm">${esc(initials(u.nome))}</span>${esc(u.nome.split(' ')[0])}</a>
       </header>
       <header class="apphead">
@@ -1170,14 +1186,18 @@ function shellHTML(name) {
       </header>
       <main id="main"></main>
     </div>
-    <nav class="tabbar">${[['painel', 'Início', 'home', ['painel']], ['materiais', 'Estudar', 'book', ['materiais', 'material']], ['oportunidades', 'Carreira', 'briefcase', ['oportunidades', 'publicacao']], ['legislacao', 'Leis', 'scale', ['legislacao']], ['perfil', 'Conta', 'user', ['perfil', 'assinar', 'admin']]]
-      .map(([r, l, i, act]) => `<a href="#/${r}" class="${act.includes(name) ? 'on' : ''}">${ic(i, 22)}${l}${r !== 'painel' && r !== 'perfil' && !at ? `<span class="lk">${ic('lock', 11)}</span>` : ''}</a>`).join('')}</nav>
+    <nav class="tabbar">${[['painel', 'Início', 'home', ['painel']], ['materiais', 'Estudar', 'book', ['materiais', 'material']], ['oportunidades', 'Carreira', 'briefcase', ['oportunidades', 'publicacao']], ['noticias', 'Notícias', 'news', ['noticias', 'legislacao']], ['perfil', 'Conta', 'user', ['perfil', 'assinar', 'admin']]]
+      .map(([r, l, i, act]) => `<a href="#/${r}" class="${act.includes(name) && !(r === 'oportunidades' && naInfo()) || (r === 'noticias' && name === 'publicacao' && naInfo()) ? 'on' : ''}">${ic(i, 22)}${l}${r !== 'painel' && r !== 'perfil' && !at ? `<span class="lk">${ic('lock', 11)}</span>` : ''}</a>`).join('')}</nav>
   </div>`;
 }
 function bindShell() {
   const lo = $('#logout'); if (lo) lo.onclick = sair;
   const bk = $('#back'); if (bk) bk.onclick = () => { const [n] = location.hash.replace(/^#\/?/, '').split(/[/?]/); if (history.length > 1 && S.navCount > 1) history.back(); else go(DETAIL[n] || 'painel'); };
   const gs = $('#gs'); if (gs) gs.onsubmit = e => { e.preventDefault(); const q = gs.q.value.trim(); if (q) go('busca?q=' + encodeURIComponent(q)); };
+}
+function marcarNav(sideHref, tabHref) {
+  $$('.nav a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === sideHref));
+  $$('.tabbar a').forEach(a => a.classList.toggle('on', a.getAttribute('href') === tabHref));
 }
 async function sair() { await store.logout(); toast('Sessão encerrada.'); go(''); }
 document.addEventListener('keydown', e => {
@@ -1206,7 +1226,7 @@ async function viewHome(main) {
   if (isMobile()) {
     main.innerHTML = `<div class="welcome">${ART.facade(c.nomePortal)}
       <h1>O Direito, organizado para quem estuda.</h1>
-      <div class="wl">${dt ? `<div>${ic('check', 20)} ${dt} dias grátis para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('gavel', 20)} Estágios, concursos e empregos</div><div>${ic('scroll', 20)} Atualizações da lei</div></div>
+      <div class="wl">${dt ? `<div>${ic('check', 20)} ${dt} dias grátis para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('gavel', 20)} Estágios, concursos e empregos</div><div>${ic('news', 20)} Notícias, entrevistas e leis</div></div>
       <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div></div>`;
     return;
   }
@@ -1216,13 +1236,15 @@ async function viewHome(main) {
     ['file', 'PDFs e apostilas', 'Roteiros de estudo, mapas mentais e modelos de peças.'],
     ['gavel', 'Estágios', 'Vagas em escritórios, tribunais, defensorias e departamentos jurídicos.'],
     ['columns', 'Concursos', 'Editais, prazos de inscrição e conteúdo programático.'],
-    ['scroll', 'Atualizações da lei', 'O que mudou, quando entra em vigor e o link para o texto oficial.']
+    ['scroll', 'Atualizações da lei', 'O que mudou, quando entra em vigor e o link para o texto oficial.'],
+    ['news', 'Notícias', 'O que acontece nos tribunais, na OAB e no Congresso, com a fonte.'],
+    ['mic', 'Entrevistas', 'Conversas em vídeo e áudio com juízes, promotores e advogados.']
   ];
   main.innerHTML = `
   <section class="hero"><div class="wrap">
     <div class="hero-copy">
       <h1>O Direito, organizado para quem estuda.</h1>
-      <p class="lead">Videoaulas, áudios e PDFs por disciplina, com vagas de estágio, concursos, empregos e as mudanças na lei explicadas com a fonte oficial.</p>
+      <p class="lead">Videoaulas, áudios e PDFs por disciplina, vagas de estágio, concursos e empregos, notícias, entrevistas e as mudanças na lei com a fonte oficial.</p>
       <div class="cta"><a class="btn gold" href="#/cadastro">${dt ? `Começar com ${dt} dias grátis` : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já sou aluno</a></div>
       <div class="maxim"><i>${mx[0]}</i><span>${mx[1]}</span></div>
     </div>
@@ -1230,7 +1252,7 @@ async function viewHome(main) {
   </div></section>
 
   <section class="section"><div class="wrap">
-    <div class="section-h"><span class="eyebrow">O acervo</span><h2>Tudo o que a graduação pede, num só lugar</h2><p>Do primeiro período à OAB, organizado pelas disciplinas do curso.</p></div>
+    <div class="section-h"><span class="eyebrow">O acervo</span><h2>Estudo, carreira e atualidades num só lugar</h2><p>Do primeiro período à OAB, organizado pelas disciplinas do curso.</p></div>
     <div class="features">${feat.map(f => `<div class="feature">${ART.medal(f[0])}<div><h3>${f[1]}</h3><p>${f[2]}</p></div></div>`).join('')}</div>
   </div></section>
 
@@ -1288,11 +1310,27 @@ function tokenModal() {
     catch (err) { toast(err.message, true); b.disabled = false; }
   };
 }
-async function viewSemGist(main) {
+async function viewIndisponivel(main) {
   main.innerHTML = `${authOpen()}
-    <h2>Portal ainda não configurado</h2>
-    <p class="muted"><b>Aluno:</b> abra o link de acesso enviado pelo seu professor ou administrador.</p>
-    <p class="muted"><b>Administrador:</b> conecte o GitHub e crie sua conta de administrador. Leva cerca de 3 minutos.</p>
+    <h2>Não foi possível abrir o portal</h2>
+    <p class="muted">Abra o portal pelo link enviado pelo seu professor ou administrador.</p>
+    <p class="muted small">Se você instalou o app na tela inicial e esta mensagem apareceu, apague o ícone, abra o link de novo no navegador e adicione à tela inicial outra vez.</p>${authClose}`;
+}
+async function viewConfigurar(main) {
+  if (store.modo !== 'gist') { main.innerHTML = `<div class="page"><div class="card empty"><h3>Configuração disponível apenas no modo GitHub.</h3></div></div>`; return; }
+  if (store.configurado && !store.precisaConfigurar) {
+    main.innerHTML = `${authOpen()}<h2>Portal configurado</h2><p class="muted">O portal já está conectado ao GitHub. Entre com seu e-mail e senha de administrador.</p>
+      <p class="muted small">Para atualizar o token, entre e vá em <b>Painel → Configurações</b>.</p><a class="btn primary" href="#/entrar" style="width:100%">Entrar</a>${authClose}`;
+    return;
+  }
+  if (store.precisaConfigurar) {
+    main.innerHTML = `${authOpen()}<h2>Concluir a configuração</h2><p class="muted">Falta só um passo para liberar os cadastros dos alunos em qualquer aparelho: conectar o token do GitHub e criar sua conta de administrador.</p>
+      <button class="btn primary" id="cfg" style="width:100%">${ic('settings', 16)} Concluir configuração</button>${authClose}`;
+    $('#cfg').onclick = configurarModal; return;
+  }
+  main.innerHTML = `${authOpen()}
+    <h2>Configurar o portal</h2>
+    <p class="muted">Conecte o GitHub e crie sua conta de administrador. Leva cerca de 3 minutos.</p>
     <button class="btn primary" id="cfg" style="width:100%">${ic('settings', 16)} Criar o portal com o GitHub</button>
     <div style="border-top:1px solid var(--linha);margin-top:22px;padding-top:18px">
       <h4>Já tenho o link do Gist</h4>
@@ -1302,7 +1340,7 @@ async function viewSemGist(main) {
   $('#cfg').onclick = configurarModal;
   $('#fgl').onsubmit = async e => {
     e.preventDefault(); const b = $('button', e.target); b.disabled = true;
-    try { await store.definirGist(e.target.g.value); S.config = await store.getConfig(); fixarLinkGist(); toast('Portal conectado ao Gist.'); go(''); }
+    try { await store.definirGist(e.target.g.value); S.config = await store.getConfig(); fixarLinkGist(); toast('Portal conectado ao Gist.'); go('entrar'); }
     catch (err) { toast(err.message, true); b.disabled = false; }
   };
 }
@@ -1465,7 +1503,7 @@ async function viewPainel(main) {
   let mats = [], posts = [];
   if (at) [mats, posts] = await Promise.all([store.list('materiais'), store.list('publicacoes')]);
   mats.sort(byNewest); posts.sort(byNewest);
-  const opps = posts.filter(p => p.categoria !== 'lei'), leis = posts.filter(p => p.categoria === 'lei');
+  const opps = posts.filter(p => !CAT_INFO.includes(p.categoria)), leis = posts.filter(p => p.categoria === 'lei'), atual = posts.filter(p => p.categoria === 'noticia' || p.categoria === 'entrevista');
   const expiraEm = u.assinatura ? Math.ceil((u.assinatura.validade - Date.now()) / DAY) : null;
   const abertas = opps.filter(p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= Date.now()).length;
   const min = menorMensal();
@@ -1497,11 +1535,13 @@ async function viewPainel(main) {
       <div style="display:grid;gap:24px;align-content:start">
         <div><div class="list-h"><h3>Oportunidades</h3><a href="#/oportunidades" class="small">Ver todas</a></div>
           <div class="card mini-list">${opps.slice(0, 4).map(miniPost).join('') || vazio('Nenhuma vaga publicada ainda.', 'gavel')}</div></div>
-        <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/legislacao" class="small">Ver todas</a></div>
+        <div><div class="list-h"><h3>Notícias e entrevistas</h3><a href="#/noticias" class="small">Ver todas</a></div>
+          <div class="card mini-list">${atual.slice(0, 4).map(miniPost).join('') || vazio('Nenhuma notícia publicada ainda.', 'news')}</div></div>
+        <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/noticias?tipo=lei" class="small">Ver todas</a></div>
           <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || vazio('Nenhuma atualização publicada ainda.', 'scroll')}</div></div>
       </div>
     </div>` : `
-    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['gavel', 'Estágios'], ['columns', 'Concursos'], ['scroll', 'Atualizações da lei']].map(x => `<div class="feature" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></div>`).join('')}</div>`}
+    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['gavel', 'Estágios e empregos'], ['columns', 'Concursos'], ['news', 'Notícias'], ['mic', 'Entrevistas'], ['scroll', 'Atualizações da lei']].map(x => `<div class="feature" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></div>`).join('')}</div>`}
   </div>`;
 }
 function matCard(m) {
@@ -1512,8 +1552,9 @@ function matCard(m) {
 }
 function miniPost(p) {
   const c = CATS[p.categoria] || CATS.estagio;
-  const quando = p.prazo ? (p.categoria === 'lei' ? `publicada em ${fmtDate(p.prazo)}` : `inscrições até ${fmtDate(p.prazo)}`) : '';
-  return `<a class="mini" href="#/publicacao/${encodeURIComponent(p.id)}"><span class="tic">${ic(c.icon)}</span><div style="min-width:0"><b>${esc(p.titulo)}</b><span>${esc(p.instituicao || c.nome)}${quando ? `, ${quando}` : ''}</span></div></a>`;
+  const quando = p.prazo ? (CAT_DATA.includes(p.categoria) ? fmtDate(p.prazo) : `inscrições até ${fmtDate(p.prazo)}`) : '';
+  const icn = p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'audio' : 'play') : c.icon;
+  return `<a class="mini" href="#/publicacao/${encodeURIComponent(p.id)}"><span class="tic">${ic(icn)}</span><div style="min-width:0"><b>${esc(p.titulo)}</b><span>${esc(p.instituicao || c.nome)}${quando ? `, ${quando}` : ''}</span></div></a>`;
 }
 
 /* ============================== Materiais ============================== */
@@ -1540,14 +1581,30 @@ async function viewMateriais(main, _, q) {
   draw();
 }
 function embedURL(url) {
-  const yt = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+  url = String(url || '');
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
-  const vm = String(url).match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  const vm = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
   if (vm) return `https://player.vimeo.com/video/${vm[1]}`;
-  const gd = String(url).match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+  const gd = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=)([\w-]{10,})/);
   if (gd) return `https://drive.google.com/file/d/${gd[1]}/preview`;
   return null;
 }
+const fonteMidia = url => /youtube\.com|youtu\.be/.test(url) ? 'youtube' : /drive\.google\.com/.test(url) ? 'drive' : null;
+function validarMidia(url) {
+  url = String(url || '').trim();
+  if (!url) return 'Cole o link do YouTube ou do Google Drive.';
+  if (!fonteMidia(url) || !embedURL(url)) return 'Use um link do YouTube (youtube.com ou youtu.be) ou do Google Drive (drive.google.com/file/d/…).';
+  return null;
+}
+function midiaPlayer(url, formato, titulo = '', sub = '') {
+  const emb = embedURL(url);
+  if (!emb) return `<div class="card empty"><p>Link de mídia inválido.</p></div>`;
+  const allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+  if (formato === 'audio' && fonteMidia(url) === 'drive') return `<div class="player audio-box">${ART.thumb('audio')}<h3 style="color:#fff;margin-top:12px">${esc(titulo)}</h3><div style="color:#c6cbd8;margin-bottom:16px">${esc(sub)}</div><iframe src="${esc(emb)}" allow="${allow}" style="width:100%;max-width:620px;height:96px;border:0;border-radius:8px;background:#fff;margin:0 auto" title="${esc(titulo)}"></iframe></div>`;
+  return `<div class="player embed"><iframe src="${esc(emb)}" allow="${allow}" allowfullscreen title="${esc(titulo)}"></iframe></div>`;
+}
+const DICA_DRIVE = 'No Google Drive, abra o arquivo, clique em <b>Compartilhar</b> e mude para <b>Qualquer pessoa com o link</b>. No YouTube, o vídeo pode ser <b>Não listado</b>.';
 async function viewMaterial(main, id) {
   const m = await store.get('materiais', decodeURIComponent(id || ''));
   if (!m) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Material não encontrado</h3><a href="#/materiais">Voltar à biblioteca</a></div></div>`; return; }
@@ -1557,7 +1614,8 @@ async function viewMaterial(main, id) {
   const t = TIPOS[m.tipo] || TIPOS.pdf;
   let player;
   if (!src) player = `<div class="card empty"><p>Arquivo indisponível.</p></div>`;
-  else if (emb) player = `<div class="player embed"><iframe src="${esc(emb)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+  else if (emb && m.tipo !== 'pdf') player = midiaPlayer(m.url, m.tipo, m.titulo, m.disciplina || '');
+  else if (emb) player = `<div class="player"><iframe class="pdf-frame" src="${esc(emb)}" title="${esc(m.titulo)}"></iframe></div>`;
   else if (m.tipo === 'video') player = `<div class="player"><video controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></video></div>`;
   else if (m.tipo === 'audio') player = `<div class="player audio-box">${ART.thumb('audio')}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
   else player = `<div class="player"><iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}"></iframe></div>`;
@@ -1573,12 +1631,20 @@ async function viewMaterial(main, id) {
 /* =========================== Oportunidades/Leis =========================== */
 function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
-  return `<article class="card post"><span class="pi">${ic(c.icon, 22)}</span>
+  const pi = p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'audio' : 'play') : c.icon;
+  return `<article class="card post"><span class="pi">${ic(pi, 22)}</span>
     <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
       <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
-      <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo && p.categoria !== 'lei' ? `<span>${ic('calendar', 14)} Até ${fmtDate(p.prazo)}</span>` : ''}</div>
+      <div class="meta">${metaPost(p)}</div>
       ${p.resumo ? `<p>${esc(p.resumo)}</p>` : ''}</div>
-    <a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Detalhes</a></article>`;
+    <a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">${p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'Ouvir' : 'Assistir') : p.categoria === 'noticia' ? 'Ler' : 'Detalhes'}</a></article>`;
+}
+function metaPost(p) {
+  const s1 = (i, t) => t ? `<span>${ic(i, 14)} ${esc(t)}</span>` : '';
+  if (p.categoria === 'entrevista') return s1('user', p.instituicao) + s1('briefcase', p.cargo) + s1('tag', p.local) + `<span>${ic(p.formato === 'audio' ? 'audio' : 'play', 14)} ${p.formato === 'audio' ? 'Áudio' : 'Vídeo'}</span>`;
+  if (p.categoria === 'noticia') return s1('news', p.instituicao) + s1('tag', p.local);
+  if (p.categoria === 'lei') return s1('scroll', p.instituicao) + s1('pin', p.local);
+  return s1('briefcase', p.instituicao) + s1('pin', p.local) + (p.prazo ? `<span>${ic('calendar', 14)} Até ${fmtDate(p.prazo)}</span>` : '');
 }
 async function viewOportunidades(main, _, q) {
   const cat = ['estagio', 'concurso', 'emprego'].includes(q.get('tipo')) ? q.get('tipo') : 'estagio';
@@ -1592,26 +1658,37 @@ async function viewOportunidades(main, _, q) {
     <div class="plist">${list.map(postCard).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
   </div>`;
 }
-async function viewLegislacao(main) {
-  const leis = (await store.list('publicacoes')).filter(p => p.categoria === 'lei').sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+async function viewLegislacao(main) { return viewNoticias(main, null, new URLSearchParams('tipo=lei')); }
+async function viewNoticias(main, _, q) {
+  const cat = CAT_INFO.includes(q.get('tipo')) ? q.get('tipo') : 'noticia';
+  const all = await store.list('publicacoes');
+  const list = all.filter(p => p.categoria === cat).sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+  const count = k => all.filter(p => p.categoria === k).length;
+  const sub = { noticia: 'O que acontece no mundo jurídico, com a fonte de cada notícia.', entrevista: 'Conversas em vídeo e áudio com profissionais do Direito.', lei: 'Novas normas e alterações relevantes, em ordem cronológica.' }[cat];
+  const cards = cat === 'lei' ? `<div class="timeline">${list.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="plist">${list.map(postCard).join('')}</div>`;
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Legislação</div><h2>Atualizações da lei</h2><p>Novas normas e alterações relevantes, em ordem cronológica.</p></div></div>
-    ${leis.length ? `<div class="timeline">${leis.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="card empty">${ART.medal('scroll')}<h3>Nenhuma atualização publicada</h3></div>`}
+    <div class="page-h"><div><span class="eyebrow">Atualidades</span><h2>${CATS[cat].plural}</h2><p>${sub}</p></div></div>
+    <div class="tabs">${CAT_INFO.map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/noticias?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
+    ${list.length ? cards : `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nada publicado em ${CATS[cat].plural.toLowerCase()} ainda</h3><p>As novidades aparecem aqui assim que forem publicadas.</p></div>`}
   </div>`;
 }
 async function viewPublicacao(main, id) {
   const p = await store.get('publicacoes', decodeURIComponent(id || ''));
   if (!p) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Publicação não encontrada</h3></div></div>`; return; }
-  const c = CATS[p.categoria] || CATS.estagio, back = p.categoria === 'lei' ? '#/legislacao' : `#/oportunidades?tipo=${p.categoria}`;
+  const c = CATS[p.categoria] || CATS.estagio, back = CAT_INFO.includes(p.categoria) ? `#/noticias?tipo=${p.categoria}` : `#/oportunidades?tipo=${p.categoria}`;
+  const ent = p.categoria === 'entrevista';
+  const linkTxt = { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
   main.innerHTML = `<div class="page"><div class="article">
     <a href="${back}" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} ${c.plural}</a>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
     <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
-    <div class="meta">${p.instituicao ? `<span>${ic('briefcase', 14)} ${esc(p.instituicao)}</span>` : ''}${p.local ? `<span>${ic('pin', 14)} ${esc(p.local)}</span>` : ''}${p.prazo ? `<span>${ic('calendar', 14)} ${p.categoria === 'lei' ? 'Publicada em' : 'Inscrições até'} ${fmtDate(p.prazo)}</span>` : ''}</div>
+    <div class="meta">${metaPost(p)}</div>
+    ${ent ? `<div style="margin-top:16px">${p.midia ? midiaPlayer(p.midia, p.formato, p.titulo, [p.instituicao, p.cargo].filter(Boolean).join(', ')) : '<div class="card empty"><p>Link da entrevista não informado.</p></div>'}</div>` : ''}
     <div class="doc" style="margin-top:16px;padding:34px 38px">${p.resumo ? `<p style="font-size:1.05rem;color:var(--toga)"><b>${esc(p.resumo)}</b></p>` : ''}<div class="article body">${paras(p.conteudo || '')}</div>
-    ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${p.categoria === 'lei' ? 'Ler texto oficial' : 'Acessar / candidatar-se'} ${ic('ext', 15)}</a>` : ''}</div>
+    ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${linkTxt} ${ic('ext', 15)}</a>` : ''}</div>
     <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
   </div></div>`;
+  if (CAT_INFO.includes(p.categoria)) marcarNav(`#/noticias?tipo=${p.categoria}`, '#/noticias');
 }
 
 /* ================================ Busca ================================ */
@@ -1843,7 +1920,7 @@ function admCodigos(box, codigos) {
 
 function admMateriais(box, mats) {
   mats.sort(byNewest);
-  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Envie arquivos de vídeo, áudio e PDF ou cadastre links (YouTube, Vimeo, Google Drive).</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Data</th><th></th></tr>
     ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ' · ' + fmtSize(m.size) : 'Link externo'}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
@@ -1860,30 +1937,41 @@ function admMateriais(box, mats) {
 function formMaterial(m = {}) {
   const { el, close } = modal(m.id ? 'Editar material' : 'Novo material', `<form class="form" id="fm">
     <label>Título<input name="titulo" required value="${esc(m.titulo)}"></label>
-    <div class="row2"><label>Tipo<select name="tipo">${Object.entries(TIPOS).map(([k, t]) => `<option value="${k}" ${m.tipo === k ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></label>
+    <div class="row2"><label>Tipo<select name="tipo">${Object.entries(TIPOS).map(([k, t]) => `<option value="${k}" ${(m.tipo || 'video') === k ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></label>
       <label>Disciplina<input name="disciplina" list="dl-disc" value="${esc(m.disciplina)}" placeholder="Ex.: Direito Civil"></label></div>
     <label>Descrição<textarea name="descricao" rows="3">${esc(m.descricao)}</textarea></label>
-    <label>${store.modo === 'gist' ? 'Arquivo (PDF ou áudio, até 4 MB)' : 'Arquivo (vídeo, áudio ou PDF)'}<input type="file" name="arquivo" accept="video/*,audio/*,application/pdf"></label>
-    ${store.modo === 'gist' ? '<p class="hint">Para vídeos, publique no YouTube (pode ser “não listado”) ou no Google Drive e cole o link abaixo.</p>' : ''}
-    ${m.fileName ? `<p class="hint">Arquivo atual: <b>${esc(m.fileName)}</b>. Envie outro para substituir.</p>` : ''}
-    <label>…ou link externo<input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtube.com/watch?v=…"></label>
+    <div id="g-arq"><label>Arquivo PDF${store.modo === 'gist' ? ' (até 4 MB)' : ''}<input type="file" name="arquivo" accept="application/pdf"></label>
+      ${m.fileName ? `<p class="hint" style="margin-top:6px">Arquivo atual: <b>${esc(m.fileName)}</b>. Envie outro para substituir.</p>` : ''}</div>
+    <label><span id="lb-url">Link do YouTube ou do Google Drive</span><input name="url" type="url" value="${esc(m.url)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
+    <p class="hint" id="h-url">${DICA_DRIVE}</p>
     <div class="progress hidden" id="pg"><span></span></div>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar</button></div>
   </form><datalist id="dl-disc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist>`);
   const f = $('#fm', el);
-  f.arquivo.onchange = () => { const t = f.arquivo.files[0]?.type || ''; f.tipo.value = t.startsWith('video') ? 'video' : t.startsWith('audio') ? 'audio' : t === 'application/pdf' ? 'pdf' : f.tipo.value; };
+  const ajusta = () => {
+    const pdf = f.tipo.value === 'pdf';
+    $('#g-arq', el).classList.toggle('hidden', !pdf);
+    $('#lb-url', el).textContent = pdf ? '…ou link do Google Drive' : `Link do ${f.tipo.value === 'video' ? 'vídeo' : 'áudio'} no YouTube ou no Google Drive`;
+    f.url.required = !pdf;
+  };
+  f.tipo.onchange = ajusta; ajusta();
   f.onsubmit = async e => {
     e.preventDefault();
-    const file = f.arquivo.files[0], url = f.url.value.trim();
-    if (!file && !url && !m.fileRef) return toast('Envie um arquivo ou informe um link.', true);
+    const tipo = f.tipo.value, url = f.url.value.trim(), file = tipo === 'pdf' ? f.arquivo.files[0] : null;
+    if (tipo !== 'pdf') { const er = validarMidia(url); if (er) return toast(er, true); }
+    else if (!file && !url && !m.fileRef) return toast('Envie o PDF ou informe o link do Google Drive.', true);
+    else if (url && !file && !embedURL(url)) return toast('Para PDF por link, use um link do Google Drive (drive.google.com/file/d/…).', true);
     $('#sv', el).disabled = true;
-    const o = { ...m, titulo: f.titulo.value.trim(), tipo: f.tipo.value, disciplina: f.disciplina.value.trim(), descricao: f.descricao.value.trim(), url };
+    const o = { ...m, titulo: f.titulo.value.trim(), tipo, disciplina: f.disciplina.value.trim(), descricao: f.descricao.value.trim(), url };
     try {
       if (file) {
         $('#pg', el).classList.remove('hidden');
-        const r = await store.uploadFile(file, p => $('#pg span', el).style.width = Math.round(p * 100) + '%');
+        const r = await store.uploadFile(file, pr => $('#pg span', el).style.width = Math.round(pr * 100) + '%');
         if (m.fileRef) await store.deleteFile(m.fileRef);
         Object.assign(o, { fileRef: r, fileName: file.name, mime: file.type, size: file.size });
+      } else if (tipo !== 'pdf' || (url && !m.fileRef)) {
+        if (m.fileRef) await store.deleteFile(m.fileRef);
+        Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
       }
       if (!o.fileRef) Object.assign(o, { fileRef: '', fileName: '', mime: '', size: 0 });
       await store.save('materiais', o);
@@ -1916,97 +2004,39 @@ function formPost(p = {}) {
     <div class="row2"><label>Categoria<select name="categoria">${Object.entries(CATS).map(([k, c]) => `<option value="${k}" ${p.categoria === k ? 'selected' : ''}>${c.nome}</option>`).join('')}</select></label>
       <label><span id="lb-prazo">Prazo de inscrição</span><input type="date" name="prazo" value="${esc(p.prazo)}"></label></div>
     <label>Título<input name="titulo" required value="${esc(p.titulo)}"></label>
-    <div class="row2"><label><span id="lb-inst">Instituição / órgão</span><input name="instituicao" value="${esc(p.instituicao)}"></label><label>Local / abrangência<input name="local" value="${esc(p.local)}" placeholder="Ex.: Recife/PE · Remoto"></label></div>
+    <div id="g-ent" class="form">
+      <div class="row2"><label>Formato<select name="formato"><option value="video" ${p.formato !== 'audio' ? 'selected' : ''}>Vídeo</option><option value="audio" ${p.formato === 'audio' ? 'selected' : ''}>Áudio</option></select></label>
+        <label>Cargo ou atuação do entrevistado<input name="cargo" value="${esc(p.cargo)}" placeholder="Ex.: Juíza federal, advogado trabalhista"></label></div>
+      <label>Link da entrevista (YouTube ou Google Drive)<input name="midia" type="url" value="${esc(p.midia)}" placeholder="https://youtu.be/… ou https://drive.google.com/file/d/…"></label>
+      <p class="hint" style="margin-top:-6px">${DICA_DRIVE}</p>
+    </div>
+    <div class="row2"><label><span id="lb-inst">Instituição / órgão</span><input name="instituicao" value="${esc(p.instituicao)}"></label><label><span id="lb-local">Local / abrangência</span><input name="local" value="${esc(p.local)}" placeholder="Ex.: Recife/PE, remoto"></label></div>
     <label>Resumo<input name="resumo" value="${esc(p.resumo)}" maxlength="220"></label>
-    <label>Conteúdo completo<textarea name="conteudo" rows="7">${esc(p.conteudo)}</textarea></label>
-    <label>Link oficial (edital, vaga ou texto da lei)<input type="url" name="link" value="${esc(p.link)}" placeholder="https://"></label>
+    <label><span id="lb-cont">Conteúdo completo</span><textarea name="conteudo" rows="7">${esc(p.conteudo)}</textarea></label>
+    <label><span id="lb-link">Link oficial (edital, vaga ou texto da lei)</span><input type="url" name="link" value="${esc(p.link)}" placeholder="https://"></label>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Publicar</button></div></form>`, { wide: true });
   const f = $('#fp', el);
-  const lbl = () => { const lei = f.categoria.value === 'lei'; $('#lb-prazo', el).textContent = lei ? 'Data de publicação' : 'Prazo de inscrição'; $('#lb-inst', el).textContent = lei ? 'Norma (ex.: Lei nº …)' : 'Instituição / órgão'; };
+  const L = {
+    estagio: ['Prazo de inscrição', 'Instituição / órgão', 'Local / abrangência', 'Conteúdo completo', 'Link da vaga ou do edital'],
+    concurso: ['Prazo de inscrição', 'Órgão', 'Local / abrangência', 'Conteúdo completo', 'Link do edital'],
+    emprego: ['Prazo de inscrição', 'Empresa / escritório', 'Local / abrangência', 'Conteúdo completo', 'Link da vaga'],
+    lei: ['Data de publicação', 'Norma (ex.: Lei nº …)', 'Abrangência (federal, estadual…)', 'O que mudou', 'Link do texto oficial'],
+    noticia: ['Data da notícia', 'Fonte (veículo ou órgão)', 'Tema (ex.: STF, OAB, Direito Penal)', 'Texto da notícia', 'Link da matéria original (opcional)'],
+    entrevista: ['Data da entrevista', 'Entrevistado(a)', 'Tema (ex.: carreira na magistratura)', 'Descrição ou principais pontos', 'Link de material complementar (opcional)']
+  };
+  const lbl = () => {
+    const k = f.categoria.value, t = L[k] || L.estagio;
+    ['lb-prazo', 'lb-inst', 'lb-local', 'lb-cont', 'lb-link'].forEach((id, i) => { $('#' + id, el).textContent = t[i]; });
+    $('#g-ent', el).classList.toggle('hidden', k !== 'entrevista');
+    f.midia.required = k === 'entrevista';
+  };
   f.categoria.onchange = lbl; lbl();
   f.onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(f));
+    if (d.categoria === 'entrevista') { const er = validarMidia(d.midia); if (er) return toast(er, true); }
+    else { delete d.midia; delete d.formato; delete d.cargo; }
+    if (CAT_DATA.includes(d.categoria) && !d.prazo) { const n = new Date(); d.prazo = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`; }
     try { await store.save('publicacoes', { ...p, ...d }); close(); toast('Publicação salva.'); render(); } catch (err) { toast(err.message, true); }
-  };
-}
-
-function admAlunos(box, users) {
-  users.sort(byNewest);
-  box.innerHTML = `<div class="filters"><div class="search">${ic('search')}<input class="field" id="ub" placeholder="Buscar por nome ou e-mail…"></div></div><div class="card table-wrap" id="ut"></div>`;
-  const draw = (t = '') => {
-    const l = users.filter(u => `${u.nome} ${u.email}`.toLowerCase().includes(t.toLowerCase()));
-    $('#ut').innerHTML = `<table><tr><th>Aluno</th><th>Instituição</th><th>Cadastro</th><th>Assinatura</th><th></th></tr>
-    ${l.map(u => { const st = statusAss(u); const self = u.id === S.user.id; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}${u.telefone ? ' · ' + esc(u.telefone) : ''}</div></td><td class="small">${esc(u.instituicao || '—')}<div class="muted">${esc(u.semestre || '')}</div></td><td>${fmtDate(u.criadoEm)}</td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td>
-      <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${planos()[0]?.dias || 30} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
-      ${store.redefinirSenha ? `<button class="btn ghost sm" data-act="senha" data-id="${esc(u.id)}">Redefinir senha</button>` : ''}
-      ${self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('')}</table>`;
-  };
-  draw();
-  $('#ub').oninput = e => draw(e.target.value);
-  $('#ut').onclick = async e => {
-    const b = e.target.closest('[data-act]'); if (!b) return;
-    const u = users.find(x => x.id === b.dataset.id);
-    try {
-      if (b.dataset.act === 'ativar') { await ativarAssinatura(u.id); toast(`Acesso de ${u.nome} estendido.`); }
-      if (b.dataset.act === 'cancelar') { if (!await confirmar(`Cancelar a assinatura de ${u.nome}? O acesso será bloqueado imediatamente.`, 'Cancelar assinatura')) return; await store.updateUser(u.id, { assinatura: { ...u.assinatura, status: 'cancelada', validade: Date.now() } }); toast('Assinatura cancelada.'); }
-      if (b.dataset.act === 'senha') {
-        const { el, close } = modal('Redefinir senha', `<form class="form" id="fs"><p style="margin:0">Defina uma senha provisória para <b>${esc(u.nome)}</b> (${esc(u.email)}) e envie a ela. Depois, ela pode trocar em <b>Minha conta</b>.</p>
-          <label>Nova senha<input name="s" required minlength="6" value="${novoCodigo().replace(/-/g, '').slice(2, 10).toLowerCase()}"></label>
-          <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar senha</button></div></form>`);
-        $('#fs', el).onsubmit = async ev => { ev.preventDefault(); try { await store.redefinirSenha(u.id, ev.target.s.value); close(); toast('Senha redefinida. Envie a nova senha ao aluno.'); } catch (err) { toast(err.message, true); } };
-        return;
-      }
-      if (b.dataset.act === 'role') { const nr = u.role === 'admin' ? 'aluno' : 'admin'; if (!await confirmar(`Alterar ${u.nome} para ${nr}?`)) return; await store.updateUser(u.id, { role: nr }); toast('Perfil atualizado.'); }
-      render();
-    } catch (err) { toast(err.message, true); }
-  };
-}
-function admPagamentos(box, pags) {
-  pags.sort(byNewest);
-  box.innerHTML = `<div class="card table-wrap">${pags.length ? `<table><tr><th>Data</th><th>Aluno</th><th>Método</th><th>Valor</th><th>Status</th><th></th></tr>
-    ${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td><b>${esc(p.nome)}</b><div class="small muted">${esc(p.email)}${p.plano ? ', plano ' + esc(p.plano) : ''}</div></td><td>${esc({ pix: 'Pix', cartao: 'Cartão', boleto: 'Boleto' }[p.metodo] || p.metodo)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td>
-    <td><div class="acts">${p.status === 'pendente' ? `<button class="btn primary sm" data-ok="${esc(p.id)}">Confirmar e liberar</button><button class="btn danger sm" data-no="${esc(p.id)}">Recusar</button>` : ''}</div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum pagamento registrado</h3></div>'}</div>
-    <p class="hint" style="margin-top:12px">Ao confirmar um pagamento pendente, o acesso do aluno é liberado pelos dias do plano escolhido. Para automatizar, configure o webhook do seu gateway (veja o README).</p>`;
-  box.onclick = async e => {
-    const ok = e.target.closest('[data-ok]'), no = e.target.closest('[data-no]');
-    const p = pags.find(x => x.id === (ok || no)?.dataset[ok ? 'ok' : 'no']); if (!p) return;
-    try {
-      if (ok) { await store.save('pagamentos', { ...p, status: 'aprovado' }); await ativarAssinatura(p.userId, Number(p.dias) || planos()[0]?.dias || 30, p.plano || ''); toast('Pagamento confirmado e acesso liberado.'); }
-      else { await store.save('pagamentos', { ...p, status: 'recusado' }); toast('Pagamento recusado.'); }
-      render();
-    } catch (err) { toast(err.message, true); }
-  };
-}
-function admConfig(box) {
-  const c = S.config, g = store.gist;
-  box.innerHTML = `${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
-      <div class="eyebrow">Conexão com o GitHub</div><h3 style="margin-top:6px">Gist de dados do portal</h3>
-      <div class="table-wrap"><table>
-        <tr><td class="muted" style="width:150px">Conta</td><td><b>@${esc(g?.user)}</b></td></tr>
-        <tr><td class="muted">ID do Gist</td><td><code style="word-break:break-all">${esc(g?.id)}</code></td></tr>
-        <tr><td class="muted">Link de dados</td><td><a href="https://gist.github.com/${esc(g?.user)}/${esc(g?.id)}" target="_blank" rel="noopener">Abrir o Gist no GitHub ${ic('ext', 13)}</a></td></tr>
-      </table></div>
-      <p class="small muted" style="margin:12px 0 0">${store.alunosGist ? `Cadastros dos alunos: <a href="https://gist.github.com/${esc(g?.user)}/${esc(store.alunosGist.id)}" target="_blank" rel="noopener">Gist de alunos ${ic('ext', 12)}</a>.` : 'Cadastros dos alunos: configuração pendente.'}</p>
-      <div class="actions" style="justify-content:flex-start;margin-top:14px"><button class="btn primary sm" id="c-link">Link para os alunos</button><button class="btn ghost sm" id="c-token">${store.precisaConfigurar ? 'Concluir configuração' : 'Atualizar token do GitHub'}</button><button class="btn ghost sm" id="c-troca">Trocar ou desconectar Gist</button></div>
-    </div>` : ''}
-  <div class="card pad" style="max-width:760px"><h3>Portal e pagamento</h3><form class="form" id="fc">
-    <label>Nome do portal<input name="nomePortal" required value="${esc(c.nomePortal)}"></label>
-    <p class="hint">Preços e períodos ficam na aba <a href="#/admin/planos">Planos</a>.</p>
-    <div class="row2"><label>Dias grátis para novos alunos<input name="diasTeste" type="number" min="0" required value="${esc(c.diasTeste)}"><span class="hint">Use 0 para não oferecer período grátis.</span></label><span></span></div>
-    <div class="row2"><label>Chave Pix (opcional)<input name="chavePix" value="${esc(c.chavePix)}"></label><label>Contato para enviar comprovante<input name="contato" value="${esc(c.contato)}" placeholder="WhatsApp ou e-mail"></label></div>
-    <label>Link de pagamento (Mercado Pago, PagSeguro, Stripe…)<input name="linkPagamento" type="url" value="${esc(c.linkPagamento)}" placeholder="https://"></label>
-    <label>Instruções de pagamento<textarea name="instrucoesPagamento" rows="3">${esc(c.instrucoesPagamento)}</textarea></label>
-    <div class="actions"><button class="btn primary">Salvar configurações</button></div>
-    <p class="hint">Banco de dados em uso: <b>${store.modo === 'local' ? 'IndexedDB (local, neste navegador)' : store.modo === 'gist' ? `GitHub Gist de @${esc(store.gist?.user)}` : 'Firebase Firestore + Storage (nuvem)'}</b>.
-    ${store.modo === 'gist' ? ` <a href="https://gist.github.com/${esc(store.gist?.user)}/${esc(store.gist?.id)}" target="_blank" rel="noopener">Abrir o Gist</a>. As alterações podem levar alguns minutos para aparecer para os alunos.` : ''}</p>
-  </form></div>`;
-  const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
-  const ct = $('#c-troca'); if (ct) ct.onclick = trocarGistModal;
-  const ck = $('#c-token'); if (ck) ck.onclick = store.precisaConfigurar ? configurarModal : tokenModal;
-  $('#fc').onsubmit = async e => {
-    e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
-    const n = { ...c, ...d, diasTeste: Number(d.diasTeste) };
-    try { await store.saveConfig(n); S.config = n; toast('Configurações salvas.'); render(); } catch (err) { toast(err.message, true); }
   };
 }
 
