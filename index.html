@@ -371,6 +371,31 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .tabela-dados summary{cursor:pointer;color:var(--cinza)}
 @media (max-width:1000px){.an-grid{grid-template-columns:1fr}}
 
+/* Quiz */
+.qz-card{padding:28px 30px}
+.qz-enun{font-family:var(--serif);font-size:1.12rem;line-height:1.65;color:var(--toga);margin:0 0 20px}
+.qz-alts{display:grid;gap:10px}
+.qz-alt{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;text-align:left;border:1px solid var(--linha);border-radius:10px;background:var(--branco);padding:12px 14px;font:400 .97rem/1.5 var(--sans);color:var(--grafite);cursor:pointer;transition:border-color .12s,background .12s}
+.qz-alt:hover{border-color:var(--latao)}
+.qz-alt .l{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--linha);display:grid;place-items:center;font-weight:700;color:var(--toga);font-size:.88rem}
+.qz-alt.on{border-color:var(--rubi);background:var(--rubi-bg)}
+.qz-alt.on .l{background:var(--rubi);border-color:var(--rubi);color:#fff}
+.qz-nav{display:flex;justify-content:space-between;gap:10px;margin:20px 0 16px}
+.qz-dots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.qz-dots button{width:34px;height:34px;border-radius:8px;border:1px solid var(--linha);background:var(--branco);font:600 .8rem var(--sans);color:var(--cinza);cursor:pointer}
+.qz-dots button.ok{background:var(--latao-bg);color:#7c5d26;border-color:#e3d3b2}
+.qz-dots button.at{border-color:var(--rubi);color:var(--rubi);box-shadow:0 0 0 2px var(--rubi-bg)}
+.qz-res{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding:30px}
+.qz-nota{width:150px;height:150px;border-radius:50%;border:8px solid var(--linha);display:grid;place-items:center;align-content:center;text-align:center}
+.qz-nota.ok{border-color:var(--ok)}
+.qz-nota b{font:700 2.6rem var(--serif);color:var(--toga);line-height:1}
+.qz-nota span{font-size:.82rem;color:var(--cinza)}
+.qz-rev{border:1px solid var(--linha-2);border-radius:8px;padding:8px 12px;font-size:.92rem}
+.qz-rev b{color:var(--cinza);margin-right:6px}
+.qz-rev.certa{border-color:#bcdcc9;background:var(--ok-bg);color:var(--ok)}
+.qz-rev.errada{border-color:#e9c3c8;background:var(--err-bg);color:var(--err)}
+@media (max-width:820px){.qz-card{padding:20px 16px}.qz-res{grid-template-columns:1fr;justify-items:center;text-align:center;padding:22px}.qz-res .actions{justify-content:center!important}.qz-nav .btn{flex:1}}
+
 /* Tabelas e admin */
 .table-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.88rem}
@@ -559,6 +584,7 @@ const DEFAULT_CFG = {
   id: 'geral', nomePortal: 'Ágora Jurídica', planoNome: 'Assinatura Mensal',
   preco: 39.90, diasAcesso: 30, diasTeste: 30, linkPagamento: '', chavePix: '', contato: '',
   instrucoesPagamento: 'Após o pagamento, seu acesso é liberado assim que a confirmação for registrada.',
+  notaMinima: 60, quizMinCert: 10,
   planos: [
     { id: 'mensal', nome: 'Mensal', preco: 39.90, dias: 30, descricao: 'Para estudar no seu ritmo, mês a mês.', beneficios: [], destaque: false, ativo: true },
     { id: 'semestral', nome: 'Semestral', preco: 199.90, dias: 180, descricao: 'Acompanha um semestre letivo inteiro.', beneficios: [], destaque: true, ativo: true },
@@ -645,6 +671,8 @@ const I = {
   shrink: '<path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/>',
   share: '<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7"/>',
   chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  award: '<circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/>',
+  quiz: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3.8 2.3c-.8.4-1.3 1-1.3 1.9M12 16.8v.1"/>',
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'
@@ -1196,6 +1224,7 @@ const ROUTES = {
   publicacao:    { view: viewPublicacao, auth: true, ativo: true },
   perfil:        { view: viewPerfil, auth: true },
   busca:         { view: viewBusca, auth: true, ativo: true },
+  quiz:          { view: viewQuiz, auth: true, ativo: true },
   admin:         { view: viewAdmin, auth: true, admin: true }
 };
 function go(h) { const t = '#/' + h; if (location.hash === t) render(); else location.hash = t; }
@@ -1232,7 +1261,7 @@ async function render() {
 function brandHTML(href = '#/') {
   return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
-const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
 const DETAIL = { material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
 const naInfo = () => /[?&]tipo=(noticia|entrevista|lei)/.test(location.hash) || location.hash.startsWith('#/legislacao');
 const isMobile = () => matchMedia('(max-width: 820px)').matches;
@@ -1261,6 +1290,7 @@ function shellHTML(name) {
         ${item('painel', 'Início', 'home')}
         <div class="sep">Conteúdo</div>
         ${item('materiais', 'Materiais de estudo', 'book', true)}
+        ${item('quiz', 'Quiz e certificados', 'quiz', true)}
         ${item('oportunidades', 'Estágios, concursos e empregos', 'briefcase', true)}
         <div class="sep">Atualidades</div>
         ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
@@ -1631,6 +1661,7 @@ async function viewPainel(main) {
     </div>
     <div class="cols">
       <div>
+        ${mats.some(m => m.quiz?.total) ? `<div class="banner gold"><div><h3>${ic('quiz')} Teste seus conhecimentos</h3><p>Faça um quiz com questões dos materiais e ganhe um certificado acertando mais de ${notaMin()}%.</p></div><a class="btn primary" href="#/quiz">Fazer quiz</a></div>` : ''}
         <div class="list-h"><h3>Materiais recentes</h3><a href="#/materiais" class="small">Ver biblioteca</a></div>
         ${mats.length ? `<div class="mgrid">${mats.slice(0, 4).map(matCard).join('')}</div>` : `<div class="card">${vazio('Os materiais publicados aparecem aqui.')}</div>`}
       </div>
@@ -1671,7 +1702,8 @@ async function viewMateriais(main, _, q) {
   const discs = [...new Set(mats.map(m => m.disciplina).filter(Boolean))].sort();
   let tipo = q.get('tipo') || '', disc = '', termo = '';
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Biblioteca</div><h2>Materiais de estudo</h2><p>${mats.length} materiais disponíveis em vídeo, áudio e PDF.</p></div></div>
+    <div class="page-h"><div><div class="eyebrow">Biblioteca</div><h2>Materiais de estudo</h2><p>${mats.length} materiais disponíveis em vídeo, áudio e PDF.</p></div>
+      ${mats.some(m => m.quiz?.total) ? `<a class="btn primary sm" href="#/quiz">${ic('quiz', 15)} Fazer um quiz</a>` : ''}</div>
     <div class="filters">
       <div class="search">${ic('search')}<input class="field" id="busca" placeholder="Buscar por título, tema ou descrição…"></div>
       <select class="field" id="disc" style="width:auto;min-width:210px"><option value="">Todas as disciplinas</option>${discs.map(d => `<option>${esc(d)}</option>`).join('')}</select>
@@ -1912,6 +1944,418 @@ async function baixarMaterial(m, src) {
   } catch (e) { if (e?.name !== 'AbortError') toast('Não foi possível baixar o arquivo.', true); }
 }
 
+
+/* ======================= Quiz: inteligência artificial (Claude) =======================
+   A chave da API fica SOMENTE no navegador do administrador (nunca vai para o Gist).
+   O administrador gera um banco de questões por material; o aluno faz quizzes
+   sorteados desse banco. */
+const IA_MODELOS = [
+  ['claude-sonnet-5-5', 'Claude Sonnet 5.5 (recomendado: qualidade e custo equilibrados)'],
+  ['claude-opus-5-5', 'Claude Opus 5.5 (máxima qualidade, mais caro)'],
+  ['claude-haiku-5-5', 'Claude Haiku 5.5 (mais barato e rápido)']
+];
+const iaChave = () => lsGet('agora-ia-key') || '';
+const iaModelo = () => lsGet('agora-ia-modelo') || 'claude-sonnet-5-5';
+async function chamarClaude({ system, content, maxTokens = 8000 }) {
+  const key = iaChave();
+  if (!key) throw new Error('Cadastre a chave da API do Claude em Painel → Configurações.');
+  let r;
+  try {
+    r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: iaModelo(), max_tokens: maxTokens, system, messages: [{ role: 'user', content }] })
+    });
+  } catch { throw new Error('Sem conexão com a API do Claude. Verifique sua internet.'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const m = j?.error?.message || '';
+    throw new Error(r.status === 401 ? 'Chave da API do Claude inválida. Confira em Configurações.'
+      : r.status === 403 ? 'A chave não tem permissão para usar este modelo.'
+      : r.status === 429 ? 'Limite de uso da API atingido. Aguarde um minuto e tente de novo.'
+      : r.status === 529 || r.status >= 500 ? 'A API do Claude está sobrecarregada. Tente de novo em instantes.'
+      : r.status === 400 && /credit|balance/i.test(m) ? 'Sua conta da Anthropic está sem créditos. Adicione créditos no Console da Anthropic.'
+      : 'A API do Claude recusou o pedido: ' + (m || 'erro ' + r.status));
+  }
+  return { texto: (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n'), uso: j.usage || {}, parada: j.stop_reason };
+}
+/* Lê o PDF inteiro como texto, com marcação de páginas */
+async function textoCompletoPDF(blob, onStatus) {
+  const pdfjs = await carregarPdfJs();
+  const doc = await pdfjs.getDocument({ data: new Uint8Array(await blob.arrayBuffer()), isEvalSupported: false }).promise;
+  let out = '';
+  try {
+    for (let i = 1; i <= doc.numPages; i++) {
+      onStatus?.(`Lendo o material: página ${i} de ${doc.numPages}…`);
+      const tc = await (await doc.getPage(i)).getTextContent();
+      out += `\n[Página ${i}]\n` + tc.items.map(x => x.str + (x.hasEOL ? '\n' : ' ')).join('').replace(/[ \t]+/g, ' ').trim();
+    }
+    return { texto: out.trim(), paginas: doc.numPages };
+  } finally { try { await doc.destroy(); } catch {} }
+}
+const PROMPT_SISTEMA = `Você é professor de Direito em uma faculdade brasileira e examinador experiente de provas da OAB e de concursos jurídicos. Elabora questões de múltipla escolha de nível acadêmico, rigorosas e corretas, em português do Brasil.`;
+function promptQuestoes(n, nivel, evitar) {
+  return `Elabore ${n} questões de múltipla escolha baseadas EXCLUSIVAMENTE no material acima.
+
+Regras:
+- Nível: ${nivel === 'oab' ? 'Exame da OAB e concursos jurídicos' : nivel === 'graduacao' ? 'graduação em Direito' : 'misto (graduação, OAB e concursos)'}. Distribua as dificuldades (fácil, média e difícil), com predominância de média.
+- Cubra o material inteiro, do início ao fim, priorizando conceitos centrais, requisitos legais, distinções, exceções e aplicação a casos concretos. Prefira questões de análise e aplicação a questões de pura memorização.
+- Cada questão tem 5 alternativas (A a E) e exatamente UMA correta. As incorretas devem ser plausíveis e tecnicamente erradas por um motivo identificável.
+- Não use "todas as anteriores", "nenhuma das anteriores" nem pegadinhas de redação. Não repita a mesma ideia em duas questões.
+- A explicação deve dizer por que a correta está certa e por que as principais erradas estão erradas, com base no material (cite artigos de lei apenas se aparecerem no material).
+- "referencia" indica onde o assunto está no material (ex.: "p. 12" ou "p. 12-13, seção 3").
+${evitar.length ? `- NÃO repita estes temas já usados em questões anteriores:\n${evitar.map(t => '  • ' + t).join('\n')}\n` : ''}
+Responda SOMENTE com um array JSON válido, sem texto antes ou depois, neste formato:
+[{"enunciado":"...","alternativas":["...","...","...","...","..."],"correta":0,"explicacao":"...","referencia":"p. 0","dificuldade":"fácil|média|difícil","tema":"tema curto"}]
+"correta" é o índice (0 a 4) da alternativa certa.`;
+}
+function validarQuestoes(txt) {
+  let s = String(txt || '').replace(/```(?:json)?/g, '');
+  const a = s.indexOf('['), b = s.lastIndexOf(']');
+  if (a < 0 || b <= a) throw new Error('A IA não devolveu questões no formato esperado. Tente de novo.');
+  let arr; try { arr = JSON.parse(s.slice(a, b + 1)); } catch { throw new Error('Não consegui entender a resposta da IA. Tente de novo.'); }
+  return arr.filter(q => q && typeof q.enunciado === 'string' && q.enunciado.trim().length >= 15 && Array.isArray(q.alternativas) && q.alternativas.length >= 4 && q.alternativas.length <= 5 && q.alternativas.every(x => typeof x === 'string' && x.trim()) && Number.isInteger(q.correta) && q.correta >= 0 && q.correta < q.alternativas.length)
+    .map(q => ({ id: uid().slice(0, 8), enunciado: q.enunciado.trim(), alternativas: q.alternativas.map(x => x.trim().replace(/^[A-Ea-e][).]\s+/, '')), correta: q.correta, explicacao: String(q.explicacao || '').trim(), referencia: String(q.referencia || '').trim(), dificuldade: String(q.dificuldade || '').trim(), tema: String(q.tema || '').trim(), origem: 'ia' }));
+}
+async function gerarQuestoesIA(blob, m, { total = 20, nivel = 'misto', existentes = [], onStatus } = {}) {
+  let mat;
+  try { mat = await textoCompletoPDF(blob, onStatus); } catch (e) { console.warn(e); mat = { texto: '', paginas: m.paginas || 0 }; }
+  const cab = `Material: "${m.titulo}"${m.autor ? `, de ${m.autor}` : ''}${m.disciplina ? `. Disciplina: ${m.disciplina}` : ''}.`;
+  let bloco;
+  if (mat.texto.replace(/\[Página \d+\]/g, '').trim().length >= Math.max(400, mat.paginas * 60)) {
+    bloco = { type: 'text', text: `${cab}\n<material>\n${mat.texto}\n</material>`, cache_control: { type: 'ephemeral' } };
+  } else {
+    if (blob.size > 30 * 1024 * 1024) throw new Error('Este PDF parece escaneado (sem texto) e é grande demais para a IA ler como imagem. Use uma versão do PDF com texto.');
+    onStatus?.('O PDF parece escaneado: enviando as páginas como imagem para a IA ler…');
+    const b64 = await new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.onerror = () => rej(fr.error); fr.readAsDataURL(blob); });
+    bloco = { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: b64 }, title: m.titulo, context: cab, cache_control: { type: 'ephemeral' } };
+  }
+  const novas = [], uso = { entrada: 0, saida: 0 };
+  const temas = existentes.map(q => q.tema || q.enunciado.slice(0, 80));
+  for (let feitas = 0, lote = 1; feitas < total; lote++) {
+    const n = Math.min(10, total - feitas);
+    onStatus?.(`A IA está elaborando as questões ${feitas + 1} a ${feitas + n} de ${total}… (pode levar até 1 minuto)`);
+    const r = await chamarClaude({ system: PROMPT_SISTEMA, maxTokens: 12000, content: [bloco, { type: 'text', text: promptQuestoes(n, nivel, [...temas, ...novas.map(q => q.tema || q.enunciado.slice(0, 80))]) }] });
+    uso.entrada += (r.uso.input_tokens || 0) + (r.uso.cache_read_input_tokens || 0) + (r.uso.cache_creation_input_tokens || 0); uso.saida += r.uso.output_tokens || 0;
+    const qs = validarQuestoes(r.texto);
+    if (!qs.length) throw new Error('A IA não gerou questões válidas neste lote. Tente de novo.');
+    novas.push(...qs.slice(0, n)); feitas += Math.min(n, qs.length);
+    if (lote > Math.ceil(total / 10) + 2) break;
+  }
+  return { questoes: novas, uso, paginas: mat.paginas };
+}
+
+/* ============================ Banco de questões ============================ */
+async function carregarBanco(m) {
+  if (!m.quiz?.ref) return [];
+  const u = await store.fileURL(m.quiz.ref, 'application/json');
+  return JSON.parse(await (await fetch(u)).text()).questoes || [];
+}
+async function salvarBanco(m, questoes) {
+  const blob = new Blob([JSON.stringify({ material: m.id, titulo: m.titulo, questoes })], { type: 'application/json' });
+  const ref = questoes.length ? await store.uploadFile(new File([blob], 'quiz.json', { type: 'application/json' })) : '';
+  const antigo = m.quiz?.ref;
+  const atual = await store.get('materiais', m.id) || m;
+  const novo = { ...atual, quiz: questoes.length ? { ref, total: questoes.length, geradoEm: Date.now() } : null };
+  await store.save('materiais', novo);
+  if (antigo) await store.deleteFile(antigo);
+  return novo;
+}
+async function blobDoMaterial(m) {
+  if (!m.fileRef) return null;
+  const u = await store.fileURL(m.fileRef, 'application/pdf');
+  return await (await fetch(u)).blob();
+}
+function bancoModal(m0) {
+  let m = m0, qs = [];
+  const { el, close } = modal(`Questões: ${m.titulo}`, `<div id="bq" class="form"><div class="loading">Carregando o banco de questões…</div></div>`, { wide: true });
+  const box = $('#bq', el);
+  const salvarEAtualizar = async (lista, msg) => { m = await salvarBanco(m, lista); qs = lista; toast(msg); desenhar(); };
+  const desenhar = () => {
+    const temChave = !!iaChave();
+    box.innerHTML = `
+      <div class="card pad" style="background:var(--papel)">
+        <h4 style="margin:0 0 4px">${ic('spark', 16)} Gerar questões com IA</h4>
+        ${temChave ? `<p class="hint" style="margin:0 0 10px">O Claude lê o material inteiro e elabora questões de múltipla escolha (A a E) com explicação e referência de página. Modelo: <b>${esc(iaModelo())}</b>.</p>
+          ${!m.fileRef ? `<label>Este PDF está no Google Drive. Escolha o arquivo no seu computador para a IA ler:<input type="file" id="bq-arq" accept="application/pdf,.pdf"></label>` : ''}
+          <div class="row2"><label>Quantidade<select id="bq-n">${[10, 20, 30, 40].map(n => `<option ${n === 20 ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+            <label>Nível<select id="bq-nivel"><option value="misto">Misto (graduação, OAB e concursos)</option><option value="graduacao">Graduação</option><option value="oab">OAB e concursos</option></select></label></div>
+          ${qs.length ? `<label class="check"><input type="checkbox" id="bq-subst"> <span>Substituir as ${qs.length} questões atuais (sem marcar, as novas são acrescentadas)</span></label>` : ''}
+          <div class="actions" style="justify-content:flex-start"><button class="btn primary" id="bq-gerar">${ic('spark', 15)} Gerar questões</button></div>
+          <div class="pdf-info lendo hidden" id="bq-st"></div>`
+        : `<p class="hint" style="margin:0">Para gerar questões automaticamente, cadastre a chave da API do Claude em <a href="#/admin/config" data-close>Painel → Configurações</a>. Você também pode criar questões manualmente abaixo.</p>`}
+      </div>
+      <div class="list-h"><h4 style="margin:0">${qs.length} ${qs.length === 1 ? 'questão' : 'questões'} no banco</h4><button class="btn ghost sm" id="bq-nova">${ic('plus', 14)} Nova questão manual</button></div>
+      <div style="display:grid;gap:10px">${qs.map((q, i) => `<div class="card pad" style="padding:14px 16px">
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:flex-start"><b style="font-size:.92rem">${i + 1}. ${esc(q.enunciado)}</b>
+          <div class="acts" style="display:flex;gap:6px;flex:none"><button class="btn ghost sm" data-ed="${i}">Editar</button><button class="btn danger sm" data-del="${i}">Excluir</button></div></div>
+        <ol type="A" class="small" style="margin:8px 0 6px;padding-left:22px">${q.alternativas.map((a, k) => `<li style="${k === q.correta ? 'color:var(--ok);font-weight:600' : ''}">${esc(a)}${k === q.correta ? ' ✓' : ''}</li>`).join('')}</ol>
+        <p class="hint" style="margin:0">${q.dificuldade ? `<b>${esc(q.dificuldade)}</b>. ` : ''}${q.referencia ? `Ref.: ${esc(q.referencia)}. ` : ''}${esc(q.explicacao).slice(0, 220)}${q.explicacao.length > 220 ? '…' : ''}</p></div>`).join('') || '<div class="empty" style="padding:20px"><p style="margin:0">Nenhuma questão ainda.</p></div>'}</div>`;
+    const g = $('#bq-gerar', box);
+    if (g) g.onclick = async () => {
+      const st = $('#bq-st', box), mostra = t => { st.classList.remove('hidden'); st.innerHTML = `${ic('spark', 16)}<span>${esc(t)}</span>`; };
+      g.disabled = true;
+      try {
+        let blob = m.fileRef ? await blobDoMaterial(m) : $('#bq-arq', box)?.files[0];
+        if (!blob) { g.disabled = false; return toast('Escolha o arquivo PDF do material.', true); }
+        const subst = $('#bq-subst', box)?.checked;
+        const r = await gerarQuestoesIA(blob, m, { total: Number($('#bq-n', box).value), nivel: $('#bq-nivel', box).value, existentes: subst ? [] : qs, onStatus: mostra });
+        mostra('Salvando o banco de questões…');
+        await salvarEAtualizar(subst ? r.questoes : [...qs, ...r.questoes], `${r.questoes.length} questões geradas. Revise antes de liberar aos alunos.`);
+        const info = document.createElement('p'); info.className = 'hint'; info.textContent = `Uso da IA: ${fmtN(r.uso.entrada)} tokens de entrada e ${fmtN(r.uso.saida)} de saída.`; box.prepend(info);
+      } catch (e) { console.warn(e); mostra(e.message); $('#bq-st', box).className = 'pdf-info aviso'; g.disabled = false; }
+    };
+    $('#bq-nova', box).onclick = () => editarQuestao(null);
+    box.onclick = async e => {
+      const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+      if (ed) editarQuestao(Number(ed.dataset.ed));
+      if (dl && await confirmar('Excluir esta questão do banco?', 'Excluir')) { try { await salvarEAtualizar(qs.filter((_, i) => i !== Number(dl.dataset.del)), 'Questão excluída.'); } catch (err) { toast(err.message, true); } }
+    };
+  };
+  const editarQuestao = i => {
+    const q = i === null ? { enunciado: '', alternativas: ['', '', '', '', ''], correta: 0, explicacao: '', referencia: '', dificuldade: 'média' } : qs[i];
+    const alts = [...q.alternativas, '', '', '', '', ''].slice(0, 5);
+    const { el: e2, close: c2 } = modal(i === null ? 'Nova questão' : `Editar questão ${i + 1}`, `<form class="form" id="fq">
+      <label>Enunciado<textarea name="enunciado" rows="4" required>${esc(q.enunciado)}</textarea></label>
+      ${alts.map((a, k) => `<label style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center"><span style="display:flex;gap:6px;align-items:center"><input type="radio" name="correta" value="${k}" ${k === q.correta ? 'checked' : ''} style="width:auto"> ${'ABCDE'[k]}</span><input name="a${k}" value="${esc(a)}" ${k < 4 ? 'required' : ''} placeholder="Alternativa ${'ABCDE'[k]}${k === 4 ? ' (opcional)' : ''}"></label>`).join('')}
+      <p class="hint" style="margin-top:-6px">Marque a bolinha da alternativa correta.</p>
+      <label>Explicação<textarea name="explicacao" rows="3">${esc(q.explicacao)}</textarea></label>
+      <div class="row2"><label>Referência no material<input name="referencia" value="${esc(q.referencia)}" placeholder="Ex.: p. 12"></label><label>Dificuldade<select name="dificuldade">${['fácil', 'média', 'difícil'].map(d => `<option ${q.dificuldade === d ? 'selected' : ''}>${d}</option>`).join('')}</select></label></div>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar questão</button></div></form>`, { wide: true });
+    $('#fq', e2).onsubmit = async ev => {
+      ev.preventDefault(); const f = ev.target;
+      const alternativas = [0, 1, 2, 3, 4].map(k => f['a' + k].value.trim()).filter(Boolean);
+      let correta = Number(f.correta.value); if (correta >= alternativas.length) return toast('A alternativa correta está vazia.', true);
+      const nq = { ...q, id: q.id || uid().slice(0, 8), enunciado: f.enunciado.value.trim(), alternativas, correta, explicacao: f.explicacao.value.trim(), referencia: f.referencia.value.trim(), dificuldade: f.dificuldade.value, origem: q.origem || 'manual' };
+      const lista = [...qs]; if (i === null) lista.push(nq); else lista[i] = nq;
+      try { await salvarEAtualizar(lista, 'Questão salva.'); c2(); } catch (err) { toast(err.message, true); }
+    };
+  };
+  carregarBanco(m).then(l => { qs = l; desenhar(); }).catch(e => { box.innerHTML = `<div class="err-msg">${esc(e.message)}</div>`; });
+}
+
+/* ============================ Quiz do aluno ============================ */
+const notaMin = () => Number(S.config.notaMinima ?? 60);
+const minCert = () => Number(S.config.quizMinCert ?? 10);
+const embaralhar = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+async function viewQuiz(main, sub) {
+  if (sub === 'fazer' && S.quiz) return quizRodar(main);
+  if (sub === 'resultado' && S.quizRes) return quizResultado(main);
+  const mats = (await store.list('materiais')).filter(m => m.quiz?.total);
+  const porDisc = {};
+  for (const m of mats) { const d = m.disciplina || 'Geral'; (porDisc[d] = porDisc[d] || { total: 0, mats: [] }).total += m.quiz.total; porDisc[d].mats.push(m); }
+  const discs = Object.entries(porDisc).sort((a, b) => a[0].localeCompare(b[0]));
+  const u = await store.getUser(S.user.id).catch(() => S.user) || S.user;
+  const hist = [...(u.quizzes || [])].sort((a, b) => b.data - a.data);
+  let sel = discs[0]?.[0] || '', qtd = 10;
+  main.innerHTML = `<div class="page">
+    <div class="page-h keep"><div><span class="eyebrow">Avaliação</span><h2>Quiz</h2><p>Escolha a matéria e quantas questões quer responder. Acertando mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, você recebe um certificado.</p></div></div>
+    ${discs.length ? `
+    <div class="card pad" style="margin-bottom:22px">
+      <h3>1. Escolha a matéria</h3>
+      <div class="seg" id="qz-disc" style="grid-template-columns:repeat(auto-fill,minmax(210px,1fr))">${discs.map(([d, v], i) => `<label style="justify-content:flex-start;text-align:left"><input type="radio" name="disc" value="${esc(d)}" ${i === 0 ? 'checked' : ''}><span>${ic('book', 16)} ${esc(d)}<br><span class="hint">${v.total} questões, ${v.mats.length} ${v.mats.length > 1 ? 'materiais' : 'material'}</span></span></label>`).join('')}</div>
+      <h3 style="margin-top:22px">2. Quantas questões?</h3>
+      <div class="chips" id="qz-n"></div>
+      <p class="hint" id="qz-cert" style="margin-top:10px"></p>
+      <div class="actions" style="justify-content:flex-start;margin-top:16px"><button class="btn primary" id="qz-ir">${ic('play', 16)} Começar quiz</button></div>
+    </div>` : `<div class="card empty">${ART.medal('book')}<h3>Ainda não há questões disponíveis</h3><p>Os quizzes aparecem aqui assim que o administrador preparar as questões dos materiais.</p></div>`}
+    <div class="card"><div class="pad" style="padding-bottom:8px"><h3 style="margin:0">Meus resultados</h3></div>
+      ${hist.length ? `<div class="table-wrap"><table><tr><th>Data</th><th>Matéria</th><th>Questões</th><th>Nota</th><th></th></tr>
+      ${hist.map(h => `<tr><td>${fmtDate(h.data)}</td><td>${esc(h.disciplina)}</td><td>${h.acertos} de ${h.total}</td><td><span class="badge ${h.aprovado ? 'ok' : h.nota > notaMin() ? 'gold' : 'warn'}">${h.nota}%</span></td>
+        <td><div class="acts">${h.aprovado ? `<button class="btn primary sm" data-cert="${esc(h.id)}">${ic('download', 14)} Certificado</button>` : ''}</div></td></tr>`).join('')}</table></div>` : '<p class="muted small" style="padding:0 24px 20px">Você ainda não fez nenhum quiz.</p>'}</div>
+  </div>`;
+  main.querySelector('.card:last-child').onclick = e => { const b = e.target.closest('[data-cert]'); if (b) baixarCertificado({ ...hist.find(h => h.id === b.dataset.cert), nome: u.nome }); };
+  if (!discs.length) return;
+  const desenharN = () => {
+    const max = porDisc[sel].total, ops = [5, 10, 15, 20, 30, 40].filter(n => n <= max);
+    if (!ops.includes(max) && max < 40) ops.push(max);
+    if (!ops.includes(qtd)) qtd = ops.includes(10) ? 10 : ops[ops.length - 1];
+    $('#qz-n').innerHTML = ops.map(n => `<button class="chip ${n === qtd ? 'on' : ''}" data-n="${n}">${n} questões</button>`).join('');
+    $('#qz-cert').textContent = qtd >= minCert() ? `Este quiz vale certificado se você acertar mais de ${notaMin()}%.` : `Quizzes com menos de ${minCert()} questões servem para treino e não geram certificado.`;
+  };
+  $('#qz-disc').onchange = e => { sel = e.target.value; desenharN(); };
+  $('#qz-n').onclick = e => { const b = e.target.closest('[data-n]'); if (b) { qtd = Number(b.dataset.n); desenharN(); } };
+  desenharN();
+  $('#qz-ir').onclick = async () => {
+    const b = $('#qz-ir'); b.disabled = true; b.textContent = 'Preparando as questões…';
+    try {
+      const pool = [];
+      for (const m of porDisc[sel].mats) (await carregarBanco(m)).forEach(q => pool.push({ ...q, material: m.titulo }));
+      const escolhidas = embaralhar(pool).slice(0, qtd).map(q => ({ ...q, ordem: embaralhar(q.alternativas.map((t, k) => ({ t, ok: k === q.correta }))), escolha: null }));
+      S.quiz = { disciplina: sel, questoes: escolhidas, i: 0, inicio: Date.now() }; S.quizRes = null;
+      go('quiz/fazer');
+    } catch (e) { toast('Não foi possível carregar as questões: ' + e.message, true); b.disabled = false; b.textContent = 'Começar quiz'; }
+  };
+}
+function quizRodar(main) {
+  const Q = S.quiz, n = Q.questoes.length;
+  const desenhar = () => {
+    const q = Q.questoes[Q.i], resp = Q.questoes.filter(x => x.escolha !== null).length;
+    main.innerHTML = `<div class="page" style="max-width:860px">
+      <div class="page-h keep" style="margin-bottom:14px"><div><span class="eyebrow">${esc(Q.disciplina)}</span><h2 style="font-size:1.4rem">Questão ${Q.i + 1} de ${n}</h2></div><span class="badge">${resp} de ${n} respondidas</span></div>
+      <div class="progress" style="margin-bottom:18px"><span style="width:${(Q.i + 1) / n * 100}%"></span></div>
+      <div class="doc qz-card">
+        <p class="qz-enun">${esc(q.enunciado).replace(/\n/g, '<br>')}</p>
+        <div class="qz-alts" role="radiogroup" aria-label="Alternativas">${q.ordem.map((a, k) => `<button class="qz-alt ${q.escolha === k ? 'on' : ''}" role="radio" aria-checked="${q.escolha === k}" data-k="${k}"><span class="l">${'ABCDE'[k]}</span><span>${esc(a.t)}</span></button>`).join('')}</div>
+      </div>
+      <div class="qz-nav">
+        <button class="btn ghost" id="qz-ant" ${Q.i === 0 ? 'disabled' : ''}>${ic('back', 15)} Anterior</button>
+        ${Q.i < n - 1 ? `<button class="btn primary" id="qz-prox">Próxima ${ic('arrow', 15)}</button>` : `<button class="btn primary" id="qz-fim">${ic('check', 15)} Finalizar quiz</button>`}
+      </div>
+      <div class="qz-dots" aria-label="Ir para a questão">${Q.questoes.map((x, k) => `<button class="${k === Q.i ? 'at' : ''} ${x.escolha !== null ? 'ok' : ''}" data-ir="${k}" aria-label="Questão ${k + 1}">${k + 1}</button>`).join('')}</div>
+      <p class="hint" style="text-align:center;margin-top:14px"><a href="#/quiz" id="qz-sair">Sair do quiz</a> (as respostas serão perdidas)</p>
+    </div>`;
+    main.querySelector('.qz-alts').onclick = e => { const b = e.target.closest('[data-k]'); if (!b) return; q.escolha = Number(b.dataset.k); desenhar(); };
+    $('#qz-ant').onclick = () => { Q.i--; desenhar(); scrollTo(0, 0); };
+    const p = $('#qz-prox'); if (p) p.onclick = () => { Q.i++; desenhar(); scrollTo(0, 0); };
+    main.querySelector('.qz-dots').onclick = e => { const b = e.target.closest('[data-ir]'); if (b) { Q.i = Number(b.dataset.ir); desenhar(); } };
+    $('#qz-sair').onclick = () => { S.quiz = null; };
+    const f = $('#qz-fim'); if (f) f.onclick = async () => {
+      const falta = n - Q.questoes.filter(x => x.escolha !== null).length;
+      if (falta && !await confirmar(`Você deixou ${falta} ${falta > 1 ? 'questões' : 'questão'} sem resposta. Finalizar mesmo assim? Questões em branco contam como erro.`, 'Finalizar')) return;
+      f.disabled = true; await finalizarQuiz();
+    };
+  };
+  desenhar();
+}
+async function finalizarQuiz() {
+  const Q = S.quiz, n = Q.questoes.length;
+  const acertos = Q.questoes.filter(q => q.escolha !== null && q.ordem[q.escolha].ok).length;
+  const nota = Math.round(acertos / n * 100);
+  const aprovado = n >= minCert() && nota > notaMin();
+  const reg = { id: uid().slice(0, 8), disciplina: Q.disciplina, total: n, acertos, nota, aprovado, data: Date.now(), duracao: Math.round((Date.now() - Q.inicio) / 1000), minimo: notaMin() };
+  if (aprovado) reg.codigo = 'AJC-' + novoCodigo().replace(/^AJ-/, '');
+  S.quizRes = { reg, questoes: Q.questoes }; S.quiz = null;
+  if (S.user.role !== 'admin') {
+    try { const u = await store.getUser(S.user.id); await store.updateUser(S.user.id, { quizzes: [...(u?.quizzes || []), reg].slice(-80) }); }
+    catch (e) { console.warn(e); toast('Sua nota foi calculada, mas não foi possível salvá-la agora. Verifique sua internet.', true); }
+  }
+  go('quiz/resultado');
+}
+function quizResultado(main) {
+  const { reg, questoes } = S.quizRes;
+  main.innerHTML = `<div class="page" style="max-width:900px">
+    <div class="doc qz-res">
+      <div class="qz-nota ${reg.aprovado ? 'ok' : ''}"><b>${reg.nota}%</b><span>${reg.acertos} de ${reg.total}</span></div>
+      <div><span class="eyebrow">${esc(reg.disciplina)}</span>
+        <h2 style="margin:6px 0">${reg.aprovado ? 'Parabéns, você foi aprovado!' : reg.nota > notaMin() ? 'Bom resultado!' : 'Continue estudando'}</h2>
+        <p class="muted" style="margin:0 0 14px">${reg.aprovado ? `Você acertou mais de ${notaMin()}% e já pode baixar seu certificado.` : reg.total < minCert() ? `Quizzes com menos de ${minCert()} questões não geram certificado. Faça um quiz maior para concorrer.` : `Para receber o certificado, é preciso acertar mais de ${notaMin()}%. Revise as explicações abaixo e tente de novo.`}</p>
+        <div class="actions" style="justify-content:flex-start">${reg.aprovado ? `<button class="btn primary" id="cert">${ic('download', 15)} Baixar certificado (PDF)</button>` : ''}<a class="btn ghost" href="#/quiz">Fazer outro quiz</a></div></div>
+    </div>
+    <h3 style="margin:30px 0 12px">Correção comentada</h3>
+    <div style="display:grid;gap:14px">${questoes.map((q, i) => { const certa = q.ordem.findIndex(a => a.ok), ok = q.escolha === certa; return `<div class="card pad">
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span class="badge ${ok ? 'ok' : 'err'}">${ok ? 'Acertou' : q.escolha === null ? 'Em branco' : 'Errou'}</span><span class="hint">Questão ${i + 1}${q.material ? `, ${esc(q.material)}` : ''}${q.referencia ? `, ${esc(q.referencia)}` : ''}</span></div>
+      <p style="font-family:var(--serif);font-size:1.02rem;margin:0 0 10px">${esc(q.enunciado)}</p>
+      <div style="display:grid;gap:6px">${q.ordem.map((a, k) => `<div class="qz-rev ${k === certa ? 'certa' : k === q.escolha ? 'errada' : ''}"><b>${'ABCDE'[k]}</b> ${esc(a.t)}${k === certa ? ` ${ic('check', 14)}` : ''}${k === q.escolha && k !== certa ? ' (sua resposta)' : ''}</div>`).join('')}</div>
+      ${q.explicacao ? `<p class="small" style="margin:12px 0 0;color:var(--grafite)"><b>Explicação:</b> ${esc(q.explicacao)}</p>` : ''}</div>`; }).join('')}</div>
+  </div>`;
+  const c = $('#cert'); if (c) c.onclick = () => baixarCertificado({ ...reg, nome: S.user.nome });
+}
+
+/* ============================ Certificado (PDF) ============================ */
+function pdfDeJPEG(jpeg, wPx, hPx, titulo) {
+  const enc = new TextEncoder(), partes = [], off = []; let len = 0;
+  const push = x => { const b = typeof x === 'string' ? enc.encode(x) : x; partes.push(b); len += b.length; };
+  const obj = (n, f) => { off[n] = len; push(`${n} 0 obj\n`); f(); push('\nendobj\n'); };
+  const W = 841.89, H = 595.28, ascii = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\x20-\x7e]/g, '').replace(/[()\\]/g, '');
+  push('%PDF-1.4\n%âãÏÓ\n');
+  obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, () => push('<< /Type /Pages /Kids [3 0 R] /Count 1 >>'));
+  obj(3, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>`));
+  obj(4, () => { push(`<< /Type /XObject /Subtype /Image /Width ${wPx} /Height ${hPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`); push(jpeg); push('\nendstream'); });
+  const cmd = `q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`;
+  obj(5, () => push(`<< /Length ${cmd.length} >>\nstream\n${cmd}\nendstream`));
+  obj(6, () => push(`<< /Title (${ascii(titulo)}) /Producer (Agora Juridica) >>`));
+  const x = len;
+  push(`xref\n0 7\n0000000000 65535 f \n${[1, 2, 3, 4, 5, 6].map(n => String(off[n]).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size 7 /Root 1 0 R /Info 6 0 R >>\nstartxref\n${x}\n%%EOF`);
+  return new Blob(partes, { type: 'application/pdf' });
+}
+async function desenharCertificado({ nome, disciplina, nota, acertos, total, data, codigo }) {
+  const W = 2339, H = 1654, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const c = cv.getContext('2d'), serif = '"Libre Caslon Text", Georgia, "Times New Roman", serif', sans = '"Public Sans", system-ui, Arial, sans-serif';
+  try { await Promise.all([document.fonts.load(`700 80px ${serif}`), document.fonts.load(`italic 400 80px ${serif}`), document.fonts.load(`400 30px ${sans}`)]); } catch {}
+  const TOGA = '#13203a', LATAO = '#b38b4b', RUBI = '#8e1b2e', CINZA = '#5b6372';
+  c.fillStyle = '#fbf9f4'; c.fillRect(0, 0, W, H);
+  c.fillStyle = TOGA; c.fillRect(0, 0, W, 34); c.fillRect(0, H - 34, W, 34); c.fillRect(0, 0, 34, H); c.fillRect(W - 34, 0, 34, H);
+  c.strokeStyle = LATAO; c.lineWidth = 5; c.strokeRect(80, 80, W - 160, H - 160); c.lineWidth = 1.6; c.strokeRect(100, 100, W - 200, H - 200);
+  for (const [x, y] of [[100, 100], [W - 100, 100], [100, H - 100], [W - 100, H - 100]]) { c.fillStyle = LATAO; c.beginPath(); c.moveTo(x, y - 18); c.lineTo(x + 18, y); c.lineTo(x, y + 18); c.lineTo(x - 18, y); c.closePath(); c.fill(); }
+  // marca (colunas)
+  c.save(); c.translate(W / 2 - 54, 170); c.scale(4.5, 4.5); c.strokeStyle = TOGA; c.lineWidth = 1.5; c.lineCap = 'round'; c.lineJoin = 'round';
+  c.stroke(new Path2D('M3 9l9-5 9 5M4 9h16M6.5 9v8M10 9v8M14 9v8M17.5 9v8M4 17h16M3 20h18')); c.restore();
+  const centro = (t, y, font, cor) => { c.font = font; c.fillStyle = cor; c.textAlign = 'center'; c.fillText(t, W / 2, y); };
+  centro(String(S.config.nomePortal).toUpperCase(), 330, `400 34px ${serif}`, LATAO);
+  c.save(); c.font = `400 34px ${serif}`; c.restore();
+  centro('Certificado de Aproveitamento', 470, `700 104px ${serif}`, TOGA);
+  c.strokeStyle = LATAO; c.lineWidth = 2; c.beginPath(); c.moveTo(W / 2 - 260, 530); c.lineTo(W / 2 + 260, 530); c.stroke();
+  centro('Certificamos que', 640, `400 40px ${sans}`, CINZA);
+  let fs = 112; c.font = `italic 400 ${fs}px ${serif}`; while (c.measureText(nome).width > W - 520 && fs > 60) { fs -= 4; c.font = `italic 400 ${fs}px ${serif}`; }
+  centro(nome, 790, `italic 400 ${fs}px ${serif}`, RUBI);
+  const dt = new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const texto = `concluiu a avaliação de ${disciplina} no portal ${S.config.nomePortal}, respondendo ${total} questões elaboradas a partir dos materiais de estudo, com aproveitamento de ${nota}% (${acertos} acertos), em ${dt}.`;
+  c.font = `400 44px ${sans}`; c.fillStyle = TOGA; c.textAlign = 'center';
+  const linhas = []; let l = '';
+  for (const w of texto.split(' ')) { const t = l ? l + ' ' + w : w; if (c.measureText(t).width > W - 700) { linhas.push(l); l = w; } else l = t; }
+  linhas.push(l); linhas.forEach((t, i) => c.fillText(t, W / 2, 900 + i * 66));
+  // selo
+  const sx = 460, sy = 1270; c.fillStyle = RUBI; c.beginPath();
+  for (let i = 0; i < 56; i++) { const r = i % 2 ? 140 : 154, t = i * Math.PI / 28; c.lineTo(sx + r * Math.cos(t), sy + r * Math.sin(t)); }
+  c.closePath(); c.fill(); c.strokeStyle = '#d8be8a'; c.lineWidth = 3; c.beginPath(); c.arc(sx, sy, 118, 0, 7); c.stroke(); c.lineWidth = 1.2; c.beginPath(); c.arc(sx, sy, 106, 0, 7); c.stroke();
+  c.fillStyle = '#f3e6c8'; c.textAlign = 'center'; c.font = `700 40px ${serif}`; c.fillText(`${nota}%`, sx, sy + 6); c.font = `400 22px ${serif}`; c.fillText('APROVADO', sx, sy + 46);
+  // assinatura
+  const ax = W - 620; c.strokeStyle = TOGA; c.lineWidth = 2; c.beginPath(); c.moveTo(ax - 260, 1290); c.lineTo(ax + 260, 1290); c.stroke();
+  c.fillStyle = TOGA; c.font = `700 36px ${serif}`; c.fillText(S.config.nomePortal, ax, 1340); c.fillStyle = CINZA; c.font = `400 28px ${sans}`; c.fillText('Coordenação', ax, 1384);
+  c.font = `400 26px ${sans}`; c.fillStyle = CINZA;
+  c.fillText(`Código de verificação: ${codigo}`, W / 2, H - 196);
+  c.font = `400 22px ${sans}`; c.fillText('Certificado de aproveitamento em avaliação do portal. Não substitui diploma ou certificação oficial de instituição de ensino.', W / 2, H - 152);
+  return cv;
+}
+async function baixarCertificado(info) {
+  try {
+    toast('Gerando o certificado…');
+    const cv = await desenharCertificado(info);
+    const jpg = new Uint8Array(await (await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92))).arrayBuffer());
+    const nome = `Certificado - ${info.disciplina} - ${info.nome}`.replace(/[\\/:*?"<>|]/g, '');
+    const pdf = pdfDeJPEG(jpg, cv.width, cv.height, nome);
+    const f = new File([pdf], nome + '.pdf', { type: 'application/pdf' });
+    if (isIOS && isStandalone() && navigator.canShare?.({ files: [f] })) { await navigator.share({ files: [f], title: nome }); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  } catch (e) { if (e?.name !== 'AbortError') { console.warn(e); toast('Não foi possível gerar o certificado.', true); } }
+}
+
+/* ============================ Notas (painel) ============================ */
+function admQuiz(box, users, mats) {
+  const tent = users.flatMap(u => (u.quizzes || []).map(q => ({ ...q, aluno: u.nome, email: u.email }))).sort((a, b) => b.data - a.data);
+  const media = tent.length ? Math.round(tent.reduce((s, q) => s + q.nota, 0) / tent.length) : 0;
+  const aprov = tent.filter(q => q.aprovado).length;
+  const porDisc = {}; tent.forEach(q => { const d = porDisc[q.disciplina] = porDisc[q.disciplina] || { n: 0, soma: 0, ap: 0 }; d.n++; d.soma += q.nota; d.ap += q.aprovado ? 1 : 0; });
+  const banco = mats.filter(m => m.quiz?.total), totalQ = banco.reduce((s, m) => s + m.quiz.total, 0);
+  const tile = (icn, n, l) => `<div class="stat"><span class="si">${ic(icn, 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`;
+  let filtro = '';
+  const linhas = () => tent.filter(q => !filtro || `${q.aluno} ${q.email} ${q.disciplina} ${q.codigo || ''}`.toLowerCase().includes(filtro));
+  const tabela = () => `<table><tr><th>Data</th><th>Aluno</th><th>Matéria</th><th>Acertos</th><th>Nota</th><th>Certificado</th></tr>
+    ${linhas().map(q => `<tr><td>${fmtDate(q.data)}</td><td><b>${esc(q.aluno)}</b><div class="small muted">${esc(q.email)}</div></td><td>${esc(q.disciplina)}</td><td>${q.acertos} de ${q.total}</td><td><span class="badge ${q.aprovado ? 'ok' : 'warn'}">${q.nota}%</span></td>
+      <td>${q.aprovado ? `<button class="btn ghost sm" data-cert="${esc(q.id)}" data-aluno="${esc(q.aluno)}">${ic('download', 13)} ${esc(q.codigo)}</button>` : '<span class="muted small">Não</span>'}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Nenhum quiz encontrado.</td></tr>'}</table>`;
+  box.innerHTML = `
+    <div class="stats">${tile('check', fmtN(tent.length), 'Quizzes realizados')}${tile('chart', media + '%', 'Nota média')}${tile('award', fmtN(aprov), `Certificados emitidos (${tent.length ? Math.round(aprov / tent.length * 100) : 0}% de aprovação)`)}${tile('book', fmtN(totalQ), `Questões no banco, em ${banco.length} ${banco.length === 1 ? 'material' : 'materiais'}`)}</div>
+    <div class="an-grid">
+      <div class="card an-card"><h3>Desempenho por matéria</h3><p class="sub">Nota média de cada matéria</p>${ranking(Object.entries(porDisc).map(([t, d]) => ({ t: `${t} (${d.n} quiz${d.n > 1 ? 'zes' : ''}, ${Math.round(d.ap / d.n * 100)}% aprovados)`, v: Math.round(d.soma / d.n) })).sort((a, b) => b.v - a.v), 'Nenhum quiz realizado ainda.').replace(/<span class="v">(\d+)<\/span>/g, '<span class="v">$1%</span>')}</div>
+      <div class="card an-card"><h3>Regras do certificado</h3><p class="sub">Ajuste em Configurações</p>
+        <p class="small" style="margin:0">Certificado para acerto <b>acima de ${notaMin()}%</b> em quizzes com <b>pelo menos ${minCert()} questões</b>. Os quizzes são sorteados do banco de questões de cada matéria; para criar ou revisar questões, use o botão <b>Questões</b> em Painel → Materiais.</p></div>
+    </div>
+    <div class="card"><div class="list-h pad" style="padding-bottom:10px;margin:0;flex-wrap:wrap"><h3 style="margin:0">Notas dos alunos</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="field" id="qf" placeholder="Buscar aluno, matéria ou código…" style="width:260px"><button class="btn ghost sm" id="qcsv">${ic('download', 14)} CSV</button></div></div>
+      <div class="table-wrap" id="qt">${tabela()}</div></div>`;
+  $('#qf', box).oninput = e => { filtro = e.target.value.toLowerCase().trim(); $('#qt', box).innerHTML = tabela(); };
+  $('#qt', box).onclick = e => { const b = e.target.closest('[data-cert]'); if (b) { const q = tent.find(x => x.id === b.dataset.cert && x.aluno === b.dataset.aluno); if (q) baixarCertificado({ ...q, nome: q.aluno }); } };
+  $('#qcsv', box).onclick = () => {
+    const qq = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const csv = ['Data;Aluno;E-mail;Matéria;Questões;Acertos;Nota (%);Aprovado;Código do certificado', ...tent.map(q => [fmtDate(q.data), q.aluno, q.email, q.disciplina, q.total, q.acertos, q.nota, q.aprovado ? 'Sim' : 'Não', q.codigo || ''].map(qq).join(';'))].join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `notas-quiz-${hojeISO()}.csv`; document.body.appendChild(a); a.click(); a.remove();
+    toast('Planilha de notas exportada.');
+  };
+}
+
 /* =========================== Oportunidades/Leis =========================== */
 function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
@@ -2049,8 +2493,8 @@ const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pen
 /* =============================== Admin =============================== */
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = gist ? { analises: 'Análises', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
-    : { analises: 'Análises', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = gist ? { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
+    : { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
@@ -2067,7 +2511,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${tab === 'analises' ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${tab === 'analises' || tab === 'quiz' ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
@@ -2075,7 +2519,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), materiais: () => admMateriais(box, mats, ag), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -2328,7 +2772,7 @@ function admMateriais(box, mats, ag = { views: {}, downloads: {} }) {
     ${driveSemCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${driveSemCapa.length} PDF${driveSemCapa.length > 1 ? 's' : ''} do Google Drive sem capa</h3><p>O Drive não permite ler o arquivo para extrair a capa. Em <b>Editar</b>, use <b>Escolher imagem de capa</b> ou escolha o PDF do seu computador só para gerar a capa e os dados.</p></div></div>` : ''}
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Acessos</th><th>Downloads</th><th>Data</th><th></th></tr>
     ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${ag.views[m.id] || 0}</td><td>${m.permitirDownload === false ? '<span class="muted small">bloqueado</span>' : ag.downloads[m.id] || 0}</td><td>${fmtDate(m.criadoEm)}</td>
-      <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
+      <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}>Ver</a>${m.tipo === 'pdf' ? `<button class="btn ${m.quiz?.total ? 'ghost' : 'primary'} sm" data-qz="${esc(m.id)}">${ic('quiz', 13)} Questões${m.quiz?.total ? ` (${m.quiz.total})` : ''}</button>` : ''}<button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
     gc.disabled = true; gc.textContent = 'Gerando…';
@@ -2337,11 +2781,12 @@ function admMateriais(box, mats, ag = { views: {}, downloads: {} }) {
     toast(`${r.ok} capa${r.ok !== 1 ? 's' : ''} gerada${r.ok !== 1 ? 's' : ''}${r.falha ? `, ${r.falha} com erro` : ''}.`, !!r.falha && !r.ok); render();
   };
   box.onclick = async e => {
-    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]'), qz = e.target.closest('[data-qz]');
+    if (qz) { bancoModal(mats.find(m => m.id === qz.dataset.qz)); return; }
     if (ed) formMaterial(mats.find(m => m.id === ed.dataset.ed));
     if (dl && await confirmar('Excluir este material? O arquivo também será removido.', 'Excluir')) {
       const m = mats.find(x => x.id === dl.dataset.del);
-      try { if (m.fileRef) await store.deleteFile(m.fileRef); if (m.capaRef) await store.deleteFile(m.capaRef); await store.remove('materiais', m.id); toast('Material excluído.'); render(); } catch (err) { toast(err.message, true); }
+      try { if (m.fileRef) await store.deleteFile(m.fileRef); if (m.capaRef) await store.deleteFile(m.capaRef); if (m.quiz?.ref) await store.deleteFile(m.quiz.ref); await store.remove('materiais', m.id); toast('Material excluído.'); render(); } catch (err) { toast(err.message, true); }
     }
   };
 }
@@ -2724,6 +3169,104 @@ function formPost(p = {}) {
     else { delete d.midia; delete d.formato; delete d.cargo; }
     if (CAT_DATA.includes(d.categoria) && !d.prazo) { const n = new Date(); d.prazo = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`; }
     try { await store.save('publicacoes', { ...p, ...d }); close(); toast('Publicação salva.'); render(); } catch (err) { toast(err.message, true); }
+  };
+}
+
+function admAlunos(box, users) {
+  users.sort(byNewest);
+  box.innerHTML = `<div class="filters"><div class="search">${ic('search')}<input class="field" id="ub" placeholder="Buscar por nome ou e-mail…"></div></div><div class="card table-wrap" id="ut"></div>`;
+  const draw = (t = '') => {
+    const l = users.filter(u => `${u.nome} ${u.email}`.toLowerCase().includes(t.toLowerCase()));
+    $('#ut').innerHTML = `<table><tr><th>Aluno</th><th>Instituição</th><th>Cadastro</th><th>Assinatura</th><th></th></tr>
+    ${l.map(u => { const st = statusAss(u); const self = u.id === S.user.id; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}${u.telefone ? ' · ' + esc(u.telefone) : ''}</div></td><td class="small">${esc(u.instituicao || '—')}<div class="muted">${esc(u.semestre || '')}</div></td><td>${fmtDate(u.criadoEm)}</td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td>
+      <td><div class="acts">${u.role !== 'admin' ? `<button class="btn ghost sm" data-act="ativar" data-id="${esc(u.id)}">+${planos()[0]?.dias || 30} dias</button>${ativo(u) ? `<button class="btn danger sm" data-act="cancelar" data-id="${esc(u.id)}">Cancelar</button>` : ''}` : ''}
+      ${store.redefinirSenha ? `<button class="btn ghost sm" data-act="senha" data-id="${esc(u.id)}">Redefinir senha</button>` : ''}
+      ${self ? '' : `<button class="btn ghost sm" data-act="role" data-id="${esc(u.id)}">${u.role === 'admin' ? 'Tornar aluno' : 'Tornar admin'}</button>`}</div></td></tr>`; }).join('')}</table>`;
+  };
+  draw();
+  $('#ub').oninput = e => draw(e.target.value);
+  $('#ut').onclick = async e => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const u = users.find(x => x.id === b.dataset.id);
+    try {
+      if (b.dataset.act === 'ativar') { await ativarAssinatura(u.id); toast(`Acesso de ${u.nome} estendido.`); }
+      if (b.dataset.act === 'cancelar') { if (!await confirmar(`Cancelar a assinatura de ${u.nome}? O acesso será bloqueado imediatamente.`, 'Cancelar assinatura')) return; await store.updateUser(u.id, { assinatura: { ...u.assinatura, status: 'cancelada', validade: Date.now() } }); toast('Assinatura cancelada.'); }
+      if (b.dataset.act === 'senha') {
+        const { el, close } = modal('Redefinir senha', `<form class="form" id="fs"><p style="margin:0">Defina uma senha provisória para <b>${esc(u.nome)}</b> (${esc(u.email)}) e envie a ela. Depois, ela pode trocar em <b>Minha conta</b>.</p>
+          <label>Nova senha<input name="s" required minlength="6" value="${novoCodigo().replace(/-/g, '').slice(2, 10).toLowerCase()}"></label>
+          <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar senha</button></div></form>`);
+        $('#fs', el).onsubmit = async ev => { ev.preventDefault(); try { await store.redefinirSenha(u.id, ev.target.s.value); close(); toast('Senha redefinida. Envie a nova senha ao aluno.'); } catch (err) { toast(err.message, true); } };
+        return;
+      }
+      if (b.dataset.act === 'role') { const nr = u.role === 'admin' ? 'aluno' : 'admin'; if (!await confirmar(`Alterar ${u.nome} para ${nr}?`)) return; await store.updateUser(u.id, { role: nr }); toast('Perfil atualizado.'); }
+      render();
+    } catch (err) { toast(err.message, true); }
+  };
+}
+function admPagamentos(box, pags) {
+  pags.sort(byNewest);
+  box.innerHTML = `<div class="card table-wrap">${pags.length ? `<table><tr><th>Data</th><th>Aluno</th><th>Método</th><th>Valor</th><th>Status</th><th></th></tr>
+    ${pags.map(p => `<tr><td>${fmtDate(p.criadoEm)}</td><td><b>${esc(p.nome)}</b><div class="small muted">${esc(p.email)}${p.plano ? ', plano ' + esc(p.plano) : ''}</div></td><td>${esc({ pix: 'Pix', cartao: 'Cartão', boleto: 'Boleto' }[p.metodo] || p.metodo)}</td><td>${brl(p.valor)}</td><td>${pagBadge(p.status)}</td>
+    <td><div class="acts">${p.status === 'pendente' ? `<button class="btn primary sm" data-ok="${esc(p.id)}">Confirmar e liberar</button><button class="btn danger sm" data-no="${esc(p.id)}">Recusar</button>` : ''}</div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum pagamento registrado</h3></div>'}</div>
+    <p class="hint" style="margin-top:12px">Ao confirmar um pagamento pendente, o acesso do aluno é liberado pelos dias do plano escolhido. Para automatizar, configure o webhook do seu gateway (veja o README).</p>`;
+  box.onclick = async e => {
+    const ok = e.target.closest('[data-ok]'), no = e.target.closest('[data-no]');
+    const p = pags.find(x => x.id === (ok || no)?.dataset[ok ? 'ok' : 'no']); if (!p) return;
+    try {
+      if (ok) { await store.save('pagamentos', { ...p, status: 'aprovado' }); await ativarAssinatura(p.userId, Number(p.dias) || planos()[0]?.dias || 30, p.plano || ''); toast('Pagamento confirmado e acesso liberado.'); }
+      else { await store.save('pagamentos', { ...p, status: 'recusado' }); toast('Pagamento recusado.'); }
+      render();
+    } catch (err) { toast(err.message, true); }
+  };
+}
+function admConfig(box) {
+  const c = S.config, g = store.gist;
+  box.innerHTML = `${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
+      <div class="eyebrow">Conexão com o GitHub</div><h3 style="margin-top:6px">Gist de dados do portal</h3>
+      <div class="table-wrap"><table>
+        <tr><td class="muted" style="width:150px">Conta</td><td><b>@${esc(g?.user)}</b></td></tr>
+        <tr><td class="muted">ID do Gist</td><td><code style="word-break:break-all">${esc(g?.id)}</code></td></tr>
+        <tr><td class="muted">Link de dados</td><td><a href="https://gist.github.com/${esc(g?.user)}/${esc(g?.id)}" target="_blank" rel="noopener">Abrir o Gist no GitHub ${ic('ext', 13)}</a></td></tr>
+      </table></div>
+      <p class="small muted" style="margin:12px 0 0">${store.alunosGist ? `Cadastros dos alunos: <a href="https://gist.github.com/${esc(g?.user)}/${esc(store.alunosGist.id)}" target="_blank" rel="noopener">Gist de alunos ${ic('ext', 12)}</a>.` : 'Cadastros dos alunos: configuração pendente.'}</p>
+      <div class="actions" style="justify-content:flex-start;margin-top:14px"><button class="btn primary sm" id="c-link">Link para os alunos</button><button class="btn ghost sm" id="c-token">${store.precisaConfigurar ? 'Concluir configuração' : 'Atualizar token do GitHub'}</button><button class="btn ghost sm" id="c-troca">Trocar ou desconectar Gist</button></div>
+    </div>` : ''}
+  <div class="card pad" style="max-width:760px;margin-bottom:20px">
+    <div class="eyebrow">Inteligência artificial</div><h3 style="margin-top:6px">Claude, para gerar questões dos PDFs</h3>
+    <p class="small muted" style="margin:0 0 12px">A chave fica guardada <b>somente neste navegador</b>, nunca vai para o GitHub nem para os alunos. Crie a chave em <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a> (o uso é cobrado pela Anthropic).</p>
+    <form class="form" id="fia">
+      <label>Chave da API<input name="k" type="password" autocomplete="off" placeholder="${iaChave() ? 'Chave cadastrada (deixe em branco para manter)' : 'sk-ant-…'}"></label>
+      <label>Modelo<select name="m">${IA_MODELOS.map(([v, l]) => `<option value="${v}" ${iaModelo() === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>
+      <div class="actions" style="justify-content:flex-start">${iaChave() ? '<button type="button" class="btn danger sm" id="ia-rm">Remover chave</button>' : ''}<button type="button" class="btn ghost sm" id="ia-teste">Testar conexão</button><button class="btn primary sm">Salvar</button></div>
+    </form></div>
+  <div class="card pad" style="max-width:760px"><h3>Portal e pagamento</h3><form class="form" id="fc">
+    <label>Nome do portal<input name="nomePortal" required value="${esc(c.nomePortal)}"></label>
+    <p class="hint">Preços e períodos ficam na aba <a href="#/admin/planos">Planos</a>.</p>
+    <div class="row2"><label>Dias grátis para novos alunos<input name="diasTeste" type="number" min="0" required value="${esc(c.diasTeste)}"><span class="hint">Use 0 para não oferecer período grátis.</span></label><span></span></div>
+    <div class="row2"><label>Certificado para acerto acima de (%)<input name="notaMinima" type="number" min="0" max="99" required value="${esc(c.notaMinima ?? 60)}"><span class="hint">Com 60, o aluno precisa de 61% ou mais.</span></label><label>Mínimo de questões para certificado<input name="quizMinCert" type="number" min="1" required value="${esc(c.quizMinCert ?? 10)}"></label></div>
+    <div class="row2"><label>Chave Pix (opcional)<input name="chavePix" value="${esc(c.chavePix)}"></label><label>Contato para enviar comprovante<input name="contato" value="${esc(c.contato)}" placeholder="WhatsApp ou e-mail"></label></div>
+    <label>Link de pagamento (Mercado Pago, PagSeguro, Stripe…)<input name="linkPagamento" type="url" value="${esc(c.linkPagamento)}" placeholder="https://"></label>
+    <label>Instruções de pagamento<textarea name="instrucoesPagamento" rows="3">${esc(c.instrucoesPagamento)}</textarea></label>
+    <div class="actions"><button class="btn primary">Salvar configurações</button></div>
+    <p class="hint">Banco de dados em uso: <b>${store.modo === 'local' ? 'IndexedDB (local, neste navegador)' : store.modo === 'gist' ? `GitHub Gist de @${esc(store.gist?.user)}` : 'Firebase Firestore + Storage (nuvem)'}</b>.
+    ${store.modo === 'gist' ? ` <a href="https://gist.github.com/${esc(store.gist?.user)}/${esc(store.gist?.id)}" target="_blank" rel="noopener">Abrir o Gist</a>. As alterações podem levar alguns minutos para aparecer para os alunos.` : ''}</p>
+  </form></div>`;
+  const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
+  const fia = $('#fia');
+  fia.onsubmit = e => { e.preventDefault(); const k = fia.k.value.trim(); if (k) lsSet('agora-ia-key', k); lsSet('agora-ia-modelo', fia.m.value); toast('Configuração da IA salva neste navegador.'); render(); };
+  const rm = $('#ia-rm'); if (rm) rm.onclick = () => { try { localStorage.removeItem('agora-ia-key'); } catch {} toast('Chave removida deste navegador.'); render(); };
+  $('#ia-teste').onclick = async () => {
+    const k = fia.k.value.trim(); if (k) lsSet('agora-ia-key', k); lsSet('agora-ia-modelo', fia.m.value);
+    const b = $('#ia-teste'); b.disabled = true; b.textContent = 'Testando…';
+    try { await chamarClaude({ system: 'Responda apenas com a palavra OK.', content: 'Teste de conexão.', maxTokens: 16 }); toast('Conexão com o Claude funcionando.'); }
+    catch (err) { toast(err.message, true); } finally { b.disabled = false; b.textContent = 'Testar conexão'; }
+  };
+  const ct = $('#c-troca'); if (ct) ct.onclick = trocarGistModal;
+  const ck = $('#c-token'); if (ck) ck.onclick = store.precisaConfigurar ? configurarModal : tokenModal;
+  $('#fc').onsubmit = async e => {
+    e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
+    const n = { ...c, ...d, diasTeste: Number(d.diasTeste), notaMinima: Number(d.notaMinima), quizMinCert: Number(d.quizMinCert) };
+    try { await store.saveConfig(n); S.config = n; toast('Configurações salvas.'); render(); } catch (err) { toast(err.message, true); }
   };
 }
 

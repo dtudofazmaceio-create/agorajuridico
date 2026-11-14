@@ -51,6 +51,15 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
 
 **Leitura dos PDFs:** os alunos leem dentro do portal, com as páginas ajustadas à largura da tela (sem precisar de zoom), botões de zoom, **tela cheia** e **abrir em nova aba**. No app instalado no iPhone, esse botão vira **abrir em outro app** (Arquivos, Livros etc.). O portal lembra a página em que o aluno parou.
 
+## Quiz e certificados
+1. **Chave do Claude (uma vez):** crie uma chave em https://console.anthropic.com/settings/keys (o uso é cobrado pela Anthropic). No portal, vá em **Painel → Configurações → Inteligência artificial**, cole a chave, escolha o modelo (Sonnet 5.5 é o recomendado) e clique em **Testar conexão**. A chave fica só no seu navegador; ela não vai para o GitHub nem para os alunos. Em outro computador, cadastre de novo.
+2. **Gerar questões:** em **Painel → Materiais**, clique em **Questões** no PDF desejado, escolha a quantidade (10 a 40) e o nível (graduação, OAB e concursos, ou misto) e clique em **Gerar questões**. O Claude lê o material inteiro e cria questões de múltipla escolha (A a E) com explicação e página de referência. Revise: você pode editar, excluir ou criar questões à mão.
+3. **Aluno:** em **Quiz e certificados**, escolhe a matéria e a quantidade de questões, responde dentro do portal e, ao final, vê a nota e a correção comentada.
+4. **Certificado:** com acerto **acima de 60%** em um quiz de **pelo menos 10 questões**, o aluno baixa o certificado em PDF, com código de verificação. Os dois números são ajustáveis em Configurações.
+5. **Notas:** em **Painel → Quiz e notas** ficam todas as tentativas (aluno, matéria, acertos, nota, certificado), a média por matéria e a exportação em CSV. Você também pode baixar o certificado de qualquer aluno aprovado.
+
+Atenção: como o portal não tem servidor, as respostas corretas ficam no Gist. Um aluno com conhecimento técnico consegue encontrá-las. O certificado é de aproveitamento no portal e informa que não substitui certificação oficial.
+
 ## Downloads e análises
 - **Download:** na página de cada material há o botão **Baixar** (PDFs enviados e arquivos do Google Drive). No app do iPhone, ele abre o menu para salvar em Arquivos ou compartilhar. Para impedir o download de um material, desmarque **Permitir que os alunos baixem este arquivo** ao editá-lo. Vídeos do YouTube não podem ser baixados.
 - **Painel → Análises** (primeira aba): alunos cadastrados e novos, acesso ativo (pagantes e em teste), acessos ao portal por dia, novos cadastros por dia, materiais mais vistos e mais baixados, notícias e vagas mais lidas, aparelhos usados (celular, app instalado, computador), assinantes por plano, conversão para plano pago, receita estimada e alunos mais ativos. Filtre por 7, 30 ou 90 dias e exporte a lista de alunos em **CSV** (abre no Excel).
