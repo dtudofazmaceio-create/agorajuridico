@@ -1,0 +1,31 @@
+name: Sincronizar leis
+
+# Consulta os Dados Abertos do Senado Federal a cada hora e publica as normas novas
+# na seção "Atualizações da lei" do portal. Também pode ser disparado pelo botão
+# "Sincronizar agora" do painel ou em Actions > Sincronizar leis > Run workflow.
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sincronizar-leis
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Buscar normas e atualizar o portal
+        run: node scripts/sincronizar-leis.mjs
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ vars.GIST_ID }}

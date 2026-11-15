@@ -227,6 +227,7 @@ label.plan:has(input:checked) .pick .dot:after{content:"";width:8px;height:8px;b
 .search .ic{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--cinza)}
 .search input{padding-left:38px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
+a.chip{text-decoration:none!important}
 .chip{border:1px solid var(--linha);background:var(--branco);border-radius:7px;padding:.48em .95em;font:500 .85rem var(--sans);cursor:pointer;color:var(--toga-2);display:inline-flex;gap:6px;align-items:center}
 .chip.on{background:var(--toga);border-color:var(--toga);color:#fff}
 .mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
@@ -616,6 +617,16 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .tcards:not(.tc-on) td.small.muted{max-width:260px;overflow-wrap:anywhere}
 .tcards:not(.tc-on) td .acts{min-width:max-content}
 
+/* Atualização automática das leis */
+.leis-auto{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 20px;margin-bottom:18px;border-left:3px solid var(--latao)}
+.leis-auto .la-ic{width:44px;height:44px;border-radius:10px;background:var(--latao-bg);color:#7c5d26;display:grid;place-items:center}
+.leis-auto .la-h{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.leis-auto h3{margin:0;font-size:1.05rem}
+.leis-auto p{margin:.35em 0 0}
+.leis-auto .la-ac{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.lz-tipos{border:1px solid var(--linha);border-radius:8px;padding:10px 14px;display:grid;gap:6px}.lz-tipos legend{font-size:.8rem;font-weight:600;color:var(--cinza);padding:0 6px}
+.lz-nota{display:flex;gap:6px;align-items:center;margin:-6px 0 14px}
+@media (max-width:1000px){.leis-auto{grid-template-columns:auto 1fr}.leis-auto .la-ac{grid-column:1/-1;justify-content:flex-start}}
+@media (max-width:820px){.leis-auto{grid-template-columns:1fr}.leis-auto .la-ic{display:none}.leis-auto .la-ac .btn{flex:1}}
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -1225,7 +1236,13 @@ function GistStore() {
       try { await L.remove('arquivos', 'gist:' + name); } catch {}
     },
     async getConfig() { return { ...DEFAULT_CFG, ...(data?.config || {}) }; },
-    async saveConfig(c) { await mutate(d => { d.config = { ...c, id: 'geral' }; }); }
+    async saveConfig(c) { await mutate(d => { d.config = { ...c, id: 'geral' }; }); },
+    async mutarDados(fn) { return mutate(fn); },
+    async dispararWorkflow(owner, repo, arquivo) {
+      if (!isAdmin()) throw new Error('Apenas o administrador pode fazer isso.'); if (!TOKEN) throw semToken();
+      const info = await gh(`/repos/${owner}/${repo}`);
+      await gh(`/repos/${owner}/${repo}/actions/workflows/${arquivo}/dispatches`, { method: 'POST', body: JSON.stringify({ ref: info.default_branch || 'main' }) });
+    }
   };
 }
 
@@ -2554,7 +2571,7 @@ function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
   const pi = p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'audio' : 'play') : c.icon;
   return `<article class="card post"><span class="pi">${ic(pi, 22)}</span>
-    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
+    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
       <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
       <div class="meta">${metaPost(p)}</div>
       ${p.resumo ? `<p>${esc(p.resumo)}</p>` : ''}</div>
@@ -2586,7 +2603,13 @@ async function viewNoticias(main, _, q) {
   const list = all.filter(p => p.categoria === cat).sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
   const count = k => all.filter(p => p.categoria === k).length;
   const sub = { noticia: 'O que acontece no mundo jurídico, com a fonte de cada notícia.', entrevista: 'Conversas em vídeo e áudio com profissionais do Direito.', lei: 'Novas normas e alterações relevantes, em ordem cronológica.' }[cat];
-  const cards = cat === 'lei' ? `<div class="timeline">${list.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="plist">${list.map(postCard).join('')}</div>`;
+  const tiposLei = cat === 'lei' ? [...new Set(list.map(p => p.instituicao).filter(Boolean))] : [];
+  const fLei = tiposLei.includes(q.get('norma')) ? q.get('norma') : '';
+  const listaV = fLei ? list.filter(p => p.instituicao === fLei) : list;
+  const lz = cat === 'lei' ? leisCfg(await store.getConfig()) : null;
+  const notaLei = lz && lz.ativo && (lz.ultima || list.some(p => p.auto)) ? `<p class="small muted lz-nota">${ic('check', 14)} Sincronizado automaticamente com a base oficial de normas federais do Senado Federal${lz.ultima ? `. Última verificação: ${fmtDT(lz.ultima.em)}` : ''}.</p>` : '';
+  const chipsLei = tiposLei.length > 1 ? `<div class="chips" style="margin-bottom:16px">${['', ...tiposLei].map(t => `<a class="chip ${t === fLei ? 'on' : ''}" href="#/noticias?tipo=lei${t ? '&norma=' + encodeURIComponent(t) : ''}">${t ? esc(t) : 'Todas'}</a>`).join('')}</div>` : '';
+  const cards = cat === 'lei' ? `${notaLei}${chipsLei}<div class="timeline">${listaV.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="plist">${list.map(postCard).join('')}</div>`;
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><span class="eyebrow">Atualidades</span><h2>${CATS[cat].plural}</h2><p>${sub}</p></div></div>
     <div class="tabs">${CAT_INFO.map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/noticias?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
@@ -3333,23 +3356,115 @@ function formMaterial(m = {}) {
   };
 }
 
+/* ===================== Atualização automática das leis ===================== */
+const LEIS_PADRAO = { ativo: true, tipos: ['LEI', 'LCP', 'EMC', 'MPV'], ignorarComemorativas: true, diasIniciais: 30, desde: '', ignorados: [], ultima: null };
+const LEIS_TIPOS = { LEI: 'Leis ordinárias', LCP: 'Leis complementares', EMC: 'Emendas constitucionais', MPV: 'Medidas provisórias', DEC: 'Decretos' };
+const fmtDT = t => t ? new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+const leisCfg = c => ({ ...LEIS_PADRAO, ...((c || S.config || {}).leisAuto || {}) });
+function repoDoSite(cfg) {
+  if (cfg?.repo && /^[\w.-]+\/[\w.-]+$/.test(cfg.repo)) { const [o, r] = cfg.repo.split('/'); return { owner: o, repo: r }; }
+  const m = location.hostname.match(/^([\w-]+)\.github\.io$/i); if (!m) return null;
+  const seg = location.pathname.split('/').filter(Boolean)[0];
+  return { owner: m[1], repo: seg && !/\.html?$/.test(seg) ? seg : `${m[1]}.github.io` };
+}
+const linkActions = cfg => { const r = repoDoSite(cfg); return r ? `https://github.com/${r.owner}/${r.repo}/actions/workflows/sincronizar-leis.yml` : ''; };
+async function aplicarNormas(m, normas, erros, via) {
+  if (store.mutarDados) { let res; await store.mutarDados(d => { res = m.mesclar(d, normas, { via, erros }); }); S.config = await store.getConfig(); return res; }
+  const d = { publicacoes: await store.list('publicacoes'), config: await store.getConfig() };
+  const res = m.mesclar(d, normas, { via, erros });
+  for (const p of res.novas) await store.save('publicacoes', p);
+  await store.saveConfig(d.config); S.config = await store.getConfig(); return res;
+}
+async function sincronizarLeisAgora(btn) {
+  const txt = btn.innerHTML; btn.disabled = true; btn.innerHTML = 'Consultando o Senado…';
+  const fim = () => { btn.disabled = false; btn.innerHTML = txt; };
+  const cfg = leisCfg(await store.getConfig());
+  let motivo = '';
+  try {
+    const m = await import('./leis-sync.mjs');
+    const { normas, erros } = await m.buscarNormas({ tipos: cfg.tipos });
+    if (!normas.length && erros.length) throw new Error(erros.join('; '));
+    btn.innerHTML = 'Publicando…';
+    const r = await aplicarNormas(m, normas, erros, 'painel');
+    fim(); toast(r.novas.length ? (r.novas.length > 1 ? `${r.novas.length} atualizações da lei publicadas.` : '1 atualização da lei publicada.') : 'Tudo em dia: nenhuma norma nova no Senado.'); render(); return;
+  } catch (e) { motivo = e.cors ? '' : e.message; console.warn('[leis] navegador:', e); }
+  // O navegador não alcançou o Senado: pede ao GitHub para rodar a sincronização
+  const repo = repoDoSite(cfg);
+  if (store.dispararWorkflow && repo) {
+    try {
+      btn.innerHTML = 'Acionando o GitHub…';
+      await store.dispararWorkflow(repo.owner, repo.repo, 'sincronizar-leis.yml');
+      fim(); toast('Sincronização iniciada no GitHub. As novas leis aparecem em 1 a 2 minutos.'); return;
+    } catch (e) { console.warn('[leis] dispatch:', e); }
+  }
+  fim();
+  const link = linkActions(cfg);
+  modal('Sincronizar pelo GitHub', `<p>O navegador não conseguiu consultar o portal do Senado diretamente${motivo ? ` <span class="muted small">(${esc(motivo)})</span>` : ''}. Isso é normal: alguns portais oficiais bloqueiam o acesso direto de sites.</p>
+    <p>A sincronização automática continua rodando sozinha no GitHub a cada hora. Para rodar agora:</p>
+    <ol class="small" style="padding-left:18px;line-height:1.7"><li>Abra a página da sincronização no GitHub (botão abaixo).</li><li>Clique em <b>Run workflow</b> e depois no botão verde <b>Run workflow</b>.</li><li>Em 1 a 2 minutos, recarregue o portal.</li></ol>
+    ${link ? '' : '<p class="small muted">Não identifiquei o repositório deste site. Informe-o em <b>Configurar</b>.</p>'}
+    <div class="actions"><button class="btn ghost" data-close>Fechar</button>${link ? `<a class="btn primary" href="${esc(link)}" target="_blank" rel="noopener">Abrir no GitHub ${ic('ext', 15)}</a>` : ''}</div>`);
+}
+function configLeisModal() {
+  const c = leisCfg(), r = repoDoSite(c);
+  const desde = c.desde || new Date(Date.now() - c.diasIniciais * DAY).toISOString().slice(0, 10);
+  const { el, close } = modal('Atualização automática das leis', `<form class="form" id="flz">
+    <label class="check"><input type="checkbox" name="ativo" ${c.ativo ? 'checked' : ''}> Publicar automaticamente as normas federais novas</label>
+    <fieldset class="lz-tipos"><legend>O que acompanhar</legend>${Object.entries(LEIS_TIPOS).map(([k, l]) => `<label class="check"><input type="checkbox" name="tipo" value="${k}" ${c.tipos.includes(k) ? 'checked' : ''}> ${l}${k === 'DEC' ? ' <span class="muted small">(muitos por mês)</span>' : ''}</label>`).join('')}</fieldset>
+    <label class="check"><input type="checkbox" name="comem" ${c.ignorarComemorativas ? 'checked' : ''}> Ignorar leis que só dão nome a rodovias e prédios, criam datas comemorativas ou abrem crédito no orçamento</label>
+    <div class="row2"><label>Publicar normas a partir de<input type="date" name="desde" value="${esc(desde)}"></label>
+      <label>Repositório do site no GitHub<input name="repo" placeholder="${esc(r ? r.owner + '/' + r.repo : 'usuario/repositorio')}" value="${esc(c.repo || '')}"></label></div>
+    <p class="small muted">Fonte: Dados Abertos do Senado Federal, a base oficial de normas jurídicas federais. Cada norma vira uma publicação em Atualizações da lei, com a ementa, a disciplina provável e o link para o texto oficial. Você pode editar ou excluir qualquer uma; as excluídas não voltam.</p>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar</button></div></form>`);
+  $('#flz', el).onsubmit = async e => {
+    e.preventDefault(); const f = e.target;
+    const tipos = $$('[name=tipo]:checked', f).map(x => x.value);
+    if (!tipos.length) return toast('Escolha pelo menos um tipo de norma.', true);
+    if (f.repo.value.trim() && !/^[\w.-]+\/[\w.-]+$/.test(f.repo.value.trim())) return toast('Informe o repositório como usuario/repositorio.', true);
+    try {
+      const cfg = await store.getConfig();
+      await store.saveConfig({ ...cfg, leisAuto: { ...leisCfg(cfg), ativo: f.ativo.checked, tipos, ignorarComemorativas: f.comem.checked, desde: f.desde.value, repo: f.repo.value.trim() } });
+      S.config = await store.getConfig(); close(); toast('Configuração salva.'); render();
+    } catch (err) { toast(err.message, true); }
+  };
+}
+function cartaoLeisAuto(c) {
+  const u = c.ultima, link = linkActions(c);
+  const st = !c.ativo ? '<span class="badge">Desligada</span>' : u?.erros?.length && !u.verificadas ? '<span class="badge err">Com falha</span>' : '<span class="badge ok">Ativa</span>';
+  const linha = u ? `Última verificação: <b>${fmtDT(u.em)}</b>${u.via === 'painel' ? ' (pelo painel)' : ' (GitHub, automática)'}. ${u.verificadas} norma${u.verificadas !== 1 ? 's' : ''} conferida${u.verificadas !== 1 ? 's' : ''}, ${u.novas} nova${u.novas !== 1 ? 's' : ''} publicada${u.novas !== 1 ? 's' : ''}${u.comemorativas ? `, ${u.comemorativas} comemorativa${u.comemorativas > 1 ? 's' : ''} ignorada${u.comemorativas > 1 ? 's' : ''}` : ''}.${u.erros?.length ? ` <span class="muted">Avisos: ${esc(u.erros.join('; '))}</span>` : ''}` : 'Ainda não houve nenhuma sincronização. Clique em <b>Sincronizar agora</b>.';
+  return `<div class="card leis-auto"><div class="la-ic">${ic('scroll', 22)}</div>
+    <div class="la-tx"><div class="la-h"><h3>Atualização automática das leis</h3>${st}</div>
+      <p class="small muted">Normas federais novas (${c.tipos.map(t => LEIS_TIPOS[t]?.toLowerCase()).filter(Boolean).join(', ')}) são buscadas nos Dados Abertos do Senado Federal a cada hora e publicadas sozinhas.</p>
+      <p class="small">${linha}</p></div>
+    <div class="la-ac"><button class="btn primary sm" id="la-sync">${ic('clock', 14)} Sincronizar agora</button><button class="btn ghost sm" id="la-cfg">Configurar</button>${link ? `<a class="btn ghost sm" href="${esc(link)}" target="_blank" rel="noopener">GitHub ${ic('ext', 13)}</a>` : ''}</div></div>`;
+}
+
 function admPublicacoes(box, posts) {
   let filtro = '';
   const draw = () => {
     const l = posts.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
     $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>Prazo / data</th><th>Publicado</th><th></th></tr>
-      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td>${esc((CATS[p.categoria] || {}).nome)}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}${p.auto ? ' <span class="badge ok" style="font-size:.68rem">automática</span>' : ''}</div></td><td>${esc((CATS[p.categoria] || {}).nome)}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><p>Nenhuma publicação nesta categoria.</p></div>';
   };
-  box.innerHTML = `<div class="list-h"><div class="chips" id="pf">${[['', 'Todas'], ...Object.entries(CATS).map(([k, c]) => [k, c.plural])].map(([v, l]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l}</button>`).join('')}</div>
+  box.innerHTML = `${cartaoLeisAuto(leisCfg())}<div class="list-h"><div class="chips" id="pf">${[['', 'Todas'], ...Object.entries(CATS).map(([k, c]) => [k, c.plural])].map(([v, l]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l}</button>`).join('')}</div>
     <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova publicação</button></div><div class="card table-wrap" id="ptab"></div>`;
   draw();
   $('#pf').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.v; $$('.chip', $('#pf')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
   $('#novo').onclick = () => formPost({ categoria: filtro || 'estagio' });
+  $('#la-sync').onclick = e => sincronizarLeisAgora(e.currentTarget);
+  $('#la-cfg').onclick = configLeisModal;
   $('#ptab').onclick = async e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
     if (ed) formPost(posts.find(p => p.id === ed.dataset.ed));
-    if (dl && await confirmar('Excluir esta publicação?', 'Excluir')) { try { await store.remove('publicacoes', dl.dataset.del); toast('Publicação excluída.'); render(); } catch (err) { toast(err.message, true); } }
+    if (dl && await confirmar('Excluir esta publicação?', 'Excluir')) {
+      try {
+        const p = posts.find(x => x.id === dl.dataset.del);
+        await store.remove('publicacoes', dl.dataset.del);
+        if (p?.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+        toast('Publicação excluída.'); render();
+      } catch (err) { toast(err.message, true); }
+    }
   };
 }
 function formPost(p = {}) {

@@ -13,7 +13,7 @@
    - Nome: `agora-juridica` (ou outro). Marque **Public** (o GitHub Pages grátis exige repositório público).
    - Clique em **Create repository**.
 2. Na página do repositório, clique em **uploading an existing file**.
-3. Arraste **todo o conteúdo da pasta `public`**: `index.html`, `manifest.webmanifest`, `sw.js` e a pasta `icons`. Clique em **Commit changes**.
+3. Arraste **todo o conteúdo da pasta `public`**: `index.html`, `manifest.webmanifest`, `sw.js`, `leis-sync.mjs` e as pastas `icons` e `scripts`. Clique em **Commit changes**. (A pasta `.github` é criada à parte; veja **Atualização automática das leis**.)
 4. Vá em **Settings → Pages**. Em *Branch*, escolha `main` e a pasta `/ (root)`. Clique em **Save**.
 5. Em 1 a 2 minutos, o site estará em `https://SEU-USUARIO.github.io/agora-juridica/`.
 
@@ -71,6 +71,31 @@ Atenção: como o portal não tem servidor, as respostas corretas ficam no Gist.
 - **Painel → Análises** (primeira aba): alunos cadastrados e novos, acesso ativo (pagantes e em teste), acessos ao portal por dia, novos cadastros por dia, materiais mais vistos e mais baixados, notícias e vagas mais lidas, aparelhos usados (celular, app instalado, computador), assinantes por plano, conversão para plano pago, receita estimada e alunos mais ativos. Filtre por 7, 30 ou 90 dias e exporte a lista de alunos em **CSV** (abre no Excel).
 - Na aba **Materiais**, cada material mostra o número de acessos e de downloads.
 - O uso de cada aluno é enviado em lotes (a cada 10 minutos ou quando ele fecha o portal), por isso os números podem levar alguns minutos para aparecer. Os acessos do administrador não são contados.
+
+## Atualização automática das leis
+O portal publica sozinho, em **Atualizações da lei**, as normas federais novas (leis ordinárias, leis complementares, emendas constitucionais e medidas provisórias; decretos são opcionais). A fonte é a base oficial de normas jurídicas dos **Dados Abertos do Senado Federal**. Cada norma vira uma publicação com o número, a data, a ementa, a disciplina provável e o link para o texto oficial, marcada como **Fonte oficial**.
+
+**Ativar (uma única vez, 3 minutos):**
+1. No repositório do site, envie também o arquivo `leis-sync.mjs` e a pasta `scripts` (arraste junto com os outros arquivos).
+2. A pasta `.github` costuma não subir ao arrastar, porque começa com ponto. Crie o arquivo pelo próprio GitHub:
+   - Clique em **Add file → Create new file**.
+   - No nome, digite exatamente `.github/workflows/sincronizar-leis.yml`. O GitHub cria as pastas sozinho.
+   - Abra o arquivo `sincronizar-leis.yml` que veio no pacote (pasta `.github/workflows`), copie todo o texto e cole. Clique em **Commit changes**.
+3. Abra a aba **Actions** do repositório. Se aparecer um aviso, clique em **I understand my workflows, go ahead and enable them**.
+4. Clique em **Sincronizar leis → Run workflow → Run workflow** para a primeira sincronização. Em 1 a 2 minutos, as normas dos últimos 30 dias aparecem no portal.
+
+**Como funciona depois:**
+- O GitHub verifica o Senado **a cada hora**, sozinho, mesmo com o computador desligado. Não há custo em repositório público.
+- No **Painel → Publicações**, o quadro **Atualização automática das leis** mostra a última verificação, quantas normas são novas e eventuais avisos.
+- **Sincronizar agora** tenta consultar o Senado direto do navegador. Se o portal do Senado bloquear esse acesso, o painel mostra o atalho para rodar a sincronização no GitHub (um clique em **Run workflow**).
+- **Configurar**: escolha os tipos de norma, a data a partir da qual publicar e se quer ignorar leis comemorativas (nomes de rodovias, datas comemorativas, créditos no orçamento).
+- Você pode **editar** qualquer publicação automática (por exemplo, para comentar o que mudou). Se **excluir**, ela não volta nas próximas sincronizações.
+- A sincronização usa o mesmo token que você salvou na configuração do portal, guardado no Gist. Não é preciso criar nada além do arquivo acima. (Opcional: se preferir, crie em **Settings → Secrets and variables → Actions** o segredo `GIST_TOKEN` com o token, e ele passa a ser usado no lugar.)
+
+**Limites:**
+- Não é tempo real no sentido de segundos: a verificação é de hora em hora, e a base do Senado costuma registrar a norma no mesmo dia ou no dia seguinte à publicação no Diário Oficial.
+- O GitHub pausa tarefas agendadas de repositórios sem nenhuma alteração por 60 dias. Se isso acontecer, ele avisa por e-mail; basta clicar em **Enable workflow** na aba Actions.
+- A disciplina é sugerida por palavras da ementa e pode errar. Revise quando for relevante para as aulas.
 
 ## Passo 4: enviar aos alunos
 Clique em **Link para os alunos** no painel e envie pelo WhatsApp ou e-mail.
