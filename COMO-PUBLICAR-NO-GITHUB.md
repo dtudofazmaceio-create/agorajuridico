@@ -61,8 +61,8 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
    Revise as questões: você pode editar, excluir ou criar à mão, e baixar o banco em HTML como cópia de segurança.
    A geração direta pela API do Claude continua disponível, recolhida, como opção paga.
 3. **Aluno:** em **Quiz e certificados**, escolhe a matéria e a quantidade de questões, responde dentro do portal e, ao final, vê a nota e a correção comentada.
-4. **Certificado:** com acerto **acima de 60%** em um quiz de **pelo menos 10 questões**, o aluno baixa o certificado em PDF, com código de verificação. Os dois números são ajustáveis em Configurações.
-5. **Notas:** em **Painel → Quiz e notas** ficam todas as tentativas (aluno, matéria, acertos, nota, certificado), a média por matéria e a exportação em CSV. Você também pode baixar o certificado de qualquer aluno aprovado.
+4. **Certificado:** com acerto **acima de 60%** em um quiz de **pelo menos 10 questões**, o certificado em PDF é gerado na hora e guardado **somente no aparelho do aluno** (IndexedDB do navegador ou do app), sem ocupar espaço na nuvem. O aluno o abre quando quiser em **Quiz → Meus certificados**, no mesmo aparelho e navegador em que fez o quiz. Se limpar os dados do navegador ou desinstalar o app, o certificado é apagado; por isso, oriente os alunos a baixar o PDF. Os dois números são ajustáveis em Configurações.
+5. **Notas:** em **Painel → Quiz e notas** ficam todas as tentativas (aluno, matéria, acertos, nota e o código do certificado), a média por matéria e a exportação em CSV. Na nuvem fica só esse registro de texto; o PDF do certificado nunca é enviado.
 
 Atenção: como o portal não tem servidor, as respostas corretas ficam no Gist. Um aluno com conhecimento técnico consegue encontrá-las. O certificado é de aproveitamento no portal e informa que não substitui certificação oficial.
 

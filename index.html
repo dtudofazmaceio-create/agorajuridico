@@ -816,6 +816,15 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .inst-marca-g{grid-template-columns:1fr}.im-esc:first-child{grid-row:auto}
   .ass-pad{height:200px}
 }
+/* Certificados no aparelho */
+.meus-certs{margin-bottom:22px}.meus-certs h3{margin:0;display:flex;gap:8px;align-items:center}
+.meus-certs p .ic{vertical-align:-2px}
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.cert-card{display:grid;border:1px solid var(--linha);border-radius:10px;overflow:hidden;background:var(--branco);padding:0;cursor:pointer;text-align:left;font:inherit;transition:border-color .15s,transform .15s}
+.cert-card:hover{border-color:var(--latao)}.cert-card:active{transform:scale(.98)}
+.cert-card img{width:100%;aspect-ratio:2339/1654;object-fit:cover;display:block;border-bottom:1px solid var(--linha-2)}
+.cert-card span{display:grid;gap:2px;padding:10px 12px}.cert-card b{color:var(--toga);font-size:.95rem}.cert-card small{color:var(--cinza);font-size:.8rem}.cert-card .cc{font-family:var(--serif);color:#7c5d26}
+@media (max-width:820px){.cert-grid{grid-template-columns:1fr 1fr;gap:10px}.cert-card span{padding:8px 10px}}
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -2692,6 +2701,11 @@ async function viewQuiz(main, sub) {
   const discs = Object.entries(porDisc).sort((a, b) => a[0].localeCompare(b[0]));
   const u = await store.getUser(S.user.id).catch(() => S.user) || S.user;
   const hist = [...(u.quizzes || [])].sort((a, b) => b.data - a.data);
+  let locais = []; try { locais = (await CertDB.doUsuario(S.user.id)).sort((a, b) => b.data - a.data); } catch (e) { console.warn(e); }
+  const temLocal = new Set(locais.map(c => c.id)), meuAparelho = aparelhoId();
+  const btnCert = h => !h.aprovado ? '' : temLocal.has(h.id) ? `<button class="btn primary sm" data-cert="${esc(h.id)}">${ic('award', 14)} Certificado</button>`
+    : !h.aparelho ? `<button class="btn ghost sm" data-antigo="${esc(h.id)}">${ic('award', 14)} Guardar neste aparelho</button>`
+    : `<span class="badge" title="O certificado fica guardado só no aparelho em que o quiz foi feito">${ic('phone', 12)} Em outro aparelho</span>`;
   let sel = discs[0]?.[0] || '', qtd = 10;
   main.innerHTML = `<div class="page">
     <div class="page-h keep"><div><span class="eyebrow">Avaliação</span><h2>Quiz</h2><p>Escolha a matéria e quantas questões quer responder. Acertando mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, você recebe um certificado emitido pelo ${esc(inst().nome)}.</p></div></div>
@@ -2704,12 +2718,19 @@ async function viewQuiz(main, sub) {
       <p class="hint" id="qz-cert" style="margin-top:10px"></p>
       <div class="actions" style="justify-content:flex-start;margin-top:16px"><button class="btn primary" id="qz-ir">${ic('play', 16)} Começar quiz</button></div>
     </div>` : `<div class="card empty">${ART.medal('book')}<h3>Ainda não há questões disponíveis</h3><p>Os quizzes aparecem aqui assim que o administrador preparar as questões dos materiais.</p></div>`}
-    <div class="card"><div class="pad" style="padding-bottom:8px"><h3 style="margin:0">Meus resultados</h3></div>
+    <div class="card pad meus-certs"><div class="list-h" style="margin-bottom:6px"><h3>${ic('award', 19)} Meus certificados</h3><span class="badge">${locais.length}</span></div>
+      <p class="small muted" style="margin:0 0 14px">${ic('phone', 13)} Guardados somente neste aparelho, sem ocupar espaço na nuvem. Abra sempre por aqui, no mesmo navegador ou app em que fez o quiz. Se limpar os dados do navegador ou desinstalar o app, eles são apagados; baixe o PDF para guardar uma cópia.</p>
+      ${locais.length ? `<div class="cert-grid">${locais.map(c => `<button class="cert-card" data-cert="${esc(c.id)}"><img src="${c.thumb}" alt=""><span><b>${esc(c.disciplina)}</b><small>${c.nota}% · ${fmtDate(c.data)}</small><small class="cc">${esc(c.codigo || '')}</small></span></button>`).join('')}</div>`
+        : `<p class="small" style="margin:0">Nenhum certificado neste aparelho ainda. Acerte mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões para conquistar o primeiro.</p>`}</div>
+    <div class="card" id="qz-hist"><div class="pad" style="padding-bottom:8px"><h3 style="margin:0">Meus resultados</h3></div>
       ${hist.length ? `<div class="table-wrap"><table><tr><th>Data</th><th>Matéria</th><th>Questões</th><th>Nota</th><th></th></tr>
       ${hist.map(h => `<tr><td>${fmtDate(h.data)}</td><td>${esc(h.disciplina)}</td><td>${h.acertos} de ${h.total}</td><td><span class="badge ${h.aprovado ? 'ok' : h.nota > notaMin() ? 'gold' : 'warn'}">${h.nota}%</span></td>
-        <td><div class="acts">${h.aprovado ? `<button class="btn primary sm" data-cert="${esc(h.id)}">${ic('download', 14)} Certificado</button>` : ''}</div></td></tr>`).join('')}</table></div>` : '<p class="muted small" style="padding:0 24px 20px">Você ainda não fez nenhum quiz.</p>'}</div>
+        <td><div class="acts">${btnCert(h)}</div></td></tr>`).join('')}</table></div>` : '<p class="muted small" style="padding:0 24px 20px">Você ainda não fez nenhum quiz.</p>'}</div>
   </div>`;
-  main.querySelector('.card:last-child').onclick = e => { const b = e.target.closest('[data-cert]'); if (b) baixarCertificado({ ...hist.find(h => h.id === b.dataset.cert), nome: u.nome }); };
+  main.onclick = e => {
+    const b = e.target.closest('[data-cert]'); if (b) return abrirCertificadoLocal(b.dataset.cert);
+    const a = e.target.closest('[data-antigo]'); if (a) guardarCertificadoAntigo(hist.find(h => h.id === a.dataset.antigo));
+  };
   if (!discs.length) return;
   const desenharN = () => {
     const max = porDisc[sel].total, ops = [5, 10, 15, 20, 30, 40].filter(n => n <= max);
@@ -2769,8 +2790,12 @@ async function finalizarQuiz() {
   const nota = Math.round(acertos / n * 100);
   const aprovado = n >= minCert() && nota > notaMin();
   const reg = { id: uid().slice(0, 8), disciplina: Q.disciplina, total: n, acertos, nota, aprovado, data: Date.now(), duracao: Math.round((Date.now() - Q.inicio) / 1000), minimo: notaMin() };
-  if (aprovado) reg.codigo = 'AJC-' + novoCodigo().replace(/^AJ-/, '');
+  if (aprovado) { reg.codigo = 'AJC-' + novoCodigo().replace(/^AJ-/, ''); reg.aparelho = aparelhoId(); }
   S.quizRes = { reg, questoes: Q.questoes }; S.quiz = null;
+  if (aprovado) {
+    try { await salvarCertificadoLocal(reg, S.user.nome); S.quizRes.certOk = true; }
+    catch (e) { console.warn(e); S.quizRes.certErro = e.message || 'erro'; }
+  }
   if (S.user.role !== 'admin') {
     try { const u = await store.getUser(S.user.id); await store.updateUser(S.user.id, { quizzes: [...(u?.quizzes || []), reg].slice(-80) }); }
     catch (e) { console.warn(e); toast('Sua nota foi calculada, mas não foi possível salvá-la agora. Verifique sua internet.', true); }
@@ -2784,8 +2809,8 @@ function quizResultado(main) {
       <div class="qz-nota ${reg.aprovado ? 'ok' : ''}"><b>${reg.nota}%</b><span>${reg.acertos} de ${reg.total}</span></div>
       <div><span class="eyebrow">${esc(reg.disciplina)}</span>
         <h2 style="margin:6px 0">${reg.aprovado ? 'Parabéns, você foi aprovado!' : reg.nota > notaMin() ? 'Bom resultado!' : 'Continue estudando'}</h2>
-        <p class="muted" style="margin:0 0 14px">${reg.aprovado ? `Você acertou mais de ${notaMin()}% e já pode baixar seu certificado.` : reg.total < minCert() ? `Quizzes com menos de ${minCert()} questões não geram certificado. Faça um quiz maior para concorrer.` : `Para receber o certificado, é preciso acertar mais de ${notaMin()}%. Revise as explicações abaixo e tente de novo.`}</p>
-        <div class="actions" style="justify-content:flex-start">${reg.aprovado ? `<button class="btn primary" id="cert">${ic('download', 15)} Baixar certificado (PDF)</button>` : ''}<a class="btn ghost" href="#/quiz">Fazer outro quiz</a></div></div>
+        <p class="muted" style="margin:0 0 14px">${reg.aprovado ? `Você acertou mais de ${notaMin()}%. Seu certificado ${S.quizRes.certOk ? 'foi guardado neste aparelho e fica disponível em Quiz, Meus certificados, sempre que você quiser' : 'não pôde ser guardado neste aparelho (pouco espaço ou modo privativo). Libere espaço e tente de novo'}.` : reg.total < minCert() ? `Quizzes com menos de ${minCert()} questões não geram certificado. Faça um quiz maior para concorrer.` : `Para receber o certificado, é preciso acertar mais de ${notaMin()}%. Revise as explicações abaixo e tente de novo.`}</p>
+        <div class="actions" style="justify-content:flex-start">${reg.aprovado ? (S.quizRes.certOk ? `<button class="btn primary" id="cert">${ic('award', 15)} Abrir certificado (PDF)</button>` : `<button class="btn primary" id="cert-re">${ic('award', 15)} Tentar guardar de novo</button>`) : ''}<a class="btn ghost" href="#/quiz">Fazer outro quiz</a></div></div>
     </div>
     <h3 style="margin:30px 0 12px">Correção comentada</h3>
     <div style="display:grid;gap:14px">${questoes.map((q, i) => { const certa = q.ordem.findIndex(a => a.ok), ok = q.escolha === certa; return `<div class="card pad">
@@ -2794,7 +2819,8 @@ function quizResultado(main) {
       <div style="display:grid;gap:6px">${q.ordem.map((a, k) => `<div class="qz-rev ${k === certa ? 'certa' : k === q.escolha ? 'errada' : ''}"><b>${'ABCDE'[k]}</b> ${esc(a.t)}${k === certa ? ` ${ic('check', 14)}` : ''}${k === q.escolha && k !== certa ? ' (sua resposta)' : ''}</div>`).join('')}</div>
       ${q.explicacao ? `<p class="small" style="margin:12px 0 0;color:var(--grafite)"><b>Explicação:</b> ${esc(q.explicacao)}</p>` : ''}</div>`; }).join('')}</div>
   </div>`;
-  const c = $('#cert'); if (c) c.onclick = () => baixarCertificado({ ...reg, nome: S.user.nome });
+  const c = $('#cert'); if (c) c.onclick = () => abrirCertificadoLocal(reg.id);
+  const cr = $('#cert-re'); if (cr) cr.onclick = async () => { try { await salvarCertificadoLocal(reg, S.user.nome); S.quizRes.certOk = true; quizResultado(main); toast('Certificado guardado neste aparelho.'); } catch (e) { toast('Ainda não foi possível guardar: ' + e.message, true); } };
 }
 
 /* ============================ Certificado (PDF) ============================ */
@@ -2871,18 +2897,43 @@ async function desenharCertificado({ nome, disciplina, nota, acertos, total, dat
   ll.push(l); ll.forEach((t, k) => c.fillText(t, W / 2, H - 150 + k * 30 - (ll.length - 1) * 15));
   return cv;
 }
-async function baixarCertificado(info) {
+/* ===== Certificados: guardados SOMENTE neste aparelho (IndexedDB), nunca na nuvem ===== */
+const CertDB = (() => {
+  let p;
+  const db = () => p || (p = new Promise((res, rej) => {
+    const r = indexedDB.open('agora-certificados', 1);
+    r.onupgradeneeded = () => { const st = r.result.createObjectStore('certs', { keyPath: 'id' }); st.createIndex('uid', 'uid'); };
+    r.onsuccess = () => res(r.result); r.onerror = () => { p = null; rej(r.error); };
+  }));
+  const tx = async (modo, fn) => { const d = await db(); return new Promise((res, rej) => { const t = d.transaction('certs', modo); const rq = fn(t.objectStore('certs')); t.oncomplete = () => res(rq?.result); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error || new Error('Sem espaço no aparelho.')); }); };
+  return { put: c => tx('readwrite', s => s.put(c)), get: id => tx('readonly', s => s.get(id)), doUsuario: uid => tx('readonly', s => s.index('uid').getAll(uid)) };
+})();
+const aparelhoId = () => { let a = lsGet('agora-aparelho'); if (!a) { a = uid().slice(0, 12); lsSet('agora-aparelho', a); } return a; };
+const nomeCert = c => `Certificado - ${c.disciplina} - ${c.nome}`.replace(/[\\/:*?"<>|]/g, '');
+async function salvarCertificadoLocal(reg, nome) {
+  const cv = await desenharCertificado({ ...reg, nome });
+  const jpg = new Uint8Array(await (await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92))).arrayBuffer());
+  const pdf = await pdfDeJPEG(jpg, cv.width, cv.height, nomeCert({ ...reg, nome })).arrayBuffer();
+  const th = document.createElement('canvas'); th.width = 420; th.height = Math.round(420 * cv.height / cv.width); th.getContext('2d').drawImage(cv, 0, 0, th.width, th.height);
+  const c = { id: reg.id, uid: S.user.id, nome, disciplina: reg.disciplina, nota: reg.nota, acertos: reg.acertos, total: reg.total, data: reg.data, codigo: reg.codigo, pdf, thumb: th.toDataURL('image/jpeg', .8), salvoEm: Date.now() };
+  await CertDB.put(c);
+  try { await navigator.storage?.persist?.(); } catch {}
+  return c;
+}
+async function abrirCertificadoLocal(id) {
   try {
-    toast('Gerando o certificado…');
-    const cv = await desenharCertificado(info);
-    const jpg = new Uint8Array(await (await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92))).arrayBuffer());
-    const nome = `Certificado - ${info.disciplina} - ${info.nome}`.replace(/[\\/:*?"<>|]/g, '');
-    const pdf = pdfDeJPEG(jpg, cv.width, cv.height, nome);
-    const f = new File([pdf], nome + '.pdf', { type: 'application/pdf' });
-    if (isIOS && isStandalone() && navigator.canShare?.({ files: [f] })) { await navigator.share({ files: [f], title: nome }); return; }
+    const c = await CertDB.get(id);
+    if (!c || c.uid !== S.user.id) return toast('Este certificado não está guardado neste aparelho.', true);
+    const f = new File([c.pdf], nomeCert(c) + '.pdf', { type: 'application/pdf' });
+    if (isIOS && isStandalone() && navigator.canShare?.({ files: [f] })) { await navigator.share({ files: [f], title: nomeCert(c) }); return; }
     const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 10000);
-  } catch (e) { if (e?.name !== 'AbortError') { console.warn(e); toast('Não foi possível gerar o certificado.', true); } }
+  } catch (e) { if (e?.name !== 'AbortError') { console.warn(e); toast('Não foi possível abrir o certificado.', true); } }
+}
+/* Certificados conquistados antes desta versão (sem aparelho registrado) podem ser guardados uma vez */
+async function guardarCertificadoAntigo(reg) {
+  try { toast('Gerando o certificado…'); await salvarCertificadoLocal(reg, S.user.nome); await abrirCertificadoLocal(reg.id); render(); }
+  catch (e) { console.warn(e); toast('Não foi possível gerar o certificado: ' + e.message, true); }
 }
 
 /* ============================ Notas (painel) ============================ */
@@ -2897,7 +2948,7 @@ function admQuiz(box, users, mats) {
   const linhas = () => tent.filter(q => !filtro || `${q.aluno} ${q.email} ${q.disciplina} ${q.codigo || ''}`.toLowerCase().includes(filtro));
   const tabela = () => `<table><tr><th>Data</th><th>Aluno</th><th>Matéria</th><th>Acertos</th><th>Nota</th><th>Certificado</th></tr>
     ${linhas().map(q => `<tr><td>${fmtDate(q.data)}</td><td><b>${esc(q.aluno)}</b><div class="small muted">${esc(q.email)}</div></td><td>${esc(q.disciplina)}</td><td>${q.acertos} de ${q.total}</td><td><span class="badge ${q.aprovado ? 'ok' : 'warn'}">${q.nota}%</span></td>
-      <td>${q.aprovado ? `<button class="btn ghost sm" data-cert="${esc(q.id)}" data-aluno="${esc(q.aluno)}">${ic('download', 13)} ${esc(q.codigo)}</button>` : '<span class="muted small">Não</span>'}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Nenhum quiz encontrado.</td></tr>'}</table>`;
+      <td>${q.aprovado ? `<span class="badge ok">${ic('award', 12)} ${esc(q.codigo)}</span>` : '<span class="muted small">Não</span>'}</td></tr>`).join('') || '<tr><td colspan="6" class="muted">Nenhum quiz encontrado.</td></tr>'}</table>`;
   box.innerHTML = `
     <div class="stats">${tile('check', fmtN(tent.length), 'Quizzes realizados')}${tile('chart', media + '%', 'Nota média')}${tile('award', fmtN(aprov), `Certificados emitidos (${tent.length ? Math.round(aprov / tent.length * 100) : 0}% de aprovação)`)}${tile('book', fmtN(totalQ), `Questões no banco, em ${banco.length} ${banco.length === 1 ? 'material' : 'materiais'}`)}</div>
     <div class="an-grid">
@@ -2909,7 +2960,6 @@ function admQuiz(box, users, mats) {
       <div style="display:flex;gap:8px;flex-wrap:wrap"><input class="field" id="qf" placeholder="Buscar aluno, matéria ou código…" style="width:260px"><button class="btn ghost sm" id="qcsv">${ic('download', 14)} CSV</button></div></div>
       <div class="table-wrap" id="qt">${tabela()}</div></div>`;
   $('#qf', box).oninput = e => { filtro = e.target.value.toLowerCase().trim(); $('#qt', box).innerHTML = tabela(); };
-  $('#qt', box).onclick = e => { const b = e.target.closest('[data-cert]'); if (b) { const q = tent.find(x => x.id === b.dataset.cert && x.aluno === b.dataset.aluno); if (q) baixarCertificado({ ...q, nome: q.aluno }); } };
   $('#qcsv', box).onclick = () => {
     const qq = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const csv = ['Data;Aluno;E-mail;Matéria;Questões;Acertos;Nota (%);Aprovado;Código do certificado', ...tent.map(q => [fmtDate(q.data), q.aluno, q.email, q.disciplina, q.total, q.acertos, q.nota, q.aprovado ? 'Sim' : 'Não', q.codigo || ''].map(qq).join(';'))].join('\r\n');
@@ -4151,7 +4201,7 @@ function admConfig(box) {
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     try { navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW:', e)); } catch (e) { console.warn(e); }
   }
-  window.addEventListener('hashchange', render);
+  window.addEventListener('hashchange', () => { document.querySelectorAll('.modal-bg').forEach(m => m.remove()); render(); });
   let wasMobile = isMobile();
   window.addEventListener('resize', () => { if (isMobile() !== wasMobile) { wasMobile = isMobile(); render(); } });
   render();
