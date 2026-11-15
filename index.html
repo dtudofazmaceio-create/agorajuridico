@@ -16,7 +16,7 @@
 <meta name="description" content="Videoaulas, áudios e PDFs para estudantes de Direito, com estágios, concursos, empregos e atualizações legislativas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Mrs+Saint+Delafield&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --toga:#13203a; --toga-2:#1c2b49; --toga-3:#2a3b5f;
@@ -765,6 +765,57 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .lz-ac{gap:16px}
   .lz-fonte{margin-top:-2px}
 }
+/* ===== Instituição: identidade ===== */
+.inst-link{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;margin-bottom:18px;text-decoration:none!important;flex-wrap:wrap}.inst-link .small{display:inline-flex;gap:6px;align-items:center}
+.lockup{display:inline-flex;align-items:center;gap:12px;color:var(--toga);text-align:left}
+.lockup > span{display:grid;line-height:1.15}
+.lockup b{font:700 1.08rem var(--serif)}.lockup small{font:400 .8rem var(--serif);font-style:italic;color:var(--cinza);margin-top:2px}
+.lockup.claro{color:#f2ead9}.lockup.claro small{color:#c9b48a}
+.auth-art .lockup{margin-top:28px;padding-top:22px;border-top:1px solid rgba(216,190,138,.25)}
+.inst-tag{display:flex;align-items:center;gap:10px;margin:0 14px 10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(216,190,138,.22);color:#e8dfcc;text-decoration:none!important;font:600 .78rem/1.25 var(--sans)}
+.inst-tag:hover{background:rgba(216,190,138,.08)}
+.inst-tag small{display:block;font-weight:500;color:#b8a57d;font-size:.68rem;margin-bottom:1px}
+.inst-tag .emblema{flex:none}
+.inst-sec{background:var(--papel);border-top:1px solid #e9e1cf}
+.inst-grid{display:grid;grid-template-columns:260px 1fr;gap:56px;align-items:center}
+.inst-selo{display:grid;place-items:center}
+.inst-lema{font:italic 400 1.1rem var(--serif);color:#7c5d26;margin:-4px 0 12px}
+.inst-fatos{list-style:none;padding:0;margin:18px 0 22px;display:grid;gap:10px}
+.inst-fatos li{display:flex;gap:10px;align-items:center;color:var(--toga)}
+.inst-fatos .ic{color:var(--latao);flex:none}
+.inst-hero{display:flex;gap:28px;align-items:center;padding:28px 32px;border-radius:14px;background:var(--toga);color:#f2ead9;margin-bottom:22px}
+.inst-hero h2{color:#fff;margin:6px 0 4px}.inst-hero .inst-lema{color:#c9a467;margin:0}.inst-hero .eyebrow{color:#c9a467}
+.inst-cols{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start}
+.inst-dir{text-align:center}
+.inst-dir .inst-ass{max-width:260px;width:100%;height:90px;object-fit:contain;display:block;margin:6px auto -6px}
+.inst-linha{height:1px;background:var(--toga);margin:0 auto 8px;width:80%}
+.inst-dir b{display:block;font:700 1.05rem var(--serif);color:var(--toga)}.inst-dir span{font-size:.86rem;color:var(--cinza)}
+.inst-dir dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;text-align:left;margin:20px 0 0;padding-top:16px;border-top:1px solid var(--linha-2);font-size:.88rem}
+.inst-dir dt{color:var(--cinza)}.inst-dir dd{margin:0;color:var(--toga);font-weight:600}
+.inst-adm{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+.inst-adm h3{margin:0 0 4px}
+.inst-lado{display:grid;gap:20px}
+.inst-marca-g{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:10px}
+.im-esc{border:1px solid var(--linha);border-radius:10px;padding:14px;display:grid;place-items:center;background:var(--papel)}
+.im-esc:first-child{grid-row:span 2}
+.im-esc.escuro{background:var(--toga);border-color:var(--toga)}
+.ass-prev{border:1px dashed var(--linha);border-radius:10px;background:var(--papel);min-height:170px;display:grid;place-items:center;align-content:center;padding:16px;margin:10px 0 12px;text-align:center}
+.ass-prev img{max-width:100%;max-height:110px;object-fit:contain;margin-bottom:-8px}
+.ass-prev .ass-l{display:block;width:240px;max-width:90%;height:1px;background:var(--toga);margin:0 auto 6px}
+.ass-prev b{font:700 .98rem var(--serif);color:var(--toga)}.ass-prev small{color:var(--cinza)}
+.ass-tipo{display:grid;width:100%}
+.ass-pad{position:relative;height:240px;border:1px solid var(--linha);border-radius:12px;background:#fff;overflow:hidden}
+.ass-pad canvas{position:absolute;inset:0;z-index:2;cursor:crosshair}
+.ass-linha{position:absolute;left:8%;right:8%;bottom:28%;height:1px;background:var(--linha)}
+.ass-x{position:absolute;left:5%;bottom:calc(28% + 4px);color:var(--cinza);font:600 1.1rem var(--sans)}
+@media (max-width:1000px){.inst-adm{grid-template-columns:1fr}}
+@media (max-width:820px){
+  .inst-grid{grid-template-columns:1fr;gap:20px;text-align:left}.inst-selo svg{width:150px;height:150px}
+  .inst-hero{flex-direction:column;text-align:center;padding:24px 18px}.inst-hero svg{width:130px;height:130px}
+  .inst-cols{grid-template-columns:1fr}
+  .inst-marca-g{grid-template-columns:1fr}.im-esc:first-child{grid-row:auto}
+  .ass-pad{height:200px}
+}
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -796,6 +847,134 @@ const CONFIG = {
   },
   firebaseVersion: '10.12.2'
 };
+
+/* ===================== Instituição de ensino (identidade) ===================== */
+const INST_PADRAO = {
+  nome: 'Instituto Ágora de Estudos Jurídicos', sigla: 'IAEJ', lema: 'Scientia et Iustitia', fundacao: '2026',
+  descricao: 'Instituição de ensino livre dedicada à formação complementar de estudantes de Direito: materiais de estudo, avaliações por disciplina e certificação de aproveitamento.',
+  responsavel: '', cargo: 'Diretor(a) Acadêmico(a)', cidade: '', cnpj: '', assinatura: '', assinaturaTipo: '',
+  notaLegal: 'Curso livre de formação complementar. Certifica aproveitamento em avaliação realizada no portal e não substitui diploma ou certificação reconhecida pelo MEC.'
+};
+const inst = () => ({ ...INST_PADRAO, ...((S.config || {}).instituicao || {}) });
+const ROMANO = n => { let r = '', x = Number(n) || 0; for (const [v, l] of [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]) while (x >= v) { r += l; x -= v; } return r; };
+/* Geometria do emblema (caixa 200 x 200): escudo com pórtico de quatro colunas sobre um livro aberto */
+const EMB = {
+  escudo: 'M100 40 L146 54 V100 C146 130 126 150 100 162 C74 150 54 130 54 100 V54 Z',
+  escudoIn: 'M100 49 L138 60.5 V100 C138 125 121.5 141.5 100 152 C78.5 141.5 62 125 62 100 V60.5 Z',
+  frontao: 'M72 84 L100 66 L128 84 Z',
+  arquitrave: 'M72 88 H128 V93 H72 Z',
+  colunas: 'M77 96 H83 V124 H77 Z M89.5 96 H95.5 V124 H89.5 Z M104.5 96 H110.5 V124 H104.5 Z M117 96 H123 V124 H117 Z',
+  base: 'M70 127 H130 V131 H70 Z',
+  livro: 'M68 136 C80 132 92 133 100 138 C108 133 120 132 132 136 V141 C120 137.5 108 138 100 143 C92 138 80 137.5 68 141 Z'
+};
+function emblemaSVG(size = 40, { anel = false, claro = false } = {}) {
+  const i = inst(), fundo = claro ? 'transparent' : '#13203a', ouro = '#c9a467', id = 'e' + Math.random().toString(36).slice(2, 8);
+  const anelSVG = anel ? `<circle cx="100" cy="100" r="97" fill="#13203a"/><circle cx="100" cy="100" r="92" fill="none" stroke="${ouro}" stroke-width="1.6"/><circle cx="100" cy="100" r="70" fill="none" stroke="${ouro}" stroke-width="1"/>
+    <defs><path id="${id}t" d="M100 100 m-80 0 a80 80 0 1 1 160 0"/><path id="${id}b" d="M100 100 m-80 0 a80 80 0 0 0 160 0"/></defs>
+    <text font-family="Libre Caslon Text, Georgia, serif" font-size="${Math.min(12, 330 / Math.max(10, i.nome.length))}" fill="${ouro}"><textPath href="#${id}t" startOffset="50%" text-anchor="middle" textLength="${Math.min(232, i.nome.length * 7.2)}" lengthAdjust="spacingAndGlyphs">${esc(i.nome.toUpperCase())}</textPath></text>
+    <text font-family="Libre Caslon Text, Georgia, serif" font-size="10" fill="${ouro}" dominant-baseline="hanging"><textPath href="#${id}b" startOffset="50%" text-anchor="middle" textLength="${Math.min(150, i.lema.length * 8)}" lengthAdjust="spacing">${esc(i.lema.toUpperCase())}</textPath></text>
+    <circle cx="27" cy="100" r="2.2" fill="${ouro}"/><circle cx="173" cy="100" r="2.2" fill="${ouro}"/>` : '';
+  const g = anel ? 'transform="translate(100 102) scale(.62) translate(-100 -100)"' : '';
+  return `<svg width="${size}" height="${size}" viewBox="${anel ? '0 0 200 200' : '50 36 100 130'}" aria-hidden="true" class="emblema">${anelSVG}<g ${g}>
+    <path d="${EMB.escudo}" fill="${fundo}" stroke="${ouro}" stroke-width="3"/><path d="${EMB.escudoIn}" fill="none" stroke="${ouro}" stroke-width="1" opacity=".7"/>
+    <path d="${EMB.frontao} ${EMB.arquitrave} ${EMB.colunas} ${EMB.base} ${EMB.livro}" fill="${ouro}"/></g></svg>`;
+}
+function lockupInst({ size = 46, claro = false } = {}) {
+  const i = inst(), [a, ...b] = i.nome.split(' de ');
+  return `<span class="lockup ${claro ? 'claro' : ''}">${emblemaSVG(size)}<span><b>${esc(b.length ? a : i.nome)}</b>${b.length ? `<small>de ${esc(b.join(' de '))}</small>` : ''}</span></span>`;
+}
+/* Emblema no canvas (certificado) */
+function emblemaCanvas(c, cx, cy, R, i, { ouro = '#b38b4b', fundo = '#13203a' } = {}) {
+  const serif = '"Libre Caslon Text", Georgia, serif';
+  c.save();
+  c.fillStyle = fundo; c.beginPath(); c.arc(cx, cy, R, 0, 7); c.fill();
+  c.strokeStyle = ouro; c.lineWidth = R * .016; c.beginPath(); c.arc(cx, cy, R * .95, 0, 7); c.stroke();
+  c.lineWidth = R * .01; c.beginPath(); c.arc(cx, cy, R * .72, 0, 7); c.stroke();
+  const arco = (txt, raio, fs, topo, esp, maxAng) => {
+    c.fillStyle = ouro; c.textAlign = 'center'; c.textBaseline = 'middle';
+    let larg, tot;
+    for (;;) { c.font = `400 ${fs}px ${serif}`; larg = [...txt].map(ch => c.measureText(ch).width + esp); tot = larg.reduce((a, b) => a + b, 0) / raio; if (tot <= maxAng || fs < 6) break; fs *= .94; esp *= .9; }
+    let a = topo ? -Math.PI / 2 - tot / 2 : Math.PI / 2 + tot / 2;
+    [...txt].forEach((ch, k) => { const d = larg[k] / raio / 2; a += topo ? d : -d; c.save(); c.translate(cx + raio * Math.cos(a), cy + raio * Math.sin(a)); c.rotate(topo ? a + Math.PI / 2 : a - Math.PI / 2); c.fillText(ch, 0, 0); c.restore(); a += topo ? d : -d; });
+  };
+  arco(i.nome.toUpperCase(), R * .835, R * .118, true, R * .018, 3.75);
+  arco(i.lema.toUpperCase(), R * .835, R * .1, false, R * .05, 2.1);
+  for (const sx of [-1, 1]) { c.beginPath(); c.arc(cx + sx * R * .835, cy, R * .022, 0, 7); c.fill(); }
+  c.translate(cx, cy + R * .02); c.scale(R * .62 / 100, R * .62 / 100); c.translate(-100, -100);
+  c.fillStyle = fundo; c.strokeStyle = ouro; c.lineWidth = 3; const e = new Path2D(EMB.escudo); c.fill(e); c.stroke(e);
+  const ga = c.globalAlpha; c.lineWidth = 1; c.globalAlpha = ga * .7; c.stroke(new Path2D(EMB.escudoIn)); c.globalAlpha = ga;
+  c.fillStyle = ouro; c.fill(new Path2D(`${EMB.frontao} ${EMB.arquitrave} ${EMB.colunas} ${EMB.base} ${EMB.livro}`));
+  c.restore();
+}
+/* Assinatura manuscrita gerada a partir do nome (pode ser trocada por desenho ou imagem) */
+async function gerarAssinatura(nome) {
+  const fam = '"Mrs Saint Delafield", "Brush Script MT", cursive';
+  try { await document.fonts.load(`140px ${fam}`); } catch {}
+  const partes = String(nome || '').trim().split(/\s+/).filter(Boolean);
+  const txt = partes.length > 2 ? `${partes[0]} ${partes[partes.length - 1]}` : partes.join(' ');
+  const cv = document.createElement('canvas'), W = 900, H = 300; cv.width = W; cv.height = H;
+  const c = cv.getContext('2d');
+  let fs = 150; c.font = `400 ${fs}px ${fam}`; while (c.measureText(txt).width > W - 140 && fs > 60) { fs -= 6; c.font = `400 ${fs}px ${fam}`; }
+  const w = c.measureText(txt).width;
+  c.translate(W / 2, H / 2 + 20); c.rotate(-0.06);
+  c.fillStyle = '#1c2b57'; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(txt, 0, 0);
+  // traço final (rubrica)
+  c.strokeStyle = '#1c2b57'; c.lineCap = 'round'; c.lineWidth = 3.2;
+  c.beginPath(); c.moveTo(-w / 2 + 10, 34); c.bezierCurveTo(-w / 6, 58, w / 4, 18, w / 2 + 40, 26); c.stroke();
+  c.lineWidth = 2; c.beginPath(); c.moveTo(w / 2 + 40, 26); c.quadraticCurveTo(w / 2 + 62, 22, w / 2 + 48, 40); c.stroke();
+  return recortarAssinatura(cv);
+}
+/* Recorta as bordas vazias e devolve PNG transparente (máx. 760 x 260) */
+function recortarAssinatura(src, limiarBranco = 0) {
+  const c = src.getContext('2d'), { width: W, height: H } = src, d = c.getImageData(0, 0, W, H);
+  let x0 = W, y0 = H, x1 = 0, y1 = 0;
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const k = (y * W + x) * 4;
+    if (limiarBranco && d.data[k] > limiarBranco && d.data[k + 1] > limiarBranco && d.data[k + 2] > limiarBranco) d.data[k + 3] = 0;
+    if (d.data[k + 3] > 20) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  }
+  if (x1 <= x0) return '';
+  c.putImageData(d, 0, 0);
+  const m = 12, w = x1 - x0 + m * 2, h = y1 - y0 + m * 2, k = Math.min(1, 760 / w, 260 / h);
+  const out = document.createElement('canvas'); out.width = Math.round(w * k); out.height = Math.round(h * k);
+  out.getContext('2d').drawImage(src, x0 - m, y0 - m, w, h, 0, 0, out.width, out.height);
+  return out.toDataURL('image/png');
+}
+const carregarImg = src => new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; });
+async function assinaturaAtual(i = inst()) { return i.assinatura || (i.responsavel ? gerarAssinatura(i.responsavel) : ''); }
+/* Bloco de assinatura com o dedo ou o mouse */
+function desenharAssinaturaModal(onOk) {
+  const { el, close } = modal('Desenhar assinatura', `<p class="small muted" style="margin-top:0">Assine no quadro com o dedo (celular) ou com o mouse. Use toda a largura, como num papel.</p>
+    <div class="ass-pad"><canvas id="ass-cv"></canvas><span class="ass-linha"></span><span class="ass-x">X</span></div>
+    <div class="actions"><button class="btn ghost" id="ass-limpar">Limpar</button><button class="btn primary" id="ass-ok">Usar esta assinatura</button></div>`, { wide: true });
+  const cv = $('#ass-cv', el), box = cv.parentElement, dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = box.clientWidth, H = box.clientHeight; cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = 'round'; c.lineJoin = 'round'; c.strokeStyle = '#1c2b57';
+  let pts = [], desenhou = false, ultimaLarg = 2.6;
+  const pos = e => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() }; };
+  cv.onpointerdown = e => { cv.setPointerCapture(e.pointerId); pts = [pos(e)]; desenhou = true; e.preventDefault(); };
+  cv.onpointermove = e => {
+    if (!pts.length) return; const p = pos(e), a = pts[pts.length - 1];
+    const v = Math.hypot(p.x - a.x, p.y - a.y) / Math.max(1, p.t - a.t), larg = Math.max(1.2, Math.min(3.6, 3.8 - v * 1.4));
+    ultimaLarg = ultimaLarg * .6 + larg * .4; c.lineWidth = ultimaLarg;
+    const m = { x: (a.x + p.x) / 2, y: (a.y + p.y) / 2 };
+    c.beginPath(); c.moveTo(a.mx ?? a.x, a.my ?? a.y); c.quadraticCurveTo(a.x, a.y, m.x, m.y); c.stroke();
+    p.mx = m.x; p.my = m.y; pts.push(p); e.preventDefault();
+  };
+  cv.onpointerup = cv.onpointercancel = () => { pts = []; };
+  cv.style.touchAction = 'none';
+  $('#ass-limpar', el).onclick = () => { c.clearRect(0, 0, W, H); desenhou = false; };
+  $('#ass-ok', el).onclick = () => { if (!desenhou) return toast('Faça a assinatura no quadro.', true); const url = recortarAssinatura(cv); if (!url) return toast('Faça a assinatura no quadro.', true); close(); onOk(url); };
+}
+async function assinaturaDeArquivo(file) {
+  if (!/^image\//.test(file.type)) throw new Error('Envie uma imagem (PNG ou JPG) da assinatura.');
+  const im = await carregarImg(URL.createObjectURL(file));
+  const k = Math.min(1, 1600 / im.width), cv = document.createElement('canvas'); cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+  cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+  const url = recortarAssinatura(cv, 200); // fundo claro vira transparente
+  if (!url) throw new Error('Não encontrei a assinatura na imagem. Use foto com fundo branco.');
+  return url;
+}
 
 /* ============================ Constantes ============================ */
 const DAY = 86400000;
@@ -1455,6 +1634,7 @@ const ROUTES = {
   perfil:        { view: viewPerfil, auth: true },
   busca:         { view: viewBusca, auth: true, ativo: true },
   quiz:          { view: viewQuiz, auth: true, ativo: true },
+  instituto:     { view: viewInstituto },
   admin:         { view: viewAdmin, auth: true, admin: true }
 };
 function go(h) { const t = '#/' + h; if (location.hash === t) render(); else location.hash = t; }
@@ -1491,8 +1671,8 @@ async function render() {
 function brandHTML(href = '#/') {
   return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
-const TITLES = { painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
-const DETAIL = { material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
+const TITLES = { instituto: 'A instituição', painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const DETAIL = { instituto: 'painel', material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
 const naInfo = () => /[?&]tipo=(noticia|entrevista|lei)/.test(location.hash) || location.hash.startsWith('#/legislacao');
 const isMobile = () => matchMedia('(max-width: 820px)').matches;
 const isStandalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
@@ -1532,6 +1712,7 @@ function shellHTML(name) {
         ${u.role === 'admin' ? item('admin', 'Painel administrativo', 'settings') : ''}
         ${u.role === 'admin' && store.modo === 'gist' ? `<a href="#/admin/config" class="${name === 'admin' && location.hash.includes('config') ? 'on' : ''}">${ic('ext')} Gist e link dos alunos</a>` : ''}
       </nav>
+      <a class="inst-tag" href="#/instituto">${emblemaSVG(30)}<span><small>Certificação</small>${esc(inst().nome)}</span></a>
       <div class="me"><div class="avatar">${esc(initials(u.nome))}</div><div style="min-width:0"><div class="nm">${esc(u.nome)}</div><div class="st">${esc(st.txt)}</div></div><button class="icon-btn" id="logout" title="Sair">${ic('logout')}</button></div>
     </aside>
     <div class="mainwrap">
@@ -1632,7 +1813,37 @@ async function viewHome(main) {
     <div class="section-h"><span class="eyebrow">Planos</span><h2>Escolha como quer estudar</h2><p>${dt ? `Todo aluno novo começa com ${dt} dias grátis. Depois, escolha o plano que cabe no seu semestre.` : 'Todos os planos dão acesso completo ao portal.'}</p></div>
     <div class="plans">${planos().map(p => planCard(p, { cta: true })).join('')}</div>
   </div></section>
-  <footer class="footer"><div class="wrap">${brandHTML()}<span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}</span><span class="mode-tag">${store.modo === 'local' ? 'Modo local' : store.modo === 'gist' ? 'Dados no GitHub' : 'Dados no Firebase'}</span></div></footer>`;
+  ${secaoInstituicao()}
+  <footer class="footer"><div class="wrap">${brandHTML()}<span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}. Uma iniciativa do ${esc(inst().nome)}${inst().cnpj ? `, CNPJ ${esc(inst().cnpj)}` : ''}.</span><span class="mode-tag">${store.modo === 'local' ? 'Modo local' : store.modo === 'gist' ? 'Dados no GitHub' : 'Dados no Firebase'}</span></div></footer>`;
+}
+
+/* ======================= Instituição: página e seção ======================= */
+function secaoInstituicao() {
+  const i = inst();
+  return `<section class="section inst-sec"><div class="wrap inst-grid">
+    <div class="inst-selo">${emblemaSVG(220, { anel: true })}</div>
+    <div><span class="eyebrow">Quem certifica</span><h2>${esc(i.nome)}</h2>
+      <p class="inst-lema">${esc(i.lema)}</p>
+      <p>${esc(i.descricao)}</p>
+      <ul class="inst-fatos"><li>${ic('award', 18)} Certificado de aproveitamento em PDF, com código de verificação</li><li>${ic('quiz', 18)} Avaliações elaboradas a partir dos materiais de cada disciplina</li><li>${ic('shield', 18)} Curso livre de formação complementar</li></ul>
+      <a class="btn ghost" href="#/instituto">Conhecer a instituição</a></div>
+  </div></section>`;
+}
+async function viewInstituto(main) {
+  const i = inst();
+  let ass = ''; try { ass = await assinaturaAtual(i); } catch {}
+  main.innerHTML = `<div class="page inst-page">
+    <div class="inst-hero">${emblemaSVG(170, { anel: true })}<div><span class="eyebrow">Instituição de ensino livre</span><h2>${esc(i.nome)}</h2><p class="inst-lema">${esc(i.lema)}</p></div></div>
+    <div class="inst-cols">
+      <div class="card pad article"><h3>Sobre</h3><p>${esc(i.descricao)}</p>
+        <h3>Certificação</h3><p>Ao acertar mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, o aluno recebe um certificado de aproveitamento em PDF, assinado pela direção e com código de verificação.</p>
+        <p class="small muted">${esc(i.notaLegal)}</p>
+        ${S.user && ativo(S.user) ? '<a class="btn primary" href="#/quiz">Fazer um quiz</a>' : '<a class="btn primary" href="#/cadastro">Criar conta</a>'}</div>
+      <div class="card pad inst-dir"><h3>Direção</h3>
+        ${ass ? `<img class="inst-ass" src="${ass}" alt="Assinatura de ${esc(i.responsavel)}">` : ''}
+        <div class="inst-linha"></div><b>${esc(i.responsavel || 'Direção Acadêmica')}</b><span>${esc(i.cargo)}</span>
+        <dl>${i.sigla ? `<dt>Sigla</dt><dd>${esc(i.sigla)}</dd>` : ''}${i.fundacao ? `<dt>Fundação</dt><dd>${esc(i.fundacao)}</dd>` : ''}${i.cidade ? `<dt>Sede</dt><dd>${esc(i.cidade)}</dd>` : ''}${i.cnpj ? `<dt>CNPJ</dt><dd>${esc(i.cnpj)}</dd>` : ''}</dl></div>
+    </div></div>`;
 }
 
 /* ======================= Configuração (modo Gist) ======================= */
@@ -1738,7 +1949,7 @@ function fixarLinkGist() {
 function authOpen(wide = false) {
   const mx = brocardo();
   return `<div class="auth"><aside class="auth-art"><div><h3>${esc(S.config.nomePortal)}</h3><p>Materiais, oportunidades e legislação para quem estuda Direito.</p></div>
-    ${ART.scales()}<blockquote>${mx[0]}<cite>${mx[1]}</cite></blockquote></aside>
+    ${ART.scales()}<blockquote>${mx[0]}<cite>${mx[1]}</cite></blockquote>${lockupInst({ size: 40, claro: true })}</aside>
     <div class="auth-form"><div class="card ${wide ? 'wide' : ''}">`;
 }
 const authClose = '</div></div></div>';
@@ -2483,7 +2694,7 @@ async function viewQuiz(main, sub) {
   const hist = [...(u.quizzes || [])].sort((a, b) => b.data - a.data);
   let sel = discs[0]?.[0] || '', qtd = 10;
   main.innerHTML = `<div class="page">
-    <div class="page-h keep"><div><span class="eyebrow">Avaliação</span><h2>Quiz</h2><p>Escolha a matéria e quantas questões quer responder. Acertando mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, você recebe um certificado.</p></div></div>
+    <div class="page-h keep"><div><span class="eyebrow">Avaliação</span><h2>Quiz</h2><p>Escolha a matéria e quantas questões quer responder. Acertando mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, você recebe um certificado emitido pelo ${esc(inst().nome)}.</p></div></div>
     ${discs.length ? `
     <div class="card pad" style="margin-bottom:22px">
       <h3>1. Escolha a matéria</h3>
@@ -2599,7 +2810,7 @@ function pdfDeJPEG(jpeg, wPx, hPx, titulo) {
   obj(4, () => { push(`<< /Type /XObject /Subtype /Image /Width ${wPx} /Height ${hPx} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`); push(jpeg); push('\nendstream'); });
   const cmd = `q ${W} 0 0 ${H} 0 0 cm /Im0 Do Q`;
   obj(5, () => push(`<< /Length ${cmd.length} >>\nstream\n${cmd}\nendstream`));
-  obj(6, () => push(`<< /Title (${ascii(titulo)}) /Producer (Agora Juridica) >>`));
+  obj(6, () => push(`<< /Title (${ascii(titulo)}) /Producer (Instituto Agora de Estudos Juridicos) >>`));
   const x = len;
   push(`xref\n0 7\n0000000000 65535 f \n${[1, 2, 3, 4, 5, 6].map(n => String(off[n]).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size 7 /Root 1 0 R /Info 6 0 R >>\nstartxref\n${x}\n%%EOF`);
   return new Blob(partes, { type: 'application/pdf' });
@@ -2607,40 +2818,57 @@ function pdfDeJPEG(jpeg, wPx, hPx, titulo) {
 async function desenharCertificado({ nome, disciplina, nota, acertos, total, data, codigo }) {
   const W = 2339, H = 1654, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   const c = cv.getContext('2d'), serif = '"Libre Caslon Text", Georgia, "Times New Roman", serif', sans = '"Public Sans", system-ui, Arial, sans-serif';
-  try { await Promise.all([document.fonts.load(`700 80px ${serif}`), document.fonts.load(`italic 400 80px ${serif}`), document.fonts.load(`400 30px ${sans}`)]); } catch {}
-  const TOGA = '#13203a', LATAO = '#b38b4b', RUBI = '#8e1b2e', CINZA = '#5b6372';
-  c.fillStyle = '#fbf9f4'; c.fillRect(0, 0, W, H);
-  c.fillStyle = TOGA; c.fillRect(0, 0, W, 34); c.fillRect(0, H - 34, W, 34); c.fillRect(0, 0, 34, H); c.fillRect(W - 34, 0, 34, H);
-  c.strokeStyle = LATAO; c.lineWidth = 5; c.strokeRect(80, 80, W - 160, H - 160); c.lineWidth = 1.6; c.strokeRect(100, 100, W - 200, H - 200);
-  for (const [x, y] of [[100, 100], [W - 100, 100], [100, H - 100], [W - 100, H - 100]]) { c.fillStyle = LATAO; c.beginPath(); c.moveTo(x, y - 18); c.lineTo(x + 18, y); c.lineTo(x, y + 18); c.lineTo(x - 18, y); c.closePath(); c.fill(); }
-  // marca (colunas)
-  c.save(); c.translate(W / 2 - 54, 170); c.scale(4.5, 4.5); c.strokeStyle = TOGA; c.lineWidth = 1.5; c.lineCap = 'round'; c.lineJoin = 'round';
-  c.stroke(new Path2D('M3 9l9-5 9 5M4 9h16M6.5 9v8M10 9v8M14 9v8M17.5 9v8M4 17h16M3 20h18')); c.restore();
-  const centro = (t, y, font, cor) => { c.font = font; c.fillStyle = cor; c.textAlign = 'center'; c.fillText(t, W / 2, y); };
-  centro(String(S.config.nomePortal).toUpperCase(), 330, `400 34px ${serif}`, LATAO);
-  c.save(); c.font = `400 34px ${serif}`; c.restore();
-  centro('Certificado de Aproveitamento', 470, `700 104px ${serif}`, TOGA);
-  c.strokeStyle = LATAO; c.lineWidth = 2; c.beginPath(); c.moveTo(W / 2 - 260, 530); c.lineTo(W / 2 + 260, 530); c.stroke();
-  centro('Certificamos que', 640, `400 40px ${sans}`, CINZA);
-  let fs = 112; c.font = `italic 400 ${fs}px ${serif}`; while (c.measureText(nome).width > W - 520 && fs > 60) { fs -= 4; c.font = `italic 400 ${fs}px ${serif}`; }
-  centro(nome, 790, `italic 400 ${fs}px ${serif}`, RUBI);
+  try { await Promise.all([document.fonts.load(`700 80px ${serif}`), document.fonts.load(`italic 400 80px ${serif}`), document.fonts.load(`400 80px ${serif}`), document.fonts.load(`400 30px ${sans}`), document.fonts.load(`600 30px ${sans}`)]); } catch {}
+  const i = inst(), TOGA = '#13203a', LATAO = '#b38b4b', RUBI = '#8e1b2e', CINZA = '#5b6372', PAPEL = '#fbf9f4';
+  // papel e moldura
+  c.fillStyle = PAPEL; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = .045; c.translate(W / 2, H / 2 + 40); emblemaCanvas(c, 0, 0, 470, i, { ouro: TOGA, fundo: PAPEL }); c.restore(); // marca d'água
+  c.fillStyle = TOGA; c.fillRect(0, 0, W, 40); c.fillRect(0, H - 40, W, 40); c.fillRect(0, 0, 40, H); c.fillRect(W - 40, 0, 40, H);
+  c.strokeStyle = LATAO; c.lineWidth = 6; c.strokeRect(84, 84, W - 168, H - 168); c.lineWidth = 1.6; c.strokeRect(104, 104, W - 208, H - 208);
+  for (const [x, y] of [[104, 104], [W - 104, 104], [104, H - 104], [W - 104, H - 104]]) { c.fillStyle = LATAO; c.beginPath(); c.moveTo(x, y - 20); c.lineTo(x + 20, y); c.lineTo(x, y + 20); c.lineTo(x - 20, y); c.closePath(); c.fill(); }
+  const centro = (t, y, font, cor, x = W / 2) => { c.font = font; c.fillStyle = cor; c.textAlign = 'center'; c.textBaseline = 'alphabetic'; c.fillText(t, x, y); };
+  // cabeçalho institucional
+  emblemaCanvas(c, W / 2, 252, 112, i);
+  centro(i.nome, 420, `700 46px ${serif}`, TOGA);
+  centro(`Instituição de ensino livre${i.cidade ? ' · ' + i.cidade : ''}`, 462, `400 26px ${sans}`, CINZA);
+  // título
+  centro('Certificado', 592, `700 112px ${serif}`, TOGA);
+  centro('de aproveitamento', 652, `italic 400 44px ${serif}`, LATAO);
+  centro(`O ${i.nome} certifica que`, 742, `400 38px ${sans}`, CINZA);
+  let fs = 104; c.font = `italic 400 ${fs}px ${serif}`; while (c.measureText(nome).width > W - 560 && fs > 56) { fs -= 4; c.font = `italic 400 ${fs}px ${serif}`; }
+  centro(nome, 862, `italic 400 ${fs}px ${serif}`, RUBI);
+  c.strokeStyle = LATAO; c.lineWidth = 2; c.beginPath(); c.moveTo(W / 2 - 420, 894); c.lineTo(W / 2 + 420, 894); c.stroke();
   const dt = new Date(data).toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
-  const texto = `concluiu a avaliação de ${disciplina} no portal ${S.config.nomePortal}, respondendo ${total} questões elaboradas a partir dos materiais de estudo, com aproveitamento de ${nota}% (${acertos} acertos), em ${dt}.`;
-  c.font = `400 44px ${sans}`; c.fillStyle = TOGA; c.textAlign = 'center';
+  const texto = `concluiu com aproveitamento a avaliação de ${disciplina}, composta por ${total} questões elaboradas a partir dos materiais de estudo do portal ${S.config.nomePortal}, obtendo ${nota}% de acertos (${acertos} de ${total}), em ${dt}.`;
+  c.font = `400 40px ${sans}`; c.fillStyle = TOGA; c.textAlign = 'center';
   const linhas = []; let l = '';
-  for (const w of texto.split(' ')) { const t = l ? l + ' ' + w : w; if (c.measureText(t).width > W - 700) { linhas.push(l); l = w; } else l = t; }
-  linhas.push(l); linhas.forEach((t, i) => c.fillText(t, W / 2, 900 + i * 66));
-  // selo
-  const sx = 460, sy = 1270; c.fillStyle = RUBI; c.beginPath();
-  for (let i = 0; i < 56; i++) { const r = i % 2 ? 140 : 154, t = i * Math.PI / 28; c.lineTo(sx + r * Math.cos(t), sy + r * Math.sin(t)); }
-  c.closePath(); c.fill(); c.strokeStyle = '#d8be8a'; c.lineWidth = 3; c.beginPath(); c.arc(sx, sy, 118, 0, 7); c.stroke(); c.lineWidth = 1.2; c.beginPath(); c.arc(sx, sy, 106, 0, 7); c.stroke();
-  c.fillStyle = '#f3e6c8'; c.textAlign = 'center'; c.font = `700 40px ${serif}`; c.fillText(`${nota}%`, sx, sy + 6); c.font = `400 22px ${serif}`; c.fillText('APROVADO', sx, sy + 46);
+  for (const w of texto.split(' ')) { const t = l ? l + ' ' + w : w; if (c.measureText(t).width > W - 760) { linhas.push(l); l = w; } else l = t; }
+  linhas.push(l); linhas.forEach((t, k) => c.fillText(t, W / 2, 974 + k * 58));
+  // rodapé: selo da nota | assinatura | dados de emissão
+  const by = 1326;
+  const sx = 470, sy = by - 30; c.fillStyle = RUBI; c.beginPath();
+  for (let k = 0; k < 60; k++) { const r = k % 2 ? 128 : 142, t = k * Math.PI / 30; c.lineTo(sx + r * Math.cos(t), sy + r * Math.sin(t)); }
+  c.closePath(); c.fill(); c.strokeStyle = '#d8be8a'; c.lineWidth = 3; c.beginPath(); c.arc(sx, sy, 108, 0, 7); c.stroke(); c.lineWidth = 1.2; c.beginPath(); c.arc(sx, sy, 97, 0, 7); c.stroke();
+  c.fillStyle = '#f3e6c8'; c.textAlign = 'center'; c.font = `700 52px ${serif}`; c.fillText(`${nota}%`, sx, sy + 10); c.font = `600 19px ${sans}`; c.fillText('APROVADO', sx, sy + 48); c.font = `400 17px ${sans}`; c.fillText(i.sigla, sx, sy - 52);
   // assinatura
-  const ax = W - 620; c.strokeStyle = TOGA; c.lineWidth = 2; c.beginPath(); c.moveTo(ax - 260, 1290); c.lineTo(ax + 260, 1290); c.stroke();
-  c.fillStyle = TOGA; c.font = `700 36px ${serif}`; c.fillText(S.config.nomePortal, ax, 1340); c.fillStyle = CINZA; c.font = `400 28px ${sans}`; c.fillText('Coordenação', ax, 1384);
-  c.font = `400 26px ${sans}`; c.fillStyle = CINZA;
-  c.fillText(`Código de verificação: ${codigo}`, W / 2, H - 196);
-  c.font = `400 22px ${sans}`; c.fillText('Certificado de aproveitamento em avaliação do portal. Não substitui diploma ou certificação oficial de instituição de ensino.', W / 2, H - 152);
+  const ax = W / 2;
+  try { const url = await assinaturaAtual(i); if (url) { const im = await carregarImg(url); const k = Math.min(520 / im.width, 150 / im.height); const w = im.width * k, h = im.height * k; c.drawImage(im, ax - w / 2, by - 6 - h, w, h); } } catch (e) { console.warn(e); }
+  c.strokeStyle = TOGA; c.lineWidth = 2; c.beginPath(); c.moveTo(ax - 300, by); c.lineTo(ax + 300, by); c.stroke();
+  centro(i.responsavel || 'Direção Acadêmica', by + 48, `700 34px ${serif}`, TOGA, ax);
+  centro(i.cargo || '', by + 88, `400 26px ${sans}`, CINZA, ax);
+  centro(i.nome, by + 120, `400 22px ${sans}`, CINZA, ax);
+  // emissão
+  const ex = W - 470; c.textAlign = 'center';
+  centro('Emitido em', by - 92, `600 22px ${sans}`, LATAO, ex);
+  centro(new Date(data).toLocaleDateString('pt-BR'), by - 50, `700 36px ${serif}`, TOGA, ex);
+  centro('Código de verificação', by + 6, `600 22px ${sans}`, LATAO, ex);
+  centro(codigo, by + 48, `700 34px ${serif}`, TOGA, ex);
+  centro(`Fundado em ${ROMANO(i.fundacao) || i.fundacao}`, by + 92, `italic 400 24px ${serif}`, CINZA, ex);
+  // nota legal
+  c.font = `400 21px ${sans}`; c.fillStyle = CINZA; c.textAlign = 'center';
+  const leg = `${i.notaLegal}${i.cnpj ? ` CNPJ ${i.cnpj}.` : ''}`; const ll = []; l = '';
+  for (const w of leg.split(' ')) { const t = l ? l + ' ' + w : w; if (c.measureText(t).width > W - 520) { ll.push(l); l = w; } else l = t; }
+  ll.push(l); ll.forEach((t, k) => c.fillText(t, W / 2, H - 150 + k * 30 - (ll.length - 1) * 15));
   return cv;
 }
 async function baixarCertificado(info) {
@@ -2848,6 +3076,7 @@ async function viewPerfil(main) {
   try { pags = (await store.list('pagamentos', ['userId', u.id])).sort(byNewest); } catch {}
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Conta</div><h2>Minha conta</h2></div></div>
+    <a class="card inst-link" href="#/instituto">${lockupInst({ size: 38 })}<span class="small muted">Instituição certificadora ${ic('arrow', 14)}</span></a>
     <div data-install-slot>${installCard(true)}</div>
     <div class="mobile-only" style="margin-bottom:20px"><div class="card mini-list">
       <div class="mini" style="cursor:default"><span class="avatar">${esc(initials(u.nome))}</span><div><b>${esc(u.nome)}</b><span>${esc(u.email)}</span></div></div>
@@ -2888,10 +3117,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', leis: 'Atualizações da lei', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', leis: 'Atualizações da lei', instituicao: 'Instituição', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
@@ -2909,7 +3138,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -2923,7 +3152,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), leis: () => admLeis(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -3792,6 +4021,69 @@ function admPagamentos(box, pags) {
     } catch (err) { toast(err.message, true); }
   };
 }
+function admInstituicao(box) {
+  const i = inst();
+  let ass = i.assinatura, tipo = i.assinaturaTipo || (ass ? 'desenho' : 'gerada');
+  if (!i.responsavel && S.user?.role === 'admin') i.responsavel = S.user.nome;
+  box.innerHTML = `<div class="sec-h"><div><h3>Instituição de ensino</h3><p class="muted">Nome, marca e assinatura que aparecem no certificado, na página inicial e na página da instituição.</p></div>
+      <button class="btn ghost sm" id="in-cert">${ic('award', 15)} Ver certificado de exemplo</button></div>
+    ${!(S.config.instituicao || {}).responsavel ? `<div class="banner"><div><h3>${ic('edit')} Confirme o responsável</h3><p>Preencha o nome completo de quem assina os certificados e clique em Salvar.</p></div></div>` : ''}
+    <div class="inst-adm">
+      <form class="card pad form" id="fin">
+        <h3>Dados da instituição</h3>
+        <label>Nome<input name="nome" required value="${esc(i.nome)}"></label>
+        <div class="row2"><label>Sigla<input name="sigla" maxlength="8" value="${esc(i.sigla)}"></label><label>Ano de fundação<input name="fundacao" inputmode="numeric" maxlength="4" value="${esc(i.fundacao)}"></label></div>
+        <label>Lema<input name="lema" value="${esc(i.lema)}"><span class="hint">Aparece no anel do emblema. Curto funciona melhor.</span></label>
+        <label>Apresentação<textarea name="descricao" rows="3">${esc(i.descricao)}</textarea></label>
+        <div class="row2"><label>Cidade e estado (opcional)<input name="cidade" value="${esc(i.cidade)}" placeholder="Ex.: Maceió/AL"></label><label>CNPJ (opcional)<input name="cnpj" value="${esc(i.cnpj)}" placeholder="00.000.000/0000-00"></label></div>
+        <h3 style="margin-top:8px">Quem assina</h3>
+        <div class="row2"><label>Nome completo do responsável<input name="responsavel" required value="${esc(i.responsavel)}"></label><label>Cargo<input name="cargo" value="${esc(i.cargo)}"></label></div>
+        <label>Texto legal do certificado<textarea name="notaLegal" rows="2">${esc(i.notaLegal)}</textarea></label>
+        <div class="actions"><button class="btn primary">Salvar</button></div>
+      </form>
+      <div class="inst-lado">
+        <div class="card pad inst-marca"><h3>Marca</h3>
+          <div class="inst-marca-g"><div class="im-esc">${emblemaSVG(150, { anel: true })}</div><div class="im-esc escuro">${lockupInst({ size: 44, claro: true })}</div><div class="im-esc">${lockupInst({ size: 44 })}</div></div></div>
+        <div class="card pad"><h3>Assinatura</h3>
+          <div class="ass-prev" id="ass-prev"><span class="muted small">Gerando…</span></div>
+          <div class="seg ass-tipo" id="ass-tipo"><button data-v="gerada" class="${tipo === 'gerada' ? 'on' : ''}">Manuscrita</button><button data-v="desenho" class="${tipo === 'desenho' ? 'on' : ''}">Desenhar</button><button data-v="imagem" class="${tipo === 'imagem' ? 'on' : ''}">Enviar foto</button></div>
+          <input type="file" id="ass-arq" accept="image/*" hidden>
+          <p class="hint" id="ass-dica"></p></div>
+      </div>
+    </div>`;
+  const f = $('#fin', box), prev = $('#ass-prev', box), dica = $('#ass-dica', box);
+  const DICAS = { gerada: 'Criada automaticamente a partir do nome do responsável, em letra manuscrita. Muda sozinha se você trocar o nome.', desenho: 'Desenhe a assinatura com o dedo ou o mouse. Fica igual à sua, no certificado.', imagem: 'Assine num papel branco, tire uma foto bem iluminada e envie. O fundo é removido.' };
+  const mostrar = async () => {
+    dica.textContent = DICAS[tipo];
+    const url = tipo === 'gerada' ? await gerarAssinatura(f.responsavel.value || 'Responsável') : ass;
+    prev.innerHTML = url ? `<img src="${url}" alt="Assinatura"><span class="ass-l"></span><b>${esc(f.responsavel.value)}</b><small>${esc(f.cargo.value)}</small>` : `<span class="muted small">${tipo === 'desenho' ? 'Toque em Desenhar para assinar.' : 'Toque em Enviar foto para escolher a imagem.'}</span>`;
+  };
+  mostrar();
+  let tm; f.responsavel.oninput = f.cargo.oninput = () => { clearTimeout(tm); tm = setTimeout(mostrar, 250); };
+  $('#ass-tipo', box).onclick = e => {
+    const b = e.target.closest('button'); if (!b) return;
+    const sel = v => { tipo = v; $$('#ass-tipo button', box).forEach(x => x.classList.toggle('on', x.dataset.v === v)); mostrar(); };
+    if (b.dataset.v === 'gerada') sel('gerada');
+    if (b.dataset.v === 'desenho') desenharAssinaturaModal(url => { ass = url; sel('desenho'); });
+    if (b.dataset.v === 'imagem') $('#ass-arq', box).click();
+  };
+  $('#ass-arq', box).onchange = async e => { const fl = e.target.files[0]; e.target.value = ''; if (!fl) return; try { ass = await assinaturaDeArquivo(fl); tipo = 'imagem'; $$('#ass-tipo button', box).forEach(x => x.classList.toggle('on', x.dataset.v === 'imagem')); mostrar(); } catch (err) { toast(err.message, true); } };
+  const dados = () => { const d = Object.fromEntries(new FormData(f)); Object.keys(d).forEach(k => d[k] = String(d[k]).trim()); return { ...inst(), ...d, assinaturaTipo: tipo, assinatura: tipo === 'gerada' ? '' : ass }; };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    if (tipo !== 'gerada' && !ass) return toast('Desenhe ou envie a assinatura, ou escolha Manuscrita.', true);
+    try { const cfg = await store.getConfig(); await store.saveConfig({ ...cfg, instituicao: dados() }); S.config = await store.getConfig(); toast('Instituição salva. O certificado já usa os novos dados.'); render(); }
+    catch (err) { toast(err.message, true); }
+  };
+  $('#in-cert', box).onclick = async () => {
+    const antes = S.config.instituicao; S.config.instituicao = dados();
+    try {
+      const cv = await desenharCertificado({ nome: 'Nome do Aluno de Exemplo', disciplina: 'Direito Constitucional', nota: 85, acertos: 17, total: 20, data: Date.now(), codigo: 'EXEMPLO-0000' });
+      modal('Certificado de exemplo', `<img src="${cv.toDataURL('image/jpeg', .9)}" alt="Certificado de exemplo" style="width:100%;border:1px solid var(--linha);border-radius:6px"><p class="hint">Prévia com os dados do formulário, mesmo antes de salvar.</p>`, { wide: true });
+    } finally { S.config.instituicao = antes; }
+  };
+}
+
 function admConfig(box) {
   const c = S.config, g = store.gist;
   box.innerHTML = `${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">

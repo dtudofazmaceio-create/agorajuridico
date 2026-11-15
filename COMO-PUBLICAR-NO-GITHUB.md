@@ -66,6 +66,17 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
 
 Atenção: como o portal não tem servidor, as respostas corretas ficam no Gist. Um aluno com conhecimento técnico consegue encontrá-las. O certificado é de aproveitamento no portal e informa que não substitui certificação oficial.
 
+## Instituição e certificado
+O portal é vinculado ao **Instituto Ágora de Estudos Jurídicos**, instituição de ensino livre que emite os certificados.
+- **Painel → Instituição:** edite nome, sigla, lema, apresentação, cidade, CNPJ, texto legal e **quem assina** (nome completo e cargo). Clique em **Salvar**.
+- **Assinatura:** escolha uma das opções.
+  - **Manuscrita:** gerada a partir do nome, em letra cursiva.
+  - **Desenhar:** assine com o dedo ou o mouse.
+  - **Enviar foto:** assine num papel branco e fotografe; o fundo é removido.
+- **Ver certificado de exemplo** mostra a prévia com os dados do formulário, antes de salvar.
+- A marca aparece no certificado, na página inicial (seção **Quem certifica**), na tela de entrada, no menu lateral, em **Minha conta** e na página **A instituição** (`#/instituto`).
+- **Aviso:** como curso livre, o certificado não depende de autorização do MEC e não equivale a diploma. Mantenha o texto legal do certificado e consulte um advogado se for formalizar a instituição (CNPJ, contrato social, CNAE de ensino).
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.
