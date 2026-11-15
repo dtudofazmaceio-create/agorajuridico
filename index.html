@@ -549,9 +549,11 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 /* ===== Painel administrativo no celular ===== */
 @media (max-width:820px){
   .adm-page .page-h{display:none}
-  .adm-page .tabs.adm-tabs{margin:0 -16px 16px;padding:0 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;box-shadow:0 1px 0 var(--linha)}
-  .adm-page .tabs.adm-tabs::-webkit-scrollbar{display:none}
-  .adm-page .tabs.adm-tabs .tab{padding:.85em .9em;font-size:.86rem}
+  .tabs{flex-wrap:wrap;overflow:visible;gap:6px;padding:10px 12px!important;border-bottom:1px solid var(--linha)}
+  .tabs .tab{padding:.5em .85em;font-size:.84rem;border:1px solid var(--linha);border-radius:99px;margin:0;background:var(--branco)}
+  .tabs .tab.on{background:var(--toga);border-color:var(--toga);color:#fff}
+  .tabs .tab.on .badge{background:#fff;color:var(--toga)}
+  .adm-page .tabs.adm-tabs{margin:0 -16px 16px;position:static;background:var(--marmore)}
   .adm-page .stats{grid-template-columns:1fr 1fr!important}
   .adm-page > .stats{display:none}
   .adm-page .stat .l{font-size:.74rem}
@@ -562,7 +564,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .adm-page .banner .btn{width:100%}
   .adm-page #prev{display:none}
   .adm-page .an-filtros{flex-direction:column;align-items:stretch}
-  .adm-page .an-filtros .chips{flex-wrap:nowrap;overflow-x:auto}
+  .adm-page .chips,.adm-page .an-filtros .chips{flex-wrap:wrap;overflow:visible}
   .adm-page .an-filtros .btn{width:100%}
   .adm-page .an-card{padding:16px}
   .adm-page .cols-chart{height:150px;padding-left:28px}.adm-page .cols-x{padding-left:28px}
@@ -572,26 +574,47 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .adm-page #qf{flex:1;min-width:0}
   .adm-page .card.pad[style*="max-width:760px"]{max-width:none!important}
   .adm-page .actions .btn{flex:1}
-  /* tabelas viram cartões */
-  .tcards table,.tcards tbody,.tcards tr,.tcards td{display:block;width:100%}
-  .tcards tr:first-child:has(th){display:none}
-  .tcards tr{border-bottom:8px solid var(--marmore);padding:12px 14px}
-  .tcards tr:last-child{border-bottom:0}
-  .tcards td{border:0;padding:4px 0;display:grid;grid-template-columns:42% 1fr;gap:8px;align-items:center;font-size:.88rem}
-  .tcards td::before{content:attr(data-label);font-size:.76rem;font-weight:600;color:var(--cinza)}
-  .tcards td:first-child{display:block;font-size:.95rem;padding-bottom:6px}
-  .tcards td:first-child::before{display:none}
-  .tcards td[data-label=""]{display:block}
-  .tcards td[data-label=""]::before{display:none}
-  .tcards td:has(.acts){display:block;padding-top:10px}
-  .tcards td:has(.acts)::before{display:none}
-  .tcards td .acts{justify-content:stretch;gap:8px}
-  .tcards td .acts .btn,.tcards td .acts a.btn{flex:1 1 calc(50% - 8px);min-height:40px}
-  .tcards td input.field{max-width:none}
-  .tcards td[colspan]{display:block}
-  .tcards td[colspan]::before{display:none}
-  .tcards .table-wrap{overflow:visible}
 }
+/* ===== Tabelas que não cabem viram cartões (qualquer tela) ===== */
+.tc-on table,.tc-on tbody,.tc-on tr,.tc-on td{display:block;width:100%}
+.tc-on tr:first-child:has(th){display:none}
+.tc-on tr{border-bottom:8px solid var(--marmore);padding:12px 14px}
+.tc-on tr:last-child{border-bottom:0}
+.tc-on td{border:0;padding:4px 0;display:grid;grid-template-columns:42% 1fr;gap:8px;align-items:center;font-size:.88rem}
+.tc-on td::before{content:attr(data-label);font-size:.76rem;font-weight:600;color:var(--cinza)}
+.tc-on td:first-child{display:block;font-size:.95rem;padding-bottom:6px}
+.tc-on td:first-child::before{display:none}
+.tc-on td[data-label=""]{display:block}
+.tc-on td[data-label=""]::before{display:none}
+.tc-on td:has(.acts){display:block;padding-top:10px}
+.tc-on td:has(.acts)::before{display:none}
+.tc-on td .acts{justify-content:stretch;gap:8px}
+.tc-on td .acts .btn,.tc-on td .acts a.btn{flex:1 1 calc(50% - 8px);min-height:40px}
+.tc-on td input.field{max-width:none}
+.tc-on td[colspan]{display:block}
+.tc-on td[colspan]::before{display:none}
+.tc-on .table-wrap{overflow:visible}
+.tc-on table{font-size:.88rem}
+@media (min-width:821px){
+  .tc-on tbody{display:block!important}
+  .tc-on tr{border-bottom:1px solid var(--linha)!important;padding:14px 20px;display:flex!important;flex-wrap:wrap;align-items:center;column-gap:22px;row-gap:4px}
+  .tc-on tr:first-child:has(th){display:none!important}
+  .tc-on tr:last-child{border-bottom:0!important}
+  .tc-on td{display:inline-flex!important;width:auto;gap:6px;align-items:baseline;padding:2px 0}
+  .tc-on td::before{white-space:nowrap}
+  .tc-on td:first-child{flex:1 0 100%;padding-bottom:4px}
+  .tc-on td:has(.acts){flex:1 0 100%;padding-top:8px}
+  .tc-on td .acts{justify-content:flex-start;gap:6px}
+  .tc-on td .acts .btn,.tc-on td .acts a.btn{flex:0 0 auto;min-height:34px}
+}
+/* Abas do painel: no computador quebram linha em vez de esconder */
+@media (min-width:821px){
+  .adm-page .tabs.adm-tabs{flex-wrap:wrap;overflow:visible;row-gap:0}
+  .adm-page .tabs.adm-tabs .tab{padding:.7em .95em}
+}
+/* colunas de texto longo não empurram as ações para fora */
+.tcards:not(.tc-on) td.small.muted{max-width:260px;overflow-wrap:anywhere}
+.tcards:not(.tc-on) td .acts{min-width:max-content}
 
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
@@ -3123,9 +3146,25 @@ function rotularTabelas(root = document) {
     if (!ths.length) continue;
     t.dataset.rot = '1';
     for (const tr of t.querySelectorAll('tr')) [...tr.children].forEach((td, i) => { if (td.tagName === 'TD' && !td.hasAttribute('data-label')) td.setAttribute('data-label', ths[i] || ''); });
-    const w = t.closest('.table-wrap') || t.parentElement; if (w && t.closest('.adm-page, .tcards-ok')) w.classList.add('tcards');
+    const w = t.closest('.table-wrap') || t.parentElement; if (w) w.classList.add('tcards');
   }
+  ajustarTabelas();
 }
+/* Se a tabela não cabe na largura disponível, mostra em cartões (nada fica escondido) */
+let _ajTab = 0;
+function ajustarTabelas() {
+  cancelAnimationFrame(_ajTab);
+  _ajTab = requestAnimationFrame(() => {
+    const cel = matchMedia('(max-width:820px)').matches;
+    for (const w of document.querySelectorAll('.tcards')) {
+      const t = w.querySelector(':scope > table') || w.querySelector('table'); if (!t || t.closest('.tabela-dados')) continue;
+      if (cel && w.closest('.adm-page')) { w.classList.add('tc-on'); continue; }
+      w.classList.remove('tc-on');
+      if (t.scrollWidth > w.clientWidth + 2) w.classList.add('tc-on');
+    }
+  });
+}
+addEventListener('resize', ajustarTabelas);
 new MutationObserver(() => rotularTabelas()).observe(document.documentElement, { childList: true, subtree: true });
 /* Carrega as capas guardadas assim que os cartões aparecem na tela */
 new MutationObserver(() => {
