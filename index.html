@@ -546,6 +546,53 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .auth-form{padding:12px 4px 30px;place-items:stretch;background:var(--marmore)}
   .auth-form .card{border:0;box-shadow:none;background:transparent;padding:16px}
 }
+/* ===== Painel administrativo no celular ===== */
+@media (max-width:820px){
+  .adm-page .page-h{display:none}
+  .adm-page .tabs.adm-tabs{margin:0 -16px 16px;padding:0 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch;box-shadow:0 1px 0 var(--linha)}
+  .adm-page .tabs.adm-tabs::-webkit-scrollbar{display:none}
+  .adm-page .tabs.adm-tabs .tab{padding:.85em .9em;font-size:.86rem}
+  .adm-page .stats{grid-template-columns:1fr 1fr!important}
+  .adm-page > .stats{display:none}
+  .adm-page .stat .l{font-size:.74rem}
+  .adm-page .list-h{flex-direction:column;align-items:stretch;gap:10px}
+  .adm-page .list-h > p{font-size:.84rem}
+  .adm-page .list-h > .btn,.adm-page .list-h > div > .btn{width:100%}
+  .adm-page .banner{flex-direction:column;align-items:stretch}
+  .adm-page .banner .btn{width:100%}
+  .adm-page #prev{display:none}
+  .adm-page .an-filtros{flex-direction:column;align-items:stretch}
+  .adm-page .an-filtros .chips{flex-wrap:nowrap;overflow-x:auto}
+  .adm-page .an-filtros .btn{width:100%}
+  .adm-page .an-card{padding:16px}
+  .adm-page .cols-chart{height:150px;padding-left:28px}.adm-page .cols-x{padding-left:28px}
+  .adm-page .cols-chart .gl{left:28px}.adm-page .cols-chart .gl span{left:-28px;width:24px}
+  .adm-page .field[id="qf"],.adm-page #qf{width:100%!important}
+  .adm-page .list-h.pad > div:has(#qf){display:flex!important;gap:8px}
+  .adm-page #qf{flex:1;min-width:0}
+  .adm-page .card.pad[style*="max-width:760px"]{max-width:none!important}
+  .adm-page .actions .btn{flex:1}
+  /* tabelas viram cartões */
+  .tcards table,.tcards tbody,.tcards tr,.tcards td{display:block;width:100%}
+  .tcards tr:first-child:has(th){display:none}
+  .tcards tr{border-bottom:8px solid var(--marmore);padding:12px 14px}
+  .tcards tr:last-child{border-bottom:0}
+  .tcards td{border:0;padding:4px 0;display:grid;grid-template-columns:42% 1fr;gap:8px;align-items:center;font-size:.88rem}
+  .tcards td::before{content:attr(data-label);font-size:.76rem;font-weight:600;color:var(--cinza)}
+  .tcards td:first-child{display:block;font-size:.95rem;padding-bottom:6px}
+  .tcards td:first-child::before{display:none}
+  .tcards td[data-label=""]{display:block}
+  .tcards td[data-label=""]::before{display:none}
+  .tcards td:has(.acts){display:block;padding-top:10px}
+  .tcards td:has(.acts)::before{display:none}
+  .tcards td .acts{justify-content:stretch;gap:8px}
+  .tcards td .acts .btn,.tcards td .acts a.btn{flex:1 1 calc(50% - 8px);min-height:40px}
+  .tcards td input.field{max-width:none}
+  .tcards td[colspan]{display:block}
+  .tcards td[colspan]::before{display:none}
+  .tcards .table-wrap{overflow:visible}
+}
+
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -762,7 +809,7 @@ function planCard(p, { cta = false, pick = false, checked = false } = {}) {
 
 function toast(msg, err = false) {
   const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
-  const box = $('#toasts'); while (box.children.length >= 3) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 3800);
+  const box = $('#toasts'); while (box.children.length >= (isMobile() ? 1 : 3)) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 3800);
 }
 function modal(title, body, { wide = false } = {}) {
   const el = document.createElement('div'); el.className = 'modal-bg';
@@ -2066,31 +2113,155 @@ async function blobDoMaterial(m) {
   const u = await store.fileURL(m.fileRef, 'application/pdf');
   return await (await fetch(u)).blob();
 }
+/* ===================== Banco de questões em HTML (importar/exportar) =====================
+   Formato:
+   <article class="questao" data-dificuldade="média" data-referencia="p. 12" data-tema="...">
+     <p class="enunciado">...</p>
+     <ol class="alternativas" type="A"><li>...</li><li data-correta="true">...</li>...</ol>
+     <p class="explicacao">...</p>
+   </article> */
+function promptBancoHTML({ titulo = '', disciplina = '', n = 20, nivel = 'misto' } = {}) {
+  const nv = nivel === 'oab' ? 'Exame da OAB e concursos jurídicos' : nivel === 'graduacao' ? 'graduação em Direito' : 'misto (graduação, OAB e concursos jurídicos)';
+  return `Você é professor de Direito em uma faculdade brasileira e examinador experiente de provas da OAB e de concursos jurídicos.
+
+Leia INTEGRALMENTE o PDF anexado${titulo ? ` ("${titulo}")` : ''}${disciplina ? `, da disciplina ${disciplina}` : ''}, do início ao fim, e elabore ${n} questões de múltipla escolha de nível acadêmico baseadas EXCLUSIVAMENTE nesse material.
+
+REGRAS DAS QUESTÕES
+1. Nível: ${nv}. Distribua as dificuldades entre fácil, média e difícil, com predominância de média.
+2. Cubra o material inteiro (início, meio e fim), priorizando conceitos centrais, requisitos legais, distinções, exceções, prazos e aplicação a casos concretos. Prefira questões de análise e aplicação a questões de pura memorização.
+3. Cada questão tem exatamente 5 alternativas (A a E) e exatamente UMA correta. As incorretas devem ser plausíveis e tecnicamente erradas por um motivo identificável.
+4. Varie a posição da alternativa correta (não concentre em uma letra).
+5. Não use "todas as anteriores", "nenhuma das anteriores", nem pegadinhas de redação. Não repita a mesma ideia em duas questões.
+6. A explicação diz por que a correta está certa e por que as principais erradas estão erradas, com base no material. Cite artigos de lei somente se aparecerem no material.
+7. Indique onde o assunto está no material (ex.: "p. 12" ou "p. 12-13").
+
+FORMATO DA RESPOSTA (obrigatório)
+Entregue SOMENTE um documento HTML completo, sem nenhum texto antes ou depois, exatamente nesta estrutura (pode ser como arquivo .html para download):
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><title>Banco de questões${titulo ? ' - ' + titulo : ''}</title></head>
+<body>
+<section class="banco-questoes" data-material="${titulo}" data-disciplina="${disciplina}">
+  <article class="questao" data-dificuldade="média" data-referencia="p. 12" data-tema="tema curto">
+    <p class="enunciado">Texto completo do enunciado.</p>
+    <ol class="alternativas" type="A">
+      <li>Alternativa A</li>
+      <li data-correta="true">Alternativa B (a correta leva data-correta="true")</li>
+      <li>Alternativa C</li>
+      <li>Alternativa D</li>
+      <li>Alternativa E</li>
+    </ol>
+    <p class="explicacao">Explicação da resposta com base no material.</p>
+  </article>
+  <!-- repita um <article class="questao"> para cada uma das ${n} questões -->
+</section>
+</body>
+</html>
+
+Regras do HTML:
+- Exatamente um <li data-correta="true"> por questão.
+- Não escreva a letra (A, B, C...) dentro do texto das alternativas; a lista já numera.
+- data-dificuldade deve ser "fácil", "média" ou "difícil".
+- Use apenas texto simples dentro das tags (sem CSS, scripts ou imagens) e escape os caracteres < > & quando aparecerem no texto.
+- Gere todas as ${n} questões; não resuma nem pare no meio.`;
+}
+function parseBancoHTML(texto) {
+  let html = String(texto || '');
+  const f = html.match(/```(?:html)?\s*([\s\S]*?)```/i); if (f && /<article|<ol/i.test(f[1])) html = f[1];
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  let arts = [...doc.querySelectorAll('article.questao, .questao')];
+  if (!arts.length) arts = [...doc.querySelectorAll('article')];
+  const limpa = t => String(t || '').replace(/\s+/g, ' ').trim();
+  const questoes = [], ignoradas = [];
+  arts.forEach((a, i) => {
+    const num = i + 1;
+    const en = limpa((a.querySelector('.enunciado') || a.querySelector('p'))?.textContent);
+    const lis = [...(a.querySelector('.alternativas') || a.querySelector('ol, ul') || a).querySelectorAll('li')];
+    const alternativas = lis.map(li => limpa(li.textContent).replace(/^\(?[A-Ea-e][).:\-–]\s+/, ''));
+    let corretas = lis.map((li, k) => (li.dataset.correta === 'true' || li.hasAttribute('data-correta') && li.dataset.correta !== 'false' || li.classList.contains('correta')) ? k : -1).filter(k => k >= 0);
+    if (!corretas.length && a.dataset.resposta) { const k = 'ABCDE'.indexOf(a.dataset.resposta.trim().toUpperCase()[0]); if (k >= 0) corretas = [k]; }
+    if (en.length < 15) return ignoradas.push(`Questão ${num}: enunciado vazio ou curto demais`);
+    if (alternativas.length < 4 || alternativas.length > 5 || alternativas.some(x => !x)) return ignoradas.push(`Questão ${num}: precisa de 4 ou 5 alternativas preenchidas (tem ${alternativas.length})`);
+    if (corretas.length !== 1) return ignoradas.push(`Questão ${num}: ${corretas.length ? 'mais de uma' : 'nenhuma'} alternativa marcada como correta`);
+    questoes.push({ id: uid().slice(0, 8), enunciado: en, alternativas, correta: corretas[0], explicacao: limpa(a.querySelector('.explicacao')?.textContent), referencia: limpa(a.dataset.referencia), dificuldade: limpa(a.dataset.dificuldade), tema: limpa(a.dataset.tema), origem: 'importada' });
+  });
+  const sec = doc.querySelector('.banco-questoes');
+  return { questoes, ignoradas, total: arts.length, material: sec?.dataset.material || '', disciplina: sec?.dataset.disciplina || '' };
+}
+function htmlDoBanco(m, qs) {
+  const e = t => esc(t);
+  return `<!DOCTYPE html>\n<html lang="pt-BR">\n<head><meta charset="utf-8"><title>Banco de questões - ${e(m.titulo)}</title>\n<style>body{font-family:Georgia,serif;max-width:820px;margin:40px auto;padding:0 20px;color:#13203a}article{border-bottom:1px solid #ddd;padding:18px 0}li[data-correta]{color:#2c6a4d;font-weight:bold}.explicacao{color:#555;font-size:.92em}</style></head>\n<body>\n<h1>Banco de questões: ${e(m.titulo)}</h1>\n<section class="banco-questoes" data-material="${e(m.titulo)}" data-disciplina="${e(m.disciplina || '')}">\n` +
+    qs.map(q => `  <article class="questao" data-dificuldade="${e(q.dificuldade)}" data-referencia="${e(q.referencia)}" data-tema="${e(q.tema || '')}">\n    <p class="enunciado">${e(q.enunciado)}</p>\n    <ol class="alternativas" type="A">\n${q.alternativas.map((a, k) => `      <li${k === q.correta ? ' data-correta="true"' : ''}>${e(a)}</li>`).join('\n')}\n    </ol>\n    <p class="explicacao">${e(q.explicacao)}</p>\n  </article>`).join('\n') + `\n</section>\n</body>\n</html>\n`;
+}
 function bancoModal(m0) {
   let m = m0, qs = [];
-  const { el, close } = modal(`Questões: ${m.titulo}`, `<div id="bq" class="form"><div class="loading">Carregando o banco de questões…</div></div>`, { wide: true });
+  const { el } = modal(`Questões: ${m.titulo}`, `<div id="bq" class="form"><div class="loading">Carregando o banco de questões…</div></div>`, { wide: true });
   const box = $('#bq', el);
   const salvarEAtualizar = async (lista, msg) => { m = await salvarBanco(m, lista); qs = lista; toast(msg); desenhar(); };
   const desenhar = () => {
     const temChave = !!iaChave();
     box.innerHTML = `
       <div class="card pad" style="background:var(--papel)">
-        <h4 style="margin:0 0 4px">${ic('spark', 16)} Gerar questões com IA</h4>
-        ${temChave ? `<p class="hint" style="margin:0 0 10px">O Claude lê o material inteiro e elabora questões de múltipla escolha (A a E) com explicação e referência de página. Modelo: <b>${esc(iaModelo())}</b>.</p>
-          ${!m.fileRef ? `<label>Este PDF está no Google Drive. Escolha o arquivo no seu computador para a IA ler:<input type="file" id="bq-arq" accept="application/pdf,.pdf"></label>` : ''}
+        <h4 style="margin:0 0 4px">${ic('file', 16)} Importar banco de questões (HTML)</h4>
+        <p class="hint" style="margin:0 0 12px">Sem custo de API: peça as questões ao Claude.ai (ou outro assistente) com o prompt abaixo, anexando o PDF, e importe o HTML que ele entregar.</p>
+        <p class="small" style="margin:0 0 6px"><b>1. Copie o prompt</b> e cole no assistente junto com o PDF deste material.</p>
+        <div class="row2"><label>Quantidade<select id="pr-n">${[10, 20, 30].map(n => `<option ${n === 20 ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+          <label>Nível<select id="pr-nivel"><option value="misto">Misto (graduação, OAB e concursos)</option><option value="graduacao">Graduação</option><option value="oab">OAB e concursos</option></select></label></div>
+        <div class="actions" style="justify-content:flex-start;margin-top:8px"><button type="button" class="btn dark sm" id="pr-copiar">${ic('file', 14)} Copiar prompt</button><button type="button" class="btn ghost sm" id="pr-ver">Ver prompt</button></div>
+        <textarea id="pr-txt" class="field hidden" rows="10" readonly style="margin-top:8px;font-size:.8rem"></textarea>
+        <p class="hint" style="margin:6px 0 0">Dica: peça no máximo 20 a 30 por vez. Para mais, peça "mais 20 questões diferentes das anteriores, no mesmo formato" e importe de novo, acrescentando.</p>
+        <p class="small" style="margin:16px 0 6px"><b>2. Importe o resultado:</b> escolha o arquivo .html ou cole o código.</p>
+        <input type="file" id="im-arq" accept=".html,.htm,text/html" class="field">
+        <textarea id="im-txt" class="field" rows="4" placeholder="…ou cole aqui o HTML gerado" style="margin-top:8px;font-size:.82rem"></textarea>
+        <div class="actions" style="justify-content:flex-start;margin-top:8px"><button type="button" class="btn primary" id="im-ler">Ler questões</button></div>
+        <div id="im-prev"></div>
+      </div>
+      <details class="card pad" ${temChave ? '' : ''}>
+        <summary style="cursor:pointer;font-weight:600">${ic('spark', 15)} Gerar com a API do Claude (opcional, cobrado por uso)</summary>
+        <div style="margin-top:12px">
+        ${temChave ? `<p class="hint" style="margin:0 0 10px">Modelo: <b>${esc(iaModelo())}</b>. O uso é cobrado na sua conta da Anthropic.</p>
+          ${!m.fileRef ? `<label>Este PDF está no Google Drive. Escolha o arquivo no seu computador:<input type="file" id="bq-arq" accept="application/pdf,.pdf"></label>` : ''}
           <div class="row2"><label>Quantidade<select id="bq-n">${[10, 20, 30, 40].map(n => `<option ${n === 20 ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
-            <label>Nível<select id="bq-nivel"><option value="misto">Misto (graduação, OAB e concursos)</option><option value="graduacao">Graduação</option><option value="oab">OAB e concursos</option></select></label></div>
-          ${qs.length ? `<label class="check"><input type="checkbox" id="bq-subst"> <span>Substituir as ${qs.length} questões atuais (sem marcar, as novas são acrescentadas)</span></label>` : ''}
+            <label>Nível<select id="bq-nivel"><option value="misto">Misto</option><option value="graduacao">Graduação</option><option value="oab">OAB e concursos</option></select></label></div>
+          ${qs.length ? `<label class="check"><input type="checkbox" id="bq-subst"> <span>Substituir as ${qs.length} questões atuais</span></label>` : ''}
           <div class="actions" style="justify-content:flex-start"><button class="btn primary" id="bq-gerar">${ic('spark', 15)} Gerar questões</button></div>
           <div class="pdf-info lendo hidden" id="bq-st"></div>`
-        : `<p class="hint" style="margin:0">Para gerar questões automaticamente, cadastre a chave da API do Claude em <a href="#/admin/config" data-close>Painel → Configurações</a>. Você também pode criar questões manualmente abaixo.</p>`}
-      </div>
-      <div class="list-h"><h4 style="margin:0">${qs.length} ${qs.length === 1 ? 'questão' : 'questões'} no banco</h4><button class="btn ghost sm" id="bq-nova">${ic('plus', 14)} Nova questão manual</button></div>
+        : `<p class="hint" style="margin:0">Para usar, cadastre a chave da API em Painel → Configurações. Não é necessário para importar bancos em HTML.</p>`}
+        </div>
+      </details>
+      <div class="list-h"><h4 style="margin:0">${qs.length} ${qs.length === 1 ? 'questão' : 'questões'} no banco</h4>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">${qs.length ? `<button class="btn ghost sm" id="bq-exp">${ic('download', 14)} Baixar banco (HTML)</button>` : ''}<button class="btn ghost sm" id="bq-nova">${ic('plus', 14)} Nova questão manual</button></div></div>
       <div style="display:grid;gap:10px">${qs.map((q, i) => `<div class="card pad" style="padding:14px 16px">
-        <div style="display:flex;gap:10px;justify-content:space-between;align-items:flex-start"><b style="font-size:.92rem">${i + 1}. ${esc(q.enunciado)}</b>
-          <div class="acts" style="display:flex;gap:6px;flex:none"><button class="btn ghost sm" data-ed="${i}">Editar</button><button class="btn danger sm" data-del="${i}">Excluir</button></div></div>
+        <div style="display:flex;gap:10px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap"><b style="font-size:.92rem;flex:1;min-width:200px">${i + 1}. ${esc(q.enunciado)}</b>
+          <div style="display:flex;gap:6px;flex:none"><button class="btn ghost sm" data-ed="${i}">Editar</button><button class="btn danger sm" data-del="${i}">Excluir</button></div></div>
         <ol type="A" class="small" style="margin:8px 0 6px;padding-left:22px">${q.alternativas.map((a, k) => `<li style="${k === q.correta ? 'color:var(--ok);font-weight:600' : ''}">${esc(a)}${k === q.correta ? ' ✓' : ''}</li>`).join('')}</ol>
         <p class="hint" style="margin:0">${q.dificuldade ? `<b>${esc(q.dificuldade)}</b>. ` : ''}${q.referencia ? `Ref.: ${esc(q.referencia)}. ` : ''}${esc(q.explicacao).slice(0, 220)}${q.explicacao.length > 220 ? '…' : ''}</p></div>`).join('') || '<div class="empty" style="padding:20px"><p style="margin:0">Nenhuma questão ainda.</p></div>'}</div>`;
+
+    // prompt
+    const prompt = () => promptBancoHTML({ titulo: m.titulo, disciplina: m.disciplina || '', n: Number($('#pr-n', box).value), nivel: $('#pr-nivel', box).value });
+    $('#pr-copiar', box).onclick = () => { $('#pr-txt', box).value = prompt(); copiar(prompt()); };
+    $('#pr-ver', box).onclick = () => { const t = $('#pr-txt', box); t.value = prompt(); t.classList.toggle('hidden'); };
+    ['#pr-n', '#pr-nivel'].forEach(id => $(id, box).onchange = () => { $('#pr-txt', box).value = prompt(); });
+    // import
+    $('#im-ler', box).onclick = async () => {
+      const arq = $('#im-arq', box).files[0];
+      const txt = arq ? await arq.text() : $('#im-txt', box).value;
+      if (!txt.trim()) return toast('Escolha o arquivo .html ou cole o código gerado.', true);
+      const r = parseBancoHTML(txt), pv = $('#im-prev', box);
+      if (!r.questoes.length) { pv.innerHTML = `<div class="err-msg" style="margin-top:10px">Nenhuma questão válida encontrada.${r.ignoradas.length ? '<br>' + r.ignoradas.slice(0, 5).map(esc).join('<br>') : ' Confira se o HTML segue o formato do prompt.'}</div>`; return; }
+      pv.innerHTML = `<div class="pdf-info ok" style="margin-top:10px">${ic('check', 16)}<span><b>${r.questoes.length} questões válidas</b> de ${r.total} encontradas.${r.ignoradas.length ? ` ${r.ignoradas.length} ignoradas:<br>${r.ignoradas.slice(0, 6).map(esc).join('<br>')}` : ''}${r.disciplina && m.disciplina && r.disciplina.toLowerCase() !== m.disciplina.toLowerCase() ? `<br>Atenção: o arquivo indica a disciplina "${esc(r.disciplina)}".` : ''}<br>Primeira: “${esc(r.questoes[0].enunciado.slice(0, 120))}${r.questoes[0].enunciado.length > 120 ? '…' : ''}”</span></div>
+        <div class="actions" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn primary" id="im-add">Acrescentar ${r.questoes.length} questões</button>${qs.length ? `<button type="button" class="btn ghost" id="im-sub">Substituir as ${qs.length} atuais</button>` : ''}</div>`;
+      const fazer = async lista => { try { await salvarEAtualizar(lista, `${r.questoes.length} questões importadas. Revise antes de liberar aos alunos.`); } catch (err) { toast(err.message, true); } };
+      $('#im-add', box).onclick = () => fazer([...qs, ...r.questoes]);
+      const sb = $('#im-sub', box); if (sb) sb.onclick = async () => { if (await confirmar(`Substituir as ${qs.length} questões atuais pelas ${r.questoes.length} importadas?`, 'Substituir')) fazer(r.questoes); };
+    };
+    // export
+    const ex = $('#bq-exp', box); if (ex) ex.onclick = () => {
+      const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([htmlDoBanco(m, qs)], { type: 'text/html' }));
+      a.download = `Banco de questões - ${m.titulo}`.replace(/[\\/:*?"<>|]/g, '') + '.html'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    };
+    // AI (optional)
     const g = $('#bq-gerar', box);
     if (g) g.onclick = async () => {
       const st = $('#bq-st', box), mostra = t => { st.classList.remove('hidden'); st.innerHTML = `${ic('spark', 16)}<span>${esc(t)}</span>`; };
@@ -2102,7 +2273,6 @@ function bancoModal(m0) {
         const r = await gerarQuestoesIA(blob, m, { total: Number($('#bq-n', box).value), nivel: $('#bq-nivel', box).value, existentes: subst ? [] : qs, onStatus: mostra });
         mostra('Salvando o banco de questões…');
         await salvarEAtualizar(subst ? r.questoes : [...qs, ...r.questoes], `${r.questoes.length} questões geradas. Revise antes de liberar aos alunos.`);
-        const info = document.createElement('p'); info.className = 'hint'; info.textContent = `Uso da IA: ${fmtN(r.uso.entrada)} tokens de entrada e ${fmtN(r.uso.saida)} de saída.`; box.prepend(info);
       } catch (e) { console.warn(e); mostra(e.message); $('#bq-st', box).className = 'pdf-info aviso'; g.disabled = false; }
     };
     $('#bq-nova', box).onclick = () => editarQuestao(null);
@@ -2508,14 +2678,15 @@ async function viewAdmin(main, tab = 'analises') {
     [alunos.length, 'Alunos cadastrados'], [alunos.filter(ativo).length, 'Assinaturas ativas'],
     [mats.length, `Materiais · ${posts.length} publicações`], [`<span style="font-size:1.7rem">${brl(receita)}</span>`, `Receita aprovada${pend ? ` · ${pend} pendente(s)` : ''}`]
   ];
-  main.innerHTML = `<div class="page">
+  main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
     ${tab === 'analises' || tab === 'quiz' ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
-    <div class="tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
+    <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
   const sh = $('#share'); if (sh) sh.onclick = mostrarLinkAlunos;
+  const tOn = $('#adm-tabs .tab.on'); if (tOn) { const t = $('#adm-tabs'); t.scrollLeft = tOn.offsetLeft - (t.clientWidth - tOn.offsetWidth) / 2; }
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
@@ -2772,7 +2943,7 @@ function admMateriais(box, mats, ag = { views: {}, downloads: {} }) {
     ${driveSemCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${driveSemCapa.length} PDF${driveSemCapa.length > 1 ? 's' : ''} do Google Drive sem capa</h3><p>O Drive não permite ler o arquivo para extrair a capa. Em <b>Editar</b>, use <b>Escolher imagem de capa</b> ou escolha o PDF do seu computador só para gerar a capa e os dados.</p></div></div>` : ''}
     <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Acessos</th><th>Downloads</th><th>Data</th><th></th></tr>
     ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${ag.views[m.id] || 0}</td><td>${m.permitirDownload === false ? '<span class="muted small">bloqueado</span>' : ag.downloads[m.id] || 0}</td><td>${fmtDate(m.criadoEm)}</td>
-      <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}>Ver</a>${m.tipo === 'pdf' ? `<button class="btn ${m.quiz?.total ? 'ghost' : 'primary'} sm" data-qz="${esc(m.id)}">${ic('quiz', 13)} Questões${m.quiz?.total ? ` (${m.quiz.total})` : ''}</button>` : ''}<button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
+      <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a>${m.tipo === 'pdf' ? `<button class="btn ${m.quiz?.total ? 'ghost' : 'primary'} sm" data-qz="${esc(m.id)}">${ic('quiz', 13)} Questões${m.quiz?.total ? ` (${m.quiz.total})` : ''}</button>` : ''}<button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
     gc.disabled = true; gc.textContent = 'Gerando…';
@@ -2945,6 +3116,17 @@ function capasAutomaticas() {
   }, 1200);
 }
 const ytId = url => (String(url || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/) || [])[1];
+/* Tabelas: copia o título de cada coluna para as células (no celular, viram cartões) */
+function rotularTabelas(root = document) {
+  for (const t of root.querySelectorAll('table:not([data-rot])')) {
+    const ths = [...t.querySelectorAll('tr:first-child th')].map(th => th.textContent.trim());
+    if (!ths.length) continue;
+    t.dataset.rot = '1';
+    for (const tr of t.querySelectorAll('tr')) [...tr.children].forEach((td, i) => { if (td.tagName === 'TD' && !td.hasAttribute('data-label')) td.setAttribute('data-label', ths[i] || ''); });
+    const w = t.closest('.table-wrap') || t.parentElement; if (w && t.closest('.adm-page, .tcards-ok')) w.classList.add('tcards');
+  }
+}
+new MutationObserver(() => rotularTabelas()).observe(document.documentElement, { childList: true, subtree: true });
 /* Carrega as capas guardadas assim que os cartões aparecem na tela */
 new MutationObserver(() => {
   for (const img of document.querySelectorAll('img.capa[data-capa]:not([data-carregando])')) {

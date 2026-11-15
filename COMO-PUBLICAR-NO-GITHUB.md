@@ -53,7 +53,13 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
 
 ## Quiz e certificados
 1. **Chave do Claude (uma vez):** crie uma chave em https://console.anthropic.com/settings/keys (o uso é cobrado pela Anthropic). No portal, vá em **Painel → Configurações → Inteligência artificial**, cole a chave, escolha o modelo (Sonnet 5.5 é o recomendado) e clique em **Testar conexão**. A chave fica só no seu navegador; ela não vai para o GitHub nem para os alunos. Em outro computador, cadastre de novo.
-2. **Gerar questões:** em **Painel → Materiais**, clique em **Questões** no PDF desejado, escolha a quantidade (10 a 40) e o nível (graduação, OAB e concursos, ou misto) e clique em **Gerar questões**. O Claude lê o material inteiro e cria questões de múltipla escolha (A a E) com explicação e página de referência. Revise: você pode editar, excluir ou criar questões à mão.
+2. **Banco de questões sem custo de API (recomendado):** em **Painel → Materiais**, clique em **Questões** no PDF. No quadro **Importar banco de questões (HTML)**:
+   - escolha a quantidade e o nível e clique em **Copiar prompt** (o prompt já vem com o título e a disciplina do material);
+   - abra o Claude.ai (ou outro assistente), anexe o PDF, cole o prompt e envie;
+   - baixe o arquivo .html que ele entregar (ou copie o código) e, no portal, escolha o arquivo ou cole o código e clique em **Ler questões**. O portal mostra quantas questões são válidas e por que alguma foi recusada; clique em **Acrescentar** ou **Substituir**;
+   - para mais questões, peça "mais 20 questões diferentes das anteriores, no mesmo formato" e importe de novo, acrescentando.
+   Revise as questões: você pode editar, excluir ou criar à mão, e baixar o banco em HTML como cópia de segurança.
+   A geração direta pela API do Claude continua disponível, recolhida, como opção paga.
 3. **Aluno:** em **Quiz e certificados**, escolhe a matéria e a quantidade de questões, responde dentro do portal e, ao final, vê a nota e a correção comentada.
 4. **Certificado:** com acerto **acima de 60%** em um quiz de **pelo menos 10 questões**, o aluno baixa o certificado em PDF, com código de verificação. Os dois números são ajustáveis em Configurações.
 5. **Notas:** em **Painel → Quiz e notas** ficam todas as tentativas (aluno, matéria, acertos, nota, certificado), a média por matéria e a exportação em CSV. Você também pode baixar o certificado de qualquer aluno aprovado.
