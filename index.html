@@ -722,6 +722,49 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .tc-on .lz-em{max-width:none}
   .tc-on tr:first-child:has(th){display:none!important}
 }
+/* ===== Leis: organização ===== */
+.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:0 0 14px}
+.sec-h h3{margin:0;font-size:1.25rem}.sec-h p{margin:4px 0 0;font-size:.9rem;max-width:620px}
+.lsync{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;margin-bottom:16px;border-left:3px solid var(--latao)}
+.lsync-st{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.lsync-st > div{display:grid;gap:2px;min-width:0}.lsync-st b{color:var(--toga);font-size:.95rem}.lsync-st span{font-size:.85rem;color:var(--grafite)}
+.lsync-dot{width:10px;height:10px;border-radius:50%;background:var(--cinza);margin-top:6px;flex:none;box-shadow:0 0 0 4px var(--linha-2)}
+.lsync-dot.ok{background:var(--ok);box-shadow:0 0 0 4px var(--ok-bg)}.lsync-dot.err{background:var(--err);box-shadow:0 0 0 4px var(--err-bg)}
+.lsync-av{font-size:.82rem;color:var(--cinza);margin-top:4px}.lsync-av summary{cursor:pointer;font-weight:600}.lsync-av p{margin:4px 0 0}
+.lsync-ac{display:flex;gap:8px;flex:none}
+.lf{padding:14px;margin-bottom:14px;display:grid;gap:12px}
+.lf-busca{display:flex;align-items:center;gap:10px;border:1px solid var(--linha);border-radius:10px;padding:0 6px 0 14px;background:var(--branco);color:var(--cinza);transition:border-color .15s,box-shadow .15s}
+.lf-busca:focus-within{border-color:var(--latao);box-shadow:0 0 0 3px var(--latao-bg)}
+.lf-busca input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:1rem;color:var(--grafite);padding:.78em 0}
+.lf-busca input::-webkit-search-cancel-button{display:none}
+.lf-x{width:32px;height:32px;border:0;border-radius:50%;background:var(--linha-2);color:var(--toga);font-size:1.15rem;line-height:1;cursor:pointer;flex:none}
+.lf-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.lf-row:empty{display:none}
+.lf-sel{display:grid;gap:4px;flex:1 1 200px;min-width:0}
+.lf-sel span{font-size:.74rem;font-weight:600;color:var(--cinza)}
+.lf-sel .field{width:100%;padding:.6em .7em}
+.lf-orig{flex:0 1 auto}.lf-orig .seg{height:40px;display:grid}
+.lf-rodape{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--cinza);border-top:1px solid var(--linha-2);padding-top:10px;margin-top:-2px}
+.lf-limpar{border:0;background:none;color:var(--rubi);font:600 .82rem var(--sans);cursor:pointer;padding:0}
+.lz-fonte{display:flex;gap:10px;align-items:center;padding:10px 14px;border-radius:10px;background:var(--ok-bg);color:var(--ok);margin-bottom:14px;font-size:.86rem}
+.lz-fonte span{color:var(--grafite)}.lz-fonte b{color:var(--ok)}
+.lz-ac{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.lz-link{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:.86rem;color:var(--rubi)}
+.lz-item{transition:border-color .15s}.lz-item:hover{border-color:var(--latao)}
+@media (max-width:1000px){.lsync{flex-direction:column;align-items:stretch}.lsync-ac{flex-wrap:wrap}}
+@media (max-width:820px){
+  .sec-h{flex-direction:column;align-items:stretch;gap:10px}.sec-h .btn{width:100%}
+  .lsync{padding:14px}.lsync-ac .btn{flex:1}
+  .lf{padding:12px;gap:10px}
+  .lf-busca input{font-size:16px}
+  .lf-row{display:grid;grid-template-columns:1fr 1fr}
+  .lf-row .lf-orig{grid-column:1/-1}.lf-orig .seg{width:100%}
+  .adm-page .sec-h h3{display:none}
+  .lf-row .lf-sel:only-child{grid-column:1/-1}
+  .lf-sel .field{font-size:16px}
+  .lz-ac{gap:16px}
+  .lz-fonte{margin-top:-2px}
+}
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -2690,48 +2733,67 @@ async function viewNoticias(main, _, q) {
     ${list.length ? `<div class="plist">${list.map(postCard).join('')}</div>` : `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma ${cat === 'noticia' ? 'notícia' : 'entrevista'} publicada ainda</h3><p>As novidades aparecem aqui assim que forem publicadas.</p>${count('noticia') + count('entrevista') ? `<a class="btn ghost sm" href="#/noticias?tipo=${cat === 'noticia' ? 'entrevista' : 'noticia'}">Ver ${cat === 'noticia' ? 'entrevistas' : 'notícias'}</a>` : ''}</div>`}
   </div>`;
 }
+/* Barra de filtros das leis (página do aluno e painel) */
+function filtroLeisHTML({ tipos, discs, origem = false, total }) {
+  const sel = (id, todos, ops) => `<label class="lf-sel"><span>${todos[0]}</span><select id="${id}" class="field"><option value="">${todos[1]}</option>${ops.map(o => `<option>${esc(o)}</option>`).join('')}</select></label>`;
+  return `<div class="card lf">
+    <div class="lf-busca">${ic('search', 18)}<input id="lf-q" type="search" placeholder="Buscar lei, número ou assunto" autocomplete="off" enterkeyhint="search" aria-label="Buscar normas"><button type="button" id="lf-x" class="lf-x" aria-label="Limpar busca" hidden>×</button></div>
+    <div class="lf-row">
+      ${origem ? `<div class="lf-sel lf-orig"><span>Origem</span><div class="seg" id="lf-o" role="group" aria-label="Origem"><button class="on" data-v="">Todas</button><button data-v="auto">Automáticas</button><button data-v="manual">Manuais</button></div></div>` : ''}
+      ${tipos.length > 1 ? sel('lf-t', ['Tipo de norma', 'Todos'], tipos) : ''}
+      ${discs.length > 1 ? sel('lf-d', ['Disciplina', 'Todas'], discs) : ''}
+    </div>
+    <div class="lf-rodape"><span id="lf-n">${total} norma${total === 1 ? '' : 's'}</span><button type="button" class="lf-limpar" id="lf-l" hidden>Limpar filtros</button></div>
+  </div>`;
+}
+function ligarFiltroLeis(root, onChange) {
+  const st = { q: '', tipo: '', disc: '', origem: '' };
+  const q = $('#lf-q', root), x = $('#lf-x', root), lim = $('#lf-l', root);
+  const atualiza = () => { x.hidden = !st.q; lim.hidden = !(st.q || st.tipo || st.disc || st.origem); const n = onChange(st); $('#lf-n', root).textContent = `${n} norma${n === 1 ? '' : 's'}${lim.hidden ? '' : ' encontrada' + (n === 1 ? '' : 's')}`; };
+  q.oninput = () => { st.q = q.value; atualiza(); };
+  x.onclick = () => { q.value = ''; st.q = ''; q.focus(); atualiza(); };
+  const t = $('#lf-t', root); if (t) t.onchange = () => { st.tipo = t.value; atualiza(); };
+  const d = $('#lf-d', root); if (d) d.onchange = () => { st.disc = d.value; atualiza(); };
+  const o = $('#lf-o', root); if (o) o.onclick = e => { const b = e.target.closest('button'); if (!b) return; st.origem = b.dataset.v; $$('button', o).forEach(y => y.classList.toggle('on', y === b)); atualiza(); };
+  lim.onclick = () => { q.value = ''; Object.assign(st, { q: '', tipo: '', disc: '', origem: '' }); if (t) t.value = ''; if (d) d.value = ''; if (o) $$('button', o).forEach((y, i) => y.classList.toggle('on', i === 0)); atualiza(); };
+  atualiza();
+  return st;
+}
+const discDeLei = p => p.disciplina || (String(p.local || '').split(' · ')[1] || '');
+const filtrarLeis = (leis, st) => { const t = norm(st.q); return leis.filter(p => (!st.tipo || p.instituicao === st.tipo) && (!st.disc || discDeLei(p) === st.disc) && (!st.origem || (st.origem === 'auto') === !!p.auto) && (!t || norm(`${p.titulo} ${p.resumo} ${discDeLei(p)} ${p.instituicao}`).includes(t))); };
+
 const MES_NOME = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 async function viewLegislacao(main, _, q) {
   const leis = (await store.list('publicacoes')).filter(p => p.categoria === 'lei')
     .sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
   const lz = leisCfg(await store.getConfig());
-  const discDe = p => p.disciplina || (String(p.local || '').split(' · ')[1] || '');
   const tipos = [...new Set(leis.map(p => p.instituicao).filter(Boolean))].sort();
-  const discs = [...new Set(leis.map(discDe).filter(Boolean))].sort();
-  let fTipo = tipos.includes(q.get('norma')) ? q.get('norma') : '', fDisc = '', busca = '';
+  const discs = [...new Set(leis.map(discDeLei).filter(Boolean))].sort();
   const item = p => {
-    const d = p.prazo ? p.prazo.split('-') : null;
+    const d = p.prazo ? p.prazo.split('-') : null, href = `#/publicacao/${encodeURIComponent(p.id)}`;
     return `<article class="card lz-item">
-      <div class="lz-data">${d ? `<b>${+d[2]}</b><span>${MES_NOME[+d[1] - 1].slice(0, 3)}</span>` : ic('scroll', 20)}</div>
+      <div class="lz-data" aria-hidden="true">${d ? `<b>${+d[2]}</b><span>${MES_NOME[+d[1] - 1].slice(0, 3)}</span>` : ic('scroll', 20)}</div>
       <div class="lz-corpo">
-        <div class="lz-tags"><span class="badge gold">${esc(p.instituicao || 'Norma')}</span>${discDe(p) ? `<span class="badge">${esc(discDe(p))}</span>` : ''}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
-        <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
+        <div class="lz-tags"><span class="badge gold">${esc(p.instituicao || 'Norma')}</span>${discDeLei(p) ? `<span class="badge">${esc(discDeLei(p))}</span>` : ''}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+        <h4><a href="${href}">${esc(p.titulo)}</a></h4>
         ${p.resumo ? `<p class="lz-ementa">${esc(p.resumo)}</p>` : ''}
-        <div class="lz-ac"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Detalhes</a>${p.link ? `<a class="btn ghost sm" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial ${ic('ext', 13)}</a>` : ''}</div>
+        <div class="lz-ac"><a class="lz-link" href="${href}">Ler resumo ${ic('arrow', 14)}</a>${p.link ? `<a class="lz-link" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial ${ic('ext', 13)}</a>` : ''}</div>
       </div></article>`;
-  };
-  const draw = () => {
-    const t = norm(busca);
-    const l = leis.filter(p => (!fTipo || p.instituicao === fTipo) && (!fDisc || discDe(p) === fDisc) && (!t || norm(`${p.titulo} ${p.resumo} ${discDe(p)}`).includes(t)));
-    const meses = []; for (const p of l) { const k = (p.prazo || '').slice(0, 7) || 'sem-data'; let g = meses.find(x => x.k === k); if (!g) meses.push(g = { k, itens: [] }); g.itens.push(p); }
-    $('#lz-lista').innerHTML = l.length ? meses.map(g => `<section class="lz-mes"><h3>${g.k === 'sem-data' ? 'Sem data' : `${MES_NOME[+g.k.slice(5, 7) - 1].replace(/^./, c => c.toUpperCase())} de ${g.k.slice(0, 4)}`}<span>${g.itens.length}</span></h3><div class="lz-itens">${g.itens.map(item).join('')}</div></section>`).join('')
-      : `<div class="card empty">${ART.medal('scroll')}<h3>${leis.length ? 'Nenhuma norma encontrada' : 'Nenhuma atualização publicada ainda'}</h3><p>${leis.length ? 'Tente outra palavra ou limpe os filtros.' : 'As novas leis aparecem aqui assim que forem publicadas.'}</p></div>`;
-    $$('#lz-tipos .chip').forEach(b => b.classList.toggle('on', b.dataset.v === fTipo));
   };
   main.innerHTML = `<div class="page lz-page">
     <div class="page-h"><div><span class="eyebrow">Legislação</span><h2>Atualizações da lei</h2><p>Normas federais novas e alterações relevantes, com acesso ao texto oficial.</p></div></div>
-    ${lz.ativo && (lz.ultima || leis.some(p => p.auto)) ? `<div class="lz-fonte">${ic('shield', 18)}<div><b>Sincronizado com a base oficial do Senado Federal</b><span>${lz.ultima ? `Última verificação em ${fmtDT(lz.ultima.em)}` : 'Verificação automática a cada hora'}</span></div></div>` : ''}
-    ${leis.length ? `<div class="lz-filtros">
-      <label class="lz-busca">${ic('search', 16)}<input id="lz-q" type="search" placeholder="Buscar por número, assunto ou disciplina" autocomplete="off"></label>
-      ${discs.length > 1 ? `<select id="lz-d" class="field"><option value="">Todas as disciplinas</option>${discs.map(d => `<option>${esc(d)}</option>`).join('')}</select>` : ''}
-    </div>
-    ${tipos.length > 1 ? `<div class="chips lz-chips" id="lz-tipos">${['', ...tipos].map(t => `<button class="chip" data-v="${esc(t)}">${t ? esc(t) : 'Todas'} <span class="cn">${t ? leis.filter(p => p.instituicao === t).length : leis.length}</span></button>`).join('')}</div>` : ''}` : ''}
+    ${lz.ativo && (lz.ultima || leis.some(p => p.auto)) ? `<div class="lz-fonte">${ic('shield', 16)}<span><b>Fonte oficial: Senado Federal.</b> ${lz.ultima ? `Verificado em ${fmtDT(lz.ultima.em)}.` : 'Verificação automática a cada hora.'}</span></div>` : ''}
+    ${leis.length ? filtroLeisHTML({ tipos, discs, total: leis.length }) : ''}
     <div id="lz-lista"></div>
   </div>`;
-  draw();
-  const qi = $('#lz-q'); if (qi) qi.oninput = e => { busca = e.target.value; draw(); };
-  const ds = $('#lz-d'); if (ds) ds.onchange = e => { fDisc = e.target.value; draw(); };
-  const tp = $('#lz-tipos'); if (tp) tp.onclick = e => { const b = e.target.closest('.chip'); if (b) { fTipo = b.dataset.v; draw(); } };
+  const desenhar = st => {
+    const l = st ? filtrarLeis(leis, st) : leis;
+    const meses = []; for (const p of l) { const k = (p.prazo || '').slice(0, 7) || 'sem-data'; let g = meses.find(x => x.k === k); if (!g) meses.push(g = { k, itens: [] }); g.itens.push(p); }
+    $('#lz-lista').innerHTML = l.length ? meses.map(g => `<section class="lz-mes"><h3>${g.k === 'sem-data' ? 'Sem data' : `${MES_NOME[+g.k.slice(5, 7) - 1].replace(/^./, c => c.toUpperCase())} de ${g.k.slice(0, 4)}`}<span>${g.itens.length}</span></h3><div class="lz-itens">${g.itens.map(item).join('')}</div></section>`).join('')
+      : `<div class="card empty">${ART.medal('scroll')}<h3>${leis.length ? 'Nenhuma norma encontrada' : 'Nenhuma atualização publicada ainda'}</h3><p>${leis.length ? 'Tente outra palavra ou limpe os filtros.' : 'As novas leis aparecem aqui assim que forem publicadas.'}</p></div>`;
+    return l.length;
+  };
+  if (leis.length) ligarFiltroLeis(main, desenhar); else desenhar(null);
 }
 async function viewPublicacao(main, id) {
   const p = await store.get('publicacoes', decodeURIComponent(id || ''));
@@ -3606,34 +3668,33 @@ function admPublicacoes(box, posts, grupo = 'oportunidades') {
   };
 }
 function admLeis(box, posts) {
-  const leis = posts.filter(p => p.categoria === 'lei'), c = leisCfg();
+  const leis = posts.filter(p => p.categoria === 'lei'), c = leisCfg(), u = c.ultima, link = linkActions(c);
   const tipos = [...new Set(leis.map(p => p.instituicao).filter(Boolean))].sort();
+  const discs = [...new Set(leis.map(discDeLei).filter(Boolean))].sort();
   const trinta = new Date(Date.now() - 30 * DAY).toISOString().slice(0, 10);
-  let fTipo = '', fOrig = '', busca = '';
-  const discDe = p => p.disciplina || (String(p.local || '').split(' · ')[1] || '');
-  const draw = () => {
-    const t = norm(busca);
-    const l = leis.filter(p => (!fTipo || p.instituicao === fTipo) && (!fOrig || (fOrig === 'auto') === !!p.auto) && (!t || norm(`${p.titulo} ${p.resumo} ${discDe(p)}`).includes(t)))
-      .sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
-    $('#ltab').innerHTML = l.length ? `<table><tr><th>Norma</th><th>Tipo</th><th>Disciplina</th><th>Data</th><th>Origem</th><th></th></tr>
-      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b>${p.resumo ? `<div class="small muted lz-em">${esc(p.resumo)}</div>` : ''}</td><td>${esc(p.instituicao || '—')}</td><td>${esc(discDe(p) || '—')}</td><td>${fmtDate(p.prazo)}</td>
-      <td>${p.auto ? '<span class="badge ok">Automática</span>' : '<span class="badge">Manual</span>'}</td><td>${btnsLinha(p.id, p.link ? `<a class="btn ghost sm" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial</a>` : '')}</td></tr>`).join('')}</table>`
-      : `<div class="empty"><p>${leis.length ? 'Nenhuma norma encontrada com esses filtros.' : 'Nenhuma atualização publicada ainda. Use Sincronizar agora ou publique uma manualmente.'}</p></div>`;
-  };
+  const st = !c.ativo ? ['', 'Desligada'] : u?.erros?.length && !u.verificadas ? ['err', 'Com falha'] : ['ok', 'Ativa'];
+  const resumoSync = u ? `Última verificação em <b>${fmtDT(u.em)}</b> ${u.via === 'painel' ? 'pelo painel' : 'pelo GitHub'}: ${u.novas} nova${u.novas !== 1 ? 's' : ''} de ${u.verificadas} conferida${u.verificadas !== 1 ? 's' : ''}${u.comemorativas ? `, ${u.comemorativas} comemorativa${u.comemorativas > 1 ? 's' : ''} ignorada${u.comemorativas > 1 ? 's' : ''}` : ''}.` : 'Ainda não houve sincronização.';
   const tile = (icn, n, l) => `<div class="stat"><span class="si">${ic(icn, 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`;
-  box.innerHTML = `${cartaoLeisAuto(c)}
-    <div class="stats">${tile('scroll', leis.length, 'Normas publicadas')}${tile('check', leis.filter(p => p.auto).length, 'Sincronizadas do Senado')}${tile('edit', leis.filter(p => !p.auto).length, 'Publicadas manualmente')}${tile('calendar', leis.filter(p => (p.prazo || '') >= trinta).length, 'Nos últimos 30 dias')}</div>
-    <div class="lz-tool card">
-      <label class="lz-busca">${ic('search', 16)}<input id="lq" type="search" placeholder="Buscar por número, assunto ou disciplina" autocomplete="off"></label>
-      <select id="lt" class="field"><option value="">Todos os tipos</option>${tipos.map(t => `<option>${esc(t)}</option>`).join('')}</select>
-      <select id="lo" class="field"><option value="">Automáticas e manuais</option><option value="auto">Só automáticas</option><option value="manual">Só manuais</option></select>
-      <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova atualização</button>
+  box.innerHTML = `
+    <div class="sec-h"><div><h3>Atualizações da lei</h3><p class="muted">Normas federais publicadas para os alunos. As automáticas vêm da base oficial do Senado Federal.</p></div>
+      <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova atualização</button></div>
+    <div class="card lsync">
+      <div class="lsync-st"><span class="lsync-dot ${st[0]}"></span><div><b>Sincronização automática: ${st[1]}</b><span>${resumoSync}${c.ativo ? ' Próxima verificação automática em até 1 hora.' : ''}</span>
+        ${u?.erros?.length ? `<details class="lsync-av"><summary>Ver avisos (${u.erros.length})</summary><p>${esc(u.erros.join('; '))}</p></details>` : ''}</div></div>
+      <div class="lsync-ac"><button class="btn dark sm" id="la-sync">${ic('clock', 14)} Sincronizar agora</button><button class="btn ghost sm" id="la-cfg">${ic('settings', 14)} Configurar</button>${link ? `<a class="btn ghost sm" href="${esc(link)}" target="_blank" rel="noopener" title="Abrir a tarefa no GitHub">${ic('ext', 14)} GitHub</a>` : ''}</div>
     </div>
+    <div class="stats">${tile('scroll', leis.length, 'Normas publicadas')}${tile('check', leis.filter(p => p.auto).length, 'Sincronizadas do Senado')}${tile('edit', leis.filter(p => !p.auto).length, 'Publicadas manualmente')}${tile('calendar', leis.filter(p => (p.prazo || '') >= trinta).length, 'Nos últimos 30 dias')}</div>
+    ${leis.length ? filtroLeisHTML({ tipos, discs, origem: true, total: leis.length }) : ''}
     <div class="card table-wrap" id="ltab"></div>`;
-  draw();
-  $('#lq').oninput = e => { busca = e.target.value; draw(); };
-  $('#lt').onchange = e => { fTipo = e.target.value; draw(); };
-  $('#lo').onchange = e => { fOrig = e.target.value; draw(); };
+  const draw = f => {
+    const l = (f ? filtrarLeis(leis, f) : leis).sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+    $('#ltab').innerHTML = l.length ? `<table><tr><th>Norma</th><th>Tipo</th><th>Disciplina</th><th>Data</th><th>Origem</th><th></th></tr>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b>${p.resumo ? `<div class="small muted lz-em">${esc(p.resumo)}</div>` : ''}</td><td>${esc(p.instituicao || '—')}</td><td>${esc(discDeLei(p) || '—')}</td><td>${fmtDate(p.prazo)}</td>
+      <td>${p.auto ? '<span class="badge ok">Automática</span>' : '<span class="badge">Manual</span>'}</td><td>${btnsLinha(p.id, p.link ? `<a class="btn ghost sm" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial</a>` : '')}</td></tr>`).join('')}</table>`
+      : `<div class="empty"><p>${leis.length ? 'Nenhuma norma encontrada com esses filtros.' : 'Nenhuma atualização publicada ainda. Clique em Sincronizar agora ou publique uma manualmente.'}</p></div>`;
+    return l.length;
+  };
+  if (leis.length) ligarFiltroLeis(box, draw); else draw(null);
   $('#novo').onclick = () => formPost({ categoria: 'lei', instituicao: 'Lei Ordinária', local: 'Federal' }, ['lei']);
   $('#la-sync').onclick = e => sincronizarLeisAgora(e.currentTarget);
   $('#la-cfg').onclick = configLeisModal;
