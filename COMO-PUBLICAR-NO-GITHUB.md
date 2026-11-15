@@ -66,10 +66,11 @@ Para os alunos, as Notícias, as Entrevistas e as Atualizações da lei ficam ju
 
 Atenção: como o portal não tem servidor, as respostas corretas ficam no Gist. Um aluno com conhecimento técnico consegue encontrá-las. O certificado é de aproveitamento no portal e informa que não substitui certificação oficial.
 
-## Downloads e análises
-- **Download:** na página de cada material há o botão **Baixar** (PDFs enviados e arquivos do Google Drive). No app do iPhone, ele abre o menu para salvar em Arquivos ou compartilhar. Para impedir o download de um material, desmarque **Permitir que os alunos baixem este arquivo** ao editá-lo. Vídeos do YouTube não podem ser baixados.
-- **Painel → Análises** (primeira aba): alunos cadastrados e novos, acesso ativo (pagantes e em teste), acessos ao portal por dia, novos cadastros por dia, materiais mais vistos e mais baixados, notícias e vagas mais lidas, aparelhos usados (celular, app instalado, computador), assinantes por plano, conversão para plano pago, receita estimada e alunos mais ativos. Filtre por 7, 30 ou 90 dias e exporte a lista de alunos em **CSV** (abre no Excel).
-- Na aba **Materiais**, cada material mostra o número de acessos e de downloads.
+## Leitura protegida e análises
+- **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
+- **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.
+- **Limite honesto:** nenhum site consegue impedir totalmente a cópia (capturas de tela, por exemplo), e numa versão sem servidor um aluno com conhecimento técnico ainda consegue chegar ao arquivo guardado no Gist. As medidas acima impedem o download fácil, que é o que a maioria faria.
+- **Painel → Análises** (primeira aba): alunos cadastrados e novos, acesso ativo (pagantes e em teste), acessos ao portal por dia, novos cadastros por dia, materiais mais acessados, disciplinas mais estudadas, notícias e vagas mais lidas, aparelhos usados, assinantes por plano, conversão para plano pago, receita estimada e alunos mais ativos. Filtre por 7, 30 ou 90 dias e exporte a lista de alunos em **CSV** (abre no Excel).
 - O uso de cada aluno é enviado em lotes (a cada 10 minutos ou quando ele fecha o portal), por isso os números podem levar alguns minutos para aparecer. Os acessos do administrador não são contados.
 
 ## Atualização automática das leis

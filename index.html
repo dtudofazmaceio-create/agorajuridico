@@ -514,7 +514,12 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .filters .field{font-size:16px}
   .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%}
   .chips::-webkit-scrollbar{display:none}
-  .tabs{margin:-18px -16px 16px;padding:0 8px;background:var(--branco);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10}
+  .tabs{margin:-18px -16px 16px;padding:10px 16px;background:var(--marmore);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:10;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;overflow:visible;border-bottom:1px solid var(--linha)}
+  .tabs .tab{justify-content:center;border:1px solid var(--linha);background:var(--branco);margin:0 0 0 -1px;padding:.62em .4em;font-size:.84rem;border-radius:0;color:var(--toga-2);min-width:0}
+  .tabs .tab:first-child{border-radius:10px 0 0 10px;margin-left:0}.tabs .tab:last-child{border-radius:0 10px 10px 0}
+  .tabs .tab.on{background:var(--toga);border-color:var(--toga);color:#fff;position:relative;z-index:1}
+  .tabs .tab .ic{display:none}
+  .tabs .tab .badge,.tabs .tab .cn{font-size:.7rem}
   .mgrid{grid-template-columns:1fr;gap:10px}
   .mcard{flex-direction:row;align-items:stretch}
   .mthumb{width:96px;height:auto;min-height:96px;flex:none}
@@ -550,11 +555,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 /* ===== Painel administrativo no celular ===== */
 @media (max-width:820px){
   .adm-page .page-h{display:none}
-  .tabs{flex-wrap:wrap;overflow:visible;gap:6px;padding:10px 12px!important;border-bottom:1px solid var(--linha)}
-  .tabs .tab{padding:.5em .85em;font-size:.84rem;border:1px solid var(--linha);border-radius:99px;margin:0;background:var(--branco)}
-  .tabs .tab.on{background:var(--toga);border-color:var(--toga);color:#fff}
-  .tabs .tab.on .badge{background:#fff;color:var(--toga)}
-  .adm-page .tabs.adm-tabs{margin:0 -16px 16px;position:static;background:var(--marmore)}
+  .adm-page .tabs.adm-tabs{display:none}
   .adm-page .stats{grid-template-columns:1fr 1fr!important}
   .adm-page > .stats{display:none}
   .adm-page .stat .l{font-size:.74rem}
@@ -627,6 +628,100 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .lz-nota{display:flex;gap:6px;align-items:center;margin:-6px 0 14px}
 @media (max-width:1000px){.leis-auto{grid-template-columns:auto 1fr}.leis-auto .la-ac{grid-column:1/-1;justify-content:flex-start}}
 @media (max-width:820px){.leis-auto{grid-template-columns:1fr}.leis-auto .la-ic{display:none}.leis-auto .la-ac .btn{flex:1}}
+/* Leitura somente no portal */
+.player.protegido{position:relative}
+.player.protegido .tampa{position:absolute;top:0;right:0;width:72px;height:60px;background:transparent;z-index:2}
+.leitor canvas{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;pointer-events:none}
+@media print{.leitor,.player{display:none!important}}
+/* ===== Componentes refinados ===== */
+.seg{display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--linha-2);border-radius:10px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:8px;padding:.5em 1.1em;font:600 .84rem var(--sans);color:var(--cinza);cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--branco);color:var(--toga);box-shadow:0 1px 3px rgba(19,32,58,.14)}
+.chip .cn,.tab .cn{display:inline-grid;place-items:center;min-width:20px;height:18px;padding:0 5px;border-radius:9px;background:var(--linha-2);color:var(--toga-2);font-size:.72rem;font-weight:700}
+.chip.on .cn,.tab.on .cn{background:rgba(255,255,255,.2);color:#fff}
+.adm-desc{margin:0 0 14px;max-width:720px;font-size:.92rem}
+.adm-secao{display:none}
+.head-av{display:none}
+/* ações das tabelas */
+.acts .btn .ic{flex:none}
+.acts .btn[data-del]{padding-left:.6em;padding-right:.6em}
+.acts .btn[data-del] .lbl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* Leis no painel */
+.lz-tool{display:flex;gap:10px;align-items:center;padding:12px;margin-bottom:12px;flex-wrap:wrap}
+.lz-tool .field{width:auto;min-width:170px;padding:.55em .7em}
+.lz-tool .btn{margin-left:auto}
+.lz-busca{flex:1 1 260px;display:flex;align-items:center;gap:8px;border:1px solid var(--linha);border-radius:8px;padding:0 12px;background:var(--branco);color:var(--cinza)}
+.lz-busca input{border:0;outline:0;background:transparent;flex:1;min-width:0;padding:.62em 0;font:inherit;color:var(--grafite)}
+.lz-busca:focus-within{border-color:var(--latao);box-shadow:0 0 0 3px var(--latao-bg)}
+.lz-em{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:520px;margin-top:2px}
+/* Leis: página do aluno */
+.lz-fonte{display:flex;gap:12px;align-items:center;padding:12px 16px;border-radius:10px;background:var(--ok-bg);color:var(--ok);margin-bottom:16px}
+.lz-fonte div{display:grid}.lz-fonte b{font-size:.9rem}.lz-fonte span{font-size:.8rem;color:var(--grafite)}
+.lz-filtros{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.lz-filtros .field{width:auto;min-width:220px;padding:.6em .8em}
+.lz-chips{margin-bottom:18px;flex-wrap:wrap}
+.lz-mes{margin-bottom:26px}
+.lz-mes h3{display:flex;align-items:center;gap:10px;font-size:1.02rem;margin:0 0 12px;color:var(--toga)}
+.lz-mes h3 span{font:700 .72rem var(--sans);background:var(--latao-bg);color:#7c5d26;border-radius:9px;padding:2px 8px}
+.lz-mes h3:after{content:"";flex:1;height:1px;background:var(--linha)}
+.lz-itens{display:grid;gap:12px}
+.lz-item{display:grid;grid-template-columns:62px 1fr;gap:18px;padding:18px 20px;align-items:start}
+.lz-data{width:62px;height:66px;border-radius:10px;border:1px solid #e4dccb;background:var(--papel);display:grid;place-items:center;align-content:center;color:var(--toga)}
+.lz-data b{font:700 1.5rem/1 var(--serif)}.lz-data span{font-size:.72rem;font-weight:700;color:var(--rubi);text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
+.lz-tags{display:flex;gap:6px;flex-wrap:wrap}
+.lz-item h4{margin:8px 0 4px;font-size:1.12rem}.lz-item h4 a{color:var(--toga)}
+.lz-ementa{margin:0;color:#3e4656;font-size:.92rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.lz-ac{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sec-grid a{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:14px;border:1px solid var(--linha);border-radius:12px;color:var(--toga);font-weight:600;font-size:.88rem;text-decoration:none!important;background:var(--branco)}
+.sec-grid a span:first-child{width:36px;height:36px;border-radius:9px;background:var(--latao-bg);color:#7c5d26;display:grid;place-items:center}
+.sec-grid a.on{border-color:var(--toga);background:var(--toga);color:#fff}
+.sec-grid a.on span:first-child{background:rgba(255,255,255,.14);color:#f2ead9}
+@media (max-width:820px){
+  .head-av{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--latao);color:var(--toga);font:700 .78rem var(--sans);margin:0 6px 0 4px;text-decoration:none!important;flex:none}
+  .head-av.on{box-shadow:0 0 0 2px #fff}
+  .adm-secao{display:flex;align-items:center;gap:12px;width:calc(100% + 32px);margin:-18px -16px 16px;padding:12px 16px;background:var(--branco);border:0;border-bottom:1px solid var(--linha);position:sticky;top:calc(env(safe-area-inset-top) + 56px);z-index:12;text-align:left;cursor:pointer;font:inherit}
+  .adm-secao .as-ic{width:38px;height:38px;border-radius:10px;background:var(--latao-bg);color:#7c5d26;display:grid;place-items:center;flex:none}
+  .adm-secao .as-tx{display:grid;flex:1;min-width:0}.adm-secao small{font-size:.7rem;color:var(--cinza);font-weight:600}.adm-secao b{font-size:1rem;color:var(--toga);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .adm-secao .as-mais{display:flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--toga);border:1px solid var(--linha);border-radius:9px;padding:.5em .75em}
+  .adm-page .an-filtros .seg{display:grid;width:100%}
+  .adm-page .stats{border-radius:12px}
+  .adm-page .stats .stat{flex-direction:column;align-items:flex-start;gap:10px;padding:14px;border:0!important;border-top:1px solid var(--linha-2)!important}
+  .adm-page .stats .stat:nth-child(-n+2){border-top:0!important}
+  .adm-page .stats .stat:nth-child(odd){border-right:1px solid var(--linha-2)!important}
+  .adm-page .stats .stat:last-child:nth-child(odd){grid-column:1/-1;border-right:0!important}
+  .adm-page .stat .si{width:32px;height:32px;border-radius:8px}
+  .adm-page .stat .n{font-size:1.4rem}
+  .adm-page .stat .l{font-size:.78rem;line-height:1.35}
+  .lz-tool{padding:10px}.lz-tool .field{flex:1 1 140px;min-width:0;font-size:16px}.lz-tool .btn{width:100%;margin:0}
+  .lz-busca input,.lz-filtros input{font-size:16px}
+  .lz-filtros{flex-direction:column}.lz-filtros .field{width:100%;min-width:0;font-size:16px}
+  .lz-item{grid-template-columns:48px 1fr;gap:12px;padding:14px}
+  .lz-data{width:48px;height:52px}.lz-data b{font-size:1.2rem}
+  .lz-item h4{font-size:1.02rem}
+  .lz-ac .btn{flex:1}
+  .lz-fonte{margin-top:-4px}
+  .seg-tabs{grid-template-columns:none}
+}
+/* ===== Tabelas em cartões no celular: layout compacto ===== */
+@media (max-width:820px){
+  .tc-on.card,.tc-on{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important}
+  .tc-on tr{background:var(--branco);border:1px solid var(--linha)!important;border-radius:12px;margin:0 0 10px;padding:14px 14px 12px;display:grid!important;grid-template-columns:1fr 1fr;column-gap:14px;row-gap:10px}
+  .tc-on tr:last-child{border-bottom:1px solid var(--linha)!important}
+  .tc-on td{display:block!important;padding:0!important;font-size:.9rem;min-width:0;overflow-wrap:anywhere}
+  .tc-on td::before{display:block;margin-bottom:2px;font-size:.7rem;letter-spacing:.01em}
+  .tc-on td:first-child,.tc-on td:has(.acts),.tc-on td.small,.tc-on td[colspan],.tc-on td:has(input.field){grid-column:1/-1}
+  .tc-on td:first-child{font-size:1rem;padding-bottom:2px!important;border-bottom:1px solid var(--linha-2)!important;padding-bottom:10px!important}
+  .tc-on td:has(.acts){padding-top:10px!important;border-top:1px solid var(--linha-2)!important}
+  .tc-on td:has(.acts:empty){display:none!important}
+  .tc-on td .acts{display:flex;flex-wrap:nowrap;gap:8px}
+  .tc-on td .acts .btn,.tc-on td .acts a.btn{flex:1 1 0;min-width:0;min-height:40px;padding-left:.5em;padding-right:.5em}
+  .tc-on td .acts .btn[data-del]{flex:0 0 44px}
+  .tc-on td .acts .btn .ic{display:none}
+  .tc-on td .acts .btn[data-del] .ic{display:block}
+  .tc-on .lz-em{max-width:none}
+  .tc-on tr:first-child:has(th){display:none!important}
+}
 @keyframes sheet{from{transform:translateY(100%)}}
 </style>
 </head>
@@ -718,6 +813,11 @@ const trackURL = u => (objectURLs.push(u), u);
 const revokeURLs = () => { objectURLs.forEach(u => URL.revokeObjectURL(u)); objectURLs = []; };
 
 const I = {
+  eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/>',
+  trash: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+  grid: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  chev: '<path d="M7 10l5 5 5-5"/>',
   home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
   book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/>',
   briefcase: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/>',
@@ -1369,7 +1469,7 @@ function publicHTML(name) {
 function shellHTML(name) {
   const u = S.user, at = ativo(u), st = statusAss(u);
   const tipoAtual = (location.hash.match(/[?&]tipo=(\w+)/) || [])[1];
-  const isOn = r => { const [rn, rq] = r.split('?'), rt = (rq || '').replace('tipo=', ''); if (rn === 'noticias') return (name === 'noticias' && (tipoAtual || 'noticia') === rt) || (name === 'legislacao' && rt === 'lei'); return name === rn || (rn === 'materiais' && name === 'material') || (rn === 'oportunidades' && name === 'publicacao'); };
+  const isOn = r => { const [rn, rq] = r.split('?'), rt = (rq || '').replace('tipo=', ''); if (rn === 'noticias') return (name === 'noticias' && (tipoAtual || 'noticia') === rt); return name === rn || (rn === 'materiais' && name === 'material') || (rn === 'oportunidades' && name === 'publicacao'); };
   const item = (r, label, icon, gated) => `<a href="#/${r}" class="${isOn(r) ? 'on' : ''}">${ic(icon)} ${label}${gated && !at ? `<span class="lk">${ic('lock', 14)}</span>` : ''}</a>`;
   return `<div class="app" id="shell">
     <aside class="side">${brandHTML('#/painel')}
@@ -1382,7 +1482,7 @@ function shellHTML(name) {
         <div class="sep">Atualidades</div>
         ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
         ${item('noticias?tipo=entrevista', 'Entrevistas', 'mic', true)}
-        ${item('noticias?tipo=lei', 'Atualizações da lei', 'scroll', true)}
+        ${item('legislacao', 'Atualizações da lei', 'scroll', true)}
         <div class="sep">Conta</div>
         ${item('perfil', 'Minha conta', 'user')}
         ${!at ? item('assinar', 'Assinar o portal', 'card') : ''}
@@ -1401,12 +1501,13 @@ function shellHTML(name) {
         ${DETAIL[name] ? `<button class="icon-btn" id="back" aria-label="Voltar">${ic('back', 22)}</button>` : `<span class="mark">${MARK}</span>`}
         <h1>${esc(TITLES[name] || S.config.nomePortal)}</h1>
         ${at && name !== 'busca' ? `<a class="icon-btn" href="#/busca" aria-label="Buscar">${ic('search', 21)}</a>` : ''}
-        ${u.role === 'admin' && name !== 'admin' ? `<a class="icon-btn" href="#/admin" aria-label="Administração">${ic('settings', 21)}</a>` : ''}
+        ${u.role === 'admin' && name !== 'admin' ? `<a class="icon-btn" href="#/admin" aria-label="Painel administrativo">${ic('settings', 21)}</a>` : ''}
+        <a class="head-av ${['perfil', 'assinar'].includes(name) ? 'on' : ''}" href="#/perfil" aria-label="Minha conta">${esc(initials(u.nome))}</a>
       </header>
       <main id="main"></main>
     </div>
-    <nav class="tabbar">${[['painel', 'Início', 'home', ['painel']], ['materiais', 'Estudar', 'book', ['materiais', 'material']], ['oportunidades', 'Carreira', 'briefcase', ['oportunidades', 'publicacao']], ['noticias', 'Notícias', 'news', ['noticias', 'legislacao']], ['perfil', 'Conta', 'user', ['perfil', 'assinar', 'admin']]]
-      .map(([r, l, i, act]) => `<a href="#/${r}" class="${act.includes(name) && !(r === 'oportunidades' && naInfo()) || (r === 'noticias' && name === 'publicacao' && naInfo()) ? 'on' : ''}">${ic(i, 22)}${l}${r !== 'painel' && r !== 'perfil' && !at ? `<span class="lk">${ic('lock', 11)}</span>` : ''}</a>`).join('')}</nav>
+    <nav class="tabbar">${[['painel', 'Início', 'home', ['painel']], ['materiais', 'Estudar', 'book', ['materiais', 'material']], ['oportunidades', 'Carreira', 'briefcase', ['oportunidades', 'publicacao']], ['legislacao', 'Leis', 'scroll', ['legislacao']], ['noticias', 'Notícias', 'news', ['noticias']]]
+      .map(([r, l, i, act]) => `<a href="#/${r}" class="${act.includes(name) ? 'on' : ''}">${ic(i, 22)}${l}${r !== 'painel' && r !== 'perfil' && !at ? `<span class="lk">${ic('lock', 11)}</span>` : ''}</a>`).join('')}</nav>
   </div>`;
 }
 function bindShell() {
@@ -1757,7 +1858,7 @@ async function viewPainel(main) {
           <div class="card mini-list">${opps.slice(0, 4).map(miniPost).join('') || vazio('Nenhuma vaga publicada ainda.', 'gavel')}</div></div>
         <div><div class="list-h"><h3>Notícias e entrevistas</h3><a href="#/noticias" class="small">Ver todas</a></div>
           <div class="card mini-list">${atual.slice(0, 4).map(miniPost).join('') || vazio('Nenhuma notícia publicada ainda.', 'news')}</div></div>
-        <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/noticias?tipo=lei" class="small">Ver todas</a></div>
+        <div><div class="list-h"><h3>Atualizações da lei</h3><a href="#/legislacao" class="small">Ver todas</a></div>
           <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || vazio('Nenhuma atualização publicada ainda.', 'scroll')}</div></div>
       </div>
     </div>` : `
@@ -1842,7 +1943,7 @@ async function viewMaterial(main, id) {
   let player;
   if (!src) player = `<div class="card empty"><p>Arquivo indisponível.</p></div>`;
   else if (emb && m.tipo !== 'pdf') player = midiaPlayer(m.url, m.tipo, m.titulo, m.disciplina || '');
-  else if (emb) player = `<div class="player"><iframe class="pdf-frame" src="${esc(emb)}" title="${esc(m.titulo)}"></iframe></div>`;
+  else if (emb) player = `<div class="player protegido"><iframe class="pdf-frame" src="${esc(emb)}" title="${esc(m.titulo)}"></iframe><span class="tampa" aria-hidden="true"></span></div>`;
   else if (m.tipo === 'pdf') player = '<div id="leitor-box"></div>';
   else if (m.tipo === 'video') player = `<div class="player"><video controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></video></div>`;
   else if (m.tipo === 'audio') player = `<div class="player audio-box">${ART.thumb('audio')}<h3 style="color:#fff;margin-top:12px">${esc(m.titulo)}</h3><div style="color:#c6cbd8">${esc(m.disciplina || '')}</div><audio controls controlsList="nodownload" preload="metadata" src="${esc(safeURL(src))}"></audio></div>`;
@@ -1850,13 +1951,11 @@ async function viewMaterial(main, id) {
 
   main.innerHTML = `<div class="page">
     <div class="page-h keep"><div><div class="eyebrow">${esc(m.disciplina || 'Geral')}, ${t.nome.toLowerCase()}</div><h2>${esc(m.titulo)}</h2>${infoMat(m)}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">${m.tipo === 'pdf' && emb ? `<a class="btn ghost sm" href="${esc(safeURL(m.url))}" target="_blank" rel="noopener">${ic('ext', 15)} Abrir no Google Drive</a>` : ''}
-      ${podeBaixar(m) && (src || !m.fileRef) ? `<button class="btn primary sm" id="baixar">${ic('download', 15)} Baixar${m.size ? ` (${fmtSize(m.size)})` : ''}</button>` : ''}</div></div>
+</div>
     ${player}
     ${m.descricao ? `<div class="card pad article" style="margin-top:22px"><h4>Sobre este material</h4><div class="body">${paras(m.descricao)}</div></div>` : ''}
   </div>`;
   registrar('view', m.id);
-  const bx = $('#baixar'); if (bx) bx.onclick = () => baixarMaterial(m, src);
   const lb = $('#leitor-box'); if (lb && src) await montarLeitor(lb, src, m);
 }
 
@@ -1867,15 +1966,12 @@ async function viewMaterial(main, id) {
 const ZOOMS = [1, 1.25, 1.5, 2, 2.5, 3];
 async function montarLeitor(box, src, m) {
   const chave = 'agora-pg-' + m.id;
-  const compartilhar = isIOS && isStandalone();
   box.innerHTML = `<div class="leitor" id="leitor">
     <div class="lt-bar">
       <button class="icon-btn" data-a="fechar" aria-label="Sair da tela cheia">${ic('back', 20)}</button>
       <span class="lt-pg" aria-live="polite">Página <b id="lt-n">1</b> de <span id="lt-t">…</span></span>
       <div class="lt-zoom"><button data-a="menos" aria-label="Diminuir zoom">−</button><span id="lt-z">Ajustado</span><button data-a="mais" aria-label="Aumentar zoom">+</button></div>
       <button class="icon-btn" data-a="cheia" aria-label="Ler em tela cheia" title="Tela cheia">${ic('expand', 19)}</button>
-      ${compartilhar ? `<button class="icon-btn" data-a="share" aria-label="Abrir em outro app" title="Abrir em outro app">${ic('share', 19)}</button>`
-        : `<a class="icon-btn" data-a="aba" href="${esc(safeURL(src))}" target="_blank" rel="noopener" aria-label="Abrir em nova aba" title="Abrir em nova aba">${ic('ext', 19)}</a>`}
     </div>
     <div class="lt-pages" id="lt-pages"><div class="loading" style="color:#dfe3ea;width:100%">Abrindo o PDF…</div></div>
   </div>`;
@@ -1884,7 +1980,7 @@ async function montarLeitor(box, src, m) {
   try { const pdfjs = await carregarPdfJs(); doc = await pdfjs.getDocument({ url: src, isEvalSupported: false }).promise; }
   catch (e) {
     console.warn('Leitor indisponível; usando o visualizador do navegador.', e);
-    cont.outerHTML = `<iframe class="pdf-frame" src="${esc(safeURL(src))}" title="${esc(m.titulo)}" style="flex:1;border:0;width:100%;background:#fff"></iframe>`;
+    cont.innerHTML = `<div class="loading" style="color:#dfe3ea;width:100%;text-align:center;padding:40px 20px">Não foi possível abrir o leitor agora. Verifique a conexão e recarregue a página.</div>`;
     return;
   }
   const n = doc.numPages; $('#lt-t', box).textContent = n;
@@ -1940,13 +2036,13 @@ async function montarLeitor(box, src, m) {
     const a = e.target.closest('[data-a]')?.dataset.a; if (!a) return;
     if (a === 'mais') zoom(1); if (a === 'menos') zoom(-1);
     if (a === 'cheia') cheia(!L.classList.contains('cheio')); if (a === 'fechar') cheia(false);
-    if (a === 'share') {
-      try { const b = await (await fetch(src)).blob(); const f = new File([b], (m.titulo || 'material').replace(/[\\/:*?"<>|]/g, '') + '.pdf', { type: 'application/pdf' });
-        if (navigator.canShare?.({ files: [f] })) await navigator.share({ files: [f], title: m.titulo }); else window.open(src, '_blank'); }
-      catch (err) { if (err?.name !== 'AbortError') toast('Não foi possível abrir em outro app.', true); }
-    }
   });
-  const esc_ = e => { if (e.key === 'Escape' && L.classList.contains('cheio')) cheia(false); };
+  L.addEventListener('contextmenu', e => e.preventDefault());
+  L.addEventListener('dragstart', e => e.preventDefault());
+  const esc_ = e => {
+    if (e.key === 'Escape' && L.classList.contains('cheio')) cheia(false);
+    if ((e.ctrlKey || e.metaKey) && /^[sp]$/i.test(e.key)) { e.preventDefault(); toast('Este material pode ser lido apenas no portal.'); }
+  };
   document.addEventListener('keydown', esc_);
   let tRes; const onRes = () => { clearTimeout(tRes); tRes = setTimeout(() => { const k = atual; [...desenhadas.keys()].forEach(apagar); dimensionar(); irPara(k); pags.forEach(el => { io.unobserve(el); io.observe(el); }); }, 200); };
   window.addEventListener('resize', onRes);
@@ -2015,21 +2111,6 @@ document.addEventListener('visibilitychange', () => {
 
 /* ============================== Download ============================== */
 const driveId = url => (String(url || '').match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:.*&)?id=)([\w-]{10,})/) || [])[1];
-function podeBaixar(m) { return m.permitirDownload !== false && (!!m.fileRef || !!driveId(m.url)); }
-async function baixarMaterial(m, src) {
-  registrar('download', m.id);
-  const ext = m.fileName?.match(/\.\w+$/)?.[0] || (m.tipo === 'pdf' ? '.pdf' : m.tipo === 'audio' ? '.mp3' : '');
-  const nome = (m.titulo || 'material').replace(/[\\/:*?"<>|]/g, '').slice(0, 80) + ext;
-  if (!m.fileRef) { const a = document.createElement('a'); a.href = `https://drive.google.com/uc?export=download&id=${driveId(m.url)}`; a.target = '_blank'; a.rel = 'noopener'; a.click(); return; }
-  try {
-    if (isIOS && isStandalone() && navigator.canShare) {
-      const b = await (await fetch(src)).blob(), f = new File([b], nome, { type: b.type || m.mime || 'application/pdf' });
-      if (navigator.canShare({ files: [f] })) { await navigator.share({ files: [f], title: m.titulo }); return; }
-    }
-    const a = document.createElement('a'); a.href = src; a.download = nome; document.body.appendChild(a); a.click(); a.remove();
-    toast('Download iniciado.');
-  } catch (e) { if (e?.name !== 'AbortError') toast('Não foi possível baixar o arquivo.', true); }
-}
 
 
 /* ======================= Quiz: inteligência artificial (Claude) =======================
@@ -2596,35 +2677,71 @@ async function viewOportunidades(main, _, q) {
     <div class="plist">${list.map(postCard).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
   </div>`;
 }
-async function viewLegislacao(main) { return viewNoticias(main, null, new URLSearchParams('tipo=lei')); }
 async function viewNoticias(main, _, q) {
-  const cat = CAT_INFO.includes(q.get('tipo')) ? q.get('tipo') : 'noticia';
+  if (q.get('tipo') === 'lei') { location.replace('#/legislacao'); return; }
   const all = await store.list('publicacoes');
-  const list = all.filter(p => p.categoria === cat).sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
   const count = k => all.filter(p => p.categoria === k).length;
-  const sub = { noticia: 'O que acontece no mundo jurídico, com a fonte de cada notícia.', entrevista: 'Conversas em vídeo e áudio com profissionais do Direito.', lei: 'Novas normas e alterações relevantes, em ordem cronológica.' }[cat];
-  const tiposLei = cat === 'lei' ? [...new Set(list.map(p => p.instituicao).filter(Boolean))] : [];
-  const fLei = tiposLei.includes(q.get('norma')) ? q.get('norma') : '';
-  const listaV = fLei ? list.filter(p => p.instituicao === fLei) : list;
-  const lz = cat === 'lei' ? leisCfg(await store.getConfig()) : null;
-  const notaLei = lz && lz.ativo && (lz.ultima || list.some(p => p.auto)) ? `<p class="small muted lz-nota">${ic('check', 14)} Sincronizado automaticamente com a base oficial de normas federais do Senado Federal${lz.ultima ? `. Última verificação: ${fmtDT(lz.ultima.em)}` : ''}.</p>` : '';
-  const chipsLei = tiposLei.length > 1 ? `<div class="chips" style="margin-bottom:16px">${['', ...tiposLei].map(t => `<a class="chip ${t === fLei ? 'on' : ''}" href="#/noticias?tipo=lei${t ? '&norma=' + encodeURIComponent(t) : ''}">${t ? esc(t) : 'Todas'}</a>`).join('')}</div>` : '';
-  const cards = cat === 'lei' ? `${notaLei}${chipsLei}<div class="timeline">${listaV.map(p => `<div class="tl-item">${postCard(p)}</div>`).join('')}</div>` : `<div class="plist">${list.map(postCard).join('')}</div>`;
+  const cat = ['noticia', 'entrevista'].includes(q.get('tipo')) ? q.get('tipo') : (!count('noticia') && count('entrevista') ? 'entrevista' : 'noticia');
+  const list = all.filter(p => p.categoria === cat).sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+  const sub = { noticia: 'O que acontece no mundo jurídico, com a fonte de cada notícia.', entrevista: 'Conversas em vídeo e áudio com profissionais do Direito.' }[cat];
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><span class="eyebrow">Atualidades</span><h2>${CATS[cat].plural}</h2><p>${sub}</p></div></div>
-    <div class="tabs">${CAT_INFO.map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/noticias?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
-    ${list.length ? cards : `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nada publicado em ${CATS[cat].plural.toLowerCase()} ainda</h3><p>As novidades aparecem aqui assim que forem publicadas.</p></div>`}
+    <div class="page-h"><div><span class="eyebrow">Atualidades</span><h2>Notícias e entrevistas</h2><p>${sub}</p></div></div>
+    <div class="tabs seg-tabs">${['noticia', 'entrevista'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/noticias?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="cn">${count(k)}</span></a>`).join('')}</div>
+    ${list.length ? `<div class="plist">${list.map(postCard).join('')}</div>` : `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma ${cat === 'noticia' ? 'notícia' : 'entrevista'} publicada ainda</h3><p>As novidades aparecem aqui assim que forem publicadas.</p>${count('noticia') + count('entrevista') ? `<a class="btn ghost sm" href="#/noticias?tipo=${cat === 'noticia' ? 'entrevista' : 'noticia'}">Ver ${cat === 'noticia' ? 'entrevistas' : 'notícias'}</a>` : ''}</div>`}
   </div>`;
+}
+const MES_NOME = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+async function viewLegislacao(main, _, q) {
+  const leis = (await store.list('publicacoes')).filter(p => p.categoria === 'lei')
+    .sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+  const lz = leisCfg(await store.getConfig());
+  const discDe = p => p.disciplina || (String(p.local || '').split(' · ')[1] || '');
+  const tipos = [...new Set(leis.map(p => p.instituicao).filter(Boolean))].sort();
+  const discs = [...new Set(leis.map(discDe).filter(Boolean))].sort();
+  let fTipo = tipos.includes(q.get('norma')) ? q.get('norma') : '', fDisc = '', busca = '';
+  const item = p => {
+    const d = p.prazo ? p.prazo.split('-') : null;
+    return `<article class="card lz-item">
+      <div class="lz-data">${d ? `<b>${+d[2]}</b><span>${MES_NOME[+d[1] - 1].slice(0, 3)}</span>` : ic('scroll', 20)}</div>
+      <div class="lz-corpo">
+        <div class="lz-tags"><span class="badge gold">${esc(p.instituicao || 'Norma')}</span>${discDe(p) ? `<span class="badge">${esc(discDe(p))}</span>` : ''}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+        <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
+        ${p.resumo ? `<p class="lz-ementa">${esc(p.resumo)}</p>` : ''}
+        <div class="lz-ac"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Detalhes</a>${p.link ? `<a class="btn ghost sm" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial ${ic('ext', 13)}</a>` : ''}</div>
+      </div></article>`;
+  };
+  const draw = () => {
+    const t = norm(busca);
+    const l = leis.filter(p => (!fTipo || p.instituicao === fTipo) && (!fDisc || discDe(p) === fDisc) && (!t || norm(`${p.titulo} ${p.resumo} ${discDe(p)}`).includes(t)));
+    const meses = []; for (const p of l) { const k = (p.prazo || '').slice(0, 7) || 'sem-data'; let g = meses.find(x => x.k === k); if (!g) meses.push(g = { k, itens: [] }); g.itens.push(p); }
+    $('#lz-lista').innerHTML = l.length ? meses.map(g => `<section class="lz-mes"><h3>${g.k === 'sem-data' ? 'Sem data' : `${MES_NOME[+g.k.slice(5, 7) - 1].replace(/^./, c => c.toUpperCase())} de ${g.k.slice(0, 4)}`}<span>${g.itens.length}</span></h3><div class="lz-itens">${g.itens.map(item).join('')}</div></section>`).join('')
+      : `<div class="card empty">${ART.medal('scroll')}<h3>${leis.length ? 'Nenhuma norma encontrada' : 'Nenhuma atualização publicada ainda'}</h3><p>${leis.length ? 'Tente outra palavra ou limpe os filtros.' : 'As novas leis aparecem aqui assim que forem publicadas.'}</p></div>`;
+    $$('#lz-tipos .chip').forEach(b => b.classList.toggle('on', b.dataset.v === fTipo));
+  };
+  main.innerHTML = `<div class="page lz-page">
+    <div class="page-h"><div><span class="eyebrow">Legislação</span><h2>Atualizações da lei</h2><p>Normas federais novas e alterações relevantes, com acesso ao texto oficial.</p></div></div>
+    ${lz.ativo && (lz.ultima || leis.some(p => p.auto)) ? `<div class="lz-fonte">${ic('shield', 18)}<div><b>Sincronizado com a base oficial do Senado Federal</b><span>${lz.ultima ? `Última verificação em ${fmtDT(lz.ultima.em)}` : 'Verificação automática a cada hora'}</span></div></div>` : ''}
+    ${leis.length ? `<div class="lz-filtros">
+      <label class="lz-busca">${ic('search', 16)}<input id="lz-q" type="search" placeholder="Buscar por número, assunto ou disciplina" autocomplete="off"></label>
+      ${discs.length > 1 ? `<select id="lz-d" class="field"><option value="">Todas as disciplinas</option>${discs.map(d => `<option>${esc(d)}</option>`).join('')}</select>` : ''}
+    </div>
+    ${tipos.length > 1 ? `<div class="chips lz-chips" id="lz-tipos">${['', ...tipos].map(t => `<button class="chip" data-v="${esc(t)}">${t ? esc(t) : 'Todas'} <span class="cn">${t ? leis.filter(p => p.instituicao === t).length : leis.length}</span></button>`).join('')}</div>` : ''}` : ''}
+    <div id="lz-lista"></div>
+  </div>`;
+  draw();
+  const qi = $('#lz-q'); if (qi) qi.oninput = e => { busca = e.target.value; draw(); };
+  const ds = $('#lz-d'); if (ds) ds.onchange = e => { fDisc = e.target.value; draw(); };
+  const tp = $('#lz-tipos'); if (tp) tp.onclick = e => { const b = e.target.closest('.chip'); if (b) { fTipo = b.dataset.v; draw(); } };
 }
 async function viewPublicacao(main, id) {
   const p = await store.get('publicacoes', decodeURIComponent(id || ''));
   if (!p) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Publicação não encontrada</h3></div></div>`; return; }
-  const c = CATS[p.categoria] || CATS.estagio, back = CAT_INFO.includes(p.categoria) ? `#/noticias?tipo=${p.categoria}` : `#/oportunidades?tipo=${p.categoria}`;
+  const c = CATS[p.categoria] || CATS.estagio, back = p.categoria === 'lei' ? '#/legislacao' : CAT_INFO.includes(p.categoria) ? `#/noticias?tipo=${p.categoria}` : `#/oportunidades?tipo=${p.categoria}`;
   const ent = p.categoria === 'entrevista';
   const linkTxt = { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
   main.innerHTML = `<div class="page"><div class="article">
     <a href="${back}" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} ${c.plural}</a>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
     <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
     <div class="meta">${metaPost(p)}</div>
     ${ent ? `<div style="margin-top:16px">${p.midia ? midiaPlayer(p.midia, p.formato, p.titulo, [p.instituicao, p.cargo].filter(Boolean).join(', ')) : '<div class="card empty"><p>Link da entrevista não informado.</p></div>'}</div>` : ''}
@@ -2632,7 +2749,9 @@ async function viewPublicacao(main, id) {
     ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${linkTxt} ${ic('ext', 15)}</a>` : ''}</div>
     <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
   </div></div>`;
-  if (CAT_INFO.includes(p.categoria)) marcarNav(`#/noticias?tipo=${p.categoria}`, '#/noticias');
+  if (p.categoria === 'lei') marcarNav('#/legislacao', '#/legislacao');
+  else if (CAT_INFO.includes(p.categoria)) marcarNav(`#/noticias?tipo=${p.categoria}`, '#/noticias');
+  else marcarNav(`#/oportunidades`, '#/oportunidades');
   registrar('pub', p.id);
 }
 
@@ -2707,10 +2826,11 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
+const ADM_ICONES = { analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = gist ? { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', codigos: 'Códigos de acesso', config: 'Configurações' }
-    : { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', publicacoes: 'Publicações', planos: 'Planos', alunos: 'Alunos', pagamentos: 'Pagamentos', ...(store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', leis: 'Atualizações da lei', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
@@ -2727,16 +2847,21 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${tab === 'analises' || tab === 'quiz' ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
-    <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
+    <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
+    <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
     <div id="adm"></div></div>`;
   const sh = $('#share'); if (sh) sh.onclick = mostrarLinkAlunos;
+  $('#adm-sec').onclick = () => {
+    const { el, close } = modal('Seções do painel', `<div class="sec-grid">${Object.entries(TABS).map(([k, l]) => `<a href="#/admin/${k}" class="${k === tab ? 'on' : ''}"><span>${ic(ADM_ICONES[k], 20)}</span>${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>`);
+    el.addEventListener('click', e => { if (e.target.closest('a')) close(); });
+  };
   const tOn = $('#adm-tabs .tab.on'); if (tOn) { const t = $('#adm-tabs'); t.scrollLeft = tOn.offsetLeft - (t.clientWidth - tOn.offsetWidth) / 2; }
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), publicacoes: () => admPublicacoes(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), leis: () => admLeis(box, posts), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -2917,7 +3042,7 @@ function admAnalises(box, { users, mats, posts, pags, codigos, ag }, periodo = 3
   const novos = alunos.filter(u => u.criadoEm >= ini).length;
   const ativosPeriodo = alunos.filter(u => Object.keys(u.atividade?.dias || {}).some(d => d >= iniISO)).length;
   const acessosPeriodo = dias.reduce((s, d) => s + (ag.dias[d] || 0), 0);
-  const totV = Object.values(ag.views).reduce((a, b) => a + b, 0), totD = Object.values(ag.downloads).reduce((a, b) => a + b, 0);
+  const totV = Object.values(ag.views).reduce((a, b) => a + b, 0);
   const jaPagaram = alunos.filter(pago).length, conv = alunos.length ? Math.round(jaPagaram / alunos.length * 100) : 0;
   let receita, recLbl;
   if (store.modo === 'gist') {
@@ -2935,13 +3060,13 @@ function admAnalises(box, { users, mats, posts, pags, codigos, ag }, periodo = 3
   const rot = d => d.slice(8, 10) + '/' + d.slice(5, 7);
 
   box.innerHTML = `
-    <div class="an-filtros"><div class="chips" id="per">${[7, 30, 90].map(n => `<button class="chip ${n === periodo ? 'on' : ''}" data-p="${n}">Últimos ${n} dias</button>`).join('')}</div>
+    <div class="an-filtros"><div class="seg" id="per" role="group" aria-label="Período">${[7, 30, 90].map(n => `<button class="${n === periodo ? 'on' : ''}" data-p="${n}">${n} dias</button>`).join('')}</div>
       <button class="btn ghost sm" id="csv">${ic('download', 15)} Exportar alunos (CSV)</button></div>
     <div class="stats">
       ${tile('user', fmtN(alunos.length), 'Alunos cadastrados', `+${fmtN(novos)} no período`)}
       ${tile('check', fmtN(ativosAgora.length), 'Com acesso ativo', `${fmtN(pagantes)} pagantes, ${fmtN(emTeste)} em teste`)}
       ${tile('chart', fmtN(acessosPeriodo), 'Acessos ao portal', `${fmtN(ativosPeriodo)} alunos acessaram`)}
-      ${tile('download', fmtN(totD), 'Downloads', `${fmtN(totV)} visualizações de materiais`)}
+      ${tile('book', fmtN(totV), 'Materiais abertos', 'Leituras no período, somente dentro do portal')}
     </div>
     <div class="stats" style="grid-template-columns:repeat(3,1fr)">
       ${tile('tag', conv + '%', 'Conversão para plano pago', `${fmtN(jaPagaram)} de ${fmtN(alunos.length)} alunos já pagaram`)}
@@ -2954,7 +3079,7 @@ function admAnalises(box, { users, mats, posts, pags, codigos, ag }, periodo = 3
     </div>
     <div class="an-grid">
       <div class="card an-card"><h3>Materiais mais acessados</h3><p class="sub">Total de visualizações</p>${ranking(top(ag.views, mats), 'Nenhuma visualização registrada ainda.')}</div>
-      <div class="card an-card"><h3>Materiais mais baixados</h3><p class="sub">Total de downloads</p>${ranking(top(ag.downloads, mats), 'Nenhum download registrado ainda.')}</div>
+      <div class="card an-card"><h3>Disciplinas mais estudadas</h3><p class="sub">Materiais abertos por disciplina</p>${ranking(Object.entries(Object.entries(ag.views).reduce((o, [id, v]) => { const d = mats.find(m => m.id === id)?.disciplina || 'Sem disciplina'; o[d] = (o[d] || 0) + v; return o; }, {})).map(([t, v]) => ({ t, v })).sort((a, b) => b.v - a.v).slice(0, 8), 'Nenhuma leitura registrada ainda.')}</div>
     </div>
     <div class="an-grid">
       <div class="card an-card"><h3>Notícias, entrevistas e vagas mais lidas</h3><p class="sub">Total de leituras</p>${ranking(top(ag.pubs, posts), 'Nenhuma leitura registrada ainda.')}</div>
@@ -2965,14 +3090,14 @@ function admAnalises(box, { users, mats, posts, pags, codigos, ag }, periodo = 3
       </div>
     </div>
     <div class="card"><div class="pad" style="padding-bottom:8px"><h3 style="margin:0">Alunos mais ativos</h3><p class="sub muted small" style="margin:4px 0 0">Acessos nos últimos ${periodo} dias</p></div>
-      <div class="table-wrap"><table><tr><th>Aluno</th><th>Situação</th><th>Acessos</th><th>Materiais vistos</th><th>Downloads</th><th>Último acesso</th></tr>
-      ${maisAtivos.map(u => { const st = statusAss(u), a = u.atividade || {}; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}</div></td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td><td>${fmtN(acessosAluno(u))}</td><td>${fmtN(Object.keys(a.views || {}).length)}</td><td>${fmtN(Object.values(a.downloads || {}).reduce((x, y) => x + y, 0))}</td><td>${a.ultimo ? fmtDate(a.ultimo) : '<span class="muted">Nunca</span>'}</td></tr>`; }).join('') || '<tr><td colspan="6" class="muted">Nenhum aluno cadastrado ainda.</td></tr>'}</table></div></div>
+      <div class="table-wrap"><table><tr><th>Aluno</th><th>Situação</th><th>Acessos</th><th>Materiais vistos</th><th>Último acesso</th></tr>
+      ${maisAtivos.map(u => { const st = statusAss(u), a = u.atividade || {}; return `<tr><td><b>${esc(u.nome)}</b><div class="small muted">${esc(u.email)}</div></td><td><span class="badge ${st.cls}">${esc(st.txt)}</span></td><td>${fmtN(acessosAluno(u))}</td><td>${fmtN(Object.keys(a.views || {}).length)}</td><td>${a.ultimo ? fmtDate(a.ultimo) : '<span class="muted">Nunca</span>'}</td></tr>`; }).join('') || '<tr><td colspan="5" class="muted">Nenhum aluno cadastrado ainda.</td></tr>'}</table></div></div>
     <p class="hint" style="margin-top:12px">${store.modo === 'gist' ? 'O uso de cada aluno é enviado em lotes, a cada 10 minutos ou quando ele fecha o portal. Os números podem levar alguns minutos para aparecer.' : 'Os números são atualizados conforme os alunos usam o portal.'} Acessos do administrador não são contados.</p>`;
   $('#per', box).onclick = e => { const b = e.target.closest('[data-p]'); if (b) admAnalises(box, { users, mats, posts, pags, codigos, ag }, Number(b.dataset.p)); };
   $('#csv', box).onclick = () => {
-    const col = ['Nome', 'E-mail', 'Telefone', 'Instituição', 'Período', 'Situação', 'Plano', 'Válido até', 'Cadastro', 'Último acesso', 'Acessos (total)', 'Materiais vistos', 'Downloads'];
+    const col = ['Nome', 'E-mail', 'Telefone', 'Instituição', 'Período', 'Situação', 'Plano', 'Válido até', 'Cadastro', 'Último acesso', 'Acessos (total)', 'Materiais vistos'];
     const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const linhas = alunos.map(u => { const a = u.atividade || {}; return [u.nome, u.email, u.telefone, u.instituicao, u.semestre, statusAss(u).txt, u.assinatura?.plano || (u.assinatura?.tipo === 'teste' ? 'Teste grátis' : ''), u.assinatura?.validade ? fmtDate(u.assinatura.validade) : '', fmtDate(u.criadoEm), a.ultimo ? fmtDate(a.ultimo) : '', Object.values(a.dias || {}).reduce((x, y) => x + y, 0), Object.keys(a.views || {}).length, Object.values(a.downloads || {}).reduce((x, y) => x + y, 0)].map(q).join(';'); });
+    const linhas = alunos.map(u => { const a = u.atividade || {}; return [u.nome, u.email, u.telefone, u.instituicao, u.semestre, statusAss(u).txt, u.assinatura?.plano || (u.assinatura?.tipo === 'teste' ? 'Teste grátis' : ''), u.assinatura?.validade ? fmtDate(u.assinatura.validade) : '', fmtDate(u.criadoEm), a.ultimo ? fmtDate(a.ultimo) : '', Object.values(a.dias || {}).reduce((x, y) => x + y, 0), Object.keys(a.views || {}).length].map(q).join(';'); });
     const blob = new Blob(['﻿' + [col.map(q).join(';'), ...linhas].join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `alunos-${hojeISO()}.csv`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     toast('Planilha de alunos exportada.');
@@ -2987,8 +3112,8 @@ function admMateriais(box, mats, ag = { views: {}, downloads: {} }) {
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0">Vídeos e áudios entram por link do YouTube ou do Google Drive. PDFs podem ser enviados como arquivo ou por link do Drive.</p><button class="btn primary sm" id="novo">${ic('plus', 15)} Novo material</button></div>
     ${semCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${semCapa.length} PDF${semCapa.length > 1 ? 's' : ''} sem capa</h3><p>As capas são extraídas automaticamente da primeira página. Se ainda não apareceram, clique no botão.</p></div><button class="btn primary" id="gerar-capas">Gerar capas</button></div>` : ''}
     ${driveSemCapa.length ? `<div class="banner gold"><div><h3>${ic('file')} ${driveSemCapa.length} PDF${driveSemCapa.length > 1 ? 's' : ''} do Google Drive sem capa</h3><p>O Drive não permite ler o arquivo para extrair a capa. Em <b>Editar</b>, use <b>Escolher imagem de capa</b> ou escolha o PDF do seu computador só para gerar a capa e os dados.</p></div></div>` : ''}
-    <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Acessos</th><th>Downloads</th><th>Data</th><th></th></tr>
-    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${ag.views[m.id] || 0}</td><td>${m.permitirDownload === false ? '<span class="muted small">bloqueado</span>' : ag.downloads[m.id] || 0}</td><td>${fmtDate(m.criadoEm)}</td>
+    <div class="card table-wrap">${mats.length ? `<table><tr><th>Título</th><th>Tipo</th><th>Disciplina</th><th>Origem</th><th>Acessos</th><th>Data</th><th></th></tr>
+    ${mats.map(m => `<tr><td><b>${esc(m.titulo)}</b></td><td>${(TIPOS[m.tipo] || {}).nome || ''}</td><td>${esc(m.disciplina || '—')}</td><td class="small muted">${m.fileRef ? esc(m.fileName) + ', ' + fmtSize(m.size) : fonteMidia(m.url) === 'youtube' ? 'YouTube' : fonteMidia(m.url) === 'drive' ? 'Google Drive' : 'Link externo'}${m.paginas ? `, ${esc(m.paginas)} págs.` : ''}${m.duracao ? `, ${esc(m.duracao)}` : ''}</td><td>${ag.views[m.id] || 0}</td><td>${fmtDate(m.criadoEm)}</td>
       <td><div class="acts"><a class="btn ghost sm" href="#/material/${encodeURIComponent(m.id)}">Ver</a>${m.tipo === 'pdf' ? `<button class="btn ${m.quiz?.total ? 'ghost' : 'primary'} sm" data-qz="${esc(m.id)}">${ic('quiz', 13)} Questões${m.quiz?.total ? ` (${m.quiz.total})` : ''}</button>` : ''}<button class="btn ghost sm" data-ed="${esc(m.id)}">Editar</button><button class="btn danger sm" data-del="${esc(m.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><h3>Nenhum material ainda</h3><p>Clique em “Novo material” para publicar o primeiro.</p></div>'}</div>`;
   $('#novo').onclick = () => formMaterial();
   const gc = $('#gerar-capas'); if (gc) gc.onclick = async () => {
@@ -3171,6 +3296,13 @@ function rotularTabelas(root = document) {
     for (const tr of t.querySelectorAll('tr')) [...tr.children].forEach((td, i) => { if (td.tagName === 'TD' && !td.hasAttribute('data-label')) td.setAttribute('data-label', ths[i] || ''); });
     const w = t.closest('.table-wrap') || t.parentElement; if (w) w.classList.add('tcards');
   }
+  for (const b of root.querySelectorAll('.acts .btn:not([data-ic])')) {
+    b.dataset.ic = '1'; if (b.querySelector('svg')) continue;
+    const t = b.textContent.trim(), icn = b.matches('[data-del]') ? 'trash' : /^Editar/.test(t) ? 'edit' : /^Ver$/.test(t) ? 'eye' : /^Texto oficial/.test(t) ? 'ext' : '';
+    if (!icn) continue;
+    if (b.matches('[data-del]')) { b.title = t; b.setAttribute('aria-label', t); b.innerHTML = `${ic('trash', 16)}<span class="lbl">${esc(t)}</span>`; }
+    else b.insertAdjacentHTML('afterbegin', ic(icn, 14));
+  }
   ajustarTabelas();
 }
 /* Se a tabela não cabe na largura disponível, mostra em cartões (nada fica escondido) */
@@ -3265,7 +3397,6 @@ function formMaterial(m = {}) {
       <label data-t="video audio">Duração<input name="duracao" value="${esc(m.duracao)}" placeholder="Ex.: 45 min ou 1h20"></label>
       <span></span></div>
     <label>Descrição<textarea name="descricao" rows="3">${esc(m.descricao)}</textarea></label>
-    <label class="check"><input type="checkbox" name="permitirDownload" ${m.permitirDownload !== false ? 'checked' : ''}> <span>Permitir que os alunos baixem este arquivo <span class="hint" style="display:inline">(vale para PDFs e arquivos do Google Drive; vídeos do YouTube não podem ser baixados)</span></span></label>
     <label data-t="pdf">Ou, em vez do arquivo, link do PDF no Google Drive<input name="urlpdf" type="url" value="${esc(m.tipo === 'pdf' ? m.url : '')}" placeholder="https://drive.google.com/file/d/…"></label>
     <div class="progress hidden" id="pg"><span></span></div>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="sv">Salvar material</button></div>
@@ -3332,7 +3463,7 @@ function formMaterial(m = {}) {
     else if (url && !arquivo && !embedURL(url)) return toast('Para PDF por link, use um link do Google Drive (drive.google.com/file/d/…).', true);
     $('#sv', el).disabled = true;
     const o = { ...m, tipo: t, titulo: f.titulo.value.trim(), disciplina: f.disciplina.value.trim(), autor: f.autor.value.trim(), descricao: f.descricao.value.trim(), url: arquivo ? '' : url,
-      paginas: t === 'pdf' && f.paginas.value ? Number(f.paginas.value) : '', duracao: t !== 'pdf' ? f.duracao.value.trim() : '', permitirDownload: f.permitirDownload.checked };
+      paginas: t === 'pdf' && f.paginas.value ? Number(f.paginas.value) : '', duracao: t !== 'pdf' ? f.duracao.value.trim() : '' };
     try {
       if (arquivo) {
         $('#pg', el).classList.remove('hidden');
@@ -3359,6 +3490,7 @@ function formMaterial(m = {}) {
 /* ===================== Atualização automática das leis ===================== */
 const LEIS_PADRAO = { ativo: true, tipos: ['LEI', 'LCP', 'EMC', 'MPV'], ignorarComemorativas: true, diasIniciais: 30, desde: '', ignorados: [], ultima: null };
 const LEIS_TIPOS = { LEI: 'Leis ordinárias', LCP: 'Leis complementares', EMC: 'Emendas constitucionais', MPV: 'Medidas provisórias', DEC: 'Decretos' };
+const norm = v => String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 const fmtDT = t => t ? new Date(t).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
 const leisCfg = c => ({ ...LEIS_PADRAO, ...((c || S.config || {}).leisAuto || {}) });
 function repoDoSite(cfg) {
@@ -3439,37 +3571,81 @@ function cartaoLeisAuto(c) {
     <div class="la-ac"><button class="btn primary sm" id="la-sync">${ic('clock', 14)} Sincronizar agora</button><button class="btn ghost sm" id="la-cfg">Configurar</button>${link ? `<a class="btn ghost sm" href="${esc(link)}" target="_blank" rel="noopener">GitHub ${ic('ext', 13)}</a>` : ''}</div></div>`;
 }
 
-function admPublicacoes(box, posts) {
+const GRUPOS_PUB = {
+  oportunidades: { cats: ['estagio', 'concurso', 'emprego'], novo: 'Nova vaga', desc: 'Estágios, concursos e empregos exibidos na área Carreira dos alunos.', data: 'Prazo', vazio: 'Nenhuma vaga publicada nesta categoria.' },
+  atualidades: { cats: ['noticia', 'entrevista'], novo: 'Nova notícia ou entrevista', desc: 'Notícias do mundo jurídico e entrevistas em vídeo ou áudio (links do YouTube ou do Google Drive).', data: 'Data', vazio: 'Nada publicado nesta categoria.' }
+};
+const btnsLinha = (id, extra = '') => `<div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(id)}">Ver</a>${extra}<button class="btn ghost sm" data-ed="${esc(id)}">Editar</button><button class="btn danger sm" data-del="${esc(id)}">Excluir</button></div>`;
+async function excluirPublicacao(p) {
+  if (!await confirmar(p.origem ? 'Excluir esta atualização? Ela não volta nas próximas sincronizações.' : 'Excluir esta publicação?', 'Excluir')) return;
+  try {
+    await store.remove('publicacoes', p.id);
+    if (p.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+    toast('Publicação excluída.'); render();
+  } catch (err) { toast(err.message, true); }
+}
+function admPublicacoes(box, posts, grupo = 'oportunidades') {
+  const G = GRUPOS_PUB[grupo], meus = posts.filter(p => G.cats.includes(p.categoria));
   let filtro = '';
   const draw = () => {
-    const l = posts.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
-    $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>Prazo / data</th><th>Publicado</th><th></th></tr>
-      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}${p.auto ? ' <span class="badge ok" style="font-size:.68rem">automática</span>' : ''}</div></td><td>${esc((CATS[p.categoria] || {}).nome)}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
-      <td><div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(p.id)}">Ver</a><button class="btn ghost sm" data-ed="${esc(p.id)}">Editar</button><button class="btn danger sm" data-del="${esc(p.id)}">Excluir</button></div></td></tr>`).join('')}</table>` : '<div class="empty"><p>Nenhuma publicação nesta categoria.</p></div>';
+    const l = meus.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
+    $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>${G.data}</th><th>Publicado</th><th></th></tr>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td><span class="badge gold">${esc((CATS[p.categoria] || {}).nome)}</span></td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
+      <td>${btnsLinha(p.id)}</td></tr>`).join('')}</table>` : `<div class="empty"><p>${G.vazio}</p></div>`;
   };
-  box.innerHTML = `${cartaoLeisAuto(leisCfg())}<div class="list-h"><div class="chips" id="pf">${[['', 'Todas'], ...Object.entries(CATS).map(([k, c]) => [k, c.plural])].map(([v, l]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l}</button>`).join('')}</div>
-    <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova publicação</button></div><div class="card table-wrap" id="ptab"></div>`;
+  box.innerHTML = `<p class="muted adm-desc">${G.desc}</p>
+    <div class="list-h"><div class="chips" id="pf">${[['', 'Todas', meus.length], ...G.cats.map(k => [k, CATS[k].plural, meus.filter(p => p.categoria === k).length])].map(([v, l, n]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l} <span class="cn">${n}</span></button>`).join('')}</div>
+    <button class="btn primary sm" id="novo">${ic('plus', 15)} ${G.novo}</button></div><div class="card table-wrap" id="ptab"></div>`;
   draw();
   $('#pf').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.v; $$('.chip', $('#pf')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
-  $('#novo').onclick = () => formPost({ categoria: filtro || 'estagio' });
-  $('#la-sync').onclick = e => sincronizarLeisAgora(e.currentTarget);
-  $('#la-cfg').onclick = configLeisModal;
-  $('#ptab').onclick = async e => {
+  $('#novo').onclick = () => formPost({ categoria: filtro || G.cats[0] }, G.cats);
+  $('#ptab').onclick = e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
-    if (ed) formPost(posts.find(p => p.id === ed.dataset.ed));
-    if (dl && await confirmar('Excluir esta publicação?', 'Excluir')) {
-      try {
-        const p = posts.find(x => x.id === dl.dataset.del);
-        await store.remove('publicacoes', dl.dataset.del);
-        if (p?.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
-        toast('Publicação excluída.'); render();
-      } catch (err) { toast(err.message, true); }
-    }
+    if (ed) formPost(posts.find(p => p.id === ed.dataset.ed), G.cats);
+    if (dl) excluirPublicacao(posts.find(p => p.id === dl.dataset.del));
   };
 }
-function formPost(p = {}) {
+function admLeis(box, posts) {
+  const leis = posts.filter(p => p.categoria === 'lei'), c = leisCfg();
+  const tipos = [...new Set(leis.map(p => p.instituicao).filter(Boolean))].sort();
+  const trinta = new Date(Date.now() - 30 * DAY).toISOString().slice(0, 10);
+  let fTipo = '', fOrig = '', busca = '';
+  const discDe = p => p.disciplina || (String(p.local || '').split(' · ')[1] || '');
+  const draw = () => {
+    const t = norm(busca);
+    const l = leis.filter(p => (!fTipo || p.instituicao === fTipo) && (!fOrig || (fOrig === 'auto') === !!p.auto) && (!t || norm(`${p.titulo} ${p.resumo} ${discDe(p)}`).includes(t)))
+      .sort((a, b) => String(b.prazo || '').localeCompare(String(a.prazo || '')) || byNewest(a, b));
+    $('#ltab').innerHTML = l.length ? `<table><tr><th>Norma</th><th>Tipo</th><th>Disciplina</th><th>Data</th><th>Origem</th><th></th></tr>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b>${p.resumo ? `<div class="small muted lz-em">${esc(p.resumo)}</div>` : ''}</td><td>${esc(p.instituicao || '—')}</td><td>${esc(discDe(p) || '—')}</td><td>${fmtDate(p.prazo)}</td>
+      <td>${p.auto ? '<span class="badge ok">Automática</span>' : '<span class="badge">Manual</span>'}</td><td>${btnsLinha(p.id, p.link ? `<a class="btn ghost sm" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">Texto oficial</a>` : '')}</td></tr>`).join('')}</table>`
+      : `<div class="empty"><p>${leis.length ? 'Nenhuma norma encontrada com esses filtros.' : 'Nenhuma atualização publicada ainda. Use Sincronizar agora ou publique uma manualmente.'}</p></div>`;
+  };
+  const tile = (icn, n, l) => `<div class="stat"><span class="si">${ic(icn, 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`;
+  box.innerHTML = `${cartaoLeisAuto(c)}
+    <div class="stats">${tile('scroll', leis.length, 'Normas publicadas')}${tile('check', leis.filter(p => p.auto).length, 'Sincronizadas do Senado')}${tile('edit', leis.filter(p => !p.auto).length, 'Publicadas manualmente')}${tile('calendar', leis.filter(p => (p.prazo || '') >= trinta).length, 'Nos últimos 30 dias')}</div>
+    <div class="lz-tool card">
+      <label class="lz-busca">${ic('search', 16)}<input id="lq" type="search" placeholder="Buscar por número, assunto ou disciplina" autocomplete="off"></label>
+      <select id="lt" class="field"><option value="">Todos os tipos</option>${tipos.map(t => `<option>${esc(t)}</option>`).join('')}</select>
+      <select id="lo" class="field"><option value="">Automáticas e manuais</option><option value="auto">Só automáticas</option><option value="manual">Só manuais</option></select>
+      <button class="btn primary sm" id="novo">${ic('plus', 15)} Nova atualização</button>
+    </div>
+    <div class="card table-wrap" id="ltab"></div>`;
+  draw();
+  $('#lq').oninput = e => { busca = e.target.value; draw(); };
+  $('#lt').onchange = e => { fTipo = e.target.value; draw(); };
+  $('#lo').onchange = e => { fOrig = e.target.value; draw(); };
+  $('#novo').onclick = () => formPost({ categoria: 'lei', instituicao: 'Lei Ordinária', local: 'Federal' }, ['lei']);
+  $('#la-sync').onclick = e => sincronizarLeisAgora(e.currentTarget);
+  $('#la-cfg').onclick = configLeisModal;
+  $('#ltab').onclick = e => {
+    const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
+    if (ed) formPost(posts.find(p => p.id === ed.dataset.ed), ['lei']);
+    if (dl) excluirPublicacao(posts.find(p => p.id === dl.dataset.del));
+  };
+}
+function formPost(p = {}, cats = null) {
   const { el, close } = modal(p.id ? 'Editar publicação' : 'Nova publicação', `<form class="form" id="fp">
-    <div class="row2"><label>Categoria<select name="categoria">${Object.entries(CATS).map(([k, c]) => `<option value="${k}" ${p.categoria === k ? 'selected' : ''}>${c.nome}</option>`).join('')}</select></label>
+    <div class="row2"><label>Categoria<select name="categoria">${Object.entries(CATS).filter(([k]) => !cats || cats.includes(k) || k === p.categoria).map(([k, c]) => `<option value="${k}" ${p.categoria === k ? 'selected' : ''}>${c.nome}</option>`).join('')}</select></label>
       <label><span id="lb-prazo">Prazo de inscrição</span><input type="date" name="prazo" value="${esc(p.prazo)}"></label></div>
     <label>Título<input name="titulo" required value="${esc(p.titulo)}"></label>
     <div id="g-ent" class="form">
@@ -3479,7 +3655,7 @@ function formPost(p = {}) {
       <p class="hint" style="margin-top:-6px">${DICA_DRIVE}</p>
     </div>
     <div class="row2"><label><span id="lb-inst">Instituição / órgão</span><input name="instituicao" value="${esc(p.instituicao)}"></label><label><span id="lb-local">Local / abrangência</span><input name="local" value="${esc(p.local)}" placeholder="Ex.: Recife/PE, remoto"></label></div>
-    <label>Resumo<input name="resumo" value="${esc(p.resumo)}" maxlength="220"></label>
+    <label>Resumo<input name="resumo" value="${esc(p.resumo)}" maxlength="700"></label>
     <label><span id="lb-cont">Conteúdo completo</span><textarea name="conteudo" rows="7">${esc(p.conteudo)}</textarea></label>
     <label><span id="lb-link">Link oficial (edital, vaga ou texto da lei)</span><input type="url" name="link" value="${esc(p.link)}" placeholder="https://"></label>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Publicar</button></div></form>`, { wide: true });
