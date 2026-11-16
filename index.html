@@ -1083,6 +1083,24 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .dv-conv{display:flex;gap:16px;align-items:center;background:var(--marmore);border-radius:10px;padding:14px;margin-top:16px}
 .dv-conv canvas{width:120px;height:120px;border-radius:8px;border:1px solid var(--linha);flex:none;background:#fff}
 @media (max-width:900px){.dv-grid{grid-template-columns:1fr}.dv-prev{position:static;order:-1}.dv-prev canvas{max-height:56vh}.dv-conv{flex-direction:column;align-items:flex-start}}
+
+/* cadastro do colunista */
+.dv-conv-cfg{flex-basis:100%;display:grid;gap:8px;margin-top:8px;padding-top:10px;border-top:1px solid rgba(179,139,75,.3);color:var(--grafite)}
+.dv-conv-cfg .btn{justify-self:start}
+.sc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,560px);grid-template-areas:'intro form' 'extra form';grid-template-rows:auto 1fr;gap:0 40px;max-width:1160px;margin:0 auto;padding:40px 22px 80px;align-items:start}
+.sc-intro{grid-area:intro}.sc-extra{grid-area:extra}.sc-form{grid-area:form}
+.sc-intro h1{font-size:clamp(2rem,3.6vw,2.9rem);margin:10px 0 14px}
+.sc-intro p{font-size:1.04rem;color:#4a5263;max-width:52ch}
+.sc-passos{display:grid;gap:12px;margin:24px 0;padding:0;list-style:none;counter-reset:p}
+.sc-passos li{display:flex;gap:14px;align-items:flex-start;counter-increment:p}
+.sc-passos li:before{content:counter(p);flex:none;width:34px;height:34px;border-radius:50%;background:var(--toga);color:var(--latao-2);display:grid;place-items:center;font:700 .95rem var(--serif)}
+.sc-passos b{display:block;color:var(--toga)}.sc-passos span{font-size:.9rem;color:var(--cinza)}
+.sc-form h2{font-size:1.4rem;margin:0 0 4px}
+.sc-termo{display:flex!important;gap:10px;align-items:flex-start;font-weight:400!important;font-size:.86rem;background:var(--marmore);border-radius:8px;padding:12px}
+.sc-termo input{width:auto!important;margin-top:3px}
+.sc-ja{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.sc-ok{text-align:center}.sc-ok .art{width:76px;margin:0 auto 8px}.sc-ok .form{text-align:left}
+@media (max-width:900px){.sc-grid{grid-template-columns:1fr;grid-template-areas:'intro' 'form' 'extra';grid-template-rows:auto;padding:22px 14px 60px;gap:16px}.sc-intro p{margin-bottom:0}}
 </style>
 </head>
 <body>
@@ -1827,6 +1845,16 @@ function GistStore() {
       u.salt = uid(); u.iter = 120000; u.senhaHash = await pbkdf2(nova, u.salt, u.iter); await writeUser(u);
     },
     autorizarColunista(id) { colAuth = id; },
+    async cadastrarColunista(o, codigo) {
+      if (!TOKEN) throw semToken();
+      await ensure(true);
+      const cv = data.config?.colunistaConvite;
+      if (!cv?.codigo || cv.aberto === false || cv.codigo !== codigo) throw new Error('Este convite não é mais válido. Peça um novo QR code ao administrador do portal.');
+      data.colunistas = data.colunistas || [];
+      if (o.email && data.colunistas.some(c => String(c.email || '').toLowerCase() === o.email)) throw new Error('Já existe um colunista com este e-mail. Peça ao administrador um novo link de acesso.');
+      const rec = { ...o, id: uid(), criadoEm: Date.now(), atualizadoEm: Date.now(), aprovado: cv.aprovacao ? false : true };
+      data.colunistas.push(rec); await commit(); colAuth = rec.id; return rec;
+    },
     async salvarImagemCol(url) {
       if (!isAdmin() && !colAuth) throw new Error('Sem permissão para enviar imagens.');
       if (!TOKEN) throw semToken();
@@ -1971,6 +1999,7 @@ const ROUTES = {
   academico:     { view: viewAcademico, auth: true, ativo: true },
   artigo:        { view: viewArtigo, auth: true, ativo: true },
   escrever:      { view: viewEscrever, avulsa: true },
+  'seja-colunista': { view: viewSejaColunista, avulsa: true },
   instituto:     { view: viewInstituto },
   admin:         { view: viewAdmin, auth: true, admin: true }
 };
@@ -4588,8 +4617,13 @@ function admConfig(box) {
 const DIV_PADRAO = {
   portal: { titulo: 'Estude Direito com método', mensagem: 'Materiais de estudo, quizzes com certificado, notícias, vagas de estágio e artigos dos professores, tudo num só lugar.', chamada: 'Conheça o portal' },
   aluno: { titulo: 'Seu acesso começa aqui', mensagem: 'Crie sua conta em menos de um minuto e estude com materiais, quizzes com certificado e a Coluna Acadêmica.', chamada: null },
-  professor: { titulo: 'Convite para colunista', mensagem: 'Escreva artigos para a Coluna Acadêmica do portal. Aponte a câmera do celular para abrir o seu editor pessoal.', chamada: 'Link pessoal e intransferível' }
+  professor: { titulo: 'Seja colunista do portal', mensagem: 'Professor, escreva artigos para a Coluna Acadêmica. Aponte a câmera do celular, faça o seu cadastro e comece a escrever.', chamada: 'Cadastro rápido e gratuito' }
 };
+// cartão do link pessoal (gerado pelo administrador ou ao fim do autocadastro)
+const DIV_PESSOAL = { titulo: 'Seu acesso de colunista', mensagem: 'Aponte a câmera do celular para abrir o seu editor pessoal na Coluna Acadêmica do portal.', chamada: 'Link pessoal e intransferível' };
+const conviteCol = () => S.config.colunistaConvite || {};
+const linkConviteColunista = () => conviteCol().codigo ? linkAlunos() + '#/seja-colunista/' + conviteCol().codigo : '';
+async function salvarConvite(mud) { const n = { ...S.config, colunistaConvite: { aberto: true, aprovacao: false, ...conviteCol(), ...mud } }; await store.saveConfig(n); S.config = n; }
 const DIV_ROTULO = { portal: 'Estudo, prática e carreira jurídica', aluno: 'Para estudantes de Direito', professor: 'Convite ao professor colaborador' };
 const DIV_NOMES = { portal: 'Portal', aluno: 'Aluno', professor: 'Professor colaborador' };
 const DIV_FORMATOS = {
@@ -4767,7 +4801,7 @@ const nomeArquivo = (...p) => p.filter(Boolean).join('-').normalize('NFD').repla
 function divulgacaoHTML() {
   return `<div class="card pad dv-card" id="divulgacao">
     <div class="eyebrow">Divulgação</div><h3 style="margin-top:6px">${ic('qr', 20)} QR codes do portal</h3>
-    <p class="small muted" style="margin:0 0 16px;max-width:780px">Baixe cartões prontos para o WhatsApp, as redes sociais ou para imprimir. Escreva a sua mensagem e veja a prévia ao lado. O QR do <b>professor colaborador</b> é criado no cadastro de cada colunista, porque o link dele é pessoal.</p>
+    <p class="small muted" style="margin:0 0 16px;max-width:780px">Baixe cartões prontos para o WhatsApp, as redes sociais ou para imprimir. Escreva a sua mensagem e veja a prévia ao lado. O QR do <b>professor colaborador</b> leva à página em que o professor faz o próprio cadastro e começa a escrever.</p>
     <div class="dv-tipos" role="tablist">${Object.keys(DIV_NOMES).map((t, i) => `<button type="button" role="tab" data-t="${t}" class="${i ? '' : 'on'}">${ic(t === 'portal' ? 'home' : t === 'aluno' ? 'user' : 'pen', 15)} ${DIV_NOMES[t]}</button>`).join('')}</div>
     <div class="dv-grid">
       <form class="form" id="dv-f" novalidate>
@@ -4786,21 +4820,31 @@ function divulgacaoHTML() {
 function ligarDivulgacao() {
   const f = $('#dv-f'), cv = $('#dv-cv'); if (!f) return;
   let tipo = 'portal', t = null;
-  const linkDe = tp => tp === 'portal' ? linkPortal() : tp === 'aluno' ? linkCadastroAluno() : linkAlunos() + '#/escrever/exemplo';
+  const linkDe = tp => tp === 'portal' ? linkPortal() : tp === 'aluno' ? linkCadastroAluno() : linkConviteColunista();
   const rascunho = {};
   const lerForm = () => ({ titulo: f.titulo.value, mensagem: f.mensagem.value, chamada: f.chamada.value, mostrarEndereco: f.mostrarEndereco.checked });
   const textos = () => { const d = lerForm(); return { titulo: d.titulo.trim(), mensagem: d.mensagem.trim(), chamada: d.chamada.trim(), mostrarEndereco: d.mostrarEndereco }; };
-  const prever = () => { clearTimeout(t); t = setTimeout(() => desenharCartao(cv, { tipo, formato: f.formato.value, link: linkDe(tipo), nome: tipo === 'professor' ? 'Prof. Nome do Professor' : '', textos: textos() }).catch(e => console.warn(e)), 120); };
-  const preencher = () => {
+  const prever = () => { clearTimeout(t); t = setTimeout(() => desenharCartao(cv, { tipo, formato: f.formato.value, link: linkDe(tipo) || linkAlunos(), textos: textos() }).catch(e => console.warn(e)), 120); };
+  const preencher = async () => {
+    if (tipo === 'professor' && !conviteCol().codigo) { try { await salvarConvite({ codigo: novaChaveColunista().slice(0, 14) }); } catch (e) { toast(e.message, true); } }
     const d = rascunho[tipo] || textoDivulgacao(tipo);
     f.titulo.value = d.titulo; f.mensagem.value = d.mensagem; f.chamada.value = d.chamada || ''; f.mostrarEndereco.checked = !!d.mostrarEndereco;
     $('#dv-end').classList.toggle('hidden', tipo === 'professor');
     const l = linkDe(tipo);
-    $('#dv-link').innerHTML = tipo === 'professor'
-      ? `<span>${ic('lock', 14)} Cada professor tem um link próprio. O QR dele aparece ao cadastrar o colunista (ou ao gerar um <b>Novo link</b>) em <a href="#/admin/colunistas">Painel → Colunistas</a>. Aqui você define a mensagem do cartão de convite.</span>`
-      : `<span class="small muted">${tipo === 'portal' ? 'Link do portal (página inicial)' : 'Link do aluno (abre direto o cadastro)'}</span><code>${esc(l)}</code><button type="button" class="btn ghost sm" id="dv-cp">Copiar</button>`;
+    const cvc = conviteCol();
+    $('#dv-link').innerHTML = `<span class="small muted">${tipo === 'portal' ? 'Link do portal (página inicial)' : tipo === 'aluno' ? 'Link do aluno (abre direto o cadastro)' : 'Link de cadastro do colunista (o professor se cadastra e começa a escrever)'}</span><code>${esc(l || 'gerando…')}</code><button type="button" class="btn ghost sm" id="dv-cp">Copiar</button>
+      ${tipo === 'professor' ? `<div class="dv-conv-cfg">
+        <label class="dv-chk"><input type="checkbox" id="cc-aberto" ${cvc.aberto !== false ? 'checked' : ''}> Cadastro de colunistas aberto</label>
+        <label class="dv-chk"><input type="checkbox" id="cc-aprov" ${cvc.aprovacao ? 'checked' : ''}> Exigir a minha aprovação antes de o professor publicar<span class="hint">Desligado: quem se cadastrar pelo QR já pode publicar na Coluna Acadêmica. Ligado: ele escreve normalmente, mas só publica depois que você aprovar em Painel → Colunistas.</span></label>
+        <button type="button" class="btn ghost sm" id="cc-novo">${ic('link', 14)} Gerar novo código</button><span class="hint">O QR code antigo deixa de funcionar. Quem já se cadastrou continua com o próprio acesso.</span></div>` : ''}`;
+    if (tipo === 'professor') {
+      const salvarCfg = async (mud, msg) => { try { await salvarConvite(mud); toast(msg); preencher(); } catch (e) { toast(e.message, true); } };
+      $('#cc-aberto').onchange = e => salvarCfg({ aberto: e.target.checked }, e.target.checked ? 'Cadastro de colunistas aberto.' : 'Cadastro de colunistas fechado: o QR mostra que as inscrições estão encerradas.');
+      $('#cc-aprov').onchange = e => salvarCfg({ aprovacao: e.target.checked }, e.target.checked ? 'Novos colunistas vão precisar da sua aprovação para publicar.' : 'Novos colunistas já podem publicar.');
+      $('#cc-novo').onclick = async () => { if (await confirmar('Gerar um novo código? O QR code e o link de cadastro atuais deixam de funcionar.', 'Gerar novo código')) salvarCfg({ codigo: novaChaveColunista().slice(0, 14) }, 'Novo código gerado. Baixe o novo QR code.'); };
+    }
     const cp = $('#dv-cp'); if (cp) cp.onclick = () => copiar(l);
-    $('#dv-baixar').innerHTML = tipo === 'professor' ? '' : `<button type="button" class="btn primary" id="dv-card">${ic('download', 16)} Baixar cartão (PNG)</button><button type="button" class="btn ghost" id="dv-qr">${ic('qr', 16)} Baixar só o QR code</button>`;
+    $('#dv-baixar').innerHTML = `<button type="button" class="btn primary" id="dv-card">${ic('download', 16)} Baixar cartão (PNG)</button><button type="button" class="btn ghost" id="dv-qr">${ic('qr', 16)} Baixar só o QR code</button>`;
     const bc = $('#dv-card'); if (bc) bc.onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo, formato: f.formato.value, link: l, textos: textos() }); baixarCanvas(tmp, nomeArquivo('qr', S.config.nomePortal, tipo, f.formato.value)); };
     const bq = $('#dv-qr'); if (bq) bq.onclick = () => baixarCanvas(canvasSoQR(l), nomeArquivo('qr', S.config.nomePortal, tipo, 'codigo'));
     prever();
@@ -4825,7 +4869,7 @@ function qrConviteHTML() {
 }
 function ligarQrConvite(el, link, nome) {
   const cv = $('#cv-qr', el), c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 220, 220); desenharQR(c, link, 14, 14, 192);
-  $('#cv-card', el).onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo: 'professor', formato: $('#cv-fmt', el).value, link, nome }); baixarCanvas(tmp, nomeArquivo('convite-colunista', nome, $('#cv-fmt', el).value)); };
+  $('#cv-card', el).onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo: 'professor', formato: $('#cv-fmt', el).value, link, nome, textos: DIV_PESSOAL }); baixarCanvas(tmp, nomeArquivo('convite-colunista', nome, $('#cv-fmt', el).value)); };
   $('#cv-qrb', el).onclick = () => baixarCanvas(canvasSoQR(link), nomeArquivo('qr-colunista', nome));
 }
 
@@ -5006,7 +5050,7 @@ function mesclarColuna(a, b, id) {
 async function carregarAcademico() {
   const [cols, colunas] = await Promise.all([store.list('colunistas'), store.list('colunas')]);
   const porId = new Map(colunas.map(c => [c.id, c]));
-  const autores = cols.map(c => perfilColunista(c, porId.get(c.id)));
+  const autores = cols.filter(c => c.aprovado !== false).map(c => perfilColunista(c, porId.get(c.id)));
   const artigos = [];
   for (const a of autores) for (const x of (porId.get(a.id)?.artigos || [])) {
     if (!x.publicado || (a.ocultos || []).includes(x.id) || expirado(x, a)) continue;
@@ -5093,7 +5137,7 @@ async function viewArtigo(main, param) {
   const [cols, coluna] = await Promise.all([store.list('colunistas'), store.get('colunas', cid).catch(() => null)]);
   const c = cols.find(x => x.id === cid), x = coluna?.artigos?.find(y => y.id === aid);
   if (c && x?.publicado && expirado(x, c) && S.user?.role !== 'admin') { main.innerHTML = `<div class="page"><div class="card empty">${ART.medal('clock')}<h3>Este artigo saiu da Coluna Acadêmica</h3><p>Ele ficou disponível até ${fmtDate(expiraDe(x, c))}.</p><a class="btn ghost" href="#/academico">Ver os artigos atuais</a></div></div>`; return; }
-  if (!c || !x?.publicado || (c.ocultos || []).includes(aid)) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Artigo não encontrado</h3><p>Ele pode ter sido retirado da Coluna Acadêmica pelo autor.</p><a class="btn ghost" href="#/academico">Voltar à Coluna Acadêmica</a></div></div>`; return; }
+  if (!c || c.aprovado === false || !x?.publicado || (c.ocultos || []).includes(aid)) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Artigo não encontrado</h3><p>Ele pode ter sido retirado da Coluna Acadêmica pelo autor.</p><a class="btn ghost" href="#/academico">Voltar à Coluna Acadêmica</a></div></div>`; return; }
   const autor = perfilColunista(c, coluna);
   const outros = (coluna.artigos || []).filter(y => y.publicado && y.id !== aid && !(c.ocultos || []).includes(y.id) && !expirado(y, c)).map(y => ({ ...y.publicado, id: y.id, autor })).sort((p, q) => (q.publicadoEm || 0) - (p.publicadoEm || 0)).slice(0, 3);
   main.innerHTML = `<div class="page"><a href="#/academico" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} Coluna Acadêmica</a>
@@ -5138,7 +5182,7 @@ async function viewEscrever(main, chave) {
   };
   // artigo já publicado: ao salvar, a versão da Coluna Acadêmica é atualizada junto (se estiver dentro das regras)
   const atualizarPublicado = a => {
-    if (!a.publicado || expirado(a, c0) || !mudou(a) || problemaDe(a)) return false;
+    if (c0.aprovado === false || !a.publicado || expirado(a, c0) || !mudou(a) || problemaDe(a)) return false;
     a.publicado = { ...a.publicado, titulo: String(a.titulo).trim(), subtitulo: String(a.subtitulo || '').trim(), disciplina: a.disciplina || '', html: limparHTML(a.html), atualizadoEm: Date.now() };
     a.atualizadoEm = Date.now(); return true;
   };
@@ -5231,7 +5275,7 @@ async function viewEscrever(main, chave) {
   function desenharLista() { const box = $('#ed-itens'); if (box) box.innerHTML = itensHTML(); desenharAvisos(); desenharRodape(); }
   function desenharAvisos() {
     const box = $('#ed-avisos'); if (!box) return;
-    box.innerHTML = alertas().map(({ a, e }) => { const d = diasAte(e), foi = e < Date.now();
+    box.innerHTML = (c0.aprovado === false ? `<div class="banner gold ed-aviso"><div><h3>${ic('clock')} Cadastro aguardando aprovação</h3><p>Você já pode escrever e salvar os seus textos. O botão de publicar é liberado assim que o administrador aprovar o seu cadastro (esta página confere sozinha).</p></div></div>` : '') + alertas().map(({ a, e }) => { const d = diasAte(e), foi = e < Date.now();
       return `<div class="banner ${foi ? '' : 'gold'} ed-aviso"><div><h3>${ic('clock')} ${foi ? 'Artigo fora da Coluna Acadêmica' : 'Artigo perto de sair da Coluna Acadêmica'}</h3><p><b>${esc(a.titulo || 'Sem título')}</b> ${foi ? `saiu da Coluna Acadêmica em ${fmtDate(e)}. Para voltar, peça ao administrador para prorrogar o prazo.` : `fica na Coluna Acadêmica até ${fmtDate(e)} (${prazoTxt(d)}).`}</p></div><button class="btn ghost sm" data-abrir="${esc(a.id)}">Abrir</button></div>`; }).join('');
   }
   let barraChars = 0;
@@ -5253,6 +5297,7 @@ async function viewEscrever(main, chave) {
       <span class="ed-meta">${n} palavra${n === 1 ? '' : 's'} · ${minLeitura(html)} min${R.maxImagens ? ` · <span class="${nImg > R.maxImagens ? 'ed-err' : ''}">${nImg}/${R.maxImagens} imagens</span>` : ''}</span>`;
     $('#ed-ret').classList.toggle('hidden', !a.publicado);
     const pb = $('#ed-pub'), exp = expirado(a, c0);
+    if (c0.aprovado === false) { pb.innerHTML = `${ic('clock', 16)} Aguardando aprovação`; pb.disabled = true; $('#ed-av').innerHTML = avatarCol(autor(), 34); return; }
     pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo na Coluna encerrado' : !a.publicado ? 'Salvar e publicar na Coluna' : mudou(a) ? 'Atualizar na Coluna agora' : 'Publicado na Coluna'}`;
     pb.disabled = exp || (!!a.publicado && !mudou(a));
     $('#ed-av').innerHTML = avatarCol(autor(), 34);
@@ -5481,6 +5526,7 @@ async function viewEscrever(main, chave) {
     hidratarImagens(el);
   };
   $('#ed-pub').onclick = async () => {
+    if (c0.aprovado === false) return toast('O seu cadastro ainda aguarda a aprovação do administrador.', true);
     const a = art(), html = limparHTML(corpo.innerHTML);
     if (tit.value.trim().length < 3) { toast('Dê um título ao artigo antes de publicar.', true); return tit.focus(); }
     const ch = contarChars(html), nImg = (html.match(/<img\b/g) || []).length;
@@ -5526,7 +5572,8 @@ async function viewEscrever(main, chave) {
     const { el, close } = modal('Meu perfil de colunista', `<form class="form" id="fpf">
       <div class="ed-pf-foto"><span id="pf-av">${avatarCol(p, 84)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('user', 14)} Escolher foto<input type="file" id="pf-file" accept="image/*" hidden></label>
         <button type="button" class="btn ghost sm" id="pf-rm">Remover foto</button><p class="hint" style="margin-top:6px">Foto de rosto, aparece ao lado dos seus artigos.</p></div></div>
-      <label>Nome<input value="${esc(c0.nome)}" disabled><span class="hint">O nome é definido pelo administrador do portal.</span></label>
+      <label>Nome<input value="${esc(c0.nome)}" disabled><span class="hint">Para mudar o nome, fale com o administrador do portal.</span></label>
+      <label>Meu link pessoal de acesso<input value="${esc(linkColunista(chave))}" readonly onclick="this.select()"><span class="hint">Guarde este link: ele abre o seu editor em qualquer aparelho.</span></label>
       <label>Titulação ou cargo<input name="titulacao" maxlength="120" value="${esc(p.titulacao || '')}" placeholder="Ex.: Mestre em Direito Penal, professor de Processo Penal"></label>
       <label>Instituição<input name="instituicao" maxlength="120" value="${esc(p.instituicao || '')}" placeholder="Ex.: nome da faculdade ou universidade"></label>
       <label>Minibiografia<textarea name="bio" maxlength="500" rows="4" placeholder="Duas ou três frases sobre a sua trajetória.">${esc(p.bio || '')}</textarea></label>
@@ -5554,6 +5601,13 @@ async function viewEscrever(main, chave) {
   });
 
   abrir(atual);
+  if (c0.aprovado === false) {
+    const tA = setInterval(async () => {
+      if (document.hidden) return;
+      try { const x = (await store.list('colunistas')).find(y => y.id === c0.id); if (x && x.aprovado !== false) { c0.aprovado = true; clearInterval(tA); desenharLista(); toast('Cadastro aprovado! Você já pode publicar na Coluna Acadêmica.'); } } catch {}
+    }, 45000);
+    S.limpar.push(() => clearInterval(tA));
+  }
   const al = alertas();
   if (al.length) toast(al[0].e < Date.now() ? `"${al[0].a.titulo}" saiu da Coluna Acadêmica em ${fmtDate(al[0].e)}.` : `"${al[0].a.titulo}" sai da Coluna Acadêmica em ${fmtDate(al[0].e)} (${prazoTxt(diasAte(al[0].e))}).`, true);
   // alterações de artigos publicados que ficaram presas (versões anteriores) vão à Coluna Acadêmica agora, se estiverem nas regras
@@ -5563,10 +5617,85 @@ async function viewEscrever(main, chave) {
   if (!tit.value) tit.focus();
 }
 
+/* ===================== Autocadastro do colunista (QR de convite) ===================== */
+const primeiroNome = n => (String(n || '').replace(/^((prof|profa|professor|professora|dr|dra|doutor|doutora|me|ma|mestre|mestra|esp)\.?\s+)+/i, '').trim().split(/\s+/)[0] || String(n || '').trim());
+const COL_CHAVES = 'agora-col-chaves'; // acessos criados neste aparelho, para voltar a escrever
+const chavesLocais = () => { try { return JSON.parse(lsGet(COL_CHAVES) || '[]'); } catch { return []; } };
+async function cadastrarColunistaPublico(o, codigo) {
+  if (store.cadastrarColunista) return store.cadastrarColunista(o, codigo);
+  const cfg = await store.getConfig(), cv = cfg?.colunistaConvite;
+  if (!cv?.codigo || cv.aberto === false || cv.codigo !== codigo) throw new Error('Este convite não é mais válido. Peça um novo QR code ao administrador do portal.');
+  if (o.email && (await store.list('colunistas')).some(c => String(c.email || '').toLowerCase() === o.email)) throw new Error('Já existe um colunista com este e-mail. Peça ao administrador um novo link de acesso.');
+  return store.save('colunistas', { ...o, aprovado: cv.aprovacao ? false : true });
+}
+async function viewSejaColunista(main, codigo) {
+  codigo = decodeURIComponent(codigo || '').trim();
+  document.title = `Seja colunista · ${S.config.nomePortal}`;
+  const topo = `<header class="ed-top">${brandHTML('#/').replace('Portal do estudante de Direito', 'Coluna Acadêmica')}</header>`;
+  const falha = (t, p) => { main.innerHTML = `${topo}<div class="ed-falha"><div class="card pad">${ART.medal('pen')}<h2>${t}</h2><p class="muted">${p}</p></div></div>`; };
+  let cfg = S.config;
+  try { cfg = (await store.getConfig()) || cfg; S.config = { ...S.config, ...cfg }; } catch (e) { console.warn(e); }
+  const cv = cfg.colunistaConvite || {};
+  if (!codigo || !cv.codigo || cv.codigo !== codigo) return falha('Convite inválido ou substituído', 'Este QR code de cadastro não é mais válido. Peça o QR code atual ao administrador do portal.');
+  if (cv.aberto === false) return falha('Inscrições encerradas', 'O cadastro de novos colunistas está fechado no momento. Fale com o administrador do portal.');
+  const R = regrasCol(), ja = chavesLocais();
+  main.innerHTML = `${topo}<div class="sc-grid">
+    <section class="sc-intro"><div class="eyebrow">Coluna Acadêmica</div><h1>Seja colunista do ${esc(S.config.nomePortal)}</h1>
+      <p>Escreva artigos para estudantes de Direito, com o seu nome, foto e minibiografia. O editor é online, salva sozinho e funciona no computador e no celular.</p>
+      </section><section class="sc-extra"><ol class="sc-passos"><li><div><b>Faça o seu cadastro</b><span>Leva um minuto, sem senha: você recebe um link pessoal de acesso.</span></div></li>
+        <li><div><b>Escreva no editor online</b><span>Formatação, imagens e salvamento automático.</span></div></li>
+        <li><div><b>Publique na Coluna Acadêmica</b><span>${cv.aprovacao ? 'Depois da aprovação do administrador, o artigo aparece para os alunos.' : 'O artigo aparece para os alunos assim que você publicar.'}</span></div></li></ol>
+      <div class="ed-ajuda ed-regras"><b>${ic('scroll', 15)} Regras dos artigos</b><ul><li>${R.minChars ? `Entre <b>${fmtN0(R.minChars)}</b> e <b>${fmtN0(R.maxChars)}</b>` : `Até <b>${fmtN0(R.maxChars)}</b>`} caracteres</li>
+        <li>${R.maxImagens ? `Até <b>${R.maxImagens}</b> ${R.maxImagens === 1 ? 'imagem' : 'imagens'} por artigo` : 'Sem imagens'}</li>
+        <li>${R.dias ? `Cada artigo fica <b>${R.dias} dias</b> na Coluna Acadêmica` : 'Sem prazo de expiração'}</li></ul></div></section>
+    <section class="card pad sc-form" id="sc-box">
+      ${ja.length ? `<div class="sc-ja demo-hint"><span>Você já tem cadastro neste aparelho como <b>${esc(ja[ja.length - 1].nome)}</b>.</span><a class="btn primary sm" href="#/escrever/${encodeURIComponent(ja[ja.length - 1].chave)}">Continuar escrevendo</a></div>` : ''}
+      <h2>Cadastro de colunista</h2><p class="small muted" style="margin:0 0 14px">Os campos com * são obrigatórios. Você pode mudar a foto e a minibiografia depois, no editor.</p>
+      <form class="form" id="fsc" novalidate>
+        <div class="ed-pf-foto"><span id="sc-av">${avatarCol({ nome: '?' }, 72)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('user', 14)} Foto (opcional)<input type="file" id="sc-file" accept="image/*" hidden></label><p class="hint" style="margin-top:6px">Foto de rosto, aparece ao lado dos seus artigos.</p></div></div>
+        <div class="row2"><label>Nome completo *<input name="nome" required maxlength="100" autocomplete="name" placeholder="Como vai aparecer nos artigos"></label>
+          <label>E-mail *<input name="email" type="email" required maxlength="120" autocomplete="email"></label></div>
+        <div class="row2"><label>Titulação ou cargo<input name="titulacao" maxlength="120" placeholder="Ex.: Mestre em Direito Penal"></label>
+          <label>Instituição<input name="instituicao" maxlength="120" placeholder="Ex.: nome da faculdade ou universidade"></label></div>
+        <label>Disciplina principal<input name="disciplina" list="dl-disc-sc" maxlength="80"></label>
+        <label>Minibiografia<textarea name="bio" maxlength="500" rows="3" placeholder="Duas ou três frases sobre a sua trajetória."></textarea></label>
+        <label class="sc-termo"><input type="checkbox" name="termo"> <span>Declaro que os textos que eu publicar serão de minha autoria, com as fontes citadas, e autorizo a publicação na Coluna Acadêmica do portal.</span></label>
+        <button class="btn primary" id="sc-ok" style="width:100%">${ic('pen', 16)} Criar meu acesso e começar a escrever</button>
+      </form><datalist id="dl-disc-sc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist></section></div>`;
+  let foto = '';
+  const f = $('#fsc');
+  $('#sc-file').onchange = async e => { try { foto = await fotoQuadrada(e.target.files[0]); $('#sc-av').innerHTML = avatarCol({ nome: f.nome.value || '?', foto }, 72); } catch (er) { toast(er.message, true); } };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const nome = f.nome.value.trim(), email = f.email.value.trim().toLowerCase();
+    if (nome.length < 3) { toast('Informe o seu nome completo.', true); return f.nome.focus(); }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Informe um e-mail válido.', true); return f.email.focus(); }
+    if (!f.termo.checked) return toast('Para continuar, marque a declaração de autoria.', true);
+    const b = $('#sc-ok'); b.disabled = true; b.textContent = 'Criando o seu acesso…';
+    try {
+      const chave = novaChaveColunista();
+      const rec = await cadastrarColunistaPublico({ nome, email, titulacao: f.titulacao.value.trim(), instituicao: f.instituicao.value.trim(), disciplina: f.disciplina.value.trim(), bio: f.bio.value.trim(), foto,
+        ativo: true, ocultos: [], tokenHash: await hashChaveCol(chave), linkEm: Date.now(), origem: 'autocadastro', termoEm: Date.now() }, codigo);
+      lsSet(COL_CHAVES, JSON.stringify([...chavesLocais().filter(x => x.id !== rec.id), { id: rec.id, nome, chave }].slice(-5)));
+      const link = linkColunista(chave);
+      const msg = `Meu link de colunista do portal ${S.config.nomePortal}: ${link}`;
+      $('#sc-box').innerHTML = `<div class="sc-ok">${ART.medal('check')}<h2>Cadastro feito, ${esc(primeiroNome(nome))}!</h2>
+        <p class="muted">${rec.aprovado === false ? 'Você já pode escrever. A publicação na Coluna Acadêmica é liberada assim que o administrador aprovar o seu cadastro.' : 'Você já pode escrever e publicar os seus artigos na Coluna Acadêmica.'}</p>
+        <a class="btn primary" href="#/escrever/${encodeURIComponent(chave)}" style="width:100%;margin:6px 0 18px">${ic('pen', 16)} Começar a escrever</a>
+        <div class="form"><label>Seu link pessoal de acesso<input class="field" readonly value="${esc(link)}" id="sc-lk"></label></div>
+        <div class="actions" style="justify-content:center"><button class="btn ghost sm" id="sc-cp">Copiar link</button><a class="btn ghost sm" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">Enviar para o meu WhatsApp</a><a class="btn ghost sm" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Meu acesso de colunista - ' + S.config.nomePortal)}&body=${encodeURIComponent(msg)}">Enviar para o meu e-mail</a></div>
+        ${qrConviteHTML().replace('QR code do convite', 'QR code do seu acesso').replace('O professor aponta a câmera do celular e abre o editor dele. É pessoal: envie só para ele.', 'Abre o seu editor em qualquer celular. É pessoal: não compartilhe.').replace('Baixar cartão do convite', 'Baixar cartão')}
+        <div class="demo-hint" style="margin-top:14px;text-align:left"><b>Guarde este link.</b> Ele é a sua chave de acesso, sem senha. Se perder, peça ao administrador um novo link.</div></div>`;
+      $('#sc-cp').onclick = () => copiar(link); $('#sc-lk').onclick = ev => ev.target.select();
+      ligarQrConvite($('#sc-box'), link, nome);
+    } catch (er) { toast(er.message, true); b.disabled = false; b.innerHTML = `${ic('pen', 16)} Criar meu acesso e começar a escrever`; }
+  };
+}
+
 /* ======================= Administração: colunistas ======================= */
 function mostrarLinkColunista(c, chave) {
   const link = linkColunista(chave);
-  const msg = `Olá, ${c.nome.split(' ')[0]}! Este é o seu link pessoal para escrever artigos na Coluna Acadêmica do portal ${S.config.nomePortal}. Abra no computador ou no celular, escreva e clique em "Salvar e publicar na Coluna". Guarde o link e não o compartilhe: ele é a sua chave de acesso.\n\n${link}`;
+  const msg = `Olá, ${primeiroNome(c.nome)}! Este é o seu link pessoal para escrever artigos na Coluna Acadêmica do portal ${S.config.nomePortal}. Abra no computador ou no celular, escreva e clique em "Salvar e publicar na Coluna". Guarde o link e não o compartilhe: ele é a sua chave de acesso.\n\n${link}`;
   const { el } = modal('Link do colunista', `<p>Envie este link para <b>${esc(c.nome)}</b>. Ele abre o editor online direto, sem criar conta.</p>
     <div class="form"><input class="field" readonly value="${esc(link)}" id="lc"></div>
     <div class="actions" style="justify-content:flex-start"><button class="btn primary" id="lc-cp">Copiar link</button><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
@@ -5620,6 +5749,8 @@ async function admColunistas(box, ag) {
   const recarregar = () => go('admin/colunistas');
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:70ch">Cada professor recebe um <b>link pessoal</b> para escrever online, sem criar conta. O texto é salvo sozinho enquanto ele escreve e, ao clicar em <b>Salvar e publicar na Coluna</b>, aparece para os alunos na <a href="#/academico">Coluna Acadêmica</a>.</p>
       <button class="btn primary sm" id="novo">${ic('plus', 15)} Novo colunista</button></div>
+    <p class="small muted" style="margin:6px 0 0">Os professores também podem se cadastrar sozinhos pelo QR code de convite, em <a href="#/admin/config">Configurações → Divulgação → Professor colaborador</a>.</p>
+    ${(() => { const pend = cols.filter(c => c.aprovado === false); return pend.length ? `<div class="banner gold" style="margin-top:16px"><div><h3>${ic('users')} ${pend.length} colunista${pend.length === 1 ? '' : 's'} aguardando aprovação</h3><p>${pend.map(c => esc(c.nome)).join(', ')} ${pend.length === 1 ? 'se cadastrou' : 'se cadastraram'} pelo QR code. Eles já podem escrever; a publicação é liberada quando você clicar em <b>Aprovar</b>.</p></div></div>` : ''; })()}
     ${(() => { const R = regrasCol(); return `<form class="card pad col-regras" id="frg" novalidate><div class="list-h"><div><h3>${ic('scroll', 18)} Regras dos artigos</h3><p class="small muted" style="margin:4px 0 0">O colunista vê estas regras no editor e é avisado antes de cada artigo sair da Coluna Acadêmica.</p></div><button class="btn primary sm" id="rg-sv">Salvar regras</button></div>
       <div class="col-regras-g">
         <label>Mínimo de caracteres<input type="number" name="minChars" min="0" max="50000" value="${R.minChars}"></label>
@@ -5636,8 +5767,8 @@ async function admColunistas(box, ag) {
       ${cols.map(c => { const r = resumo(c), p = perfilColunista(c, porId.get(c.id)); return `<tr><td><div class="col-tab-nm">${avatarCol(p, 38)}<div><b>${esc(c.nome)}</b><div class="small muted">${esc([p.titulacao, c.email].filter(Boolean).join(' · ') || '—')}</div></div></div></td>
         <td><b>${r.pub}</b> publicado${r.pub === 1 ? '' : 's'}${r.ocultos ? ` <span class="badge warn">${r.ocultos} oculto${r.ocultos === 1 ? '' : 's'}</span>` : ''}${r.exp ? ` <span class="badge err">${r.exp} expirado${r.exp === 1 ? '' : 's'}</span>` : ''}<div class="small muted">${r.rasc} rascunho${r.rasc === 1 ? '' : 's'}</div></td>
         <td>${fmtN(r.leituras)}</td><td>${r.ult ? fmtDate(r.ult) : '<span class="muted">Ainda não escreveu</span>'}</td>
-        <td>${c.ativo === false ? '<span class="badge err">Pausado</span>' : '<span class="badge ok">Ativo</span>'}</td>
-        <td><div class="acts"><button class="btn primary sm" data-act="link" data-id="${esc(c.id)}">${ic('link', 14)} Novo link</button><button class="btn ghost sm" data-act="arts" data-id="${esc(c.id)}">Artigos</button><button class="btn ghost sm" data-act="ed" data-id="${esc(c.id)}">${ic('edit', 14)}</button>
+        <td>${c.ativo === false ? '<span class="badge err">Pausado</span>' : c.aprovado === false ? '<span class="badge warn">Aguardando aprovação</span>' : '<span class="badge ok">Ativo</span>'}${c.origem === 'autocadastro' ? '<div class="small muted" style="margin-top:4px">Cadastrou-se pelo QR</div>' : ''}</td>
+        <td><div class="acts">${c.aprovado === false ? `<button class="btn primary sm" data-act="aprovar" data-id="${esc(c.id)}">${ic('check', 14)} Aprovar</button>` : ''}<button class="btn ${c.aprovado === false ? 'ghost' : 'primary'} sm" data-act="link" data-id="${esc(c.id)}">${ic('link', 14)} Novo link</button><button class="btn ghost sm" data-act="arts" data-id="${esc(c.id)}">Artigos</button><button class="btn ghost sm" data-act="ed" data-id="${esc(c.id)}">${ic('edit', 14)}</button>
           <button class="btn ghost sm" data-act="ativo" data-id="${esc(c.id)}">${c.ativo === false ? 'Reativar' : 'Pausar'}</button><button class="btn danger sm" data-act="del" data-id="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
       : `<div class="card empty">${ART.medal('pen')}<h3>Nenhum colunista ainda</h3><p>Cadastre o primeiro professor e envie o link para ele começar a escrever.</p><button class="btn primary" id="novo2">${ic('plus', 15)} Novo colunista</button></div>`}`;
   $('#novo').onclick = () => formColunista({}, recarregar);
@@ -5659,6 +5790,7 @@ async function admColunistas(box, ag) {
     const act = b.dataset.act;
     try {
       if (act === 'ed') return formColunista(c, recarregar);
+      if (act === 'aprovar') { await store.save('colunistas', { ...c, aprovado: true, aprovadoEm: Date.now() }); toast(`${c.nome} aprovado: já pode publicar na Coluna Acadêmica.`); return admColunistas(box, ag); }
       if (act === 'link') {
         if (c.tokenHash && !await confirmar(`Gerar um novo link para ${c.nome}? O link enviado antes deixa de funcionar.`, 'Gerar novo link')) return;
         const chave = novaChaveColunista(); await store.save('colunistas', { ...c, tokenHash: await hashChaveCol(chave), linkEm: Date.now(), ativo: true });

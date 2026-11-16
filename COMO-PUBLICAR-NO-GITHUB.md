@@ -142,7 +142,7 @@ Em **Painel → Configurações → Divulgação** há três QR codes, cada um c
 |---|---|---|
 | **Portal** | Página inicial do portal | Configurações → Divulgação → Portal |
 | **Aluno** | Direto para a tela de cadastro do aluno | Configurações → Divulgação → Aluno (e no botão **Link para os alunos**) |
-| **Professor colaborador** | Editor pessoal do colunista | Na hora do cadastro: **Colunistas → Novo colunista** (ou **Novo link**) |
+| **Professor colaborador** | Página **Seja colunista**: o professor faz o próprio cadastro e começa a escrever | Configurações → Divulgação → Professor colaborador |
 
 **Como usar:**
 1. Escolha Portal ou Aluno.
@@ -153,7 +153,12 @@ Em **Painel → Configurações → Divulgação** há três QR codes, cada um c
 4. Clique em **Baixar cartão (PNG)**. Para usar o código em outra arte, clique em **Baixar só o QR code** (1200 × 1200, fundo branco).
 5. **Salvar mensagem** guarda o texto para as próximas vezes. **Voltar ao texto padrão** restaura a sugestão do portal.
 
-**Professor colaborador:** o link do professor é pessoal e o portal não o guarda. Por isso o QR dele aparece só no momento do cadastro (ou ao gerar um **Novo link**), junto com os botões **Baixar cartão do convite** e **Baixar só o QR**. O cartão não leva o nome do professor; a mensagem é editada na aba Professor colaborador da Divulgação. Envie o QR do professor só para ele: quem o tiver consegue escrever como esse colunista.
+**Professor colaborador (autocadastro):** o QR de convite é o mesmo para todos os professores. Quem lê o QR abre a página **Seja colunista**, preenche nome, e-mail, titulação, instituição, disciplina, minibiografia e foto (opcional), marca a declaração de autoria e clica em **Criar meu acesso e começar a escrever**. Na hora ele recebe o link pessoal (com botões para copiar, mandar para o próprio WhatsApp ou e-mail e baixar o QR do acesso) e entra direto no editor.
+- **Cadastro de colunistas aberto:** desmarque para encerrar as inscrições. O QR passa a mostrar "Inscrições encerradas".
+- **Exigir a minha aprovação antes de o professor publicar:** desligado, quem se cadastra já publica. Ligado, o professor escreve e salva normalmente, mas só publica depois que você clicar em **Aprovar** em Painel → Colunistas (aparece um aviso com os nomes). O editor dele libera o botão sozinho, sem recarregar.
+- **Gerar novo código:** o QR e o link de cadastro anteriores deixam de funcionar (use se o QR circulou onde não devia). Quem já se cadastrou continua com o próprio acesso.
+- Não é possível cadastrar dois colunistas com o mesmo e-mail. Quem perder o link pessoal pede um **Novo link** ao administrador.
+- Você continua podendo cadastrar professores manualmente em **Colunistas → Novo colunista**; nesse caso o QR pessoal do professor aparece na hora, com o botão **Baixar cartão**.
 
 Os QR codes usam correção de erro alta e o símbolo do portal no centro. Todos foram testados com leitor de QR nos três formatos.
 
