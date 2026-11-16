@@ -162,6 +162,24 @@ Em **Painel → Configurações → Divulgação** há três QR codes, cada um c
 
 Os QR codes usam correção de erro alta e o símbolo do portal no centro. Todos foram testados com leitor de QR nos três formatos.
 
+**Vários QR codes numa folha A4 (para imprimir e economizar papel):** logo abaixo, em **Vários QR codes numa folha A4**:
+1. Marque os QR codes que quer imprimir (**Portal**, **Aluno** e **Professor colaborador**; este último aparece depois que o convite é gerado na aba Professor colaborador) e informe quantas **cópias** de cada.
+2. Escolha o **tamanho**:
+
+| Opção | Por folha | Tamanho de cada um |
+|---|---|---|
+| Cartazes | 4 | cerca de 9,4 × 13,3 cm |
+| Cartões | 9 | cerca de 6,2 × 8,8 cm |
+| Quadrados grandes | 6 | cerca de 9,1 × 9,1 cm |
+| Quadrados pequenos | 12 | cerca de 6,5 × 6,5 cm |
+| Etiquetas só com o QR | 20 | cerca de 4,4 × 5,5 cm (boa para papel adesivo) |
+
+3. Escolha o **estilo**: **Fundo claro** (padrão, gasta pouca tinta) ou **Azul do portal**. Deixe marcadas as **linhas de corte** para recortar cada cartão.
+4. **Completar a folha** distribui as cópias para não sobrar espaço em branco. A prévia mostra a primeira folha e o resumo diz quantas folhas o PDF terá.
+5. **Baixar PDF para imprimir**: o PDF tem quantas páginas forem necessárias (até 50). Na impressora, escolha papel A4 e **tamanho real (100%)**.
+
+Os textos dos cartões são os mesmos da Divulgação (título, mensagem e selo de cada tipo). Os QR codes da folha foram testados com leitor de QR em todos os tamanhos.
+
 ## Instituições parceiras
 Em **Painel → Instituições parceiras** você cadastra as instituições que apoiam o portal. As marcadas como exibidas aparecem:
 - na **tela inicial do portal**, para visitantes (seção "Instituições parceiras", e numa faixa de logomarcas no celular);

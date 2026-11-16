@@ -1192,6 +1192,17 @@ a.cur-aula:hover{background:var(--marmore)}.cur-aula.on{background:var(--latao-b
 .imp-aula{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--linha-2);border-radius:8px}
 .imp-aula.erro{background:var(--err-bg);border-color:#efc5ca}.imp-aula.duvida{background:var(--warn-bg)}
 .imp-aula .ce-t a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:420px}
+
+/* folha A4 com vários QR codes */
+.fh-itens{display:grid;gap:8px}
+.fh-item{display:flex!important;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--linha);border-radius:10px;font-weight:400!important;cursor:pointer}
+.fh-item:has(input[name=sel]:checked){border-color:var(--toga);background:var(--latao-bg)}
+.fh-item.off{opacity:.55;cursor:not-allowed}
+.fh-item>input{width:auto!important;margin:0}
+.fh-n{flex:1;min-width:0}.fh-n b{display:block;color:var(--toga)}.fh-n small{font-size:.78rem;color:var(--cinza)}
+.fh-q{display:flex;align-items:center;gap:6px}.fh-q input{width:78px!important;text-align:center}.fh-q small{color:var(--cinza);font-size:.78rem}
+.fh-resumo{font-size:.88rem;background:var(--marmore);border-radius:8px;padding:10px 12px}
+#fh-cv{background:#fff}
 </style>
 </head>
 <body>
@@ -4663,7 +4674,7 @@ function admInstituicao(box) {
 
 function admConfig(box) {
   const c = S.config, g = store.gist;
-  box.innerHTML = `${divulgacaoHTML()}${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
+  box.innerHTML = `${divulgacaoHTML()}${folhaHTML()}${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
       <div class="eyebrow">Conexão com o GitHub</div><h3 style="margin-top:6px">Gist de dados do portal</h3>
       <div class="table-wrap"><table>
         <tr><td class="muted" style="width:150px">Conta</td><td><b>@${esc(g?.user)}</b></td></tr>
@@ -4695,6 +4706,7 @@ function admConfig(box) {
   </form></div>`;
   const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
   ligarDivulgacao();
+  ligarFolha();
   const fia = $('#fia');
   fia.onsubmit = e => { e.preventDefault(); const k = fia.k.value.trim(); if (k) lsSet('agora-ia-key', k); lsSet('agora-ia-modelo', fia.m.value); toast('Configuração da IA salva neste navegador.'); render(); };
   const rm = $('#ia-rm'); if (rm) rm.onclick = () => { try { localStorage.removeItem('agora-ia-key'); } catch {} toast('Chave removida deste navegador.'); render(); };
@@ -5614,23 +5626,28 @@ function ornamento(c, cx, y, larg, s) {
   c.beginPath(); c.moveTo(cx - larg / 2, y); c.lineTo(cx - 14 * s, y); c.moveTo(cx + 14 * s, y); c.lineTo(cx + larg / 2, y); c.stroke();
   c.fillStyle = CORES.latao2; c.beginPath(); c.moveTo(cx, y - 7 * s); c.lineTo(cx + 7 * s, y); c.lineTo(cx, y + 7 * s); c.lineTo(cx - 7 * s, y); c.closePath(); c.fill();
 }
-async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = '', textos = null }) {
+async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = '', textos = null, claro = false }) {
   await carregarFontesCartao();
   const F = DIV_FORMATOS[formato] || DIV_FORMATOS.story, W = F.w, H = F.h, s = W / 1080, T = textos || textoDivulgacao(tipo);
   canvas.width = W; canvas.height = H;
   const c = canvas.getContext('2d');
+  // paleta: escura (identidade do portal) ou clara (economiza tinta na impressão)
+  const P = claro ? { fundo: '#fbf9f4', texto: CORES.toga, sub: CORES.latao, msg: '#4a5263', marca: 'rgba(179,139,75,.14)', marcaTraco: CORES.latao, agua: 'rgba(19,32,58,.045)', sombra: 'rgba(19,32,58,.12)' }
+    : { fundo: CORES.toga, texto: '#fff', sub: CORES.latao2, msg: CORES.claro, marca: 'rgba(216,190,138,.12)', marcaTraco: CORES.latao2, agua: 'rgba(216,190,138,.055)', sombra: 'rgba(0,0,0,.35)' };
   // fundo: azul-toga com brilho suave e um toque de rubi, como o portal
-  c.fillStyle = CORES.toga; c.fillRect(0, 0, W, H);
+  c.fillStyle = P.fundo; c.fillRect(0, 0, W, H);
+  if (!claro) {
   let g = c.createRadialGradient(W * .12, H * .06, 0, W * .12, H * .06, Math.max(W, H) * .8); g.addColorStop(0, 'rgba(52,72,112,.85)'); g.addColorStop(1, 'rgba(19,32,58,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
   g = c.createRadialGradient(W, H, 0, W, H, Math.max(W, H) * .7); g.addColorStop(0, 'rgba(142,27,46,.42)'); g.addColorStop(1, 'rgba(142,27,46,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
-  desenharTemplo(c, W * .82, H - W * .2, W * .62, 'rgba(216,190,138,.055)', 9 * s);
+  }
+  desenharTemplo(c, W * .82, H - W * .2, W * .62, P.agua, 9 * s);
   // moldura dupla em latão, com cantos marcados
   const m = 40 * s; c.strokeStyle = CORES.latao; c.lineWidth = 3 * s; c.strokeRect(m, m, W - 2 * m, H - 2 * m);
   c.strokeStyle = 'rgba(216,190,138,.35)'; c.lineWidth = 1.2 * s; c.strokeRect(m + 14 * s, m + 14 * s, W - 2 * m - 28 * s, H - 2 * m - 28 * s);
   c.fillStyle = CORES.latao2; for (const [px, py] of [[m, m], [W - m, m], [m, H - m], [W - m, H - m]]) { c.beginPath(); c.moveTo(px, py - 9 * s); c.lineTo(px + 9 * s, py); c.lineTo(px, py + 9 * s); c.lineTo(px - 9 * s, py); c.closePath(); c.fill(); }
   c.textBaseline = 'top';
   const rodape = tipo === 'professor' ? '' : (T.mostrarEndereco && enderecoPublico(link) ? urlCurta(link) : '');
-  const marca = (cx, cy, r) => { c.fillStyle = 'rgba(216,190,138,.12)'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill(); c.strokeStyle = 'rgba(216,190,138,.45)'; c.lineWidth = 1.5 * s; c.stroke(); desenharTemplo(c, cx, cy, r * 1.15, CORES.latao2, 2.4 * s * r / 46 / s); };
+  const marca = (cx, cy, r) => { c.fillStyle = P.marca; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill(); c.strokeStyle = 'rgba(216,190,138,.45)'; c.lineWidth = 1.5 * s; c.stroke(); desenharTemplo(c, cx, cy, r * 1.15, P.marcaTraco, 2.4 * s * r / 46 / s); };
   const pill = (txt, cx, y, tam, esquerda = false) => {
     c.font = `700 ${tam}px ${SANS_C}`; espacar(c, tam * .04); const tw = c.measureText(txt).width, ph = tam * 2.15, pw = tw + tam * 2.6;
     if (esquerda) cx += pw / 2;
@@ -5640,7 +5657,7 @@ async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = ''
   };
   const cartaoQR = (x, y, q) => {
     const pad = q * .09, cw = q + pad * 2, ch = q + pad * 1.85 + q * .085;
-    c.save(); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 40 * s; c.shadowOffsetY = 14 * s; c.fillStyle = '#fff'; caminhoArredondado(c, x, y, cw, ch, 26 * s); c.fill(); c.restore();
+    c.save(); c.shadowColor = P.sombra; c.shadowBlur = 40 * s; c.shadowOffsetY = 14 * s; c.fillStyle = '#fff'; caminhoArredondado(c, x, y, cw, ch, 26 * s); c.fill(); c.restore();
     c.strokeStyle = CORES.latao; c.lineWidth = 3 * s; caminhoArredondado(c, x, y, cw, ch, 26 * s); c.stroke();
     desenharQR(c, link, x + pad, y + pad, q);
     c.fillStyle = CORES.toga; c.font = `700 ${Math.round(q * .043)}px ${SANS_C}`; espacar(c, q * .008); c.textAlign = 'center';
@@ -5652,8 +5669,8 @@ async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = ''
     const x0 = 112 * s, colW = 470 * s;
     // marca e nome no alto, à esquerda
     marca(x0 + 34 * s, 132 * s, 34 * s);
-    c.textAlign = 'left'; c.fillStyle = '#fff'; c.font = `700 ${34 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, x0 + 84 * s, 104 * s);
-    c.fillStyle = CORES.latao2; c.font = `600 ${13 * s}px ${SANS_C}`; espacar(c, 3 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', x0 + 85 * s, 146 * s); espacar(c, 0);
+    c.textAlign = 'left'; c.fillStyle = P.texto; c.font = `700 ${34 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, x0 + 84 * s, 104 * s);
+    c.fillStyle = P.sub; c.font = `600 ${13 * s}px ${SANS_C}`; espacar(c, 3 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', x0 + 85 * s, 146 * s); espacar(c, 0);
     // texto
     c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 3.5 * s); const rot = DIV_ROTULO[tipo].toUpperCase();
     const tit = encaixar(c, T.titulo, { maxW: colW, tam: 60 * s, min: 38 * s, linhas: 4, fonte: t => `700 ${t}px ${SERIF_C}` });
@@ -5662,11 +5679,11 @@ async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = ''
     let y = Math.max(220 * s, 220 * s + (H - 300 * s - 220 * s - hT) / 2);
     c.fillStyle = CORES.latao; c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 3.5 * s); c.fillText(rot, x0, y); espacar(c, 0);
     c.fillRect(x0, y + 30 * s, 56 * s, 2 * s); y += 17 * s + 28 * s;
-    c.fillStyle = '#fff'; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, x0, y); y += tit.t * 1.12; }
-    y += 24 * s; c.fillStyle = CORES.claro; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, x0, y); y += msg.t * 1.5; }
+    c.fillStyle = P.texto; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, x0, y); y += tit.t * 1.12; }
+    y += 24 * s; c.fillStyle = P.msg; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, x0, y); y += msg.t * 1.5; }
     if (T.chamada) { y += 30 * s; pill(T.chamada, x0, y, 26 * s, true); }
     // rodapé com o endereço
-    if (rodape) { c.textAlign = 'left'; c.fillStyle = CORES.latao2; const rf = encaixar(c, rodape, { maxW: W - 2 * x0, tam: 21 * s, min: 14 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', x0, H - 128 * s); }
+    if (rodape) { c.textAlign = 'left'; c.fillStyle = P.sub; const rf = encaixar(c, rodape, { maxW: W - 2 * x0, tam: 21 * s, min: 14 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', x0, H - 128 * s); }
     // QR à direita
     const q = 330 * s, cw = q * 1.18, ch = q * 1.25;
     cartaoQR(W - 102 * s - cw, (H - ch) / 2 + 10 * s, q);
@@ -5686,16 +5703,16 @@ async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = ''
   const hTotal = hTopo + hTexto + q * 1.2 + 46 * s + hFim;
   let y = Math.max(120 * s, (H - hTotal) / 2);
   marca(cx, y + 46 * s, 46 * s); y += 92 * s + 26 * s;
-  c.textAlign = 'center'; c.fillStyle = '#fff'; c.font = `700 ${44 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, cx, y); y += 50 * s;
-  c.fillStyle = CORES.latao2; c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 4.5 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', cx, y); espacar(c, 0); y += 30 * s;
+  c.textAlign = 'center'; c.fillStyle = P.texto; c.font = `700 ${44 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, cx, y); y += 50 * s;
+  c.fillStyle = P.sub; c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 4.5 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', cx, y); espacar(c, 0); y += 30 * s;
   ornamento(c, cx, y + 26 * s, 260 * s, s); y += 60 * s;
   c.fillStyle = CORES.latao; c.font = `600 ${21 * s}px ${SANS_C}`; espacar(c, 4 * s); c.fillText(DIV_ROTULO[tipo].toUpperCase(), cx, y); espacar(c, 0); y += 22 * s + 34 * s;
-  c.fillStyle = '#fff'; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, cx, y); y += tit.t * 1.12; }
-  y += 26 * s; c.fillStyle = CORES.claro; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, cx, y); y += msg.t * 1.45; }
+  c.fillStyle = P.texto; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, cx, y); y += tit.t * 1.12; }
+  y += 26 * s; c.fillStyle = P.msg; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, cx, y); y += msg.t * 1.45; }
   y += 54 * s;
   const { ch } = cartaoQR(cx - q * 1.18 / 2, y, q); y += ch + 46 * s;
   if (T.chamada) { y += pill(T.chamada, cx, y, 32 * s) + 34 * s; }
-  if (rodape) { c.textAlign = 'center'; c.fillStyle = CORES.latao2; const rf = encaixar(c, rodape, { maxW, tam: 27 * s, min: 18 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', cx, y); }
+  if (rodape) { c.textAlign = 'center'; c.fillStyle = P.sub; const rf = encaixar(c, rodape, { maxW, tam: 27 * s, min: 18 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', cx, y); }
   return canvas;
 }
 function canvasSoQR(link, px = 1200) {
@@ -5784,6 +5801,195 @@ function ligarQrConvite(el, link, nome) {
   const cv = $('#cv-qr', el), c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 220, 220); desenharQR(c, link, 14, 14, 192);
   $('#cv-card', el).onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo: 'professor', formato: $('#cv-fmt', el).value, link, nome, textos: DIV_PESSOAL }); baixarCanvas(tmp, nomeArquivo('convite-colunista', nome, $('#cv-fmt', el).value)); };
   $('#cv-qrb', el).onclick = () => baixarCanvas(canvasSoQR(link), nomeArquivo('qr-colunista', nome));
+}
+
+/* ================== Folha A4 com vários QR codes (PDF para imprimir) ==================
+   O administrador escolhe quais QR codes entram, quantas cópias de cada e o tamanho.
+   A folha é desenhada a 300 dpi (2480 × 3508 px), com linhas de corte, e vira um PDF
+   com quantas páginas forem necessárias.
+   ===================================================================================== */
+const FOLHA = { W: 2480, H: 3508, margem: 94, gap: 47 }; // 8 mm de margem e 4 mm entre os cartões (300 dpi)
+const FOLHA_LAYOUTS = {
+  c4: { cols: 2, rows: 2, formato: 'a4', nome: 'Cartazes' },
+  c9: { cols: 3, rows: 3, formato: 'a4', nome: 'Cartões' },
+  q6: { cols: 2, rows: 3, formato: 'quadrado', nome: 'Quadrados grandes' },
+  q12: { cols: 3, rows: 4, formato: 'quadrado', nome: 'Quadrados pequenos' },
+  e20: { cols: 4, rows: 5, formato: 'etiqueta', nome: 'Etiquetas só com o QR' }
+};
+const cm = px => (px / 300 * 2.54).toFixed(1).replace('.', ',');
+function celulasFolha(L) {
+  const { W, H, margem, gap } = FOLHA, cw = (W - 2 * margem - (L.cols - 1) * gap) / L.cols, ch = (H - 2 * margem - (L.rows - 1) * gap) / L.rows;
+  const out = [];
+  for (let r = 0; r < L.rows; r++) for (let k = 0; k < L.cols; k++) out.push({ x: margem + k * (cw + gap), y: margem + r * (ch + gap), w: cw, h: ch });
+  return out;
+}
+function tamanhoCartao(L) {
+  const c = celulasFolha(L)[0], r = L.formato === 'a4' ? 3508 / 2480 : 1;
+  const w = L.formato === 'etiqueta' ? c.w : Math.min(c.w, c.h / r), h = L.formato === 'etiqueta' ? c.h : w * r;
+  return { w, h, txt: `${cm(w)} × ${cm(h)} cm` };
+}
+const fontesQR = () => [
+  { tipo: 'portal', nome: 'Portal', desc: 'Leva à página inicial', link: linkPortal(), rot: 'Conheça o portal' },
+  { tipo: 'aluno', nome: 'Aluno', desc: 'Abre o cadastro do aluno', link: linkCadastroAluno(), rot: 'Cadastro do aluno' },
+  { tipo: 'professor', nome: 'Professor colaborador', desc: conviteCol().codigo && conviteCol().aberto !== false ? 'Cadastro de colunista' : 'Gere o convite na aba Professor colaborador, acima', link: conviteCol().codigo && conviteCol().aberto !== false ? linkConviteColunista() : '', rot: 'Seja colunista' }
+];
+/* etiqueta pequena: só o QR, o nome do portal e para que serve */
+function desenharEtiqueta(c, x, y, w, h, f, claro) {
+  const s = w / 560, pad = 26 * s;
+  c.save();
+  c.fillStyle = claro ? '#fff' : CORES.toga; caminhoArredondado(c, x, y, w, h, 22 * s); c.fill();
+  c.strokeStyle = CORES.latao; c.lineWidth = 3 * s; caminhoArredondado(c, x + 8 * s, y + 8 * s, w - 16 * s, h - 16 * s, 16 * s); c.stroke();
+  c.textAlign = 'center'; c.textBaseline = 'top';
+  c.fillStyle = claro ? CORES.toga : '#fff'; c.font = `700 ${34 * s}px ${SERIF_C}`;
+  const nm = encaixar(c, S.config.nomePortal, { maxW: w - 2 * pad, tam: 34 * s, min: 22 * s, linhas: 1, fonte: t => `700 ${t}px ${SERIF_C}` });
+  c.font = `700 ${nm.t}px ${SERIF_C}`; c.fillText(nm.ls[0] || '', x + w / 2, y + pad + 6 * s);
+  const topo = y + pad + 6 * s + nm.t + 16 * s, base = 66 * s;
+  const q = Math.min(w - 2 * pad - 40 * s, h - (topo - y) - base - pad);
+  const qx = x + (w - q) / 2, qy = topo + 8 * s;
+  c.fillStyle = '#fff'; caminhoArredondado(c, qx - 14 * s, qy - 14 * s, q + 28 * s, q + 28 * s, 14 * s); c.fill();
+  desenharQR(c, f.link, qx, qy, q);
+  c.fillStyle = claro ? CORES.rubi : CORES.latao2; c.font = `700 ${24 * s}px ${SANS_C}`; espacar(c, 2 * s);
+  c.fillText(f.rot.toUpperCase(), x + w / 2, qy + q + 28 * s); espacar(c, 0);
+  c.restore();
+}
+const cacheCartoes = new Map();
+async function cartaoPronto(f, formato, claro) {
+  const T = textoDivulgacao(f.tipo), k = [f.tipo, formato, claro, f.link, JSON.stringify(T), S.config.nomePortal].join('|');
+  if (!cacheCartoes.has(k)) { const cv = document.createElement('canvas'); await desenharCartao(cv, { tipo: f.tipo, formato, link: f.link, claro }); cacheCartoes.set(k, cv); }
+  return cacheCartoes.get(k);
+}
+function linhasDeCorte(c, L) {
+  // linha tracejada rente a cada cartão (2 mm para fora), para recortar um a um
+  const t = tamanhoCartao(L), d = 24;
+  c.save(); c.strokeStyle = '#9aa1ad'; c.lineWidth = 2.5; c.setLineDash([20, 14]);
+  for (const cel of celulasFolha(L)) { const x = cel.x + (cel.w - t.w) / 2, y = cel.y + (cel.h - t.h) / 2; c.strokeRect(x - d, y - d, t.w + 2 * d, t.h + 2 * d); }
+  c.restore();
+}
+/* monta as folhas: lista de QR (já repetidos pela quantidade) → canvas A4 */
+async function montarFolhas(lista, layout, { claro = false, corte = true, maxFolhas = 50 } = {}) {
+  const L = FOLHA_LAYOUTS[layout], cs = celulasFolha(L), porFolha = cs.length, folhas = [];
+  const n = Math.min(lista.length, porFolha * maxFolhas);
+  for (let p = 0; p * porFolha < n; p++) {
+    const cv = document.createElement('canvas'); cv.width = FOLHA.W; cv.height = FOLHA.H;
+    const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, FOLHA.W, FOLHA.H);
+    if (corte) linhasDeCorte(c, L);
+    for (let i = 0; i < porFolha && p * porFolha + i < n; i++) {
+      const f = lista[p * porFolha + i], cel = cs[i];
+      if (L.formato === 'etiqueta') { desenharEtiqueta(c, cel.x, cel.y, cel.w, cel.h, f, claro); continue; }
+      const img = await cartaoPronto(f, L.formato, claro), t = tamanhoCartao(L);
+      c.drawImage(img, cel.x + (cel.w - t.w) / 2, cel.y + (cel.h - t.h) / 2, t.w, t.h);
+    }
+    folhas.push(cv);
+  }
+  return folhas;
+}
+/* PDF com várias páginas A4 em retrato, cada uma com uma imagem JPEG */
+function pdfDePaginas(paginas, titulo) {
+  const enc = new TextEncoder(), partes = [], off = []; let len = 0;
+  const push = x => { const b = typeof x === 'string' ? enc.encode(x) : x; partes.push(b); len += b.length; };
+  const obj = (n, f) => { off[n] = len; push(`${n} 0 obj\n`); f(); push('\nendobj\n'); };
+  const W = 595.28, H = 841.89, n = paginas.length, ascii = s => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\x20-\x7e]/g, '').replace(/[()\\]/g, '');
+  push('%PDF-1.4\n%âãÏÓ\n');
+  obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+  obj(2, () => push(`<< /Type /Pages /Kids [${paginas.map((_, i) => `${3 + i * 3} 0 R`).join(' ')}] /Count ${n} >>`));
+  paginas.forEach((pg, i) => {
+    const o = 3 + i * 3;
+    obj(o, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im${i} ${o + 1} 0 R >> >> /Contents ${o + 2} 0 R >>`));
+    obj(o + 1, () => { push(`<< /Type /XObject /Subtype /Image /Width ${pg.w} /Height ${pg.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${pg.jpeg.length} >>\nstream\n`); push(pg.jpeg); push('\nendstream'); });
+    const cmd = `q ${W} 0 0 ${H} 0 0 cm /Im${i} Do Q`;
+    obj(o + 2, () => push(`<< /Length ${cmd.length} >>\nstream\n${cmd}\nendstream`));
+  });
+  const info = 3 + n * 3;
+  obj(info, () => push(`<< /Title (${ascii(titulo)}) /Producer (${ascii(S.config.nomePortal)}) >>`));
+  const x = len;
+  push(`xref\n0 ${info + 1}\n0000000000 65535 f \n${Array.from({ length: info }, (_, k) => String(off[k + 1]).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size ${info + 1} /Root 1 0 R /Info ${info} 0 R >>\nstartxref\n${x}\n%%EOF`);
+  return new Blob(partes, { type: 'application/pdf' });
+}
+async function canvasParaJPEG(cv, q = .92) { const b = await new Promise(r => cv.toBlob(r, 'image/jpeg', q)); return { jpeg: new Uint8Array(await b.arrayBuffer()), w: cv.width, h: cv.height }; }
+
+function folhaHTML() {
+  return `<div class="card pad dv-card" id="folha-qr">
+    <div class="eyebrow">Impressão</div><h3 style="margin-top:6px">${ic('qr', 20)} Vários QR codes numa folha A4</h3>
+    <p class="small muted" style="margin:0 0 16px;max-width:780px">Escolha quais QR codes entram na folha e quantas cópias de cada. O portal monta as folhas com linhas de corte e gera um PDF pronto para imprimir. Os textos dos cartões são os da seção Divulgação, acima.</p>
+    <div class="dv-grid">
+      <form class="form" id="fh-f" novalidate>
+        <div class="fh-itens" id="fh-itens"></div>
+        <label>Tamanho dos cartões<select name="layout">${Object.entries(FOLHA_LAYOUTS).map(([k, L]) => `<option value="${k}" ${k === 'c9' ? 'selected' : ''}>${L.cols * L.rows} por folha · ${L.nome} (${tamanhoCartao(L).txt})</option>`).join('')}</select></label>
+        <label>Estilo<select name="estilo"><option value="claro" selected>Fundo claro (economiza tinta)</option><option value="escuro">Azul do portal (mais tinta)</option></select></label>
+        <label class="dv-chk"><input type="checkbox" name="corte" checked> Linhas de corte tracejadas</label>
+        <div class="fh-resumo" id="fh-resumo"></div>
+        <div class="dv-baixar"><button type="button" class="btn ghost" id="fh-encher">Completar a folha</button><button class="btn primary" id="fh-pdf">${ic('download', 16)} Baixar PDF para imprimir</button></div>
+        <p class="hint">Na impressão, escolha <b>tamanho real (100%)</b> ou "ajustar à página" e papel A4. Para papel adesivo, use as etiquetas.</p>
+      </form>
+      <div class="dv-prev"><canvas id="fh-cv" aria-label="Prévia da folha"></canvas><span class="small muted" id="fh-pag"></span></div>
+    </div></div>`;
+}
+function ligarFolha() {
+  const f = $('#fh-f'); if (!f) return;
+  const fontes = fontesQR();
+  $('#fh-itens').innerHTML = fontes.map((x, i) => `<label class="fh-item ${x.link ? '' : 'off'}"><input type="checkbox" name="sel" value="${x.tipo}" ${x.link && i < 2 ? 'checked' : ''} ${x.link ? '' : 'disabled'}>
+    <span class="fh-n"><b>${esc(x.nome)}</b><small>${esc(x.desc)}</small></span>
+    <span class="fh-q"><input type="number" name="q-${x.tipo}" min="0" max="500" value="0" ${x.link ? '' : 'disabled'} aria-label="Cópias de ${esc(x.nome)}"><small>cópias</small></span></label>`).join('');
+  const L = () => FOLHA_LAYOUTS[f.layout.value], porFolha = () => L().cols * L().rows;
+  const selecionadas = () => fontes.filter(x => x.link && f.querySelector(`input[name=sel][value="${x.tipo}"]`).checked);
+  const qtd = x => Math.max(0, Math.min(500, Math.round(Number(f[`q-${x.tipo}`].value) || 0)));
+  const encher = () => {
+    const sel = selecionadas(); if (!sel.length) return;
+    const tot = sel.reduce((a, x) => a + qtd(x), 0), folhas = Math.max(1, Math.ceil(tot / porFolha())), alvo = folhas * porFolha();
+    const base = Math.floor(alvo / sel.length); let resto = alvo - base * sel.length;
+    sel.forEach(x => { f[`q-${x.tipo}`].value = base + (resto-- > 0 ? 1 : 0); });
+    fontes.filter(x => !sel.includes(x) && x.link).forEach(x => { f[`q-${x.tipo}`].value = 0; });
+  };
+  const lista = () => { const out = []; selecionadas().forEach(x => { for (let i = 0; i < qtd(x); i++) out.push(x); }); return out; };
+  // intercala os tipos para a folha ficar variada (ex.: portal, aluno, portal, aluno…)
+  const intercalada = () => {
+    const filas = selecionadas().map(x => Array(qtd(x)).fill(x)).filter(a => a.length), out = [];
+    while (filas.some(a => a.length)) for (const a of filas) if (a.length) out.push(a.shift());
+    return out;
+  };
+  let t = null, gen = 0;
+  const resumo = () => {
+    const n = lista().length, fl = Math.ceil(n / porFolha()), sob = fl * porFolha() - n;
+    $('#fh-resumo').innerHTML = n ? `<b>${n}</b> QR code${n === 1 ? '' : 's'} em <b>${fl}</b> folha${fl === 1 ? '' : 's'} A4${sob ? ` · ${sob} espaço${sob === 1 ? '' : 's'} livre${sob === 1 ? '' : 's'} na última folha` : ' · folhas completas'}` : '<span class="ed-err">Escolha pelo menos um QR code e a quantidade de cópias.</span>';
+    $('#fh-pdf').disabled = !n;
+  };
+  const prever = () => {
+    resumo(); clearTimeout(t);
+    t = setTimeout(async () => {
+      const id = ++gen, l = intercalada(), cv = $('#fh-cv');
+      if (!l.length) { cv.width = 620; cv.height = 877; const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 620, 877); $('#fh-pag').textContent = ''; return; }
+      try {
+        const [pg] = await montarFolhas(l.slice(0, porFolha()), f.layout.value, { claro: f.estilo.value === 'claro', corte: f.corte.checked, maxFolhas: 1 });
+        if (id !== gen) return;
+        cv.width = 1240; cv.height = 1754; cv.getContext('2d').drawImage(pg, 0, 0, 1240, 1754);
+        $('#fh-pag').textContent = `Prévia da 1ª folha${Math.ceil(l.length / porFolha()) > 1 ? ` de ${Math.ceil(l.length / porFolha())}` : ''}`;
+      } catch (e) { console.warn(e); }
+    }, 200);
+  };
+  f.addEventListener('change', e => { if (e.target.name === 'sel' || e.target.name === 'layout') { if (e.target.name === 'sel' && e.target.checked && !qtd(fontes.find(x => x.tipo === e.target.value))) encher(); if (e.target.name === 'layout') encher(); } prever(); });
+  f.addEventListener('input', e => { if (e.target.type === 'number') prever(); });
+  $('#fh-encher').onclick = () => { encher(); prever(); };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const l = intercalada(); if (!l.length) return;
+    const fl = Math.ceil(l.length / porFolha());
+    if (fl > 50) return toast('Máximo de 50 folhas por PDF. Diminua a quantidade de cópias.', true);
+    const b = $('#fh-pdf'); b.disabled = true;
+    try {
+      const paginas = [];
+      for (let p = 0; p < fl; p++) {
+        b.textContent = `Montando a folha ${p + 1} de ${fl}…`;
+        const [pg] = await montarFolhas(l.slice(p * porFolha(), (p + 1) * porFolha()), f.layout.value, { claro: f.estilo.value === 'claro', corte: f.corte.checked, maxFolhas: 1 });
+        paginas.push(await canvasParaJPEG(pg));
+      }
+      const blob = pdfDePaginas(paginas, `QR codes - ${S.config.nomePortal}`);
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nomeArquivo('qr-codes', S.config.nomePortal, `${porFolha()}-por-folha`).replace(/\.png$/, '.pdf');
+      document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 8000);
+      toast(`PDF com ${fl} folha${fl === 1 ? '' : 's'} baixado.`);
+    } catch (er) { console.error(er); toast('Não foi possível gerar o PDF: ' + er.message, true); }
+    b.disabled = false; b.innerHTML = `${ic('download', 16)} Baixar PDF para imprimir`;
+  };
+  encher(); prever();
 }
 
 /* =================== Colunistas e Coluna Acadêmica ===================

@@ -2,7 +2,7 @@
    - Telas do app: rede primeiro, cache como reserva (abre mesmo offline).
    - Ícones e fontes: cache primeiro.
    - Firebase (dados, login, arquivos de aula) nunca é cacheado. */
-const VERSION = 'agora-v44';
+const VERSION = 'agora-v45';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png', './icons/favicon.png'];
 
 self.addEventListener('install', e => {
