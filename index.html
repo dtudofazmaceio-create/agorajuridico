@@ -2947,7 +2947,7 @@ async function desenharCertificado({ nome, disciplina, nota, acertos, total, dat
   centro(new Date(data).toLocaleDateString('pt-BR'), by - 50, `700 36px ${serif}`, TOGA, ex);
   centro('Código de verificação', by + 6, `600 22px ${sans}`, LATAO, ex);
   centro(codigo, by + 48, `700 34px ${serif}`, TOGA, ex);
-  centro(`Fundado em ${ROMANO(i.fundacao) || i.fundacao}`, by + 92, `italic 400 24px ${serif}`, CINZA, ex);
+  centro(`Fundado em ${i.fundacao}`, by + 92, `italic 400 24px ${serif}`, CINZA, ex);
   // nota legal
   c.font = `400 21px ${sans}`; c.fillStyle = CINZA; c.textAlign = 'center';
   const leg = `${i.notaLegal}${i.cnpj ? ` CNPJ ${i.cnpj}.` : ''}`; const ll = []; l = '';
@@ -4174,7 +4174,7 @@ function admInstituicao(box) {
       <form class="card pad form" id="fin">
         <h3>Dados da instituição</h3>
         <label>Nome<input name="nome" required value="${esc(i.nome)}"></label>
-        <div class="row2"><label>Sigla<input name="sigla" maxlength="8" value="${esc(i.sigla)}"></label><label>Ano de fundação<input name="fundacao" inputmode="numeric" maxlength="4" value="${esc(i.fundacao)}"></label></div>
+        <div class="row2"><label>Sigla<input name="sigla" maxlength="8" value="${esc(i.sigla)}"></label><label>Ano de fundação<input name="fundacao" inputmode="numeric" maxlength="4" pattern="(18|19|20)[0-9]{2}" title="Informe o ano com 4 dígitos, por exemplo 2026" value="${esc(i.fundacao)}"></label></div>
         <label>Lema<input name="lema" value="${esc(i.lema)}"><span class="hint">Aparece no anel do emblema. Curto funciona melhor.</span></label>
         <label>Apresentação<textarea name="descricao" rows="3">${esc(i.descricao)}</textarea></label>
         <div class="row2"><label>Cidade e estado (opcional)<input name="cidade" value="${esc(i.cidade)}" placeholder="Ex.: Maceió/AL"></label><label>CNPJ (opcional)<input name="cnpj" value="${esc(i.cnpj)}" placeholder="00.000.000/0000-00"></label></div>
