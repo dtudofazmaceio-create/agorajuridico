@@ -2753,6 +2753,7 @@ async function viewQuiz(main, sub) {
   const hist = [...(u.quizzes || [])].sort((a, b) => b.data - a.data);
   let locais = []; try { locais = (await CertDB.doUsuario(S.user.id)).sort((a, b) => b.data - a.data); } catch (e) { console.warn(e); }
   const temLocal = new Set(locais.map(c => c.id)), meuAparelho = aparelhoId();
+  if (locais.some(c => c.instSig !== assinaturaInst())) atualizarCertificadosLocais().then(n => { if (n && location.hash === '#/quiz') render(); });
   const btnCert = h => !h.aprovado ? '' : temLocal.has(h.id) ? `<button class="btn primary sm" data-cert="${esc(h.id)}">${ic('award', 14)} Certificado</button>`
     : !h.aparelho ? `<button class="btn ghost sm" data-antigo="${esc(h.id)}">${ic('award', 14)} Guardar neste aparelho</button>`
     : `<span class="badge" title="O certificado fica guardado só no aparelho em que o quiz foi feito">${ic('phone', 12)} Em outro aparelho</span>`;
@@ -2967,20 +2968,54 @@ const CertDB = (() => {
 })();
 const aparelhoId = () => { let a = lsGet('agora-aparelho'); if (!a) { a = uid().slice(0, 12); lsSet('agora-aparelho', a); } return a; };
 const nomeCert = c => `Certificado - ${c.disciplina} - ${c.nome}`.replace(/[\\/:*?"<>|]/g, '');
-async function salvarCertificadoLocal(reg, nome) {
+/* Assinatura (impressão digital) dos dados da instituição que aparecem no certificado */
+function assinaturaInst() {
+  const i = inst(), t = JSON.stringify([i.nome, i.sigla, i.lema, i.fundacao, i.responsavel, i.cargo, i.cidade, i.cnpj, i.notaLegal, i.assinaturaTipo, i.assinatura, S.config.nomePortal]);
+  let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let k = 0; k < t.length; k++) { const ch = t.charCodeAt(k); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36) + ':' + t.length;
+}
+async function montarCertificado(reg, nome) {
   const cv = await desenharCertificado({ ...reg, nome });
   const jpg = new Uint8Array(await (await new Promise(r => cv.toBlob(r, 'image/jpeg', 0.92))).arrayBuffer());
   const pdf = await pdfDeJPEG(jpg, cv.width, cv.height, nomeCert({ ...reg, nome })).arrayBuffer();
   const th = document.createElement('canvas'); th.width = 420; th.height = Math.round(420 * cv.height / cv.width); th.getContext('2d').drawImage(cv, 0, 0, th.width, th.height);
-  const c = { id: reg.id, uid: S.user.id, nome, disciplina: reg.disciplina, nota: reg.nota, acertos: reg.acertos, total: reg.total, data: reg.data, codigo: reg.codigo, pdf, thumb: th.toDataURL('image/jpeg', .8), salvoEm: Date.now() };
+  return { pdf, thumb: th.toDataURL('image/jpeg', .8), instSig: assinaturaInst() };
+}
+async function salvarCertificadoLocal(reg, nome) {
+  const m = await montarCertificado(reg, nome);
+  const c = { id: reg.id, uid: S.user.id, nome, disciplina: reg.disciplina, nota: reg.nota, acertos: reg.acertos, total: reg.total, data: reg.data, codigo: reg.codigo, ...m, salvoEm: Date.now() };
   await CertDB.put(c);
   try { await navigator.storage?.persist?.(); } catch {}
   return c;
 }
+/* Refaz o PDF de um certificado já emitido com os dados ATUAIS da instituição.
+   Nome do aluno, matéria, nota, data e código de verificação continuam exatamente os da emissão. */
+async function atualizarCertificadoLocal(c) {
+  if (!c || c.instSig === assinaturaInst()) return c;
+  const m = await montarCertificado(c, c.nome);
+  const novo = { ...c, ...m, atualizadoEm: Date.now() };
+  await CertDB.put(novo);
+  return novo;
+}
+let _atualizandoCerts = null;
+async function atualizarCertificadosLocais() {
+  if (_atualizandoCerts) return _atualizandoCerts;
+  return _atualizandoCerts = (async () => {
+    let n = 0;
+    try { for (const c of await CertDB.doUsuario(S.user.id)) if (c.instSig !== assinaturaInst()) { try { await atualizarCertificadoLocal(c); n++; } catch (e) { console.warn(e); } } }
+    catch (e) { console.warn(e); }
+    finally { _atualizandoCerts = null; }
+    return n;
+  })();
+}
 async function abrirCertificadoLocal(id) {
   try {
-    const c = await CertDB.get(id);
+    let c = await CertDB.get(id);
     if (!c || c.uid !== S.user.id) return toast('Este certificado não está guardado neste aparelho.', true);
+    if (c.instSig !== assinaturaInst()) { toast('Atualizando o certificado com os dados atuais da instituição…'); c = await atualizarCertificadoLocal(c); }
     const f = new File([c.pdf], nomeCert(c) + '.pdf', { type: 'application/pdf' });
     if (isIOS && isStandalone() && navigator.canShare?.({ files: [f] })) { await navigator.share({ files: [f], title: nomeCert(c) }); return; }
     const a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
