@@ -1895,10 +1895,12 @@ async function viewInstituto(main) {
       <div class="card pad article"><h3>Sobre</h3><p>${esc(i.descricao)}</p>
         <h3>Certificação</h3><p>Ao acertar mais de ${notaMin()}% em um quiz com pelo menos ${minCert()} questões, o aluno recebe um certificado de aproveitamento em PDF, assinado pela direção e com código de verificação.</p>
         <p class="small muted">${esc(i.notaLegal)}</p>
-        ${S.user && ativo(S.user) ? '<a class="btn primary" href="#/quiz">Fazer um quiz</a>' : '<a class="btn primary" href="#/cadastro">Criar conta</a>'}</div>
+        ${S.user && ativo(S.user) ? '<a class="btn primary" href="#/quiz">Fazer um quiz</a>' : '<a class="btn primary" href="#/cadastro">Criar conta</a>'}
+        ${S.user?.role === 'admin' ? `<a class="btn ghost" href="#/admin/instituicao" style="margin-left:8px">${ic('edit', 15)} Editar dados da instituição</a>` : ''}</div>
       <div class="card pad inst-dir"><h3>Direção</h3>
         ${ass ? `<img class="inst-ass" src="${ass}" alt="Assinatura de ${esc(i.responsavel)}">` : ''}
         <div class="inst-linha"></div><b>${esc(i.responsavel || 'Direção Acadêmica')}</b><span>${esc(i.cargo)}</span>
+        ${S.user?.role === 'admin' && !i.responsavel ? '<a class="small" href="#/admin/instituicao" style="display:block;margin-top:8px">Informar o nome do responsável</a>' : ''}
         <dl>${i.sigla ? `<dt>Sigla</dt><dd>${esc(i.sigla)}</dd>` : ''}${i.fundacao ? `<dt>Fundação</dt><dd>${esc(i.fundacao)}</dd>` : ''}${i.cidade ? `<dt>Sede</dt><dd>${esc(i.cidade)}</dd>` : ''}${i.cnpj ? `<dt>CNPJ</dt><dd>${esc(i.cnpj)}</dd>` : ''}</dl></div>
     </div></div>`;
 }
