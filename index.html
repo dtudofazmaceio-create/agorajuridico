@@ -1013,9 +1013,18 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .col-corpo p:has(>img.img-esq:not(.img-g))+p.legenda{float:left;clear:left;margin:-.5em 1.5em 1em 0;padding:0 .2em}
 .col-corpo p:has(>img.img-p:not(.img-g):is(.img-dir,.img-esq))+p.legenda{width:36%}
 .col-corpo p:has(>img.img-m:not(.img-g):is(.img-dir,.img-esq))+p.legenda{width:64%}
-@media (max-width:640px){.col-corpo p:has(>img)+p.legenda{float:none!important;width:auto!important;margin:-.4em 0 1.4em!important}}
+@media (max-width:640px){
+  .col-corpo p:has(>img.img-p:is(.img-dir,.img-esq))+p.legenda{width:42%!important}
+  .col-corpo p:has(>img.img-m)+p.legenda{float:none!important;width:82%!important;margin:-.4em auto 1.4em!important}
+  .col-corpo p:has(>img.img-m.img-esq)+p.legenda{margin-left:0!important;text-align:left}
+  .col-corpo p:has(>img.img-m.img-dir)+p.legenda{margin-right:0!important;text-align:right}}
 .col-art .col-corpo>p[style*="center"]:first-child::first-letter,.col-art .col-corpo>p[style*="right"]:first-child::first-letter{float:none;font-size:inherit;padding:0;color:inherit}
-@media (max-width:640px){.col-corpo img.img-p,.col-corpo img.img-m{width:100%;float:none!important;margin:1.2em auto!important}}
+@media (max-width:640px){
+  .col-corpo img.img-p.img-centro{width:55%}
+  .col-corpo img.img-p.img-esq{width:42%;margin:.3em 1em .6em 0}
+  .col-corpo img.img-p.img-dir{width:42%;margin:.3em 0 .6em 1em}
+  .col-corpo img.img-m{width:82%;float:none!important;margin:1.2em auto!important}
+  .col-corpo img.img-m.img-esq{margin-left:0!important}.col-corpo img.img-m.img-dir{margin-right:0!important}}
 .col-card .col-txt{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
 .col-card .col-capa{margin:-22px -22px 6px;aspect-ratio:16/9;overflow:hidden;border-radius:10px 10px 0 0;background:#e9e3d4}
 .col-card .col-capa img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1043,6 +1052,9 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .ed-chars.quase .ed-barra i{background:var(--latao)}.ed-chars.quase em{color:var(--warn)}
 .ed-chars.acima b,.ed-chars.acima em,.ed-err{color:var(--err)}.ed-chars.acima .ed-barra i{background:var(--err)}
 .ed-prazo-alerta{color:var(--warn);font-weight:600}
+#ed-estado{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:flex-end;flex:1 1 300px}
+.ed-auto{flex-basis:100%;justify-content:flex-end;text-align:right;margin-top:6px;font-size:.8rem;color:var(--ok);display:flex;gap:6px;align-items:flex-start}
+.ed-auto.alerta{color:var(--err);font-weight:600}
 .ed-aviso{margin-bottom:14px;padding:14px 18px}.ed-aviso h3{font-size:1rem}
 .ed-regras ul{margin:.5em 0 0;padding-left:1.1em}.ed-regras li{margin:.3em 0}
 .ed-regras>b{display:flex;align-items:center;gap:6px}
@@ -4835,9 +4847,24 @@ async function viewEscrever(main, chave) {
   const criar = () => { const a = { id: uid(), titulo: '', subtitulo: '', disciplina: c0.disciplina || '', html: '', criadoEm: Date.now(), atualizadoEm: Date.now(), publicado: null }; col.artigos.unshift(a); return a; };
   let atual = (col.artigos.find(vazioArt) || col.artigos[0] || criar()).id;
   const art = () => col.artigos.find(x => x.id === atual);
-  const mudou = a => !!a.publicado && (a.titulo !== a.publicado.titulo || (a.subtitulo || '') !== (a.publicado.subtitulo || '') || (a.disciplina || '') !== (a.publicado.disciplina || '') || limparHTML(a.html) !== a.publicado.html);
-  const estado = a => !a.publicado ? ['Rascunho', ''] : expirado(a, c0) ? ['Expirado', 'err'] : mudou(a) ? ['Alterações não publicadas', 'warn'] : ['Publicado', 'ok'];
+  const mudou = a => !!a.publicado && (String(a.titulo || '').trim() !== a.publicado.titulo || String(a.subtitulo || '').trim() !== (a.publicado.subtitulo || '') || (a.disciplina || '') !== (a.publicado.disciplina || '') || limparHTML(a.html) !== a.publicado.html);
   const R = regrasCol();
+  // o que impede o texto de ir (ou continuar indo) para o painel
+  const problemaDe = a => {
+    const ch = contarChars(a.html), ni = (String(a.html || '').match(/<img\b/g) || []).length, min = Math.max(R.minChars, 100);
+    if (String(a.titulo || '').trim().length < 3) return 'falta o título';
+    if (ch < min) return `faltam ${fmtN0(min - ch)} caracteres para o mínimo`;
+    if (ch > R.maxChars) return `o texto passou ${fmtN0(ch - R.maxChars)} caracteres do limite`;
+    if (ni > R.maxImagens) return `há ${ni - R.maxImagens} imagem(ns) além do limite`;
+    return '';
+  };
+  // artigo já publicado: ao salvar, a versão do painel é atualizada junto (se estiver dentro das regras)
+  const atualizarPublicado = a => {
+    if (!a.publicado || expirado(a, c0) || !mudou(a) || problemaDe(a)) return false;
+    a.publicado = { ...a.publicado, titulo: String(a.titulo).trim(), subtitulo: String(a.subtitulo || '').trim(), disciplina: a.disciplina || '', html: limparHTML(a.html), atualizadoEm: Date.now() };
+    a.atualizadoEm = Date.now(); return true;
+  };
+  const estado = a => !a.publicado ? ['Rascunho', ''] : expirado(a, c0) ? ['Expirado', 'err'] : mudou(a) ? (problemaDe(a) ? ['Alterações fora do painel', 'warn'] : ['Publicado · salvando', 'ok']) : ['Publicado', 'ok'];
   const regrasHTML = () => `<div class="ed-ajuda ed-regras"><b>${ic('scroll', 15)} Regras do portal</b><ul>
     <li>${R.minChars ? `Entre <b>${fmtN0(R.minChars)}</b> e <b>${fmtN0(R.maxChars)}</b>` : `Até <b>${fmtN0(R.maxChars)}</b>`} caracteres com espaços (cerca de ${fmtN0(Math.round(R.maxChars / 6 / 10) * 10)} palavras no máximo)</li>
     <li>${R.maxImagens ? `Até <b>${R.maxImagens}</b> ${R.maxImagens === 1 ? 'imagem' : 'imagens'} por artigo` : 'Imagens não são permitidas nos artigos'}</li>
@@ -4852,7 +4879,7 @@ async function viewEscrever(main, chave) {
     <div class="ed-app">
       <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><div id="ed-itens"></div>
         ${regrasHTML()}
-        <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar no painel</b>, ele aparece para os alunos no <b>Painel colaborativo acadêmico</b>.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
+        <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar no painel</b>, ele aparece para os alunos no <b>Painel colaborativo acadêmico</b>. Depois de publicado, tudo o que você alterar (texto, alinhamento, imagens) vai para o painel sozinho a cada salvamento, em até meio minuto.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
       <section class="ed-main"><div id="ed-avisos"></div><div class="doc ed-papel">
         <div class="ed-cab"><select id="ed-disc" class="ed-disc" aria-label="Disciplina"><option value="">Disciplina (opcional)</option>${DISCIPLINAS.map(d => `<option>${esc(d)}</option>`).join('')}<option value="Outra">Outra</option></select><span id="ed-estado"></span></div>
         <textarea id="ed-tit" class="ed-tit" rows="1" placeholder="Título do artigo" maxlength="180"></textarea>
@@ -4888,12 +4915,13 @@ async function viewEscrever(main, chave) {
   /* ---- salvamento: local imediato, nuvem a cada minuto (no máximo) ---- */
   let tLocal = null, tSync = null, ultimaSync = 0, fila = Promise.resolve(true);
   const gravarLocal = () => { try { localStorage.setItem(KEY, JSON.stringify(col)); } catch { toast('O navegador está sem espaço para guardar o rascunho.', true); } };
-  const agendarSync = (ms) => { if (tSync && ms === undefined) return; clearTimeout(tSync); tSync = setTimeout(() => { tSync = null; sincronizar(); }, ms ?? Math.max(12000, 60000 - (Date.now() - ultimaSync))); };
+  const agendarSync = (ms) => { if (tSync && ms === undefined) return; clearTimeout(tSync); tSync = setTimeout(() => { tSync = null; sincronizar(); }, ms ?? Math.max(8000, 30000 - (Date.now() - ultimaSync))); };
   const sujo = () => { lsSet(KP, '1'); status('local'); agendarSync(); };
   async function fazerSync() {
     if (lsGet(KP) !== '1') { status('ok'); return true; }
     status('salvando');
     try {
+      col.artigos.forEach(atualizarPublicado);
       let n = null; try { n = await store.get('colunas', c0.id); } catch (e) { console.warn(e); }
       const env = mesclarColuna(n, col, c0.id);
       env.artigos = env.artigos.filter(a => !vazioArt(a)).map(a => ({ ...a, html: limparHTML(a.html) }));
@@ -4902,7 +4930,8 @@ async function viewEscrever(main, chave) {
       await store.save('colunas', env);
       ultimaSync = Date.now();
       col = mesclarColuna(env, col, c0.id); gravarLocal();
-      if (lsGet(KP) === '1') { status('local'); agendarSync(); } else status('ok');
+      const x = art();
+      if (lsGet(KP) === '1') { status('local'); agendarSync(); } else status('ok', x?.publicado && !expirado(x, c0) ? (mudou(x) ? 'Salvo, mas fora do painel' : 'Salvo e atualizado no painel') : 'Rascunho salvo na nuvem');
       desenharLista(); return true;
     } catch (e) {
       console.warn(e); lsSet(KP, '1'); status('erro', /permiss|token|GitHub/i.test(e.message) ? e.message : undefined); agendarSync(30000); return false;
@@ -4930,14 +4959,16 @@ async function viewEscrever(main, chave) {
     const prazo = !a.publicado ? (R.dias ? `Ao publicar, fica no painel por ${R.dias} dias${a.publicadoOrig ? ', contados da primeira publicação' : ''}` : 'Ao publicar, fica no painel sem prazo de expiração')
       : !e ? 'No painel, sem prazo de expiração' : e < Date.now() ? `Saiu do painel em ${fmtDate(e)}` : `No painel até ${fmtDate(e)} (${prazoTxt(d)})`;
     const alerta = a.publicado && e && (e < Date.now() || d <= R.avisoDias);
-    $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>`;
+    const prob = a.publicado && !expirado(a, c0) && mudou(a) ? problemaDe(a) : '';
+    $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>
+      ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para o painel porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece no painel automaticamente ao salvar.`}</div>` : ''}`;
     const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
     const dica = ch > R.maxChars ? `passou ${fmtN0(ch - R.maxChars)} do limite` : ch < R.minChars ? `faltam ${fmtN0(R.minChars - ch)} para o mínimo` : ch > R.maxChars * .9 ? `restam ${fmtN0(R.maxChars - ch)}` : '';
     $('#ed-cont').innerHTML = `<span class="ed-chars ${cls}" title="Caracteres com espaços"><b>${fmtN0(ch)}</b> / ${fmtN0(R.maxChars)} caracteres<span class="ed-barra"><i style="width:${Math.min(100, ch / R.maxChars * 100).toFixed(1)}%"></i></span>${dica ? `<em>${dica}</em>` : ''}</span>
       <span class="ed-meta">${n} palavra${n === 1 ? '' : 's'} · ${minLeitura(html)} min${R.maxImagens ? ` · <span class="${nImg > R.maxImagens ? 'ed-err' : ''}">${nImg}/${R.maxImagens} imagens</span>` : ''}</span>`;
     $('#ed-ret').classList.toggle('hidden', !a.publicado);
     const pb = $('#ed-pub'), exp = expirado(a, c0);
-    pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo no painel encerrado' : !a.publicado ? 'Salvar e publicar no painel' : mudou(a) ? 'Salvar e atualizar no painel' : 'Publicado no painel'}`;
+    pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo no painel encerrado' : !a.publicado ? 'Salvar e publicar no painel' : mudou(a) ? 'Atualizar no painel agora' : 'Publicado no painel'}`;
     pb.disabled = exp || (!!a.publicado && !mudou(a));
     $('#ed-av').innerHTML = avatarCol(autor(), 34);
   }
@@ -4987,6 +5018,8 @@ async function viewEscrever(main, chave) {
     if (arq && !txt.trim()) { guardarSel(); return inserirImagemArquivo(arq); }
     const limpo = html ? limparHTML(html) : String(txt || '').split(/\r?\n\s*\r?\n/).map(p => `<p>${esc(p).replace(/\r?\n/g, '<br>')}</p>`).join('');
     if (!limpo) return;
+    const blAtual = noSel()?.closest('p,h2,h3,blockquote,li');
+    if (blAtual && corpo.contains(blAtual) && blAtual.textContent.trim() && /^<(p style|p class|h2|h3|blockquote|ul|ol)/.test(limpo)) document.execCommand('insertParagraph');
     const nImg = (limpo.match(/<img\b/g) || []).length, atuais = corpo.querySelectorAll('img').length;
     document.execCommand('insertHTML', false, nImg && atuais + nImg > R.maxImagens ? limparHTML(limpo.replace(/<img\b[^>]*>/g, '')) : limpo);
     if (nImg && atuais + nImg > R.maxImagens) toast(`As imagens coladas foram ignoradas: o limite é de ${R.maxImagens} por artigo.`, true);
@@ -5132,7 +5165,7 @@ async function viewEscrever(main, chave) {
   imgbar.addEventListener('click', async e => {
     const b = e.target.closest('button[data-i]'); if (!b || !imgSel) return;
     const k = b.dataset.i, img = imgSel;
-    if (/^img-(p|m|g)$/.test(k)) { img.classList.remove('img-p', 'img-m', 'img-g'); img.classList.add(k); }
+    if (/^img-(p|m|g)$/.test(k)) { img.classList.remove('img-p', 'img-m', 'img-g'); img.classList.add(k); if (k === 'img-g') { img.classList.remove('img-esq', 'img-dir'); img.classList.add('img-centro'); } }
     else if (/^img-(esq|centro|dir)$/.test(k)) { img.classList.remove('img-esq', 'img-centro', 'img-dir'); img.classList.add(k); if (k !== 'img-centro' && img.classList.contains('img-g')) { img.classList.remove('img-g'); img.classList.add('img-m'); } }
     else if (k === 'rm') { const p = img.closest('p'); const lg = p?.nextElementSibling?.classList.contains('legenda') ? p.nextElementSibling : null; esconderImgBar(); img.remove(); if (p && !p.textContent.trim() && !p.querySelector('img')) p.remove(); if (lg && await confirmar('Remover também a legenda da imagem?', 'Remover legenda')) lg.remove(); alterou(); return; }
     else if (k === 'legenda') {

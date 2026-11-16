@@ -91,12 +91,14 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 2. Escreve título, linha fina e texto, com negrito, itálico, intertítulos, citações, listas e links. Pode colar textos do Word ou do Google Docs (a formatação é limpa automaticamente).
 3. O texto é **salvo sozinho**: na hora, no próprio aparelho, e na nuvem (Gist) a cada minuto, ao trocar de aba ou com **Ctrl+S**. O indicador no topo mostra "Tudo salvo na nuvem".
 4. Clica em **Salvar e publicar no painel**. O artigo aparece para os alunos e o portal mostra o link do artigo para compartilhar com a turma.
-5. Depois de publicado, ele pode editar e clicar em **Salvar e atualizar no painel**, **Retirar do painel** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
+5. Depois de publicado, **tudo o que ele alterar (texto, alinhamento, imagens) vai para o painel sozinho a cada salvamento**, em até meio minuto; o botão **Atualizar no painel agora** faz isso na hora. Se a alteração sair das regras (por exemplo, passar do limite de caracteres), o editor avisa e os alunos continuam vendo a versão anterior até ele corrigir. Ele também pode **Retirar do painel** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
 6. Rascunhos não aparecem para os alunos; só o que foi publicado.
 
 **Recursos do editor:** negrito, itálico, sublinhado, tachado, marca-texto, sobrescrito e subscrito; intertítulo, subtítulo e citação; alinhar à esquerda, centralizar, alinhar à direita e **justificar**; listas; links; linha separadora; desfazer e refazer.
 - **Imagens:** botão **Imagem** (ou arrastar/colar a imagem no texto). O professor escolhe o tamanho (pequena, média ou grande), a posição (centralizada, à esquerda ou à direita com o texto ao lado), a legenda e a descrição. Clicando na imagem aparece uma barra para mudar tamanho, posição, legenda ou remover. As imagens são reduzidas automaticamente (cerca de 50 a 300 KB cada) e guardadas no Gist em arquivos próprios (`img-....txt`); o texto guarda só a referência. Também é possível usar o endereço (https) de uma imagem da internet.
 - A primeira imagem do artigo vira a **capa** do cartão no painel.
+- No celular, o tamanho e a posição são mantidos de forma proporcional: imagens pequenas continuam ao lado do texto e as médias ocupam a maior parte da tela, alinhadas ao lado escolhido (não há espaço para texto ao lado de uma imagem média numa tela estreita).
+- **Se um aluno ou professor ainda vir a versão antiga do portal** depois de você atualizar os arquivos, peça para recarregar a página (no app instalado, fechar e abrir de novo). O GitHub Pages pode levar até 10 minutos para entregar a nova versão.
 
 **Regras dos artigos (Painel → Colunistas → Regras dos artigos):**
 | Regra | Padrão | Observação |
