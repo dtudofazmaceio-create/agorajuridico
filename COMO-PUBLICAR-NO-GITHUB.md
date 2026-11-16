@@ -135,6 +135,28 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 - O link do professor funciona como uma senha. Peça que ele não o compartilhe. Se vazar, gere um novo.
 - Como no restante da versão sem servidor, uma pessoa com conhecimento técnico consegue recuperar o token do GitHub e alterar textos. A conta do GitHub exclusiva para o portal continua sendo a proteção recomendada.
 
+## Divulgação: QR codes e cartões
+Em **Painel → Configurações → Divulgação** há três QR codes, cada um com um cartão pronto para baixar, no visual do portal (azul, latão e o símbolo das colunas):
+
+| QR | Para onde leva | Onde baixar |
+|---|---|---|
+| **Portal** | Página inicial do portal | Configurações → Divulgação → Portal |
+| **Aluno** | Direto para a tela de cadastro do aluno | Configurações → Divulgação → Aluno (e no botão **Link para os alunos**) |
+| **Professor colaborador** | Editor pessoal do colunista | Na hora do cadastro: **Colunistas → Novo colunista** (ou **Novo link**) |
+
+**Como usar:**
+1. Escolha Portal ou Aluno.
+2. Escreva o **título**, a **mensagem** e o **selo de destaque** (o selo vermelho; deixe em branco para não mostrar). A prévia ao lado atualiza enquanto você digita.
+   - O cartão **não mostra o endereço do site** (o QR code já leva ao portal). Se quiser, marque **Mostrar o endereço do site no cartão**. Endereços de teste, como `localhost`, nunca aparecem.
+   - Os textos padrão são gerais, para qualquer estudante de Direito, sem citar faculdade específica.
+3. Escolha o formato: **Quadrado** (1080 × 1080, WhatsApp e Instagram), **Vertical** (1080 × 1920, Status e Stories) ou **Cartaz A4** (2480 × 3508, para imprimir em 300 dpi).
+4. Clique em **Baixar cartão (PNG)**. Para usar o código em outra arte, clique em **Baixar só o QR code** (1200 × 1200, fundo branco).
+5. **Salvar mensagem** guarda o texto para as próximas vezes. **Voltar ao texto padrão** restaura a sugestão do portal.
+
+**Professor colaborador:** o link do professor é pessoal e o portal não o guarda. Por isso o QR dele aparece só no momento do cadastro (ou ao gerar um **Novo link**), junto com os botões **Baixar cartão do convite** e **Baixar só o QR**. O cartão leva o nome do professor; a mensagem dele é editada na aba Professor colaborador da Divulgação. Envie o QR do professor só para ele: quem o tiver consegue escrever como esse colunista.
+
+Os QR codes usam correção de erro alta e o símbolo do portal no centro. Todos foram testados com leitor de QR nos três formatos.
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.

@@ -1065,12 +1065,33 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .col-regras-g input{font:400 .95rem var(--sans);padding:.6em .8em;border:1px solid var(--linha);border-radius:8px;width:100%}
 @media (max-width:1100px){.col-regras-g{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:900px){.col-card.dest.com-capa{grid-template-columns:1fr}.col-card.dest.com-capa .col-capa{order:-1;min-height:0;aspect-ratio:16/9}.col-regras-g{grid-template-columns:1fr 1fr}.ed-barra{width:60px}.ed-imgbar{flex-wrap:wrap;max-width:calc(100% - 16px)}}
+
+/* divulgação: QR codes */
+.dv-card{max-width:1100px;margin-bottom:20px;border-color:var(--latao)}
+.dv-tipos{display:inline-flex;gap:4px;padding:4px;background:var(--marmore);border:1px solid var(--linha);border-radius:10px;margin-bottom:18px;flex-wrap:wrap}
+.dv-tipos button{display:inline-flex;align-items:center;gap:7px;border:0;background:none;padding:.55em 1em;border-radius:7px;font:600 .88rem var(--sans);color:var(--cinza);cursor:pointer}
+.dv-tipos button.on{background:var(--toga);color:#fff}
+.dv-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,400px);gap:28px;align-items:start}
+.dv-link{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;background:var(--latao-bg);border-radius:8px;padding:10px 12px;font-size:.86rem;color:#5f4719}
+.dv-link .small{flex-basis:100%}
+.dv-link code{flex:1;min-width:0;word-break:break-all;font-size:.82rem;color:var(--toga)}
+.dv-link>span:only-child{display:flex;gap:8px;align-items:flex-start}
+.dv-chk{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;font-weight:600}.dv-chk input{width:auto!important;margin:0}.dv-chk .hint{flex-basis:100%;font-weight:400}
+.dv-baixar{display:flex;gap:10px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--linha-2)}
+.dv-prev{position:sticky;top:20px;background:var(--marmore);border-radius:12px;padding:14px;display:grid;place-items:center}
+.dv-prev canvas{width:100%;height:auto;max-height:72vh;object-fit:contain;border-radius:6px;box-shadow:0 18px 40px -22px rgba(19,32,58,.7)}
+.dv-conv{display:flex;gap:16px;align-items:center;background:var(--marmore);border-radius:10px;padding:14px;margin-top:16px}
+.dv-conv canvas{width:120px;height:120px;border-radius:8px;border:1px solid var(--linha);flex:none;background:#fff}
+@media (max-width:900px){.dv-grid{grid-template-columns:1fr}.dv-prev{position:static;order:-1}.dv-prev canvas{max-height:56vh}.dv-conv{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 <div id="app"><div class="loading">Carregando portal…</div></div>
 <div id="toasts"></div>
 
+<script>/*! qrcode-generator 1.4.4 | (c) 2009 Kazuhiko Arase | MIT License | http://www.d-project.com/ */
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});
+</script>
 <script type="module">
 /* =====================================================================
    CONFIGURAÇÃO
@@ -1327,6 +1348,7 @@ const I = {
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h4v4h-4z"/>',
   pen: '<path d="M20 4c-6 0-11 4-13 11l-2 5 5-2c7-2 10-8 10-14z"/><path d="M5 20l7-7"/>',
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/>',
   quote: '<path d="M10 7H6a2 2 0 0 0-2 2v3h5v5H4M20 7h-4a2 2 0 0 0-2 2v3h5v5h-5"/>',
@@ -3579,12 +3601,17 @@ function mostrarLinkAlunos() {
   const link = linkAlunos(), g = store.gist;
   const { el } = modal('Link para os alunos', `<p>Envie este link pelo WhatsApp, e-mail ou grupo da turma. Cada aluno cria a conta e ganha ${diasTeste() ? `<b>${diasTeste()} dias grátis</b>` : 'acesso conforme o plano escolhido'}.</p>
     <div class="form"><input class="field" readonly value="${esc(link)}" id="lk"></div>
-    <div class="actions"><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent('Acesse o portal ' + S.config.nomePortal + ' e ganhe acesso grátis: ' + link)}" target="_blank" rel="noopener">WhatsApp</a><button class="btn primary" id="cp">Copiar link</button></div>
+    <div class="actions"><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent('Acesse o portal ' + S.config.nomePortal + ' e ganhe acesso grátis: ' + linkCadastroAluno())}" target="_blank" rel="noopener">WhatsApp</a><button class="btn primary" id="cp">Copiar link</button></div>
+    <div class="dv-conv" style="margin-top:16px"><canvas id="lk-qr" width="200" height="200" aria-label="QR code do cadastro"></canvas><div><b>QR code do cadastro</b><p class="small muted" style="margin:4px 0 10px">Abre direto a tela de cadastro do aluno.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn ghost sm" id="lk-qrb">Baixar só o QR</button><a class="btn ghost sm" href="#/admin/config" id="lk-mais">Cartões para divulgar</a></div></div></div>
     ${g && !CONFIG.gist?.id ? `<details style="margin-top:18px"><summary class="small" style="cursor:pointer;font-weight:600">Deixar o link mais curto (opcional)</summary>
       <p class="small muted" style="margin-top:8px">No arquivo <code>index.html</code> do seu repositório, preencha a linha abaixo. Assim o link fica só o endereço do site e o app instalado no celular sempre encontra o conteúdo.</p>
       <div class="form"><input class="field" readonly value="gist: { user: '${esc(g.user)}', id: '${esc(g.id)}' },"></div></details>` : ''}`);
   $('#cp', el).onclick = () => copiar(link);
   $('#lk', el).onclick = e => e.target.select();
+  { const c = $('#lk-qr', el).getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 200, 200); desenharQR(c, linkCadastroAluno(), 12, 12, 176); }
+  $('#lk-qrb', el).onclick = () => baixarCanvas(canvasSoQR(linkCadastroAluno()), nomeArquivo('qr', S.config.nomePortal, 'aluno', 'codigo'));
+  $('#lk-mais', el).onclick = () => el.remove();
 }
 
 function admPlanos(box) {
@@ -4502,7 +4529,7 @@ function admInstituicao(box) {
 
 function admConfig(box) {
   const c = S.config, g = store.gist;
-  box.innerHTML = `${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
+  box.innerHTML = `${divulgacaoHTML()}${store.modo === 'gist' ? `<div class="card pad" style="max-width:760px;margin-bottom:20px;border-color:var(--latao)">
       <div class="eyebrow">Conexão com o GitHub</div><h3 style="margin-top:6px">Gist de dados do portal</h3>
       <div class="table-wrap"><table>
         <tr><td class="muted" style="width:150px">Conta</td><td><b>@${esc(g?.user)}</b></td></tr>
@@ -4533,6 +4560,7 @@ function admConfig(box) {
     ${store.modo === 'gist' ? ` <a href="https://gist.github.com/${esc(store.gist?.user)}/${esc(store.gist?.id)}" target="_blank" rel="noopener">Abrir o Gist</a>. As alterações podem levar alguns minutos para aparecer para os alunos.` : ''}</p>
   </form></div>`;
   const cl = $('#c-link'); if (cl) cl.onclick = mostrarLinkAlunos;
+  ligarDivulgacao();
   const fia = $('#fia');
   fia.onsubmit = e => { e.preventDefault(); const k = fia.k.value.trim(); if (k) lsSet('agora-ia-key', k); lsSet('agora-ia-modelo', fia.m.value); toast('Configuração da IA salva neste navegador.'); render(); };
   const rm = $('#ia-rm'); if (rm) rm.onclick = () => { try { localStorage.removeItem('agora-ia-key'); } catch {} toast('Chave removida deste navegador.'); render(); };
@@ -4546,12 +4574,261 @@ function admConfig(box) {
   const ck = $('#c-token'); if (ck) ck.onclick = store.precisaConfigurar ? configurarModal : tokenModal;
   $('#fc').onsubmit = async e => {
     e.preventDefault(); const d = Object.fromEntries(new FormData(e.target));
-    const n = { ...c, ...d, diasTeste: Number(d.diasTeste), notaMinima: Number(d.notaMinima), quizMinCert: Number(d.quizMinCert) };
+    const n = { ...S.config, ...d, diasTeste: Number(d.diasTeste), notaMinima: Number(d.notaMinima), quizMinCert: Number(d.quizMinCert) };
     try { await store.saveConfig(n); S.config = n; toast('Configurações salvas.'); render(); } catch (err) { toast(err.message, true); }
   };
 }
 
 /* ================================ Boot ================================ */
+/* ==================== Divulgação: QR codes e cartões para baixar ====================
+   Três links: o do portal (página inicial), o do aluno (cadastro) e o pessoal de cada
+   professor colunista (gerado no cadastro, porque o portal não guarda esse link).
+   O cartão é desenhado num canvas com a identidade do portal e baixado em PNG.
+   ==================================================================================== */
+const DIV_PADRAO = {
+  portal: { titulo: 'Estude Direito com método', mensagem: 'Materiais de estudo, quizzes com certificado, notícias, vagas de estágio e artigos dos professores, tudo num só lugar.', chamada: 'Conheça o portal' },
+  aluno: { titulo: 'Seu acesso começa aqui', mensagem: 'Crie sua conta em menos de um minuto e estude com materiais, quizzes com certificado e a Coluna Acadêmica.', chamada: null },
+  professor: { titulo: 'Convite para colunista', mensagem: 'Escreva artigos para a Coluna Acadêmica do portal. Aponte a câmera do celular para abrir o seu editor pessoal.', chamada: 'Link pessoal e intransferível' }
+};
+const DIV_ROTULO = { portal: 'Estudo, prática e carreira jurídica', aluno: 'Para estudantes de Direito', professor: 'Convite ao professor colaborador' };
+const DIV_NOMES = { portal: 'Portal', aluno: 'Aluno', professor: 'Professor colaborador' };
+const DIV_FORMATOS = {
+  quadrado: { w: 1080, h: 1080, nome: 'Quadrado: WhatsApp e Instagram (1080 × 1080)' },
+  story: { w: 1080, h: 1920, nome: 'Vertical: Status e Stories (1080 × 1920)' },
+  a4: { w: 2480, h: 3508, nome: 'Cartaz A4 para imprimir (300 dpi)' }
+};
+const CORES = { toga: '#13203a', toga2: '#1c2b49', toga3: '#2a3b5f', rubi: '#8e1b2e', latao: '#b38b4b', latao2: '#d8be8a', claro: '#c9d0dc' };
+const SERIF_C = '"Libre Caslon Text", Georgia, "Times New Roman", serif', SANS_C = '"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif';
+const TEMPLO = 'M3 9l9-5 9 5M4 9h16M6.5 9v8M10 9v8M14 9v8M17.5 9v8M4 17h16M3 20h18';
+const linkPortal = () => linkAlunos();
+const linkCadastroAluno = () => linkAlunos() + '#/cadastro';
+const enderecoPublico = u => { try { const h = new URL(u).hostname; return !!h && !/^(localhost|127\.|0\.0\.0\.0|10\.|192\.168\.|\[?::1)|\.local$/i.test(h) && /^https?:$/.test(new URL(u).protocol); } catch { return false; } };
+const urlCurta = u => String(u).replace(/^https?:\/\//, '').replace(/#.*$/, '').replace(/\/$/, '');
+
+function textoDivulgacao(tipo) {
+  const salvo = ((S.config.divulgacao || {})[tipo]) || {};
+  const d = { ...DIV_PADRAO[tipo] };
+  for (const k of ['titulo', 'mensagem', 'chamada']) if (typeof salvo[k] === 'string') d[k] = salvo[k];
+  d.mostrarEndereco = salvo.mostrarEndereco === true;
+  if (d.chamada == null) d.chamada = diasTeste() ? `${diasTeste()} dias grátis para começar` : 'Cadastre-se agora';
+  return d;
+}
+let fontesCartao = null;
+function carregarFontesCartao() {
+  if (!fontesCartao) fontesCartao = Promise.race([
+    Promise.all(['700 60px "Libre Caslon Text"', '400 60px "Libre Caslon Text"', '400 30px "Public Sans"', '600 30px "Public Sans"', '700 30px "Public Sans"'].map(f => document.fonts?.load(f).catch(() => {}))),
+    new Promise(r => setTimeout(r, 2500))
+  ]);
+  return fontesCartao;
+}
+/* QR code com correção de erro alta (Q) e o símbolo do portal no centro */
+function desenharQR(c, link, x, y, tam, { logo = true, cor = CORES.toga } = {}) {
+  const q = qrcode(0, 'Q'); q.addData(link); q.make();
+  const n = q.getModuleCount(), cel = tam / n;
+  c.fillStyle = cor;
+  for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (q.isDark(r, k)) {
+    const x0 = Math.round(x + k * cel), y0 = Math.round(y + r * cel);
+    c.fillRect(x0, y0, Math.round(x + (k + 1) * cel) - x0, Math.round(y + (r + 1) * cel) - y0);
+  }
+  if (logo) {
+    const l = tam * .2, lx = x + (tam - l) / 2, ly = y + (tam - l) / 2;
+    c.fillStyle = '#fff'; caminhoArredondado(c, lx, ly, l, l, l * .2); c.fill();
+    c.fillStyle = CORES.toga; caminhoArredondado(c, lx + l * .1, ly + l * .1, l * .8, l * .8, l * .16); c.fill();
+    desenharTemplo(c, x + tam / 2, y + tam / 2, l * .62, CORES.latao2, l * .05);
+  }
+}
+function caminhoArredondado(c, x, y, w, h, r) {
+  c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+}
+function desenharTemplo(c, cx, cy, tam, cor, lw) {
+  const k = tam / 24; c.save(); c.translate(cx - tam / 2, cy - tam / 2 - k * .5); c.scale(k, k);
+  c.strokeStyle = cor; c.lineWidth = lw / k; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(new Path2D(TEMPLO)); c.restore();
+}
+function espacar(c, px) { if ('letterSpacing' in c) c.letterSpacing = px + 'px'; }
+function quebrarLinhas(c, texto, maxW) {
+  const linhas = [];
+  for (const par of String(texto || '').split(/\n/)) {
+    let l = '';
+    for (const p of par.split(/\s+/).filter(Boolean)) { const t = l ? l + ' ' + p : p; if (c.measureText(t).width > maxW && l) { linhas.push(l); l = p; } else l = t; }
+    if (l) linhas.push(l);
+  }
+  return linhas;
+}
+/* encaixa o texto: diminui a fonte até caber no número de linhas */
+function encaixar(c, texto, { maxW, tam, min, linhas: maxL, fonte }) {
+  let t = tam, ls;
+  for (; t >= min; t -= Math.max(1, tam * .04)) { c.font = fonte(t); ls = quebrarLinhas(c, texto, maxW); if (ls.length <= maxL) return { ls, t }; }
+  c.font = fonte(min); ls = quebrarLinhas(c, texto, maxW);
+  if (ls.length > maxL) { ls = ls.slice(0, maxL); let u = ls[maxL - 1]; while (u && c.measureText(u + '…').width > maxW) u = u.replace(/\s*\S+$/, ''); ls[maxL - 1] = u + '…'; }
+  return { ls, t: min };
+}
+function ornamento(c, cx, y, larg, s) {
+  c.strokeStyle = CORES.latao; c.lineWidth = 1.5 * s;
+  c.beginPath(); c.moveTo(cx - larg / 2, y); c.lineTo(cx - 14 * s, y); c.moveTo(cx + 14 * s, y); c.lineTo(cx + larg / 2, y); c.stroke();
+  c.fillStyle = CORES.latao2; c.beginPath(); c.moveTo(cx, y - 7 * s); c.lineTo(cx + 7 * s, y); c.lineTo(cx, y + 7 * s); c.lineTo(cx - 7 * s, y); c.closePath(); c.fill();
+}
+async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = '', textos = null }) {
+  await carregarFontesCartao();
+  const F = DIV_FORMATOS[formato] || DIV_FORMATOS.story, W = F.w, H = F.h, s = W / 1080, T = textos || textoDivulgacao(tipo);
+  canvas.width = W; canvas.height = H;
+  const c = canvas.getContext('2d');
+  // fundo: azul-toga com brilho suave e um toque de rubi, como o portal
+  c.fillStyle = CORES.toga; c.fillRect(0, 0, W, H);
+  let g = c.createRadialGradient(W * .12, H * .06, 0, W * .12, H * .06, Math.max(W, H) * .8); g.addColorStop(0, 'rgba(52,72,112,.85)'); g.addColorStop(1, 'rgba(19,32,58,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  g = c.createRadialGradient(W, H, 0, W, H, Math.max(W, H) * .7); g.addColorStop(0, 'rgba(142,27,46,.42)'); g.addColorStop(1, 'rgba(142,27,46,0)'); c.fillStyle = g; c.fillRect(0, 0, W, H);
+  desenharTemplo(c, W * .82, H - W * .2, W * .62, 'rgba(216,190,138,.055)', 9 * s);
+  // moldura dupla em latão, com cantos marcados
+  const m = 40 * s; c.strokeStyle = CORES.latao; c.lineWidth = 3 * s; c.strokeRect(m, m, W - 2 * m, H - 2 * m);
+  c.strokeStyle = 'rgba(216,190,138,.35)'; c.lineWidth = 1.2 * s; c.strokeRect(m + 14 * s, m + 14 * s, W - 2 * m - 28 * s, H - 2 * m - 28 * s);
+  c.fillStyle = CORES.latao2; for (const [px, py] of [[m, m], [W - m, m], [m, H - m], [W - m, H - m]]) { c.beginPath(); c.moveTo(px, py - 9 * s); c.lineTo(px + 9 * s, py); c.lineTo(px, py + 9 * s); c.lineTo(px - 9 * s, py); c.closePath(); c.fill(); }
+  c.textBaseline = 'top';
+  const rodape = tipo === 'professor' ? (nome ? `Convite pessoal para ${nome}` : '') : (T.mostrarEndereco && enderecoPublico(link) ? urlCurta(link) : '');
+  const marca = (cx, cy, r) => { c.fillStyle = 'rgba(216,190,138,.12)'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill(); c.strokeStyle = 'rgba(216,190,138,.45)'; c.lineWidth = 1.5 * s; c.stroke(); desenharTemplo(c, cx, cy, r * 1.15, CORES.latao2, 2.4 * s * r / 46 / s); };
+  const pill = (txt, cx, y, tam, esquerda = false) => {
+    c.font = `700 ${tam}px ${SANS_C}`; espacar(c, tam * .04); const tw = c.measureText(txt).width, ph = tam * 2.15, pw = tw + tam * 2.6;
+    if (esquerda) cx += pw / 2;
+    c.fillStyle = CORES.rubi; caminhoArredondado(c, cx - pw / 2, y, pw, ph, ph / 2); c.fill();
+    c.strokeStyle = 'rgba(216,190,138,.55)'; c.lineWidth = 1.5 * s; c.stroke();
+    c.fillStyle = '#fff'; c.textAlign = 'center'; c.fillText(txt, cx, y + (ph - tam) / 2 + tam * .04); espacar(c, 0); return ph;
+  };
+  const cartaoQR = (x, y, q) => {
+    const pad = q * .09, cw = q + pad * 2, ch = q + pad * 1.85 + q * .085;
+    c.save(); c.shadowColor = 'rgba(0,0,0,.35)'; c.shadowBlur = 40 * s; c.shadowOffsetY = 14 * s; c.fillStyle = '#fff'; caminhoArredondado(c, x, y, cw, ch, 26 * s); c.fill(); c.restore();
+    c.strokeStyle = CORES.latao; c.lineWidth = 3 * s; caminhoArredondado(c, x, y, cw, ch, 26 * s); c.stroke();
+    desenharQR(c, link, x + pad, y + pad, q);
+    c.fillStyle = CORES.toga; c.font = `700 ${Math.round(q * .043)}px ${SANS_C}`; espacar(c, q * .008); c.textAlign = 'center';
+    c.fillText('APONTE A CÂMERA DO CELULAR', x + cw / 2, y + pad + q + q * .035); espacar(c, 0);
+    return { cw, ch };
+  };
+
+  if (formato === 'quadrado') {
+    const x0 = 112 * s, colW = 470 * s;
+    // marca e nome no alto, à esquerda
+    marca(x0 + 34 * s, 132 * s, 34 * s);
+    c.textAlign = 'left'; c.fillStyle = '#fff'; c.font = `700 ${34 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, x0 + 84 * s, 104 * s);
+    c.fillStyle = CORES.latao2; c.font = `600 ${13 * s}px ${SANS_C}`; espacar(c, 3 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', x0 + 85 * s, 146 * s); espacar(c, 0);
+    // texto
+    c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 3.5 * s); const rot = DIV_ROTULO[tipo].toUpperCase();
+    const tit = encaixar(c, T.titulo, { maxW: colW, tam: 60 * s, min: 38 * s, linhas: 4, fonte: t => `700 ${t}px ${SERIF_C}` });
+    const msg = encaixar(c, T.mensagem, { maxW: colW, tam: 26 * s, min: 19 * s, linhas: 6, fonte: t => `400 ${t}px ${SANS_C}` });
+    const hT = 17 * s + 28 * s + tit.ls.length * tit.t * 1.12 + 24 * s + msg.ls.length * msg.t * 1.5 + (T.chamada ? 30 * s + 26 * s * 2.15 : 0);
+    let y = Math.max(220 * s, 220 * s + (H - 300 * s - 220 * s - hT) / 2);
+    c.fillStyle = CORES.latao; c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 3.5 * s); c.fillText(rot, x0, y); espacar(c, 0);
+    c.fillRect(x0, y + 30 * s, 56 * s, 2 * s); y += 17 * s + 28 * s;
+    c.fillStyle = '#fff'; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, x0, y); y += tit.t * 1.12; }
+    y += 24 * s; c.fillStyle = CORES.claro; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, x0, y); y += msg.t * 1.5; }
+    if (T.chamada) { y += 30 * s; pill(T.chamada, x0, y, 26 * s, true); }
+    // rodapé com o endereço
+    if (rodape) { c.textAlign = 'left'; c.fillStyle = CORES.latao2; const rf = encaixar(c, rodape, { maxW: W - 2 * x0, tam: 21 * s, min: 14 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', x0, H - 128 * s); }
+    // QR à direita
+    const q = 330 * s, cw = q * 1.18, ch = q * 1.25;
+    cartaoQR(W - 102 * s - cw, (H - ch) / 2 + 10 * s, q);
+    return canvas;
+  }
+
+  // formatos verticais (Status/Stories e cartaz A4): composição centralizada
+  const cx = W / 2, maxW = W - 220 * s;
+  c.font = `600 ${21 * s}px ${SANS_C}`;
+  const tit = encaixar(c, T.titulo, { maxW, tam: 80 * s, min: 50 * s, linhas: 3, fonte: t => `700 ${t}px ${SERIF_C}` });
+  const msg = encaixar(c, T.mensagem, { maxW: maxW - 40 * s, tam: 33 * s, min: 24 * s, linhas: 5, fonte: t => `400 ${t}px ${SANS_C}` });
+  const hTopo = 92 * s + 26 * s + 50 * s + 30 * s + 60 * s;              // marca, nome, subtítulo, ornamento
+  const hTexto = 22 * s + 34 * s + tit.ls.length * tit.t * 1.12 + 26 * s + msg.ls.length * msg.t * 1.45 + 54 * s;
+  const hFim = (T.chamada ? 32 * s * 2.15 + (rodape ? 34 * s : 0) : 0) + (rodape ? 34 * s : 0);       // selo e rodapé
+  const livre = H - 2 * 120 * s - hTopo - hTexto - hFim - 46 * s;
+  const q = Math.max(W * .3, Math.min(W * .5, livre / 1.2));
+  const hTotal = hTopo + hTexto + q * 1.2 + 46 * s + hFim;
+  let y = Math.max(120 * s, (H - hTotal) / 2);
+  marca(cx, y + 46 * s, 46 * s); y += 92 * s + 26 * s;
+  c.textAlign = 'center'; c.fillStyle = '#fff'; c.font = `700 ${44 * s}px ${SERIF_C}`; c.fillText(S.config.nomePortal, cx, y); y += 50 * s;
+  c.fillStyle = CORES.latao2; c.font = `600 ${17 * s}px ${SANS_C}`; espacar(c, 4.5 * s); c.fillText('PORTAL DO ESTUDANTE DE DIREITO', cx, y); espacar(c, 0); y += 30 * s;
+  ornamento(c, cx, y + 26 * s, 260 * s, s); y += 60 * s;
+  c.fillStyle = CORES.latao; c.font = `600 ${21 * s}px ${SANS_C}`; espacar(c, 4 * s); c.fillText(DIV_ROTULO[tipo].toUpperCase(), cx, y); espacar(c, 0); y += 22 * s + 34 * s;
+  c.fillStyle = '#fff'; c.font = `700 ${tit.t}px ${SERIF_C}`; for (const l of tit.ls) { c.fillText(l, cx, y); y += tit.t * 1.12; }
+  y += 26 * s; c.fillStyle = CORES.claro; c.font = `400 ${msg.t}px ${SANS_C}`; for (const l of msg.ls) { c.fillText(l, cx, y); y += msg.t * 1.45; }
+  y += 54 * s;
+  const { ch } = cartaoQR(cx - q * 1.18 / 2, y, q); y += ch + 46 * s;
+  if (T.chamada) { y += pill(T.chamada, cx, y, 32 * s) + 34 * s; }
+  if (rodape) { c.textAlign = 'center'; c.fillStyle = CORES.latao2; const rf = encaixar(c, rodape, { maxW, tam: 27 * s, min: 18 * s, linhas: 1, fonte: t => `500 ${t}px ${SANS_C}` }); c.fillText(rf.ls[0] || '', cx, y); }
+  return canvas;
+}
+function canvasSoQR(link, px = 1200) {
+  const cv = document.createElement('canvas'); cv.width = cv.height = px; const c = cv.getContext('2d');
+  c.fillStyle = '#fff'; c.fillRect(0, 0, px, px); const m = Math.round(px * .08); desenharQR(c, link, m, m, px - 2 * m); return cv;
+}
+async function baixarCanvas(canvas, nome) {
+  const b = await new Promise(r => canvas.toBlob(r, 'image/png'));
+  if (!b) return toast('Não foi possível gerar a imagem neste navegador.', true);
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = nome; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 5000); toast('Imagem baixada.');
+}
+const nomeArquivo = (...p) => p.filter(Boolean).join('-').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.png';
+
+/* Bloco "Divulgação" da aba Configurações */
+function divulgacaoHTML() {
+  return `<div class="card pad dv-card" id="divulgacao">
+    <div class="eyebrow">Divulgação</div><h3 style="margin-top:6px">${ic('qr', 20)} QR codes do portal</h3>
+    <p class="small muted" style="margin:0 0 16px;max-width:780px">Baixe cartões prontos para o WhatsApp, as redes sociais ou para imprimir. Escreva a sua mensagem e veja a prévia ao lado. O QR do <b>professor colaborador</b> é criado no cadastro de cada colunista, porque o link dele é pessoal.</p>
+    <div class="dv-tipos" role="tablist">${Object.keys(DIV_NOMES).map((t, i) => `<button type="button" role="tab" data-t="${t}" class="${i ? '' : 'on'}">${ic(t === 'portal' ? 'home' : t === 'aluno' ? 'user' : 'pen', 15)} ${DIV_NOMES[t]}</button>`).join('')}</div>
+    <div class="dv-grid">
+      <form class="form" id="dv-f" novalidate>
+        <div class="dv-link" id="dv-link"></div>
+        <label>Título<input name="titulo" maxlength="70"></label>
+        <label>Mensagem<textarea name="mensagem" maxlength="240" rows="3"></textarea></label>
+        <label>Selo de destaque<input name="chamada" maxlength="40"><span class="hint">Aparece num selo vermelho. Deixe em branco para não mostrar.</span></label>
+        <label class="dv-chk" id="dv-end"><input type="checkbox" name="mostrarEndereco"> Mostrar o endereço do site no cartão<span class="hint">Desligado por padrão: o QR code já leva ao portal. Endereços de teste (como localhost) nunca aparecem.</span></label>
+        <label>Formato<select name="formato">${Object.entries(DIV_FORMATOS).map(([k, f]) => `<option value="${k}" ${k === 'story' ? 'selected' : ''}>${f.nome}</option>`).join('')}</select></label>
+        <div class="actions" style="justify-content:flex-start"><button type="button" class="btn ghost sm" id="dv-pad">Voltar ao texto padrão</button><button class="btn ghost sm" id="dv-sv">Salvar mensagem</button></div>
+        <div class="dv-baixar" id="dv-baixar"></div>
+      </form>
+      <div class="dv-prev"><canvas id="dv-cv" aria-label="Prévia do cartão"></canvas></div>
+    </div></div>`;
+}
+function ligarDivulgacao() {
+  const f = $('#dv-f'), cv = $('#dv-cv'); if (!f) return;
+  let tipo = 'portal', t = null;
+  const linkDe = tp => tp === 'portal' ? linkPortal() : tp === 'aluno' ? linkCadastroAluno() : linkAlunos() + '#/escrever/exemplo';
+  const rascunho = {};
+  const lerForm = () => ({ titulo: f.titulo.value, mensagem: f.mensagem.value, chamada: f.chamada.value, mostrarEndereco: f.mostrarEndereco.checked });
+  const textos = () => { const d = lerForm(); return { titulo: d.titulo.trim(), mensagem: d.mensagem.trim(), chamada: d.chamada.trim(), mostrarEndereco: d.mostrarEndereco }; };
+  const prever = () => { clearTimeout(t); t = setTimeout(() => desenharCartao(cv, { tipo, formato: f.formato.value, link: linkDe(tipo), nome: tipo === 'professor' ? 'Prof. Nome do Professor' : '', textos: textos() }).catch(e => console.warn(e)), 120); };
+  const preencher = () => {
+    const d = rascunho[tipo] || textoDivulgacao(tipo);
+    f.titulo.value = d.titulo; f.mensagem.value = d.mensagem; f.chamada.value = d.chamada || ''; f.mostrarEndereco.checked = !!d.mostrarEndereco;
+    $('#dv-end').classList.toggle('hidden', tipo === 'professor');
+    const l = linkDe(tipo);
+    $('#dv-link').innerHTML = tipo === 'professor'
+      ? `<span>${ic('lock', 14)} Cada professor tem um link próprio. O QR dele aparece ao cadastrar o colunista (ou ao gerar um <b>Novo link</b>) em <a href="#/admin/colunistas">Painel → Colunistas</a>. Aqui você define a mensagem do cartão de convite.</span>`
+      : `<span class="small muted">${tipo === 'portal' ? 'Link do portal (página inicial)' : 'Link do aluno (abre direto o cadastro)'}</span><code>${esc(l)}</code><button type="button" class="btn ghost sm" id="dv-cp">Copiar</button>`;
+    const cp = $('#dv-cp'); if (cp) cp.onclick = () => copiar(l);
+    $('#dv-baixar').innerHTML = tipo === 'professor' ? '' : `<button type="button" class="btn primary" id="dv-card">${ic('download', 16)} Baixar cartão (PNG)</button><button type="button" class="btn ghost" id="dv-qr">${ic('qr', 16)} Baixar só o QR code</button>`;
+    const bc = $('#dv-card'); if (bc) bc.onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo, formato: f.formato.value, link: l, textos: textos() }); baixarCanvas(tmp, nomeArquivo('qr', S.config.nomePortal, tipo, f.formato.value)); };
+    const bq = $('#dv-qr'); if (bq) bq.onclick = () => baixarCanvas(canvasSoQR(l), nomeArquivo('qr', S.config.nomePortal, tipo, 'codigo'));
+    prever();
+  };
+  $$('.dv-tipos button').forEach(b => b.onclick = () => { rascunho[tipo] = lerForm(); tipo = b.dataset.t; $$('.dv-tipos button').forEach(x => x.classList.toggle('on', x === b)); preencher(); });
+  f.addEventListener('input', prever); f.formato.addEventListener('change', prever);
+  $('#dv-pad').onclick = () => { const d = { ...DIV_PADRAO[tipo] }; if (d.chamada == null) d.chamada = diasTeste() ? `${diasTeste()} dias grátis para começar` : 'Cadastre-se agora'; rascunho[tipo] = d; preencher(); };
+  f.onsubmit = async e => {
+    e.preventDefault(); const b = $('#dv-sv'); b.disabled = true; b.textContent = 'Salvando…';
+    try { const n = { ...S.config, divulgacao: { ...(S.config.divulgacao || {}), [tipo]: textos() } }; await store.saveConfig(n); S.config = n; delete rascunho[tipo]; toast('Mensagem salva.'); }
+    catch (er) { toast(er.message, true); }
+    b.disabled = false; b.textContent = 'Salvar mensagem';
+  };
+  preencher();
+}
+/* QR + cartão de convite no cadastro do professor (o link só existe neste momento) */
+function qrConviteHTML() {
+  return `<div class="dv-conv"><canvas id="cv-qr" width="220" height="220" aria-label="QR code do link do professor"></canvas>
+    <div><b>QR code do convite</b><p class="small muted" style="margin:4px 0 10px">O professor aponta a câmera do celular e abre o editor dele. É pessoal: envie só para ele.</p>
+      <label class="small" style="display:grid;gap:4px;margin-bottom:10px">Formato do cartão<select class="field" id="cv-fmt">${Object.entries(DIV_FORMATOS).map(([k, f]) => `<option value="${k}" ${k === 'story' ? 'selected' : ''}>${f.nome}</option>`).join('')}</select></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn primary sm" id="cv-card">${ic('download', 14)} Baixar cartão do convite</button><button type="button" class="btn ghost sm" id="cv-qrb">Baixar só o QR</button></div></div></div>`;
+}
+function ligarQrConvite(el, link, nome) {
+  const cv = $('#cv-qr', el), c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 220, 220); desenharQR(c, link, 14, 14, 192);
+  $('#cv-card', el).onclick = async () => { const tmp = document.createElement('canvas'); await desenharCartao(tmp, { tipo: 'professor', formato: $('#cv-fmt', el).value, link, nome }); baixarCanvas(tmp, nomeArquivo('convite-colunista', nome, $('#cv-fmt', el).value)); };
+  $('#cv-qrb', el).onclick = () => baixarCanvas(canvasSoQR(link), nomeArquivo('qr-colunista', nome));
+}
+
 /* =================== Colunistas e Coluna Acadêmica ===================
    - O administrador cadastra o professor e gera um LINK PESSOAL (#/escrever/<chave>).
    - O professor abre o link, escreve no editor online (salvamento automático) e clica
@@ -5251,7 +5528,7 @@ async function viewEscrever(main, chave) {
         <button type="button" class="btn ghost sm" id="pf-rm">Remover foto</button><p class="hint" style="margin-top:6px">Foto de rosto, aparece ao lado dos seus artigos.</p></div></div>
       <label>Nome<input value="${esc(c0.nome)}" disabled><span class="hint">O nome é definido pelo administrador do portal.</span></label>
       <label>Titulação ou cargo<input name="titulacao" maxlength="120" value="${esc(p.titulacao || '')}" placeholder="Ex.: Mestre em Direito Penal, professor de Processo Penal"></label>
-      <label>Instituição<input name="instituicao" maxlength="120" value="${esc(p.instituicao || '')}" placeholder="Ex.: Universidade Federal de Alagoas"></label>
+      <label>Instituição<input name="instituicao" maxlength="120" value="${esc(p.instituicao || '')}" placeholder="Ex.: nome da faculdade ou universidade"></label>
       <label>Minibiografia<textarea name="bio" maxlength="500" rows="4" placeholder="Duas ou três frases sobre a sua trajetória.">${esc(p.bio || '')}</textarea></label>
       <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar perfil</button></div></form>`);
     let foto = fotoOk(col.perfil?.foto) ? col.perfil.foto : (fotoOk(c0.foto) ? c0.foto : '');
@@ -5294,8 +5571,10 @@ function mostrarLinkColunista(c, chave) {
     <div class="form"><input class="field" readonly value="${esc(link)}" id="lc"></div>
     <div class="actions" style="justify-content:flex-start"><button class="btn primary" id="lc-cp">Copiar link</button><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
       <a class="btn ghost" href="mailto:${encodeURIComponent(c.email || '')}?subject=${encodeURIComponent('Seu acesso de colunista - ' + S.config.nomePortal)}&body=${encodeURIComponent(msg)}">E-mail</a><a class="btn ghost" href="${esc(link)}" target="_blank" rel="noopener">Abrir editor ${ic('ext', 13)}</a></div>
-    <div class="demo-hint" style="margin-top:16px"><b>Guarde este link agora.</b> Por segurança, o portal não armazena o link, só uma versão embaralhada dele. Se ele se perder, clique em <b>Novo link</b> na lista: o link anterior deixa de funcionar.</div>`);
+    ${qrConviteHTML()}
+    <div class="demo-hint" style="margin-top:16px"><b>Guarde este link e o QR agora.</b> Por segurança, o portal não armazena o link, só uma versão embaralhada dele. Se ele se perder, clique em <b>Novo link</b> na lista: o link anterior deixa de funcionar.</div>`);
   $('#lc-cp', el).onclick = () => copiar(link); $('#lc', el).onclick = e => e.target.select();
+  ligarQrConvite(el, link, c.nome);
 }
 function formColunista(c = {}, onSalvo) {
   const novo = !c.id;
@@ -5305,7 +5584,7 @@ function formColunista(c = {}, onSalvo) {
     <div class="row2"><label>Nome do professor<input name="nome" required maxlength="100" value="${esc(c.nome || '')}" placeholder="Ex.: Profa. Ana Ribeiro"></label>
       <label>E-mail<input name="email" type="email" maxlength="120" value="${esc(c.email || '')}" placeholder="Para enviar o link"></label></div>
     <div class="row2"><label>Titulação ou cargo<input name="titulacao" maxlength="120" value="${esc(c.titulacao || '')}" placeholder="Ex.: Doutora em Direito Civil"></label>
-      <label>Instituição<input name="instituicao" maxlength="120" value="${esc(c.instituicao || '')}" placeholder="Ex.: UFAL"></label></div>
+      <label>Instituição<input name="instituicao" maxlength="120" value="${esc(c.instituicao || '')}" placeholder="Ex.: nome da faculdade"></label></div>
     <label>Disciplina principal<input name="disciplina" list="dl-disc-c" maxlength="80" value="${esc(c.disciplina || '')}" placeholder="Sugerida nos textos novos"></label>
     <label>Minibiografia<textarea name="bio" maxlength="500" rows="3">${esc(c.bio || '')}</textarea></label>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="cl-sv">${novo ? 'Cadastrar e gerar link' : 'Salvar'}</button></div></form>
