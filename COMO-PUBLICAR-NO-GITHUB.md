@@ -162,6 +162,17 @@ Em **Painel → Configurações → Divulgação** há três QR codes, cada um c
 
 Os QR codes usam correção de erro alta e o símbolo do portal no centro. Todos foram testados com leitor de QR nos três formatos.
 
+## Instituições parceiras
+Em **Painel → Instituições parceiras** você cadastra as instituições que apoiam o portal. As marcadas como exibidas aparecem:
+- na **tela inicial do portal**, para visitantes (seção "Instituições parceiras", e numa faixa de logomarcas no celular);
+- na tela **Início** dos alunos, no fim da página.
+
+**Cadastrar:** clique em **Nova instituição**, escolha a **logomarca** (clique ou arraste; PNG com fundo transparente ou SVG ficam melhores, e JPG também funciona), informe o **nome**, o **site** (pode digitar sem "https://") e, se quiser, uma **descrição curta** (ex.: "Faculdade de Direito"). O cartão de cada instituição leva ao site dela, numa nova aba. Sem logomarca, aparecem as iniciais do nome.
+
+**Organizar:** use ↑ e ↓ para definir a ordem, **Ocultar/Exibir** para tirar ou recolocar na tela inicial sem apagar, **Editar** para trocar a logomarca ou o site e a lixeira para excluir. A **Prévia na tela inicial**, abaixo da lista, mostra como a seção vai ficar.
+
+A logomarca é ajustada automaticamente (até 600 × 300 px, mantendo a transparência) e guardada no Gist num arquivo próprio (`img-....txt`).
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.

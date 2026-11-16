@@ -1101,6 +1101,28 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .sc-ja{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
 .sc-ok{text-align:center}.sc-ok .art{width:76px;margin:0 auto 8px}.sc-ok .form{text-align:left}
 @media (max-width:900px){.sc-grid{grid-template-columns:1fr;grid-template-areas:'intro' 'form' 'extra';grid-template-rows:auto;padding:22px 14px 60px;gap:16px}.sc-intro p{margin-bottom:0}}
+
+/* instituições parceiras */
+.parc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.parc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;padding:24px 18px 18px;background:var(--branco);border:1px solid var(--linha);border-radius:12px;color:inherit;text-decoration:none!important;transition:border-color .15s,box-shadow .15s,transform .15s}
+a.parc:hover{border-color:var(--latao);box-shadow:0 14px 30px -24px rgba(19,32,58,.55);transform:translateY(-2px)}
+.parc-logo{height:88px;width:100%;display:grid;place-items:center}
+.parc-logo img{max-height:88px;max-width:100%;width:auto;height:auto;object-fit:contain;display:block}
+.parc b{font-family:var(--serif);color:var(--toga);font-size:1rem;line-height:1.3}
+.parc small{color:var(--cinza);font-size:.8rem;line-height:1.4}
+.parc-site{margin-top:auto;padding-top:4px;font-size:.76rem;color:var(--latao);font-weight:600;display:inline-flex;gap:4px;align-items:center}
+.parc-ini{width:72px;height:72px;border-radius:50%;background:var(--latao-bg);border:1px solid #e6d7b8;display:grid;place-items:center;font:700 1.45rem var(--serif);color:#7c5d26}
+.parc-sec{background:linear-gradient(180deg,var(--papel),var(--marmore))}
+.parc-home{margin-top:30px}
+.parc-grid.mini{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.parc-grid.mini .parc{padding:16px 12px 14px}.parc-grid.mini .parc-logo{height:60px}.parc-grid.mini .parc-logo img{max-height:60px}.parc-grid.mini .parc b{font-size:.9rem}
+.parc-logo.adm{height:60px;width:140px;background:#fff;border:1px solid var(--linha-2);border-radius:8px;padding:6px}.parc-logo.adm img{max-height:48px}.parc-logo.adm .parc-ini{width:44px;height:44px;font-size:1rem}
+.parc-prev{border:1px dashed var(--linha);border-radius:12px;overflow:hidden}.parc-prev .section{padding:34px 0}
+.pn-drop{min-height:150px}.pn-prev{display:grid;place-items:center;gap:8px;text-align:center;color:var(--cinza)}.pn-prev img{max-height:120px;max-width:100%;object-fit:contain}
+.wl-parc{margin-top:24px}.wl-parc>span{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--latao-2);font-weight:600}
+.wl-parc-row{display:flex;gap:10px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}
+.wl-parc-item{flex:none;width:118px;height:64px;background:#fff;border-radius:10px;display:grid;place-items:center;padding:8px}
+.wl-parc-item img{max-height:46px;max-width:100%;object-fit:contain}.wl-parc-item .parc-ini{width:42px;height:42px;font-size:.95rem}
 </style>
 </head>
 <body>
@@ -1366,6 +1388,7 @@ const I = {
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  predio: '<path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M9 21v-5h6v5M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>',
   qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h4v4h-4z"/>',
   pen: '<path d="M20 4c-6 0-11 4-13 11l-2 5 5-2c7-2 10-8 10-14z"/><path d="M5 20l7-7"/>',
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/>',
@@ -1483,9 +1506,9 @@ function confirmar(msg, ok = 'Confirmar') {
 /* ===================== Camada de dados: IndexedDB ===================== */
 function LocalStore({ seed = true } = {}) {
   let db;
-  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas'];
+  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros'];
   const open = () => new Promise((res, rej) => {
-    const r = indexedDB.open('agora-juridica', 3);
+    const r = indexedDB.open('agora-juridica', 4);
     r.onupgradeneeded = () => { for (const s of STORES) if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); };
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
@@ -1630,7 +1653,7 @@ async function pbkdf2(senha, salt, iter = 120000) {
 function GistStore() {
   const L = LocalStore({ seed: false });
   const API = 'https://api.github.com', FILE = 'agora-dados.json';
-  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas'];
+  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros'];
   let G = null, data = null, loadedAt = 0, TOKEN = null, sess = null;
   const ucache = new Map(); // escritas recentes (evita ler versão antiga do cache do GitHub)
   const enc = t => 'v1.' + btoa([...t].reverse().join(''));
@@ -2139,12 +2162,12 @@ function bindInstall() {
 
 /* ============================ Página pública ============================ */
 async function viewHome(main) {
-  const c = S.config, dt = diasTeste(), mx = brocardo();
+  const c = S.config, dt = diasTeste(), mx = brocardo(), parc = await carregarParceiros();
   if (isMobile()) {
     main.innerHTML = `<div class="welcome">${ART.facade(c.nomePortal)}
       <h1>O Direito, organizado para quem estuda.</h1>
       <div class="wl">${dt ? `<div>${ic('check', 20)} ${dt} dias grátis para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('gavel', 20)} Estágios, concursos e empregos</div><div>${ic('news', 20)} Notícias, entrevistas e leis</div></div>
-      <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div></div>`;
+      <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div>${parceirosCelularHTML(parc)}</div>`;
     return;
   }
   const feat = [
@@ -2186,6 +2209,7 @@ async function viewHome(main) {
     <div class="section-h"><span class="eyebrow">Planos</span><h2>Escolha como quer estudar</h2><p>${dt ? `Todo aluno novo começa com ${dt} dias grátis. Depois, escolha o plano que cabe no seu semestre.` : 'Todos os planos dão acesso completo ao portal.'}</p></div>
     <div class="plans">${planos().map(p => planCard(p, { cta: true })).join('')}</div>
   </div></section>
+  ${secaoParceiros(parc)}
   ${secaoInstituicao()}
   <footer class="footer"><div class="wrap">${brandHTML()}<span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}. Uma iniciativa do ${esc(inst().nome)}${inst().cnpj ? `, CNPJ ${esc(inst().cnpj)}` : ''}.</span><span class="mode-tag">${store.modo === 'local' ? 'Modo local' : store.modo === 'gist' ? 'Dados no GitHub' : 'Dados no Firebase'}</span></div></footer>`;
 }
@@ -2451,6 +2475,7 @@ async function viewPainel(main) {
   const first = u.nome.split(' ')[0];
   let mats = [], posts = [];
   let acad = { artigos: [] };
+  const parc = await carregarParceiros();
   if (at) [mats, posts, acad] = await Promise.all([store.list('materiais'), store.list('publicacoes'), carregarAcademico().catch(e => { console.warn(e); return { artigos: [] }; })]);
   mats.sort(byNewest); posts.sort(byNewest);
   const opps = posts.filter(p => !CAT_INFO.includes(p.categoria)), leis = posts.filter(p => p.categoria === 'lei'), atual = posts.filter(p => p.categoria === 'noticia' || p.categoria === 'entrevista');
@@ -2495,6 +2520,7 @@ async function viewPainel(main) {
       </div>
     </div>` : `
     <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['gavel', 'Estágios e empregos'], ['columns', 'Concursos'], ['news', 'Notícias'], ['mic', 'Entrevistas'], ['scroll', 'Atualizações da lei']].map(x => `<div class="feature" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></div>`).join('')}</div>`}
+    ${parceirosInicioHTML(parc)}
   </div>`;
 }
 function matCard(m) {
@@ -3584,10 +3610,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
@@ -3605,7 +3631,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3619,7 +3645,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -4609,6 +4635,130 @@ function admConfig(box) {
 }
 
 /* ================================ Boot ================================ */
+/* ========================== Instituições parceiras ==========================
+   Cadastro no Painel → Instituições parceiras (logomarca, nome, site, descrição).
+   As ativas aparecem na tela inicial (visitantes e alunos), na ordem definida.
+   A logomarca é guardada à parte (como as imagens dos artigos); o registro guarda a referência.
+   ============================================================================ */
+const ordemParc = (a, b) => (a.ordem ?? 1e9) - (b.ordem ?? 1e9) || String(a.nome || '').localeCompare(String(b.nome || ''), 'pt-BR');
+const siteOk = u => /^https?:\/\/[^\s"'<>]+\.[^\s"'<>]+/i.test(String(u || ''));
+const dominio = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return String(u || ''); } };
+async function carregarParceiros() { try { return (await store.list('parceiros')).filter(p => p.ativo !== false).sort(ordemParc); } catch (e) { console.warn(e); return []; } }
+function logoParcHTML(p) {
+  return p.logo && /^(gist|idb):[\w.-]+$/.test(p.logo) ? `<img data-img="${esc(p.logo)}" alt="${esc(p.nome)}">` : `<span class="parc-ini">${esc(initials(p.nome))}</span>`;
+}
+function cartaoParc(p) {
+  const link = siteOk(p.site), tag = link ? 'a' : 'div';
+  return `<${tag} class="parc"${link ? ` href="${esc(p.site)}" target="_blank" rel="noopener" title="Visitar o site de ${esc(p.nome)}"` : ''}>
+    <span class="parc-logo">${logoParcHTML(p)}</span><b>${esc(p.nome)}</b>${p.descricao ? `<small>${esc(p.descricao)}</small>` : ''}
+    ${link ? `<span class="parc-site">${esc(dominio(p.site))} ${ic('ext', 12)}</span>` : ''}</${tag}>`;
+}
+function secaoParceiros(lista) {
+  if (!lista.length) return '';
+  return `<section class="section parc-sec"><div class="wrap">
+    <div class="section-h"><span class="eyebrow">Parcerias</span><h2>Instituições parceiras</h2><p>Instituições que apoiam o portal e a formação dos estudantes de Direito.</p></div>
+    <div class="parc-grid">${lista.map(cartaoParc).join('')}</div></div></section>`;
+}
+function parceirosInicioHTML(lista) {
+  if (!lista.length) return '';
+  return `<div class="parc-home"><div class="list-h"><h3>${ic('predio', 18)} Instituições parceiras</h3></div><div class="parc-grid mini">${lista.map(cartaoParc).join('')}</div></div>`;
+}
+function parceirosCelularHTML(lista) {
+  if (!lista.length) return '';
+  return `<div class="wl-parc"><span>Instituições parceiras</span><div class="wl-parc-row">${lista.map(p => { const l = siteOk(p.site);
+    return `<${l ? 'a' : 'div'} class="wl-parc-item"${l ? ` href="${esc(p.site)}" target="_blank" rel="noopener"` : ''} title="${esc(p.nome)}">${logoParcHTML(p)}</${l ? 'a' : 'div'}>`; }).join('')}</div></div>`;
+}
+/* Logomarca: mantém a transparência, reduz para no máximo 600 × 300 px */
+async function logoOtimizado(file) {
+  if (!/^image\//i.test(file?.type || '')) throw new Error('Escolha uma imagem (PNG, JPG, SVG ou WebP).');
+  if (file.size > 15e6) throw new Error('Imagem muito grande (máximo de 15 MB).');
+  const im = await carregarImg(URL.createObjectURL(file));
+  const w0 = im.naturalWidth || im.width || 600, h0 = im.naturalHeight || im.height || 300;
+  const k = /svg/i.test(file.type) ? Math.min(600 / w0, 300 / h0) : Math.min(1, 600 / w0, 300 / h0);
+  const cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(w0 * k)); cv.height = Math.max(1, Math.round(h0 * k));
+  cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height);
+  let url = cv.toDataURL('image/png');
+  if (url.length > 450000) { const w = cv.toDataURL('image/webp', .9); if (w.startsWith('data:image/webp') && w.length < url.length) url = w; }
+  if (url.length > 900000) { const c2 = document.createElement('canvas'); c2.width = cv.width; c2.height = cv.height; const x = c2.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c2.width, c2.height); x.drawImage(cv, 0, 0); url = c2.toDataURL('image/jpeg', .85); }
+  return url;
+}
+function formParceiro(p = {}, onSalvo) {
+  const novo = !p.id;
+  const { el, close } = modal(novo ? 'Nova instituição parceira' : 'Editar instituição parceira', `<form class="form" id="fpn" novalidate>
+    <label class="drop pn-drop" id="pn-drop"><span class="pn-prev" id="pn-prev">${p.logo ? logoParcHTML(p) : `${ic('image', 28)}<span>Clique para escolher a logomarca ou arraste aqui</span>`}</span><input type="file" id="pn-file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" hidden></label>
+    <p class="hint" style="margin-top:-6px">PNG com fundo transparente ou SVG ficam melhores. A imagem é ajustada automaticamente. ${p.logo ? '<button type="button" class="btn ghost sm" id="pn-rm" style="margin-left:6px">Remover logomarca</button>' : ''}</p>
+    <label>Nome da instituição *<input name="nome" required maxlength="120" value="${esc(p.nome || '')}"></label>
+    <label>Site<input name="site" type="url" maxlength="300" value="${esc(p.site || '')}" placeholder="https://www.instituicao.com.br"><span class="hint">O cartão da instituição leva a este endereço, numa nova aba.</span></label>
+    <label>Descrição curta (opcional)<input name="descricao" maxlength="120" value="${esc(p.descricao || '')}" placeholder="Ex.: Faculdade de Direito, escritório de advocacia, editora jurídica"></label>
+    <label class="dv-chk"><input type="checkbox" name="ativo" ${p.ativo !== false ? 'checked' : ''}> Exibir na tela inicial do portal</label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="pn-sv">${novo ? 'Cadastrar instituição' : 'Salvar'}</button></div></form>`);
+  const f = $('#fpn', el); let arq = null, remover = false;
+  hidratarImagens(el);
+  const escolher = file => {
+    if (!file) return; if (!/^image\//.test(file.type)) return toast('Escolha um arquivo de imagem.', true);
+    arq = file; remover = false; $('#pn-prev', el).innerHTML = `<img src="${trackURL(URL.createObjectURL(file))}" alt="">`;
+  };
+  $('#pn-file', el).onchange = e => escolher(e.target.files[0]);
+  const dr = $('#pn-drop', el); dr.ondragover = e => { e.preventDefault(); dr.classList.add('over'); }; dr.ondragleave = () => dr.classList.remove('over');
+  dr.ondrop = e => { e.preventDefault(); dr.classList.remove('over'); escolher(e.dataTransfer.files[0]); };
+  const rm = $('#pn-rm', el); if (rm) rm.onclick = () => { arq = null; remover = true; $('#pn-prev', el).innerHTML = `${ic('image', 28)}<span>Sem logomarca: aparecem as iniciais do nome</span>`; };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const nome = f.nome.value.trim(); let site = f.site.value.trim();
+    if (nome.length < 2) { toast('Informe o nome da instituição.', true); return f.nome.focus(); }
+    if (site && !/^https?:\/\//i.test(site)) site = 'https://' + site;
+    if (site && !siteOk(site)) { toast('O endereço do site não parece válido.', true); return f.site.focus(); }
+    const b = $('#pn-sv', el); b.disabled = true; b.textContent = arq ? 'Enviando a logomarca…' : 'Salvando…';
+    try {
+      let logo = remover ? '' : (p.logo || '');
+      if (arq) {
+        if (!store.salvarImagemCol) throw new Error('O envio de imagens não está disponível neste modo.');
+        const url = await logoOtimizado(arq); logo = await store.salvarImagemCol(url); imgCache.set(logo, url);
+      }
+      const lista = novo ? await store.list('parceiros') : [];
+      await store.save('parceiros', { ...p, nome, site, descricao: f.descricao.value.trim(), ativo: f.ativo.checked, logo, ordem: novo ? lista.length : p.ordem });
+      if (p.logo && p.logo !== logo) store.apagarImagemCol?.(p.logo).catch?.(() => {});
+      close(); toast(novo ? 'Instituição cadastrada.' : 'Instituição atualizada.'); onSalvo?.();
+    } catch (er) { toast(er.message, true); b.disabled = false; b.textContent = novo ? 'Cadastrar instituição' : 'Salvar'; }
+  };
+}
+async function admParceiros(box) {
+  box.innerHTML = '<div class="loading">Carregando…</div>';
+  const lista = (await store.list('parceiros')).sort(ordemParc);
+  const recarregar = () => admParceiros(box);
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:700px">As instituições marcadas como exibidas aparecem na <b>tela inicial do portal</b>, para visitantes e alunos, na ordem abaixo. O cartão de cada uma leva ao site dela.</p>
+      <button class="btn primary sm" id="pn-novo">${ic('plus', 15)} Nova instituição</button></div>
+    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th style="width:160px">Logomarca</th><th>Instituição</th><th>Site</th><th>Tela inicial</th><th></th></tr>
+      ${lista.map((p, i) => `<tr><td><span class="parc-logo adm">${logoParcHTML(p)}</span></td><td><b>${esc(p.nome)}</b>${p.descricao ? `<div class="small muted">${esc(p.descricao)}</div>` : ''}</td>
+        <td>${siteOk(p.site) ? `<a href="${esc(p.site)}" target="_blank" rel="noopener">${esc(dominio(p.site))} ${ic('ext', 12)}</a>` : '<span class="muted">Sem site</span>'}</td>
+        <td>${p.ativo === false ? '<span class="badge">Oculta</span>' : '<span class="badge ok">Exibida</span>'}</td>
+        <td><div class="acts"><button class="btn ghost sm" data-pa="up" data-id="${esc(p.id)}" title="Subir" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn ghost sm" data-pa="down" data-id="${esc(p.id)}" title="Descer" ${i === lista.length - 1 ? 'disabled' : ''}>↓</button>
+          <button class="btn ghost sm" data-pa="ed" data-id="${esc(p.id)}">${ic('edit', 14)} Editar</button><button class="btn ghost sm" data-pa="vis" data-id="${esc(p.id)}">${p.ativo === false ? 'Exibir' : 'Ocultar'}</button><button class="btn danger sm" data-pa="del" data-id="${esc(p.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`).join('')}</table></div>
+      <h3 style="margin:30px 0 4px">Prévia na tela inicial</h3>
+      <div class="parc-prev">${secaoParceiros(lista.filter(p => p.ativo !== false)) || '<p class="muted pad">Nenhuma instituição marcada para exibir.</p>'}</div>`
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('predio')}<h3>Nenhuma instituição parceira ainda</h3><p>Cadastre a primeira com a logomarca e o site. Ela aparece na tela inicial do portal.</p><button class="btn primary" id="pn-novo2">${ic('plus', 15)} Nova instituição</button></div>`}`;
+  hidratarImagens(box);
+  $('#pn-novo').onclick = () => formParceiro({}, recarregar);
+  const n2 = $('#pn-novo2'); if (n2) n2.onclick = () => formParceiro({}, recarregar);
+  box.onclick = async e => {
+    const b = e.target.closest('[data-pa]'); if (!b) return;
+    const i = lista.findIndex(x => x.id === b.dataset.id), p = lista[i]; if (!p) return;
+    try {
+      if (b.dataset.pa === 'ed') return formParceiro(p, recarregar);
+      if (b.dataset.pa === 'vis') { await store.save('parceiros', { ...p, ativo: p.ativo === false }); toast(p.ativo === false ? 'Instituição exibida na tela inicial.' : 'Instituição ocultada da tela inicial.'); return recarregar(); }
+      if (b.dataset.pa === 'del') {
+        if (!await confirmar(`Excluir ${p.nome} das instituições parceiras?`, 'Excluir')) return;
+        await store.remove('parceiros', p.id); if (p.logo) store.apagarImagemCol?.(p.logo).catch?.(() => {}); toast('Instituição excluída.'); return recarregar();
+      }
+      const j = b.dataset.pa === 'up' ? i - 1 : i + 1; if (j < 0 || j >= lista.length) return;
+      b.disabled = true;
+      const nova = [...lista]; [nova[i], nova[j]] = [nova[j], nova[i]];
+      for (let k = 0; k < nova.length; k++) if (nova[k].ordem !== k) await store.save('parceiros', { ...nova[k], ordem: k });
+      return recarregar();
+    } catch (er) { toast(er.message, true); }
+  };
+}
+
 /* ==================== Divulgação: QR codes e cartões para baixar ====================
    Três links: o do portal (página inicial), o do aluno (cadastro) e o pessoal de cada
    professor colunista (gerado no cadastro, porque o portal não guarda esse link).
