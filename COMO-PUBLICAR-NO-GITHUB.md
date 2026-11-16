@@ -77,8 +77,8 @@ O portal é vinculado ao **Instituto Ágora de Estudos Jurídicos**, instituiç�
 - A marca aparece no certificado, na página inicial (seção **Quem certifica**), na tela de entrada, no menu lateral, em **Minha conta** e na página **A instituição** (`#/instituto`).
 - **Aviso:** como curso livre, o certificado não depende de autorização do MEC e não equivale a diploma. Mantenha o texto legal do certificado e consulte um advogado se for formalizar a instituição (CNPJ, contrato social, CNAE de ensino).
 
-## Colunistas e Painel colaborativo acadêmico
-Professores convidados escrevem artigos direto no portal, sem criar conta. O que publicam aparece para os alunos em **Painel acadêmico** (menu lateral), no bloco **Painel colaborativo acadêmico** da tela inicial e na busca.
+## Colunistas e Coluna Acadêmica
+Professores convidados escrevem artigos direto no portal, sem criar conta. O que publicam aparece para os alunos em **Coluna Acadêmica** (menu lateral), no bloco **Coluna Acadêmica** da tela inicial e na busca.
 
 **Convidar um professor (1 minuto):**
 1. Vá em **Painel → Colunistas → Novo colunista**.
@@ -90,13 +90,13 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 1. Abre o link no computador ou no celular. O editor aparece direto, com o nome dele.
 2. Escreve título, linha fina e texto, com negrito, itálico, intertítulos, citações, listas e links. Pode colar textos do Word ou do Google Docs (a formatação é limpa automaticamente).
 3. O texto é **salvo sozinho**: na hora, no próprio aparelho, e na nuvem (Gist) a cada minuto, ao trocar de aba ou com **Ctrl+S**. O indicador no topo mostra "Tudo salvo na nuvem".
-4. Clica em **Salvar e publicar no painel**. O artigo aparece para os alunos e o portal mostra o link do artigo para compartilhar com a turma.
-5. Depois de publicado, **tudo o que ele alterar (texto, alinhamento, imagens) vai para o painel sozinho a cada salvamento**, em até meio minuto; o botão **Atualizar no painel agora** faz isso na hora. Se a alteração sair das regras (por exemplo, passar do limite de caracteres), o editor avisa e os alunos continuam vendo a versão anterior até ele corrigir. Ele também pode **Retirar do painel** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
+4. Clica em **Salvar e publicar na Coluna**. O artigo aparece para os alunos e o portal mostra o link do artigo para compartilhar com a turma.
+5. Depois de publicado, **tudo o que ele alterar (texto, alinhamento, imagens) vai para a Coluna Acadêmica sozinho a cada salvamento**, em até meio minuto; o botão **Atualizar na Coluna agora** faz isso na hora. Se a alteração sair das regras (por exemplo, passar do limite de caracteres), o editor avisa e os alunos continuam vendo a versão anterior até ele corrigir. Ele também pode **Retirar da Coluna** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
 6. Rascunhos não aparecem para os alunos; só o que foi publicado.
 
 **Recursos do editor:** negrito, itálico, sublinhado, tachado, marca-texto, sobrescrito e subscrito; intertítulo, subtítulo e citação; alinhar à esquerda, centralizar, alinhar à direita e **justificar**; listas; links; linha separadora; desfazer e refazer.
 - **Imagens:** botão **Imagem** (ou arrastar/colar a imagem no texto). O professor escolhe o tamanho (pequena, média ou grande), a posição (centralizada, à esquerda ou à direita com o texto ao lado), a legenda e a descrição. Clicando na imagem aparece uma barra para mudar tamanho, posição, legenda ou remover. As imagens são reduzidas automaticamente (cerca de 50 a 300 KB cada) e guardadas no Gist em arquivos próprios (`img-....txt`); o texto guarda só a referência. Também é possível usar o endereço (https) de uma imagem da internet.
-- A primeira imagem do artigo vira a **capa** do cartão no painel.
+- A primeira imagem do artigo vira a **capa** do cartão na Coluna Acadêmica.
 - No celular, o tamanho e a posição são mantidos de forma proporcional: imagens pequenas continuam ao lado do texto e as médias ocupam a maior parte da tela, alinhadas ao lado escolhido (não há espaço para texto ao lado de uma imagem média numa tela estreita).
 - **Se um aluno ou professor ainda vir a versão antiga do portal** depois de você atualizar os arquivos, peça para recarregar a página (no app instalado, fechar e abrir de novo). O GitHub Pages pode levar até 10 minutos para entregar a nova versão.
 
@@ -106,26 +106,26 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 | Mínimo de caracteres | 1.500 | cerca de 250 palavras |
 | Máximo de caracteres | 12.000 | cerca de 2.000 palavras, até 10 min de leitura |
 | Imagens por artigo | 6 | 0 = sem imagens |
-| Tempo no painel | 90 dias | 0 = sem prazo |
+| Tempo na Coluna | 90 dias | 0 = sem prazo |
 | Aviso ao colunista | 7 dias antes | |
 
 - Os caracteres são contados com espaços. O editor mostra o contador com uma barra (verde, dourada perto do limite e vermelha se passar), impede digitar além do máximo e só deixa publicar dentro dos limites. Se o professor colar um texto maior, ele é avisado de quantos caracteres precisa cortar.
 - O professor vê as regras na lateral do editor (no celular, em **Meus textos**).
-- O mínimo de caracteres vale para a **primeira publicação**. Num artigo já publicado, mudanças de formatação (justificar, centralizar, imagens) sempre vão para o painel; só fica bloqueada a alteração que deixa o texto **menor que a versão publicada e abaixo do mínimo**. Nesse caso aparece um aviso vermelho fixo no rodapé do editor.
+- O mínimo de caracteres vale para a **primeira publicação**. Num artigo já publicado, mudanças de formatação (justificar, centralizar, imagens) sempre vão para a Coluna Acadêmica; só fica bloqueada a alteração que deixa o texto **menor que a versão publicada e abaixo do mínimo**. Nesse caso aparece um aviso vermelho fixo no rodapé do editor.
 
-**Prazo de cada artigo no painel:**
+**Prazo de cada artigo na Coluna Acadêmica:**
 - Conta a partir da **primeira publicação**. Atualizar o texto, ou retirar e publicar de novo, **não reinicia** o prazo.
-- Antes de publicar, o professor é informado da data em que o artigo sairá do painel. Depois, o editor mostra "No painel até dd/mm (faltam X dias)" em cada artigo.
+- Antes de publicar, o professor é informado da data em que o artigo sairá da Coluna Acadêmica. Depois, o editor mostra "Na Coluna Acadêmica até dd/mm (faltam X dias)" em cada artigo.
 - Quando faltar o número de dias do aviso, aparece um **alerta no topo do editor** e na lista de textos; ao abrir o link, o professor também recebe um aviso. Artigos que já saíram aparecem como **Expirado**.
-- Ao expirar, o artigo **sai do painel dos alunos** automaticamente (não é apagado).
-- Em **Painel → Colunistas → Artigos → Prazo**, você define a data de cada artigo, **prorroga** (+30, +60, +90 dias), deixa **sem prazo** ou volta ao prazo padrão. Ao prorrogar um artigo expirado, ele volta ao painel.
+- Ao expirar, o artigo **sai da Coluna Acadêmica** automaticamente (não é apagado).
+- Em **Painel → Colunistas → Artigos → Prazo**, você define a data de cada artigo, **prorroga** (+30, +60, +90 dias), deixa **sem prazo** ou volta ao prazo padrão. Ao prorrogar um artigo expirado, ele volta à Coluna Acadêmica.
 - Mudar o tempo nas regras vale para as próximas publicações; os artigos já publicados mantêm a data que tinham.
 
-**Para os alunos:** o Painel acadêmico mostra o artigo mais recente em destaque, os demais em cartões, filtro por disciplina, busca e a lista de colunistas. A página **atualiza sozinha a cada 30 segundos**: quando um professor publica, o artigo aparece sem recarregar (com um aviso). Os artigos seguem a mesma regra dos demais conteúdos: é preciso ter o acesso ativo.
+**Para os alunos:** a Coluna Acadêmica mostra o artigo mais recente em destaque, os demais em cartões, filtro por disciplina, busca e a lista de colunistas. A página **atualiza sozinha a cada 30 segundos**: quando um professor publica, o artigo aparece sem recarregar (com um aviso). Os artigos seguem a mesma regra dos demais conteúdos: é preciso ter o acesso ativo.
 
 **No Painel → Colunistas você também:**
 - vê quantos artigos e rascunhos cada professor tem, a última escrita e as **leituras dos alunos**;
-- em **Artigos**, lê e **oculta** um artigo do painel sem apagá-lo (só o professor edita o texto);
+- em **Artigos**, lê e **oculta** um artigo da Coluna Acadêmica sem apagá-lo (só o professor edita o texto);
 - **Pausa** o acesso (o link para de funcionar; os artigos já publicados continuam) e reativa quando quiser;
 - **Exclui** o colunista (apaga também os artigos e rascunhos dele).
 

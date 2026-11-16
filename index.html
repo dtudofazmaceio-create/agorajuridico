@@ -875,7 +875,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 @media (max-width:820px){.cert-grid{grid-template-columns:1fr 1fr;gap:10px}.cert-card span{padding:8px 10px}}
 @keyframes sheet{from{transform:translateY(100%)}}
 
-/* ================= Colunistas e Painel Colaborativo Acadêmico ================= */
+/* ================= Colunistas e Coluna Acadêmica ================= */
 .col-av{display:inline-grid;place-items:center;border-radius:50%;background:var(--latao-bg);color:#7c5d26;font-weight:700;font-family:var(--serif);overflow:hidden;flex:none;border:1px solid #e6d7b8}
 .col-av img{width:100%;height:100%;object-fit:cover;display:block}
 .ao-vivo{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;color:var(--ok);background:var(--ok-bg);padding:.4em .8em;border-radius:20px}
@@ -1992,7 +1992,7 @@ async function render() {
 function brandHTML(href = '#/') {
   return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
-const TITLES = { instituto: 'A instituição', painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', academico: 'Painel colaborativo acadêmico', artigo: 'Artigo', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const TITLES = { instituto: 'A instituição', painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', academico: 'Coluna Acadêmica', artigo: 'Artigo', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
 const DETAIL = { artigo: 'academico', instituto: 'painel', material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
 const naInfo = () => /[?&]tipo=(noticia|entrevista|lei)/.test(location.hash) || location.hash.startsWith('#/legislacao');
 const isMobile = () => matchMedia('(max-width: 820px)').matches;
@@ -2022,7 +2022,7 @@ function shellHTML(name) {
         <div class="sep">Conteúdo</div>
         ${item('materiais', 'Materiais de estudo', 'book', true)}
         ${item('quiz', 'Quiz e certificados', 'quiz', true)}
-        ${item('academico', 'Painel acadêmico', 'pen', true)}
+        ${item('academico', 'Coluna Acadêmica', 'pen', true)}
         ${item('oportunidades', 'Estágios, concursos e empregos', 'briefcase', true)}
         <div class="sep">Atualidades</div>
         ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
@@ -2429,8 +2429,8 @@ async function viewPainel(main) {
     <div class="cols">
       <div>
         ${mats.some(m => m.quiz?.total) ? `<div class="banner gold"><div><h3>${ic('quiz')} Teste seus conhecimentos</h3><p>Faça um quiz com questões dos materiais e ganhe um certificado acertando mais de ${notaMin()}%.</p></div><a class="btn primary" href="#/quiz">Fazer quiz</a></div>` : ''}
-        ${acad.artigos.length ? `<div class="col-home"><div class="list-h"><h3>${ic('pen', 18)} Painel colaborativo acadêmico</h3><a href="#/academico" class="small">Ver todos os artigos</a></div>
-          <div class="col-grid">${acad.artigos.slice(0, 2).map(a => cardArtigo(a)).join('')}</div></div>` : u.role === 'admin' ? `<div class="banner gold"><div><h3>${ic('pen')} Painel colaborativo acadêmico</h3><p>Convide professores para escrever artigos. Cada um recebe um link pessoal para escrever online.</p></div><a class="btn primary" href="#/admin/colunistas">Convidar professores</a></div>` : ''}
+        ${acad.artigos.length ? `<div class="col-home"><div class="list-h"><h3>${ic('pen', 18)} Coluna Acadêmica</h3><a href="#/academico" class="small">Ver todos os artigos</a></div>
+          <div class="col-grid">${acad.artigos.slice(0, 2).map(a => cardArtigo(a)).join('')}</div></div>` : u.role === 'admin' ? `<div class="banner gold"><div><h3>${ic('pen')} Coluna Acadêmica</h3><p>Convide professores para escrever artigos. Cada um recebe um link pessoal para escrever online.</p></div><a class="btn primary" href="#/admin/colunistas">Convidar professores</a></div>` : ''}
         <div class="list-h"><h3>Materiais recentes</h3><a href="#/materiais" class="small">Ver biblioteca</a></div>
         ${mats.length ? `<div class="mgrid">${mats.slice(0, 4).map(matCard).join('')}</div>` : `<div class="card">${vazio('Os materiais publicados aparecem aqui.')}</div>`}
       </div>
@@ -4552,10 +4552,10 @@ function admConfig(box) {
 }
 
 /* ================================ Boot ================================ */
-/* =================== Colunistas e Painel Colaborativo Acadêmico ===================
+/* =================== Colunistas e Coluna Acadêmica ===================
    - O administrador cadastra o professor e gera um LINK PESSOAL (#/escrever/<chave>).
    - O professor abre o link, escreve no editor online (salvamento automático) e clica
-     em "Salvar e publicar no painel". O texto aparece para os alunos em #/academico.
+     em "Salvar e publicar na Coluna". O texto aparece para os alunos em #/academico.
    - Só o resumo (hash) da chave fica nos dados do portal; o link em si não é guardado.
    - Cada colunista tem um arquivo próprio (coluna-<id>.json): texto, rascunhos e perfil.
    =============================================================================== */
@@ -4653,7 +4653,7 @@ function regrasCol() {
 }
 const contarChars = html => textoDe(html).length;
 const fmtN0 = n => Number(n || 0).toLocaleString('pt-BR');
-/* Prazo no painel: o administrador pode prorrogar ou tirar o prazo de um artigo (vale sobre o do professor) */
+/* Prazo na Coluna Acadêmica: o administrador pode prorrogar ou tirar o prazo de um artigo (vale sobre o do professor) */
 function expiraDe(x, c) {
   if (!x?.publicado) return 0;
   const o = c?.prazos?.[x.id];
@@ -4725,7 +4725,7 @@ function mesclarColuna(a, b, id) {
     atualizadoEm: Math.max(a.atualizadoEm || 0, b.atualizadoEm || 0)
   };
 }
-/* Tudo que está publicado no painel, do mais recente para o mais antigo */
+/* Tudo que está publicado na Coluna Acadêmica, do mais recente para o mais antigo */
 async function carregarAcademico() {
   const [cols, colunas] = await Promise.all([store.list('colunistas'), store.list('colunas')]);
   const porId = new Map(colunas.map(c => [c.id, c]));
@@ -4770,7 +4770,7 @@ async function viewAcademico(main, _, q) {
   let dados = await carregarAcademico();
   let autor = q.get('autor') || '', disc = '', termo = '';
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Produção dos professores</div><h2>Painel colaborativo acadêmico</h2>
+    <div class="page-h"><div><div class="eyebrow">Produção dos professores</div><h2>Coluna Acadêmica</h2>
       <p>Artigos e colunas escritos pelos professores convidados. Quando um professor publica, o texto aparece aqui.</p></div>
       <span class="ao-vivo" title="A página confere novos artigos a cada 30 segundos"><i></i> Atualiza sozinho</span></div>
     <div class="col-layout"><div>
@@ -4815,11 +4815,11 @@ async function viewArtigo(main, param) {
   const [cid, aid] = decodeURIComponent(param || '').split('_');
   const [cols, coluna] = await Promise.all([store.list('colunistas'), store.get('colunas', cid).catch(() => null)]);
   const c = cols.find(x => x.id === cid), x = coluna?.artigos?.find(y => y.id === aid);
-  if (c && x?.publicado && expirado(x, c) && S.user?.role !== 'admin') { main.innerHTML = `<div class="page"><div class="card empty">${ART.medal('clock')}<h3>Este artigo saiu do painel</h3><p>Ele ficou disponível até ${fmtDate(expiraDe(x, c))}.</p><a class="btn ghost" href="#/academico">Ver os artigos atuais</a></div></div>`; return; }
-  if (!c || !x?.publicado || (c.ocultos || []).includes(aid)) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Artigo não encontrado</h3><p>Ele pode ter sido retirado do painel pelo autor.</p><a class="btn ghost" href="#/academico">Voltar ao painel</a></div></div>`; return; }
+  if (c && x?.publicado && expirado(x, c) && S.user?.role !== 'admin') { main.innerHTML = `<div class="page"><div class="card empty">${ART.medal('clock')}<h3>Este artigo saiu da Coluna Acadêmica</h3><p>Ele ficou disponível até ${fmtDate(expiraDe(x, c))}.</p><a class="btn ghost" href="#/academico">Ver os artigos atuais</a></div></div>`; return; }
+  if (!c || !x?.publicado || (c.ocultos || []).includes(aid)) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Artigo não encontrado</h3><p>Ele pode ter sido retirado da Coluna Acadêmica pelo autor.</p><a class="btn ghost" href="#/academico">Voltar à Coluna Acadêmica</a></div></div>`; return; }
   const autor = perfilColunista(c, coluna);
   const outros = (coluna.artigos || []).filter(y => y.publicado && y.id !== aid && !(c.ocultos || []).includes(y.id) && !expirado(y, c)).map(y => ({ ...y.publicado, id: y.id, autor })).sort((p, q) => (q.publicadoEm || 0) - (p.publicadoEm || 0)).slice(0, 3);
-  main.innerHTML = `<div class="page"><a href="#/academico" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} Painel colaborativo acadêmico</a>
+  main.innerHTML = `<div class="page"><a href="#/academico" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} Coluna Acadêmica</a>
     <div class="doc col-folha">${artigoHTML({ ...x.publicado, id: aid }, autor)}</div>
     ${outros.length ? `<div class="col-mais"><div class="list-h"><h3>Mais de ${esc(autor.nome)}</h3><a class="small" href="#/academico?autor=${encodeURIComponent(cid)}">Ver todos</a></div><div class="col-grid">${outros.map(a => cardArtigo(a)).join('')}</div></div>` : ''}</div>`;
   marcarNav('#/academico', '#/painel');
@@ -4850,7 +4850,7 @@ async function viewEscrever(main, chave) {
   const art = () => col.artigos.find(x => x.id === atual);
   const mudou = a => !!a.publicado && (String(a.titulo || '').trim() !== a.publicado.titulo || String(a.subtitulo || '').trim() !== (a.publicado.subtitulo || '') || (a.disciplina || '') !== (a.publicado.disciplina || '') || limparHTML(a.html) !== a.publicado.html);
   const R = regrasCol();
-  // o que impede o texto de ir (ou continuar indo) para o painel
+  // o que impede o texto de ir (ou continuar indo) para a Coluna Acadêmica
   const problemaDe = a => {
     const ch = contarChars(a.html), ni = (String(a.html || '').match(/<img\b/g) || []).length, min = Math.max(R.minChars, 100);
     if (String(a.titulo || '').trim().length < 3) return 'falta o título';
@@ -4859,18 +4859,18 @@ async function viewEscrever(main, chave) {
     if (ni > R.maxImagens) return `há ${ni - R.maxImagens} imagem(ns) além do limite`;
     return '';
   };
-  // artigo já publicado: ao salvar, a versão do painel é atualizada junto (se estiver dentro das regras)
+  // artigo já publicado: ao salvar, a versão da Coluna Acadêmica é atualizada junto (se estiver dentro das regras)
   const atualizarPublicado = a => {
     if (!a.publicado || expirado(a, c0) || !mudou(a) || problemaDe(a)) return false;
     a.publicado = { ...a.publicado, titulo: String(a.titulo).trim(), subtitulo: String(a.subtitulo || '').trim(), disciplina: a.disciplina || '', html: limparHTML(a.html), atualizadoEm: Date.now() };
     a.atualizadoEm = Date.now(); return true;
   };
-  const estado = a => !a.publicado ? ['Rascunho', ''] : expirado(a, c0) ? ['Expirado', 'err'] : mudou(a) ? (problemaDe(a) ? ['Alterações fora do painel', 'warn'] : ['Publicado · salvando', 'ok']) : ['Publicado', 'ok'];
+  const estado = a => !a.publicado ? ['Rascunho', ''] : expirado(a, c0) ? ['Expirado', 'err'] : mudou(a) ? (problemaDe(a) ? ['Alterações fora da Coluna', 'warn'] : ['Publicado · salvando', 'ok']) : ['Publicado', 'ok'];
   const regrasHTML = () => `<div class="ed-ajuda ed-regras"><b>${ic('scroll', 15)} Regras do portal</b><ul>
     <li>${R.minChars ? `Entre <b>${fmtN0(R.minChars)}</b> e <b>${fmtN0(R.maxChars)}</b>` : `Até <b>${fmtN0(R.maxChars)}</b>`} caracteres com espaços (cerca de ${fmtN0(Math.round(R.maxChars / 6 / 10) * 10)} palavras no máximo)</li>
     <li>${R.maxImagens ? `Até <b>${R.maxImagens}</b> ${R.maxImagens === 1 ? 'imagem' : 'imagens'} por artigo` : 'Imagens não são permitidas nos artigos'}</li>
-    <li>${R.dias ? `Cada artigo fica <b>${R.dias} dias</b> no painel, contados da primeira publicação. Atualizar o texto não reinicia o prazo.` : 'Os artigos ficam no painel sem prazo de expiração.'}</li>
-    ${R.dias && R.avisoDias ? `<li>Você é avisado aqui ${R.avisoDias} dia${R.avisoDias === 1 ? '' : 's'} antes de um artigo sair do painel.</li>` : ''}</ul></div>`;
+    <li>${R.dias ? `Cada artigo fica <b>${R.dias} dias</b> na Coluna Acadêmica, contados da primeira publicação. Atualizar o texto não reinicia o prazo.` : 'Os artigos ficam na Coluna Acadêmica sem prazo de expiração.'}</li>
+    ${R.dias && R.avisoDias ? `<li>Você é avisado aqui ${R.avisoDias} dia${R.avisoDias === 1 ? '' : 's'} antes de um artigo sair da Coluna Acadêmica.</li>` : ''}</ul></div>`;
   const alertas = () => col.artigos.filter(a => a.publicado && expiraDe(a, c0)).map(a => ({ a, e: expiraDe(a, c0) })).filter(({ e }) => (e < Date.now() && Date.now() - e < 30 * DAY) || (e >= Date.now() && diasAte(e) <= R.avisoDias)).sort((x, y) => x.e - y.e);
 
   main.innerHTML = `<header class="ed-top">${brandHTML('#/escrever/' + encodeURIComponent(chave)).replace('Portal do estudante de Direito', 'Espaço do colunista')}
@@ -4880,7 +4880,7 @@ async function viewEscrever(main, chave) {
     <div class="ed-app">
       <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><div id="ed-itens"></div>
         ${regrasHTML()}
-        <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar no painel</b>, ele aparece para os alunos no <b>Painel colaborativo acadêmico</b>. Depois de publicado, tudo o que você alterar (texto, alinhamento, imagens) vai para o painel sozinho a cada salvamento, em até meio minuto.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
+        <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar na Coluna</b>, ele aparece para os alunos na <b>Coluna Acadêmica</b>. Depois de publicado, tudo o que você alterar (texto, alinhamento, imagens) vai para a Coluna Acadêmica sozinho a cada salvamento, em até meio minuto.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
       <section class="ed-main"><div id="ed-avisos"></div><div class="doc ed-papel">
         <div class="ed-cab"><select id="ed-disc" class="ed-disc" aria-label="Disciplina"><option value="">Disciplina (opcional)</option>${DISCIPLINAS.map(d => `<option>${esc(d)}</option>`).join('')}<option value="Outra">Outra</option></select><span id="ed-estado"></span></div>
         <textarea id="ed-tit" class="ed-tit" rows="1" placeholder="Título do artigo" maxlength="180"></textarea>
@@ -4900,9 +4900,9 @@ async function viewEscrever(main, chave) {
       </div>
       <div class="ed-rodape"><div class="ed-ralerta hidden" id="ed-ralerta"></div><div class="ed-cont" id="ed-cont"></div>
         <div class="ed-acoes"><button class="btn ghost sm" id="ed-del" title="Excluir este texto">${ic('trash', 15)}<span class="hide-sm"> Excluir</span></button>
-          <button class="btn ghost sm" id="ed-ret">Retirar do painel</button>
+          <button class="btn ghost sm" id="ed-ret">Retirar da Coluna</button>
           <button class="btn ghost" id="ed-prev">${ic('eye', 16)} Pré-visualizar</button>
-          <button class="btn primary" id="ed-pub">${ic('check', 16)} Salvar e publicar no painel</button></div></div>
+          <button class="btn primary" id="ed-pub">${ic('check', 16)} Salvar e publicar na Coluna</button></div></div>
       </section></div>`;
   try { document.execCommand('defaultParagraphSeparator', false, 'p'); } catch {}
   const corpo = $('#ed-corpo'), tit = $('#ed-tit'), sub = $('#ed-sub'), disc = $('#ed-disc');
@@ -4941,13 +4941,13 @@ async function viewEscrever(main, chave) {
   const sincronizar = () => (fila = fila.then(fazerSync, fazerSync));
   function statusSalvo() {
     const x = art();
-    if (x?.publicado && !expirado(x, c0) && mudou(x)) return status('erro', 'Salvo, mas a alteração não foi ao painel');
-    status('ok', x?.publicado && !expirado(x, c0) ? 'Salvo e atualizado no painel' : x?.publicado ? 'Salvo (artigo fora do painel)' : 'Rascunho salvo na nuvem');
+    if (x?.publicado && !expirado(x, c0) && mudou(x)) return status('erro', 'Salvo, mas a alteração não foi à Coluna Acadêmica');
+    status('ok', x?.publicado && !expirado(x, c0) ? 'Salvo e atualizado na Coluna Acadêmica' : x?.publicado ? 'Salvo (artigo fora da Coluna Acadêmica)' : 'Rascunho salvo na nuvem');
   }
 
   /* ---- lista de textos ---- */
   const itemHTML = a => { const [t, cl] = estado(a), e = expiraDe(a, c0), d = e ? diasAte(e) : null;
-    const pz = a.publicado && e && e >= Date.now() ? `<span class="badge ${d <= R.avisoDias ? 'warn' : ''}" title="Sai do painel em ${fmtDate(e)}">${ic('clock', 11)} ${d <= 0 ? 'hoje' : d + 'd'}</span>` : '';
+    const pz = a.publicado && e && e >= Date.now() ? `<span class="badge ${d <= R.avisoDias ? 'warn' : ''}" title="Sai da Coluna Acadêmica em ${fmtDate(e)}">${ic('clock', 11)} ${d <= 0 ? 'hoje' : d + 'd'}</span>` : '';
     return `<button class="ed-item ${a.id === atual ? 'on' : ''}" data-id="${esc(a.id)}"><b>${esc(String(a.titulo || '').trim() || 'Sem título')}</b><span><span class="badge ${cl}">${t}</span>${pz} ${fmtDate(a.atualizadoEm)}</span></button>`; };
   const itensHTML = () => col.artigos.map(itemHTML).join('');
   let aberto = null;
@@ -4955,28 +4955,28 @@ async function viewEscrever(main, chave) {
   function desenharAvisos() {
     const box = $('#ed-avisos'); if (!box) return;
     box.innerHTML = alertas().map(({ a, e }) => { const d = diasAte(e), foi = e < Date.now();
-      return `<div class="banner ${foi ? '' : 'gold'} ed-aviso"><div><h3>${ic('clock')} ${foi ? 'Artigo fora do painel' : 'Artigo perto de sair do painel'}</h3><p><b>${esc(a.titulo || 'Sem título')}</b> ${foi ? `saiu do painel em ${fmtDate(e)}. Para voltar, peça ao administrador para prorrogar o prazo.` : `fica no painel até ${fmtDate(e)} (${prazoTxt(d)}).`}</p></div><button class="btn ghost sm" data-abrir="${esc(a.id)}">Abrir</button></div>`; }).join('');
+      return `<div class="banner ${foi ? '' : 'gold'} ed-aviso"><div><h3>${ic('clock')} ${foi ? 'Artigo fora da Coluna Acadêmica' : 'Artigo perto de sair da Coluna Acadêmica'}</h3><p><b>${esc(a.titulo || 'Sem título')}</b> ${foi ? `saiu da Coluna Acadêmica em ${fmtDate(e)}. Para voltar, peça ao administrador para prorrogar o prazo.` : `fica na Coluna Acadêmica até ${fmtDate(e)} (${prazoTxt(d)}).`}</p></div><button class="btn ghost sm" data-abrir="${esc(a.id)}">Abrir</button></div>`; }).join('');
   }
   let barraChars = 0;
   function desenharRodape() {
     const a = art(); if (!a) return;
     const [t, cl] = estado(a), html = corpo.innerHTML, n = contarPalavras(html), ch = contarChars(html), nImg = corpo.querySelectorAll('img').length;
     const e = expiraDe(a, c0), d = e ? diasAte(e) : null;
-    const prazo = !a.publicado ? (R.dias ? `Ao publicar, fica no painel por ${R.dias} dias${a.publicadoOrig ? ', contados da primeira publicação' : ''}` : 'Ao publicar, fica no painel sem prazo de expiração')
-      : !e ? 'No painel, sem prazo de expiração' : e < Date.now() ? `Saiu do painel em ${fmtDate(e)}` : `No painel até ${fmtDate(e)} (${prazoTxt(d)})`;
+    const prazo = !a.publicado ? (R.dias ? `Ao publicar, fica na Coluna Acadêmica por ${R.dias} dias${a.publicadoOrig ? ', contados da primeira publicação' : ''}` : 'Ao publicar, fica na Coluna Acadêmica sem prazo de expiração')
+      : !e ? 'Na Coluna Acadêmica, sem prazo de expiração' : e < Date.now() ? `Saiu da Coluna Acadêmica em ${fmtDate(e)}` : `Na Coluna Acadêmica até ${fmtDate(e)} (${prazoTxt(d)})`;
     const alerta = a.publicado && e && (e < Date.now() || d <= R.avisoDias);
     const prob = a.publicado && !expirado(a, c0) && mudou(a) ? problemaDe(a) : '';
     const ra = $('#ed-ralerta'); ra.classList.toggle('hidden', !prob);
-    if (prob) ra.innerHTML = `${ic('lock', 15)} <span><b>Esta alteração ainda não aparece no painel:</b> ${prob}. Os alunos continuam vendo a versão anterior.</span>`;
+    if (prob) ra.innerHTML = `${ic('lock', 15)} <span><b>Esta alteração ainda não aparece na Coluna Acadêmica:</b> ${prob}. Os alunos continuam vendo a versão anterior.</span>`;
     $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>
-      ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para o painel porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece no painel automaticamente ao salvar.`}</div>` : ''}`;
+      ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para a Coluna Acadêmica porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece na Coluna Acadêmica automaticamente ao salvar.`}</div>` : ''}`;
     const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
     const dica = ch > R.maxChars ? `passou ${fmtN0(ch - R.maxChars)} do limite` : ch < R.minChars ? `faltam ${fmtN0(R.minChars - ch)} para o mínimo` : ch > R.maxChars * .9 ? `restam ${fmtN0(R.maxChars - ch)}` : '';
     $('#ed-cont').innerHTML = `<span class="ed-chars ${cls}" title="Caracteres com espaços"><b>${fmtN0(ch)}</b> / ${fmtN0(R.maxChars)} caracteres<span class="ed-barra"><i style="width:${Math.min(100, ch / R.maxChars * 100).toFixed(1)}%"></i></span>${dica ? `<em>${dica}</em>` : ''}</span>
       <span class="ed-meta">${n} palavra${n === 1 ? '' : 's'} · ${minLeitura(html)} min${R.maxImagens ? ` · <span class="${nImg > R.maxImagens ? 'ed-err' : ''}">${nImg}/${R.maxImagens} imagens</span>` : ''}</span>`;
     $('#ed-ret').classList.toggle('hidden', !a.publicado);
     const pb = $('#ed-pub'), exp = expirado(a, c0);
-    pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo no painel encerrado' : !a.publicado ? 'Salvar e publicar no painel' : mudou(a) ? 'Atualizar no painel agora' : 'Publicado no painel'}`;
+    pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo na Coluna encerrado' : !a.publicado ? 'Salvar e publicar na Coluna' : mudou(a) ? 'Atualizar na Coluna agora' : 'Publicado na Coluna'}`;
     pb.disabled = exp || (!!a.publicado && !mudou(a));
     $('#ed-av').innerHTML = avatarCol(autor(), 34);
   }
@@ -5213,8 +5213,8 @@ async function viewEscrever(main, chave) {
     const agora = Date.now(), base = a.publicadoOrig || a.publicado?.publicadoEm || agora;
     const expiraEm = a.publicado ? (Number(a.publicado.expiraEm) || 0) : (R.dias ? base + R.dias * DAY : 0);
     const efetivo = expiraDe({ id: a.id, publicado: { expiraEm } }, c0);
-    if (efetivo && efetivo < agora) { toast(`O prazo deste artigo no painel terminou em ${fmtDate(efetivo)}. Peça ao administrador para prorrogar.`, true); return; }
-    if (!a.publicado && efetivo && !await confirmar(`O artigo ficará no Painel colaborativo acadêmico até ${fmtDate(efetivo)} (${diasAte(efetivo)} dias). Você será avisado aqui quando estiver perto de sair. Publicar agora?`, 'Publicar')) return;
+    if (efetivo && efetivo < agora) { toast(`O prazo deste artigo na Coluna Acadêmica terminou em ${fmtDate(efetivo)}. Peça ao administrador para prorrogar.`, true); return; }
+    if (!a.publicado && efetivo && !await confirmar(`O artigo ficará na Coluna Acadêmica até ${fmtDate(efetivo)} (${diasAte(efetivo)} dias). Você será avisado aqui quando estiver perto de sair. Publicar agora?`, 'Publicar')) return;
     const btn = $('#ed-pub'); btn.disabled = true; btn.textContent = 'Publicando…';
     Object.assign(a, { titulo: tit.value.trim(), subtitulo: sub.value.trim(), disciplina: disc.value, html, atualizadoEm: agora, publicadoOrig: base });
     const primeira = !a.publicado;
@@ -5224,21 +5224,21 @@ async function viewEscrever(main, chave) {
     desenharLista();
     if (!ok) { toast('Sem conexão agora. O texto está guardado neste aparelho e será publicado assim que a internet voltar.', true); return; }
     const url = linkAlunos() + linkArtigo({ id: a.id, autor: { id: c0.id } });
-    const { el } = modal(primeira ? 'Artigo publicado!' : 'Publicação atualizada!', `<div class="ed-ok">${ART.medal('check')}<p><b>${esc(a.titulo)}</b> já está no <b>Painel colaborativo acadêmico</b> do portal${primeira ? '' : ', com as alterações'}.</p>
-      <p class="small">${efetivo ? `${ic('clock', 13)} Fica no painel até <b>${fmtDate(efetivo)}</b>.` : 'Fica no painel sem prazo de expiração.'}</p>
+    const { el } = modal(primeira ? 'Artigo publicado!' : 'Publicação atualizada!', `<div class="ed-ok">${ART.medal('check')}<p><b>${esc(a.titulo)}</b> já está na <b>Coluna Acadêmica</b> do portal${primeira ? '' : ', com as alterações'}.</p>
+      <p class="small">${efetivo ? `${ic('clock', 13)} Fica na Coluna Acadêmica até <b>${fmtDate(efetivo)}</b>.` : 'Fica na Coluna Acadêmica sem prazo de expiração.'}</p>
       <p class="small muted">Link do artigo para os alunos (eles precisam estar com o acesso ativo no portal):</p>
       <div class="form"><input class="field" readonly value="${esc(url)}" id="ok-url"></div>
       <div class="actions"><button class="btn ghost" data-close>Continuar escrevendo</button><button class="btn primary" id="ok-cp">Copiar link do artigo</button></div></div>`);
     $('#ok-cp', el).onclick = () => copiar(url); $('#ok-url', el).onclick = e => e.target.select();
   };
   $('#ed-ret').onclick = async () => {
-    if (!await confirmar('Retirar este artigo do painel? Ele volta a ser um rascunho e os alunos deixam de vê-lo.', 'Retirar do painel')) return;
+    if (!await confirmar('Retirar este artigo da Coluna Acadêmica? Ele volta a ser um rascunho e os alunos deixam de vê-lo.', 'Retirar da Coluna')) return;
     const a = art(); a.publicado = null; a.atualizadoEm = Date.now(); gravarLocal(); lsSet(KP, '1');
-    desenharLista(); if (await sincronizar()) toast('Artigo retirado do painel.');
+    desenharLista(); if (await sincronizar()) toast('Artigo retirado da Coluna Acadêmica.');
   };
   $('#ed-del').onclick = async () => {
     const a = art();
-    if (!await confirmar(`Excluir "${a.titulo.trim() || 'Sem título'}"? ${a.publicado ? 'Ele sai do painel e ' : 'O texto '}não poderá ser recuperado.`, 'Excluir')) return;
+    if (!await confirmar(`Excluir "${a.titulo.trim() || 'Sem título'}"? ${a.publicado ? 'Ele sai da Coluna Acadêmica e ' : 'O texto '}não poderá ser recuperado.`, 'Excluir')) return;
     col.excluidos = [...(col.excluidos || []), a.id]; col.artigos = col.artigos.filter(x => x.id !== a.id);
     if (!col.artigos.length) criar();
     gravarLocal(); lsSet(KP, '1'); abrir(col.artigos[0].id);
@@ -5278,8 +5278,8 @@ async function viewEscrever(main, chave) {
 
   abrir(atual);
   const al = alertas();
-  if (al.length) toast(al[0].e < Date.now() ? `"${al[0].a.titulo}" saiu do painel em ${fmtDate(al[0].e)}.` : `"${al[0].a.titulo}" sai do painel em ${fmtDate(al[0].e)} (${prazoTxt(diasAte(al[0].e))}).`, true);
-  // alterações de artigos publicados que ficaram presas (versões anteriores) vão ao painel agora, se estiverem nas regras
+  if (al.length) toast(al[0].e < Date.now() ? `"${al[0].a.titulo}" saiu da Coluna Acadêmica em ${fmtDate(al[0].e)}.` : `"${al[0].a.titulo}" sai da Coluna Acadêmica em ${fmtDate(al[0].e)} (${prazoTxt(diasAte(al[0].e))}).`, true);
+  // alterações de artigos publicados que ficaram presas (versões anteriores) vão à Coluna Acadêmica agora, se estiverem nas regras
   if (col.artigos.some(a => a.publicado && !expirado(a, c0) && mudou(a) && !problemaDe(a))) lsSet(KP, '1');
   if (lsGet(KP) === '1') { status('local'); agendarSync(2500); } else if (nuvem || !col.artigos.some(a => !vazioArt(a))) statusSalvo(); else status('local');
   document.title = `Espaço do colunista · ${S.config.nomePortal}`;
@@ -5289,7 +5289,7 @@ async function viewEscrever(main, chave) {
 /* ======================= Administração: colunistas ======================= */
 function mostrarLinkColunista(c, chave) {
   const link = linkColunista(chave);
-  const msg = `Olá, ${c.nome.split(' ')[0]}! Este é o seu link pessoal para escrever artigos no Painel colaborativo acadêmico do portal ${S.config.nomePortal}. Abra no computador ou no celular, escreva e clique em "Salvar e publicar no painel". Guarde o link e não o compartilhe: ele é a sua chave de acesso.\n\n${link}`;
+  const msg = `Olá, ${c.nome.split(' ')[0]}! Este é o seu link pessoal para escrever artigos na Coluna Acadêmica do portal ${S.config.nomePortal}. Abra no computador ou no celular, escreva e clique em "Salvar e publicar na Coluna". Guarde o link e não o compartilhe: ele é a sua chave de acesso.\n\n${link}`;
   const { el } = modal('Link do colunista', `<p>Envie este link para <b>${esc(c.nome)}</b>. Ele abre o editor online direto, sem criar conta.</p>
     <div class="form"><input class="field" readonly value="${esc(link)}" id="lc"></div>
     <div class="actions" style="justify-content:flex-start"><button class="btn primary" id="lc-cp">Copiar link</button><a class="btn ghost" href="https://wa.me/?text=${encodeURIComponent(msg)}" target="_blank" rel="noopener">WhatsApp</a>
@@ -5339,16 +5339,16 @@ async function admColunistas(box, ag) {
   };
   const totPub = cols.reduce((s, c) => s + resumo(c).pub, 0), totLeit = cols.reduce((s, c) => s + resumo(c).leituras, 0);
   const recarregar = () => go('admin/colunistas');
-  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:70ch">Cada professor recebe um <b>link pessoal</b> para escrever online, sem criar conta. O texto é salvo sozinho enquanto ele escreve e, ao clicar em <b>Salvar e publicar no painel</b>, aparece para os alunos no <a href="#/academico">Painel colaborativo acadêmico</a>.</p>
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:70ch">Cada professor recebe um <b>link pessoal</b> para escrever online, sem criar conta. O texto é salvo sozinho enquanto ele escreve e, ao clicar em <b>Salvar e publicar na Coluna</b>, aparece para os alunos na <a href="#/academico">Coluna Acadêmica</a>.</p>
       <button class="btn primary sm" id="novo">${ic('plus', 15)} Novo colunista</button></div>
-    ${(() => { const R = regrasCol(); return `<form class="card pad col-regras" id="frg" novalidate><div class="list-h"><div><h3>${ic('scroll', 18)} Regras dos artigos</h3><p class="small muted" style="margin:4px 0 0">O colunista vê estas regras no editor e é avisado antes de cada artigo sair do painel.</p></div><button class="btn primary sm" id="rg-sv">Salvar regras</button></div>
+    ${(() => { const R = regrasCol(); return `<form class="card pad col-regras" id="frg" novalidate><div class="list-h"><div><h3>${ic('scroll', 18)} Regras dos artigos</h3><p class="small muted" style="margin:4px 0 0">O colunista vê estas regras no editor e é avisado antes de cada artigo sair da Coluna Acadêmica.</p></div><button class="btn primary sm" id="rg-sv">Salvar regras</button></div>
       <div class="col-regras-g">
         <label>Mínimo de caracteres<input type="number" name="minChars" min="0" max="50000" value="${R.minChars}"></label>
         <label>Máximo de caracteres<input type="number" name="maxChars" min="500" max="60000" value="${R.maxChars}"></label>
         <label>Imagens por artigo<input type="number" name="maxImagens" min="0" max="20" value="${R.maxImagens}"><span class="hint">0 = sem imagens</span></label>
-        <label>Tempo no painel (dias)<input type="number" name="dias" min="0" max="3650" value="${R.dias}"><span class="hint">0 = sem prazo</span></label>
+        <label>Tempo na Coluna (dias)<input type="number" name="dias" min="0" max="3650" value="${R.dias}"><span class="hint">0 = sem prazo</span></label>
         <label>Avisar o colunista (dias antes)<input type="number" name="avisoDias" min="0" max="90" value="${R.avisoDias}"></label></div>
-      <p class="hint" style="margin-top:12px">Sugestão do portal: de 1.500 a 12.000 caracteres (cerca de 250 a 2.000 palavras, de 2 a 10 minutos de leitura), até 6 imagens e 90 dias no painel. O prazo conta da primeira publicação e vale para as novas publicações; para mudar o de um artigo já publicado, use <b>Artigos → Prazo</b>.</p></form>`; })()}
+      <p class="hint" style="margin-top:12px">Sugestão do portal: de 1.500 a 12.000 caracteres (cerca de 250 a 2.000 palavras, de 2 a 10 minutos de leitura), até 6 imagens e 90 dias na Coluna Acadêmica. O prazo conta da primeira publicação e vale para as novas publicações; para mudar o de um artigo já publicado, use <b>Artigos → Prazo</b>.</p></form>`; })()}
     <div class="stats" style="margin-top:18px"><div class="stat"><span class="si">${ic('users', 20)}</span><div><div class="n">${cols.filter(c => c.ativo !== false).length}</div><div class="l">Colunistas ativos</div></div></div>
       <div class="stat"><span class="si">${ic('pen', 20)}</span><div><div class="n">${totPub}</div><div class="l">Artigos publicados</div></div></div>
       <div class="stat"><span class="si">${ic('eye', 20)}</span><div><div class="n">${fmtN(totLeit)}</div><div class="l">Leituras dos alunos</div></div></div>
@@ -5387,7 +5387,7 @@ async function admColunistas(box, ag) {
       }
       if (act === 'ativo') {
         const pausar = c.ativo !== false;
-        if (pausar && !await confirmar(`Pausar o acesso de ${c.nome}? O link para de funcionar até você reativar. Os artigos já publicados continuam no painel.`, 'Pausar acesso')) return;
+        if (pausar && !await confirmar(`Pausar o acesso de ${c.nome}? O link para de funcionar até você reativar. Os artigos já publicados continuam na Coluna Acadêmica.`, 'Pausar acesso')) return;
         await store.save('colunistas', { ...c, ativo: !pausar }); toast(pausar ? 'Acesso pausado.' : 'Acesso reativado.'); return admColunistas(box, ag);
       }
       if (act === 'del') {
@@ -5399,20 +5399,20 @@ async function admColunistas(box, ag) {
       }
       if (act === 'arts') {
         const coluna = (await store.get('colunas', c.id).catch(() => null)) || porId.get(c.id), p = perfilColunista(c, coluna), arts = (coluna?.artigos || []).filter(a => a.publicado);
-        const { el } = modal(`Artigos de ${c.nome}`, arts.length ? `<p class="small muted" style="margin-top:0">Só o professor edita os textos. Aqui você pode ocultar um artigo do painel sem apagá-lo.</p><div class="card table-wrap"><table><tr><th>Artigo</th><th>Publicado</th><th>No painel até</th><th>Leituras</th><th></th></tr>
+        const { el } = modal(`Artigos de ${c.nome}`, arts.length ? `<p class="small muted" style="margin-top:0">Só o professor edita os textos. Aqui você pode ocultar um artigo da Coluna Acadêmica sem apagá-lo.</p><div class="card table-wrap"><table><tr><th>Artigo</th><th>Publicado</th><th>Na Coluna Acadêmica até</th><th>Leituras</th><th></th></tr>
           ${arts.map(a => { const oc = (c.ocultos || []).includes(a.id), e = expiraDe(a, c), d = e ? diasAte(e) : null; return `<tr><td><b>${esc(a.publicado.titulo)}</b><div class="small muted">${esc(a.publicado.disciplina || '')}${oc ? ' · <span class="badge warn">Oculto</span>' : ''}</div></td><td>${fmtDate(a.publicado.publicadoEm)}</td>
             <td>${!e ? '<span class="muted">Sem prazo</span>' : e < Date.now() ? `<span class="badge err">Expirou em ${fmtDate(e)}</span>` : `${fmtDate(e)}<div class="small ${d <= regrasCol().avisoDias ? '' : 'muted'}">${prazoTxt(d)}</div>`}${c.prazos?.[a.id] !== undefined ? '<div class="small muted">definido por você</div>' : ''}</td><td>${fmtN(leit(a.id))}</td>
-            <td><div class="acts"><button class="btn ghost sm" data-ver="${esc(a.id)}">${ic('eye', 14)} Ler</button><button class="btn ghost sm" data-pz="${esc(a.id)}">${ic('clock', 14)} Prazo</button><button class="btn ${oc ? 'primary' : 'ghost'} sm" data-oc="${esc(a.id)}">${oc ? 'Mostrar no painel' : 'Ocultar'}</button></div></td></tr>`; }).join('')}</table></div>`
+            <td><div class="acts"><button class="btn ghost sm" data-ver="${esc(a.id)}">${ic('eye', 14)} Ler</button><button class="btn ghost sm" data-pz="${esc(a.id)}">${ic('clock', 14)} Prazo</button><button class="btn ${oc ? 'primary' : 'ghost'} sm" data-oc="${esc(a.id)}">${oc ? 'Mostrar na Coluna' : 'Ocultar'}</button></div></td></tr>`; }).join('')}</table></div>`
           : `<div class="empty"><p>${esc(c.nome)} ainda não publicou artigos${(coluna?.artigos || []).length ? ` (há ${(coluna.artigos || []).length} rascunho(s) em andamento)` : ''}.</p></div>`, { wide: true });
         el.addEventListener('click', async ev => {
           const v = ev.target.closest('[data-ver]'), o = ev.target.closest('[data-oc]'), pz = ev.target.closest('[data-pz]');
           if (v) { const a = arts.find(x => x.id === v.dataset.ver); const m = modal(a.publicado.titulo, `<div class="doc col-folha">${artigoHTML(a.publicado, p)}</div>`, { wide: true }); hidratarImagens(m.el); }
           if (pz) {
             const a = arts.find(x => x.id === pz.dataset.pz), e = expiraDe(a, c), iso = t => hojeISO(new Date(t));
-            const m = modal('Prazo no painel', `<form class="form" id="fpz"><p style="margin:0"><b>${esc(a.publicado.titulo)}</b><br><span class="small muted">Publicado em ${fmtDate(a.publicado.publicadoEm)}. ${e ? `Prazo atual: ${fmtDate(e)}.` : 'Hoje está sem prazo.'}</span></p>
-              <label>Fica no painel até<input type="date" name="d" value="${e ? iso(e) : iso(Date.now() + (regrasCol().dias || 30) * DAY)}" min="${iso(Date.now())}"></label>
+            const m = modal('Prazo na Coluna Acadêmica', `<form class="form" id="fpz"><p style="margin:0"><b>${esc(a.publicado.titulo)}</b><br><span class="small muted">Publicado em ${fmtDate(a.publicado.publicadoEm)}. ${e ? `Prazo atual: ${fmtDate(e)}.` : 'Hoje está sem prazo.'}</span></p>
+              <label>Fica na Coluna Acadêmica até<input type="date" name="d" value="${e ? iso(e) : iso(Date.now() + (regrasCol().dias || 30) * DAY)}" min="${iso(Date.now())}"></label>
               <div style="display:flex;gap:8px;flex-wrap:wrap">${[30, 60, 90].map(n => `<button type="button" class="btn ghost sm" data-mais="${n}">+${n} dias</button>`).join('')}</div>
-              <p class="hint">O colunista vê o novo prazo no editor. Ao prorrogar um artigo expirado, ele volta ao painel.</p>
+              <p class="hint">O colunista vê o novo prazo no editor. Ao prorrogar um artigo expirado, ele volta à Coluna Acadêmica.</p>
               <div class="actions"><button type="button" class="btn ghost" id="pz-sem">Deixar sem prazo</button>${c.prazos?.[a.id] !== undefined ? '<button type="button" class="btn ghost" id="pz-orig">Voltar ao prazo padrão</button>' : ''}<button class="btn primary">Salvar prazo</button></div></form>`);
             const f = $('#fpz', m.el);
             $$('[data-mais]', m.el).forEach(b => b.onclick = () => { const b0 = Math.max(Date.now(), f.d.value ? new Date(f.d.value + 'T23:59:59').getTime() : Date.now()); f.d.value = iso(b0 + Number(b.dataset.mais) * DAY); });
@@ -5428,7 +5428,7 @@ async function admColunistas(box, ag) {
             const id = o.dataset.oc, oc = c.ocultos || [];
             c.ocultos = oc.includes(id) ? oc.filter(x => x !== id) : [...oc, id];
             o.disabled = true;
-            try { await store.save('colunistas', c); el.remove(); toast(c.ocultos.includes(id) ? 'Artigo ocultado do painel.' : 'Artigo de volta ao painel.'); admColunistas(box, ag); } catch (er) { toast(er.message, true); o.disabled = false; }
+            try { await store.save('colunistas', c); el.remove(); toast(c.ocultos.includes(id) ? 'Artigo ocultado da Coluna Acadêmica.' : 'Artigo de volta à Coluna Acadêmica.'); admColunistas(box, ag); } catch (er) { toast(er.message, true); o.disabled = false; }
           }
         });
       }
