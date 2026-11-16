@@ -968,7 +968,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 .ed-sub{display:block;width:100%;resize:none;overflow:hidden;border:0;background:transparent;font:400 1.12rem/1.5 var(--serif);color:#4a5263;padding:8px 0 16px;outline:none;border-bottom:1px solid #e4dccb}
 .ed-tit::placeholder,.ed-sub::placeholder{color:#b8b2a4}
 .ed-tools{position:sticky;top:64px;z-index:5;display:flex;flex-wrap:wrap;gap:2px;align-items:center;background:rgba(251,249,244,.97);backdrop-filter:blur(6px);border-bottom:1px solid #e4dccb;padding:8px 0;margin-bottom:18px}
-.ed-tools button{min-width:34px;height:34px;border:0;background:none;border-radius:6px;cursor:pointer;color:var(--toga);font:600 .95rem var(--serif);display:inline-grid;place-items:center;padding:0 8px}
+.ed-tools button{min-width:34px;height:34px;border:0;background:none;border-radius:6px;cursor:pointer;color:var(--toga);font:600 .95rem var(--serif);display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:0 8px;white-space:nowrap;flex:none}
 .ed-tools button.tx{font:600 .78rem var(--sans)}
 .ed-tools button:hover{background:#efe7d6}.ed-tools button.on{background:var(--toga);color:#fff}
 .ed-tools .sep{width:1px;height:20px;background:#e4dccb;margin:0 4px}
@@ -997,6 +997,61 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .col-card.dest{padding:24px 22px 20px}
 }
 @media (max-width:520px){.ed-st span{display:none}}
+
+/* imagens, alinhamento e regras dos artigos */
+.col-corpo img{display:block;max-width:100%;height:auto;margin:1.2em auto;border-radius:4px;background:#efe9dc}
+.col-corpo img.img-p{width:36%}.col-corpo img.img-m{width:64%}.col-corpo img.img-g{width:100%}
+.col-corpo img.img-esq:not(.img-g){float:left;margin:.35em 1.5em .8em 0}
+.col-corpo img.img-dir:not(.img-g){float:right;margin:.35em 0 .8em 1.5em}
+.col-corpo img.sem-img{min-height:120px;width:64%}
+.col-corpo p.legenda{font-family:var(--sans);font-size:.82rem;line-height:1.5;color:var(--cinza);text-align:center;font-style:italic;margin:-.4em 0 1.4em}
+.col-corpo h2,.col-corpo h3,.col-corpo blockquote,.col-corpo hr,.col-corpo ul,.col-corpo ol{clear:both}
+.col-corpo:after{content:"";display:table;clear:both}
+.col-corpo mark{background:#fdeaa0;color:inherit;padding:0 .12em;border-radius:2px}
+.col-corpo sup,.col-corpo sub{font-size:.7em}
+.col-corpo p:has(>img.img-dir:not(.img-g))+p.legenda{float:right;clear:right;margin:-.5em 0 1em 1.5em;padding:0 .2em}
+.col-corpo p:has(>img.img-esq:not(.img-g))+p.legenda{float:left;clear:left;margin:-.5em 1.5em 1em 0;padding:0 .2em}
+.col-corpo p:has(>img.img-p:not(.img-g):is(.img-dir,.img-esq))+p.legenda{width:36%}
+.col-corpo p:has(>img.img-m:not(.img-g):is(.img-dir,.img-esq))+p.legenda{width:64%}
+@media (max-width:640px){.col-corpo p:has(>img)+p.legenda{float:none!important;width:auto!important;margin:-.4em 0 1.4em!important}}
+.col-art .col-corpo>p[style*="center"]:first-child::first-letter,.col-art .col-corpo>p[style*="right"]:first-child::first-letter{float:none;font-size:inherit;padding:0;color:inherit}
+@media (max-width:640px){.col-corpo img.img-p,.col-corpo img.img-m{width:100%;float:none!important;margin:1.2em auto!important}}
+.col-card .col-txt{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0}
+.col-card .col-capa{margin:-22px -22px 6px;aspect-ratio:16/9;overflow:hidden;border-radius:10px 10px 0 0;background:#e9e3d4}
+.col-card .col-capa img{width:100%;height:100%;object-fit:cover;display:block}
+.col-card.dest.com-capa{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:30px;align-items:stretch}
+.col-card.dest.com-capa .col-capa{order:2;margin:0;aspect-ratio:auto;min-height:230px;border-radius:6px}
+.col-card.dest.com-capa .col-disc{padding-right:0}
+.ed-papel{position:relative}
+.ed-corpo img{cursor:pointer}
+.ed-corpo img.ed-sel{outline:3px solid var(--latao);outline-offset:3px}
+.ed-imgbar{position:absolute;z-index:8;display:flex;align-items:center;gap:2px;background:var(--toga);border-radius:8px;padding:4px;box-shadow:0 10px 26px -10px rgba(19,32,58,.6)}
+.ed-imgbar button{min-width:32px;height:32px;border:0;background:none;color:#dfe3ea;border-radius:6px;cursor:pointer;font:600 .8rem var(--sans);display:inline-grid;place-items:center;padding:0 7px}
+.ed-imgbar button:hover{background:rgba(255,255,255,.1)}.ed-imgbar button.on{background:var(--latao);color:var(--toga)}
+.ed-imgbar .sep{width:1px;height:18px;background:rgba(255,255,255,.2);margin:0 3px}
+.ed-tools button.tx svg{margin:0}
+@media (max-width:900px){.ed-tools{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;-webkit-overflow-scrolling:touch}.ed-tools .sep{flex:none}}
+.ed-im-prev{max-height:220px;max-width:100%;border-radius:6px;margin:0 auto;display:block}
+#im-drop.over{border-color:var(--latao);background:var(--latao-bg)}
+.ed-cont{display:flex;align-items:center;gap:6px 16px;flex-wrap:wrap;font-size:.82rem;color:var(--cinza)}
+.ed-chars{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ed-chars b{color:var(--toga);font-size:.9rem}
+.ed-chars em{font-style:normal;font-weight:600}
+.ed-barra{display:inline-block;width:90px;height:6px;background:var(--linha-2);border-radius:4px;overflow:hidden}
+.ed-barra i{display:block;height:100%;background:var(--ok);border-radius:4px;transition:width .2s}
+.ed-chars.baixo .ed-barra i{background:#b9c1cf}.ed-chars.baixo em{color:var(--cinza)}
+.ed-chars.quase .ed-barra i{background:var(--latao)}.ed-chars.quase em{color:var(--warn)}
+.ed-chars.acima b,.ed-chars.acima em,.ed-err{color:var(--err)}.ed-chars.acima .ed-barra i{background:var(--err)}
+.ed-prazo-alerta{color:var(--warn);font-weight:600}
+.ed-aviso{margin-bottom:14px;padding:14px 18px}.ed-aviso h3{font-size:1rem}
+.ed-regras ul{margin:.5em 0 0;padding-left:1.1em}.ed-regras li{margin:.3em 0}
+.ed-regras>b{display:flex;align-items:center;gap:6px}
+.col-regras{margin-top:18px}
+.col-regras-g{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin-top:14px}
+.col-regras-g label{display:grid;gap:6px;font-size:.82rem;font-weight:600;color:var(--toga);align-content:start}
+.col-regras-g input{font:400 .95rem var(--sans);padding:.6em .8em;border:1px solid var(--linha);border-radius:8px;width:100%}
+@media (max-width:1100px){.col-regras-g{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){.col-card.dest.com-capa{grid-template-columns:1fr}.col-card.dest.com-capa .col-capa{order:-1;min-height:0;aspect-ratio:16/9}.col-regras-g{grid-template-columns:1fr 1fr}.ed-barra{width:60px}.ed-imgbar{flex-wrap:wrap;max-width:calc(100% - 16px)}}
 </style>
 </head>
 <body>
@@ -1263,6 +1318,10 @@ const I = {
   users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.2a6.5 6.5 0 0 1 3.5 5.8"/>',
   quote: '<path d="M10 7H6a2 2 0 0 0-2 2v3h5v5H4M20 7h-4a2 2 0 0 0-2 2v3h5v5h-5"/>',
   link: '<path d="M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1.2 1.2"/><path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/>',
+  alL: '<path d="M4 6h16M4 10h10M4 14h16M4 18h10"/>', alC: '<path d="M4 6h16M7 10h10M4 14h16M7 18h10"/>',
+  alR: '<path d="M4 6h16M10 10h10M4 14h16M10 18h10"/>', alJ: '<path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>',
+  image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
+  marca: '<path d="M14.5 4.5l5 5-8 8H6.5v-5z"/><path d="M4 21h16"/>',
   live: '<circle cx="12" cy="12" r="2.5"/><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M5 5a10 10 0 0 0 0 14M19 5a10 10 0 0 1 0 14"/>'
 };
 const ic = (n, s = 18) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${I[n] || ''}</svg>`;
@@ -1429,6 +1488,9 @@ function LocalStore({ seed = true } = {}) {
     async save(col, o) { o = { ...o }; if (!o.id) { o.id = uid(); o.criadoEm = Date.now(); } o.atualizadoEm = Date.now(); await put(col, o); return o; },
     remove: (col, id) => del(col, id),
     async uploadFile(file, onProgress) { const id = uid(); onProgress?.(0.4); await put('arquivos', { id, blob: file, nome: file.name, mime: file.type }); onProgress?.(1); return 'idb:' + id; },
+    async salvarImagemCol(url) { const id = uid(); await put('arquivos', { id, dataURL: url }); return 'idb:' + id; },
+    async lerImagemCol(ref) { if (!ref?.startsWith('idb:')) return null; const f = await get('arquivos', ref.slice(4)); return f?.dataURL || null; },
+    async apagarImagemCol(ref) { if (ref?.startsWith('idb:')) await del('arquivos', ref.slice(4)); },
     async fileURL(ref) { if (!ref?.startsWith('idb:')) return ref; const f = await get('arquivos', ref.slice(4)); return f ? trackURL(URL.createObjectURL(f.blob)) : null; },
     async deleteFile(ref) { if (ref?.startsWith('idb:')) await del('arquivos', ref.slice(4)); },
     async getConfig() { return { ...DEFAULT_CFG, ...((await get('config', 'geral')) || {}) }; },
@@ -1571,7 +1633,7 @@ function GistStore() {
      O professor grava só o próprio arquivo, então nunca sobrescreve os dados do portal
      nem o texto de outro professor. */
   const CFILE = id => `coluna-${String(id).replace(/[^\w-]/g, '')}.json`;
-  const ccache = new Map(); let colAuth = null;
+  const ccache = new Map(), icache = new Map(); let colAuth = null;
   async function lerColuna(id) {
     const c = ccache.get(id);
     if (c && Date.now() - c.at < 20000) return c.v ? JSON.parse(JSON.stringify(c.v)) : null;
@@ -1730,6 +1792,23 @@ function GistStore() {
       u.salt = uid(); u.iter = 120000; u.senhaHash = await pbkdf2(nova, u.salt, u.iter); await writeUser(u);
     },
     autorizarColunista(id) { colAuth = id; },
+    async salvarImagemCol(url) {
+      if (!isAdmin() && !colAuth) throw new Error('Sem permissão para enviar imagens.');
+      if (!TOKEN) throw semToken();
+      if (!/^data:image\/(jpeg|png|webp);base64,/.test(url)) throw new Error('Formato de imagem inválido.');
+      if (url.length > 1400000) throw new Error('Imagem grande demais. Use uma imagem menor.');
+      const name = `img-${uid().replace(/-/g, '').slice(0, 18)}.txt`;
+      await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [name]: { content: url } } }) });
+      icache.set(name, url); return 'gist:' + name;
+    },
+    async lerImagemCol(ref) {
+      if (!ref?.startsWith('gist:') || !G) return null; const name = ref.slice(5);
+      if (icache.has(name)) return icache.get(name);
+      const r = await fetch(raw(name)); if (!r.ok) return null;
+      const t = (await r.text()).trim(); if (!/^data:image\/(jpeg|png|webp);base64,[\w+/=]+$/.test(t)) return null;
+      icache.set(name, t); return t;
+    },
+    async apagarImagemCol(ref) { if (!ref?.startsWith('gist:') || !isAdmin() || !TOKEN) return; try { await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [ref.slice(5)]: null } }) }); } catch (e) { console.warn(e); } },
     async list(col, f) {
       if (col === 'colunas') { await ensure(); return (await Promise.all((data?.colunistas || []).map(c => lerColuna(c.id).then(v => v && { ...v, id: c.id }).catch(e => { console.warn(e); return null; })))).filter(Boolean); }
       if (!GIST_COLS.includes(col)) return L.list(col, f); await ensure(); const r = (data?.[col] || []).map(x => ({ ...x })); return f ? r.filter(x => x[f[0]] === f[1]) : r; },
@@ -1885,14 +1964,14 @@ async function render() {
   if (r.avulsa) {
     app.innerHTML = '<main id="main" class="ed-root"></main>';
     const m = $('#main'); m.innerHTML = '<div class="loading">Abrindo o seu espaço de colunista…</div>';
-    try { await r.view(m, param, q); } catch (e) { console.error(e); m.innerHTML = `<div class="ed-falha"><div class="card pad"><h2>Não foi possível abrir</h2><p class="muted">${esc(e.message)}</p></div></div>`; }
+    try { await r.view(m, param, q); hidratarImagens(m).catch(() => {}); } catch (e) { console.error(e); m.innerHTML = `<div class="ed-falha"><div class="card pad"><h2>Não foi possível abrir</h2><p class="muted">${esc(e.message)}</p></div></div>`; }
     window.scrollTo(0, 0); return;
   }
   app.innerHTML = S.user ? shellHTML(name) : publicHTML(name);
   const main = $('#main');
   main.innerHTML = '<div class="loading">Carregando…</div>';
   bindShell();
-  try { await r.view(main, param, q); bindInstall(); capasAutomaticas(); }
+  try { await r.view(main, param, q); bindInstall(); capasAutomaticas(); hidratarImagens(main).catch(() => {}); }
   catch (e) { console.error(e); main.innerHTML = `<div class="page"><div class="card empty"><h3>Não foi possível carregar</h3><p>${esc(e.message)}</p></div></div>`; }
   window.scrollTo(0, 0);
 }
@@ -3384,6 +3463,7 @@ async function viewBusca(main, _, q) {
       `${m.length ? `<div class="list-h"><h3>Materiais <span class="badge">${m.length}</span></h3></div><div class="mgrid" style="margin-bottom:26px">${m.map(matCard).join('')}</div>` : ''}
        ${ar.length ? `<div class="list-h"><h3>Artigos dos colunistas <span class="badge">${ar.length}</span></h3></div><div class="col-grid" style="margin-bottom:26px">${ar.map(a => cardArtigo(a)).join('')}</div>` : ''}
        ${p.length ? `<div class="list-h"><h3>Publicações <span class="badge">${p.length}</span></h3></div><div class="plist">${p.map(postCard).join('')}</div>` : ''}`;
+    hidratarImagens($('#res'));
   };
   const inp = $('#bf input');
   $('#bf').onsubmit = e => { e.preventDefault(); history.replaceState(null, '', '#/busca?q=' + encodeURIComponent(inp.value.trim())); };
@@ -4466,16 +4546,18 @@ function admConfig(box) {
    - Só o resumo (hash) da chave fica nos dados do portal; o link em si não é guardado.
    - Cada colunista tem um arquivo próprio (coluna-<id>.json): texto, rascunhos e perfil.
    =============================================================================== */
-const COL_OK = new Set(['P', 'BR', 'B', 'I', 'U', 'S', 'SUB', 'SUP', 'H2', 'H3', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'A', 'HR']);
-const COL_FORA = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'TEMPLATE', 'META', 'LINK', 'TITLE', 'HEAD', 'SVG', 'MATH', 'NOSCRIPT', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'IMG', 'PICTURE', 'VIDEO', 'AUDIO', 'CANVAS', 'FORM', 'XML']);
+const COL_OK = new Set(['P', 'BR', 'B', 'I', 'U', 'S', 'SUB', 'SUP', 'MARK', 'H2', 'H3', 'BLOCKQUOTE', 'UL', 'OL', 'LI', 'A', 'HR', 'IMG']);
+const corDeFundo = st => { const m = st.match(/background(?:-color)?\s*:\s*([^;]+)/); if (!m) return false; const v = m[1].trim(); return !/transparent|initial|inherit|none|^#fff(fff)?\b|^white\b|rgb\(\s*255,\s*255,\s*255\s*\)|rgba\([^)]*,\s*0(\.0+)?\s*\)/.test(v); };
+const COL_FORA = new Set(['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED', 'TEMPLATE', 'META', 'LINK', 'TITLE', 'HEAD', 'SVG', 'MATH', 'NOSCRIPT', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA', 'PICTURE', 'VIDEO', 'AUDIO', 'CANVAS', 'FORM', 'XML']);
 const COL_BLOCOS = 'p,div,h1,h2,h3,h4,h5,h6,ul,ol,blockquote,table,li,section,article';
 /* Deixa só a formatação permitida (vale para o que é digitado, colado do Word/Google Docs e exibido) */
 function limparHTML(html) {
   const t = document.createElement('template'); t.innerHTML = String(html || '');
-  const out = document.createElement('div');
+  const D = t.content.ownerDocument; // documento inerte: imagens não são baixadas durante a limpeza
+  const out = D.createElement('div');
   const walk = (src, dst) => {
     for (const n of [...src.childNodes]) {
-      if (n.nodeType === 3) { dst.appendChild(document.createTextNode(n.nodeValue)); continue; }
+      if (n.nodeType === 3) { dst.appendChild(D.createTextNode(n.nodeValue)); continue; }
       if (n.nodeType !== 1) continue;
       let tag = n.tagName.toUpperCase();
       if (COL_FORA.has(tag) || tag.includes(':')) continue;
@@ -4490,18 +4572,33 @@ function limparHTML(html) {
       if (tag === 'B' && /font-weight:\s*(normal|[1-4]00)/.test(st)) tag = '';
       // blocos dentro de parágrafo viram quebra de linha (evita <p> dentro de <p>)
       if (/^(P|H2|H3|BLOCKQUOTE|UL|OL)$/.test(tag) && dst.closest && dst.closest('p,h2,h3')) {
-        walk(n, dst); dst.appendChild(document.createElement('br')); continue;
+        walk(n, dst); dst.appendChild(D.createElement('br')); continue;
       }
       if (!COL_OK.has(tag)) {
         let alvo = dst;
-        if (tag === 'SPAN') for (const [ok, tg] of [[/font-weight:\s*(bold|[6-9]00)/.test(st), 'B'], [/font-style:\s*italic/.test(st), 'I'], [/text-decoration[^;]*underline/.test(st), 'U']]) {
-          if (ok) { const e = document.createElement(tg); alvo.appendChild(e); alvo = e; }
+        if (tag === 'SPAN') for (const [ok, tg] of [[/font-weight:\s*(bold|[6-9]00)/.test(st), 'B'], [/font-style:\s*italic/.test(st), 'I'], [/text-decoration[^;]*underline/.test(st), 'U'], [/text-decoration[^;]*line-through/.test(st), 'S'], [corDeFundo(st), 'MARK']]) {
+          if (ok) { const e = D.createElement(tg); alvo.appendChild(e); alvo = e; }
         }
         walk(n, alvo);
-        if (tag === 'TD' || tag === 'TH') alvo.appendChild(document.createTextNode(' '));
+        if (tag === 'TD' || tag === 'TH') alvo.appendChild(D.createTextNode(' '));
         continue;
       }
-      const el = document.createElement(tag);
+      const el = D.createElement(tag);
+      if (tag === 'IMG') {
+        const ref = n.getAttribute('data-img') || '', src = (n.getAttribute('src') || '').trim();
+        if (/^(gist|idb):[\w.-]+$/.test(ref)) el.setAttribute('data-img', ref);
+        else if (/^https:\/\/[^\s"'<>]+$/i.test(src)) el.setAttribute('src', src);
+        else continue;
+        const cls = [...(n.classList || [])].filter(k => /^img-(p|m|g|esq|dir|centro)$/.test(k));
+        el.className = cls.length ? cls.join(' ') : 'img-m img-centro';
+        const alt = (n.getAttribute('alt') || '').slice(0, 200); if (alt) el.setAttribute('alt', alt);
+        dst.appendChild(el); continue;
+      }
+      if (/^(P|H2|H3|BLOCKQUOTE|LI)$/.test(tag)) {
+        const al = String(n.style?.textAlign || n.getAttribute('align') || '').toLowerCase();
+        if (['center', 'right', 'justify'].includes(al)) el.style.textAlign = al;
+        if (tag === 'P' && n.classList?.contains('legenda')) el.className = 'legenda';
+      }
       if (tag === 'A') {
         const h = (n.getAttribute('href') || '').trim();
         if (!/^(https?:\/\/|mailto:)/i.test(h)) { walk(n, dst); continue; }
@@ -4512,16 +4609,16 @@ function limparHTML(html) {
     }
   };
   walk(t.content, out);
-  out.querySelectorAll('b,i,u,s,sub,sup,a').forEach(e => { if (!e.textContent.trim() && !e.querySelector('br')) e.replaceWith(...e.childNodes); });
+  out.querySelectorAll('b,i,u,s,sub,sup,mark,a').forEach(e => { if (!e.textContent.trim() && !e.querySelector('br,img')) e.replaceWith(...e.childNodes); });
   // texto solto no nível de cima vai para dentro de um parágrafo
-  const fim = document.createElement('div'); let p = null;
+  const fim = D.createElement('div'); let p = null;
   for (const n of [...out.childNodes]) {
     if (n.nodeType === 1 && /^(P|H2|H3|BLOCKQUOTE|UL|OL|HR)$/.test(n.tagName)) { p = null; fim.appendChild(n); continue; }
     if (!p && ((n.nodeType === 3 && !n.nodeValue.trim()) || n.nodeName === 'BR')) continue;
-    if (!p) { p = document.createElement('p'); fim.appendChild(p); }
+    if (!p) { p = D.createElement('p'); fim.appendChild(p); }
     p.appendChild(n);
   }
-  const vazio = e => /^(P|H2|H3|BLOCKQUOTE)$/.test(e.tagName) && !e.textContent.trim();
+  const vazio = e => /^(P|H2|H3|BLOCKQUOTE)$/.test(e.tagName) && !e.textContent.trim() && !e.querySelector('img');
   let ant = false;
   for (const e of [...fim.children]) { const v = vazio(e); if (v && ant) e.remove(); ant = v; }
   while (fim.firstElementChild && vazio(fim.firstElementChild)) fim.firstElementChild.remove();
@@ -4532,6 +4629,56 @@ const textoDe = html => { const t = document.createElement('template'); t.innerH
 const contarPalavras = html => (textoDe(html).match(/\S+/g) || []).length;
 const minLeitura = html => Math.max(1, Math.round(contarPalavras(html) / 200));
 const resumoDe = (html, n = 180) => { const t = textoDe(html); return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t; };
+/* Regras dos artigos (o administrador ajusta em Painel → Colunistas) */
+const COL_REGRAS = { minChars: 1500, maxChars: 12000, maxImagens: 6, dias: 90, avisoDias: 7 };
+function regrasCol() {
+  const r = { ...COL_REGRAS, ...((S.config || {}).colunas || {}) };
+  for (const k of Object.keys(COL_REGRAS)) r[k] = Math.max(0, Math.round(Number(r[k]) || 0));
+  if (!r.maxChars) r.maxChars = COL_REGRAS.maxChars;
+  if (r.minChars >= r.maxChars) r.minChars = 0;
+  return r;
+}
+const contarChars = html => textoDe(html).length;
+const fmtN0 = n => Number(n || 0).toLocaleString('pt-BR');
+/* Prazo no painel: o administrador pode prorrogar ou tirar o prazo de um artigo (vale sobre o do professor) */
+function expiraDe(x, c) {
+  if (!x?.publicado) return 0;
+  const o = c?.prazos?.[x.id];
+  return o !== undefined && o !== null ? Number(o) || 0 : Number(x.publicado.expiraEm) || 0;
+}
+const expirado = (x, c) => { const e = expiraDe(x, c); return !!e && e < Date.now(); };
+const diasAte = t => Math.ceil((t - Date.now()) / DAY);
+const prazoTxt = d => d <= 0 ? 'termina hoje' : `falta${d === 1 ? '' : 'm'} ${d} dia${d === 1 ? '' : 's'}`;
+/* Imagens dos artigos: reduzidas no navegador e guardadas à parte (o texto guarda só a referência) */
+async function imagemOtimizada(file, max = 1600) {
+  if (!/^image\/(jpeg|png|webp|gif)$/i.test(file?.type || '')) throw new Error('Use uma imagem JPG, PNG ou WebP.');
+  if (file.size > 20e6) throw new Error('Imagem muito grande (máximo de 20 MB).');
+  const im = await carregarImg(URL.createObjectURL(file));
+  const k = Math.min(1, max / Math.max(im.width, im.height));
+  const cv = document.createElement('canvas'); cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+  const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, cv.width, cv.height); c.drawImage(im, 0, 0, cv.width, cv.height);
+  let q = .85, url = cv.toDataURL('image/jpeg', q);
+  while (url.length > 650000 && q > .45) { q -= .1; url = cv.toDataURL('image/jpeg', q); }
+  if (url.length > 1300000) { const c2 = document.createElement('canvas'); c2.width = Math.round(cv.width * .7); c2.height = Math.round(cv.height * .7); c2.getContext('2d').drawImage(cv, 0, 0, c2.width, c2.height); url = c2.toDataURL('image/jpeg', .7); }
+  return url;
+}
+const imgCache = new Map();
+async function hidratarImagens(root) {
+  if (!root) return;
+  await Promise.all($$('img[data-img]', root).filter(im => !im.getAttribute('src')).map(async im => {
+    const ref = im.dataset.img;
+    try {
+      let u = imgCache.get(ref);
+      if (!u && store.lerImagemCol) { u = await store.lerImagemCol(ref); if (u) imgCache.set(ref, u); }
+      if (u) im.src = u; else im.classList.add('sem-img');
+    } catch (e) { console.warn(e); im.classList.add('sem-img'); }
+  }));
+}
+function capaDe(html) {
+  const m = String(html || '').match(/<img\b[^>]*>/i); if (!m) return '';
+  const ref = (m[0].match(/data-img="([^"]+)"/) || [])[1], src = (m[0].match(/src="(https:[^"]+)"/) || [])[1];
+  return ref ? `<img data-img="${esc(ref)}" alt="">` : src ? `<img src="${esc(src)}" alt="" loading="lazy">` : '';
+}
 const fotoOk = f => typeof f === 'string' && /^data:image\/(png|jpe?g|webp);base64,[\w+/=]+$/.test(f);
 function avatarCol(a, size = 40) {
   return `<span class="col-av" style="width:${size}px;height:${size}px;font-size:${Math.round(size * .38)}px">${fotoOk(a?.foto) ? `<img src="${a.foto}" alt="">` : esc(initials(a?.nome))}</span>`;
@@ -4572,8 +4719,8 @@ async function carregarAcademico() {
   const autores = cols.map(c => perfilColunista(c, porId.get(c.id)));
   const artigos = [];
   for (const a of autores) for (const x of (porId.get(a.id)?.artigos || [])) {
-    if (!x.publicado || (a.ocultos || []).includes(x.id)) continue;
-    artigos.push({ ...x.publicado, id: x.id, autor: a });
+    if (!x.publicado || (a.ocultos || []).includes(x.id) || expirado(x, a)) continue;
+    artigos.push({ ...x.publicado, id: x.id, autor: a, expiraEm: expiraDe(x, a) });
   }
   artigos.sort((x, y) => (y.publicadoEm || 0) - (x.publicadoEm || 0));
   return { autores, artigos, porId };
@@ -4582,12 +4729,14 @@ const assinaturaAcad = d => d.artigos.map(a => a.id + ':' + (a.atualizadoEm || 0
 const linkArtigo = a => `#/artigo/${encodeURIComponent(a.autor.id + '_' + a.id)}`;
 const novoArtigo3d = a => Date.now() - (a.publicadoEm || 0) < 3 * DAY;
 function cardArtigo(a, { dest = false } = {}) {
-  return `<a class="card col-card ${dest ? 'dest' : ''}" href="${linkArtigo(a)}">
-    <span class="col-disc">${esc(a.disciplina || 'Artigo')}${novoArtigo3d(a) ? '<span class="badge wine">Novo</span>' : ''}</span>
-    ${dest ? `<span class="col-aspas">${ic('quote', 30)}</span>` : ''}
+  const capa = capaDe(a.html);
+  return `<a class="card col-card ${dest ? 'dest' : ''} ${capa ? 'com-capa' : ''}" href="${linkArtigo(a)}">
+    ${capa ? `<div class="col-capa">${capa}</div>` : ''}
+    <div class="col-txt"><span class="col-disc">${esc(a.disciplina || 'Artigo')}${novoArtigo3d(a) ? '<span class="badge wine">Novo</span>' : ''}</span>
+    ${dest && !capa ? `<span class="col-aspas">${ic('quote', 30)}</span>` : ''}
     <h3>${esc(a.titulo || 'Sem título')}</h3>
     <p>${esc(a.subtitulo || resumoDe(a.html, dest ? 260 : 150))}</p>
-    <div class="col-por">${avatarCol(a.autor, dest ? 40 : 32)}<span><b>${esc(a.autor.nome)}</b>${esc(fmtDate(a.publicadoEm))} · ${minLeitura(a.html)} min de leitura</span></div></a>`;
+    <div class="col-por">${avatarCol(a.autor, dest ? 40 : 32)}<span><b>${esc(a.autor.nome)}</b>${esc(fmtDate(a.publicadoEm))} · ${minLeitura(a.html)} min de leitura</span></div></div></a>`;
 }
 function artigoHTML(a, autor) {
   const atualizado = a.atualizadoEm && a.publicadoEm && a.atualizadoEm - a.publicadoEm > 3600000;
@@ -4629,6 +4778,7 @@ async function viewAcademico(main, _, q) {
       : `${!filtro ? cardArtigo(l[0], { dest: true }) : ''}<div class="col-grid">${(filtro ? l : l.slice(1)).map(a => cardArtigo(a)).join('')}</div>`);
     const cont = id => dados.artigos.filter(a => a.autor.id === id).length;
     const ativos = dados.autores.filter(a => cont(a.id));
+    hidratarImagens($('#ac-lista'));
     $('#ac-autores').innerHTML = ativos.length ? `<h3>${ic('users', 18)} Colunistas</h3>${ativos.map(a => `<a class="col-autor-card ${a.id === autor ? 'on' : ''}" href="#/academico?autor=${encodeURIComponent(a.id)}">${avatarCol(a, 44)}<div><b>${esc(a.nome)}</b><span>${esc(a.titulacao || a.disciplina || '')}</span><small>${cont(a.id)} artigo${cont(a.id) === 1 ? '' : 's'}</small></div></a>`).join('')}` : '';
   };
   desenhar();
@@ -4652,9 +4802,10 @@ async function viewArtigo(main, param) {
   const [cid, aid] = decodeURIComponent(param || '').split('_');
   const [cols, coluna] = await Promise.all([store.list('colunistas'), store.get('colunas', cid).catch(() => null)]);
   const c = cols.find(x => x.id === cid), x = coluna?.artigos?.find(y => y.id === aid);
+  if (c && x?.publicado && expirado(x, c) && S.user?.role !== 'admin') { main.innerHTML = `<div class="page"><div class="card empty">${ART.medal('clock')}<h3>Este artigo saiu do painel</h3><p>Ele ficou disponível até ${fmtDate(expiraDe(x, c))}.</p><a class="btn ghost" href="#/academico">Ver os artigos atuais</a></div></div>`; return; }
   if (!c || !x?.publicado || (c.ocultos || []).includes(aid)) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Artigo não encontrado</h3><p>Ele pode ter sido retirado do painel pelo autor.</p><a class="btn ghost" href="#/academico">Voltar ao painel</a></div></div>`; return; }
   const autor = perfilColunista(c, coluna);
-  const outros = (coluna.artigos || []).filter(y => y.publicado && y.id !== aid && !(c.ocultos || []).includes(y.id)).map(y => ({ ...y.publicado, id: y.id, autor })).sort((p, q) => (q.publicadoEm || 0) - (p.publicadoEm || 0)).slice(0, 3);
+  const outros = (coluna.artigos || []).filter(y => y.publicado && y.id !== aid && !(c.ocultos || []).includes(y.id) && !expirado(y, c)).map(y => ({ ...y.publicado, id: y.id, autor })).sort((p, q) => (q.publicadoEm || 0) - (p.publicadoEm || 0)).slice(0, 3);
   main.innerHTML = `<div class="page"><a href="#/academico" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} Painel colaborativo acadêmico</a>
     <div class="doc col-folha">${artigoHTML({ ...x.publicado, id: aid }, autor)}</div>
     ${outros.length ? `<div class="col-mais"><div class="list-h"><h3>Mais de ${esc(autor.nome)}</h3><a class="small" href="#/academico?autor=${encodeURIComponent(cid)}">Ver todos</a></div><div class="col-grid">${outros.map(a => cardArtigo(a)).join('')}</div></div>` : ''}</div>`;
@@ -4685,7 +4836,14 @@ async function viewEscrever(main, chave) {
   let atual = (col.artigos.find(vazioArt) || col.artigos[0] || criar()).id;
   const art = () => col.artigos.find(x => x.id === atual);
   const mudou = a => !!a.publicado && (a.titulo !== a.publicado.titulo || (a.subtitulo || '') !== (a.publicado.subtitulo || '') || (a.disciplina || '') !== (a.publicado.disciplina || '') || limparHTML(a.html) !== a.publicado.html);
-  const estado = a => !a.publicado ? ['Rascunho', ''] : mudou(a) ? ['Alterações não publicadas', 'warn'] : ['Publicado', 'ok'];
+  const estado = a => !a.publicado ? ['Rascunho', ''] : expirado(a, c0) ? ['Expirado', 'err'] : mudou(a) ? ['Alterações não publicadas', 'warn'] : ['Publicado', 'ok'];
+  const R = regrasCol();
+  const regrasHTML = () => `<div class="ed-ajuda ed-regras"><b>${ic('scroll', 15)} Regras do portal</b><ul>
+    <li>${R.minChars ? `Entre <b>${fmtN0(R.minChars)}</b> e <b>${fmtN0(R.maxChars)}</b>` : `Até <b>${fmtN0(R.maxChars)}</b>`} caracteres com espaços (cerca de ${fmtN0(Math.round(R.maxChars / 6 / 10) * 10)} palavras no máximo)</li>
+    <li>${R.maxImagens ? `Até <b>${R.maxImagens}</b> ${R.maxImagens === 1 ? 'imagem' : 'imagens'} por artigo` : 'Imagens não são permitidas nos artigos'}</li>
+    <li>${R.dias ? `Cada artigo fica <b>${R.dias} dias</b> no painel, contados da primeira publicação. Atualizar o texto não reinicia o prazo.` : 'Os artigos ficam no painel sem prazo de expiração.'}</li>
+    ${R.dias && R.avisoDias ? `<li>Você é avisado aqui ${R.avisoDias} dia${R.avisoDias === 1 ? '' : 's'} antes de um artigo sair do painel.</li>` : ''}</ul></div>`;
+  const alertas = () => col.artigos.filter(a => a.publicado && expiraDe(a, c0)).map(a => ({ a, e: expiraDe(a, c0) })).filter(({ e }) => (e < Date.now() && Date.now() - e < 30 * DAY) || (e >= Date.now() && diasAte(e) <= R.avisoDias)).sort((x, y) => x.e - y.e);
 
   main.innerHTML = `<header class="ed-top">${brandHTML('#/escrever/' + encodeURIComponent(chave)).replace('Portal do estudante de Direito', 'Espaço do colunista')}
       <span class="ed-st" id="ed-st"><i></i><span>Pronto</span></span>
@@ -4693,20 +4851,26 @@ async function viewEscrever(main, chave) {
       <button class="ed-eu" id="ed-eu" title="Meu perfil de colunista"><span id="ed-av"></span><span class="ed-eu-t"><b>${esc(c0.nome)}</b><small>Meu perfil</small></span></button></header>
     <div class="ed-app">
       <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><div id="ed-itens"></div>
+        ${regrasHTML()}
         <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar no painel</b>, ele aparece para os alunos no <b>Painel colaborativo acadêmico</b>.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
-      <section class="ed-main"><div class="doc ed-papel">
+      <section class="ed-main"><div id="ed-avisos"></div><div class="doc ed-papel">
         <div class="ed-cab"><select id="ed-disc" class="ed-disc" aria-label="Disciplina"><option value="">Disciplina (opcional)</option>${DISCIPLINAS.map(d => `<option>${esc(d)}</option>`).join('')}<option value="Outra">Outra</option></select><span id="ed-estado"></span></div>
         <textarea id="ed-tit" class="ed-tit" rows="1" placeholder="Título do artigo" maxlength="180"></textarea>
         <textarea id="ed-sub" class="ed-sub" rows="1" placeholder="Linha fina: o artigo em uma frase (opcional)" maxlength="260"></textarea>
         <div class="ed-tools" id="ed-tools" role="toolbar" aria-label="Formatação">
-          <button data-c="bold" title="Negrito (Ctrl+B)"><b>N</b></button><button data-c="italic" title="Itálico (Ctrl+I)"><i>I</i></button><button data-c="underline" title="Sublinhado (Ctrl+U)"><u>S</u></button><span class="sep"></span>
+          <button data-c="bold" title="Negrito (Ctrl+B)"><b>N</b></button><button data-c="italic" title="Itálico (Ctrl+I)"><i>I</i></button><button data-c="underline" title="Sublinhado (Ctrl+U)"><u>S</u></button><button data-c="strikeThrough" title="Tachado"><s>T</s></button><button data-c="marca" title="Marca-texto">${ic('marca', 17)}</button><button data-c="superscript" title="Sobrescrito (ex.: 1º, nota¹)" class="tx">x²</button><button data-c="subscript" title="Subscrito" class="tx">x₂</button><span class="sep"></span>
           <button data-c="h2" title="Intertítulo" class="tx">Título</button><button data-c="h3" title="Subtítulo" class="tx">Subtítulo</button><button data-c="blockquote" title="Citação">${ic('quote', 17)}</button><span class="sep"></span>
+          <button data-c="justifyLeft" title="Alinhar à esquerda">${ic('alL', 17)}</button><button data-c="justifyCenter" title="Centralizar">${ic('alC', 17)}</button><button data-c="justifyRight" title="Alinhar à direita">${ic('alR', 17)}</button><button data-c="justifyFull" title="Justificar">${ic('alJ', 17)}</button><span class="sep"></span>
           <button data-c="insertUnorderedList" title="Lista com marcadores" class="tx">• Lista</button><button data-c="insertOrderedList" title="Lista numerada" class="tx">1. Lista</button><span class="sep"></span>
-          <button data-c="link" title="Inserir link">${ic('link', 17)}</button><button data-c="removeFormat" title="Limpar formatação" class="tx">Limpar</button><span class="sep"></span>
-          <button data-c="undo" title="Desfazer (Ctrl+Z)">↶</button><button data-c="redo" title="Refazer (Ctrl+Y)">↷</button></div>
+          <button data-c="link" title="Inserir link">${ic('link', 17)}</button>${R.maxImagens ? `<button data-c="imagem" title="Inserir imagem" class="tx">${ic('image', 17)} Imagem</button>` : ''}<button data-c="insertHorizontalRule" title="Linha separadora" class="tx">― Separador</button><span class="sep"></span>
+          <button data-c="removeFormat" title="Limpar formatação" class="tx">Limpar</button><button data-c="undo" title="Desfazer (Ctrl+Z)">↶</button><button data-c="redo" title="Refazer (Ctrl+Y)">↷</button></div>
+        <div class="ed-imgbar hidden" id="ed-imgbar" role="toolbar" aria-label="Imagem">
+          <button data-i="img-p" title="Pequena">P</button><button data-i="img-m" title="Média">M</button><button data-i="img-g" title="Grande (largura total)">G</button><span class="sep"></span>
+          <button data-i="img-esq" title="À esquerda, com texto ao lado">${ic('alL', 16)}</button><button data-i="img-centro" title="Centralizada">${ic('alC', 16)}</button><button data-i="img-dir" title="À direita, com texto ao lado">${ic('alR', 16)}</button><span class="sep"></span>
+          <button data-i="legenda" class="tx" title="Adicionar legenda abaixo">Legenda</button><button data-i="alt" class="tx" title="Descrição para acessibilidade">Descrição</button><button data-i="rm" title="Remover imagem">${ic('trash', 16)}</button></div>
         <div id="ed-corpo" class="ed-corpo col-corpo" contenteditable="true" spellcheck="true" lang="pt-BR" data-ph="Comece a escrever aqui. Você pode colar textos do Word ou do Google Docs."></div>
       </div>
-      <div class="ed-rodape"><span class="ed-cont" id="ed-cont"></span>
+      <div class="ed-rodape"><div class="ed-cont" id="ed-cont"></div>
         <div class="ed-acoes"><button class="btn ghost sm" id="ed-del" title="Excluir este texto">${ic('trash', 15)}<span class="hide-sm"> Excluir</span></button>
           <button class="btn ghost sm" id="ed-ret">Retirar do painel</button>
           <button class="btn ghost" id="ed-prev">${ic('eye', 16)} Pré-visualizar</button>
@@ -4747,19 +4911,34 @@ async function viewEscrever(main, chave) {
   const sincronizar = () => (fila = fila.then(fazerSync, fazerSync));
 
   /* ---- lista de textos ---- */
-  const itemHTML = a => { const [t, cl] = estado(a); return `<button class="ed-item ${a.id === atual ? 'on' : ''}" data-id="${esc(a.id)}"><b>${esc(String(a.titulo || '').trim() || 'Sem título')}</b><span><span class="badge ${cl}">${t}</span> ${fmtDate(a.atualizadoEm)}</span></button>`; };
+  const itemHTML = a => { const [t, cl] = estado(a), e = expiraDe(a, c0), d = e ? diasAte(e) : null;
+    const pz = a.publicado && e && e >= Date.now() ? `<span class="badge ${d <= R.avisoDias ? 'warn' : ''}" title="Sai do painel em ${fmtDate(e)}">${ic('clock', 11)} ${d <= 0 ? 'hoje' : d + 'd'}</span>` : '';
+    return `<button class="ed-item ${a.id === atual ? 'on' : ''}" data-id="${esc(a.id)}"><b>${esc(String(a.titulo || '').trim() || 'Sem título')}</b><span><span class="badge ${cl}">${t}</span>${pz} ${fmtDate(a.atualizadoEm)}</span></button>`; };
   const itensHTML = () => col.artigos.map(itemHTML).join('');
   let aberto = null;
-  function desenharLista() { const box = $('#ed-itens'); if (box) box.innerHTML = itensHTML(); desenharRodape(); }
+  function desenharLista() { const box = $('#ed-itens'); if (box) box.innerHTML = itensHTML(); desenharAvisos(); desenharRodape(); }
+  function desenharAvisos() {
+    const box = $('#ed-avisos'); if (!box) return;
+    box.innerHTML = alertas().map(({ a, e }) => { const d = diasAte(e), foi = e < Date.now();
+      return `<div class="banner ${foi ? '' : 'gold'} ed-aviso"><div><h3>${ic('clock')} ${foi ? 'Artigo fora do painel' : 'Artigo perto de sair do painel'}</h3><p><b>${esc(a.titulo || 'Sem título')}</b> ${foi ? `saiu do painel em ${fmtDate(e)}. Para voltar, peça ao administrador para prorrogar o prazo.` : `fica no painel até ${fmtDate(e)} (${prazoTxt(d)}).`}</p></div><button class="btn ghost sm" data-abrir="${esc(a.id)}">Abrir</button></div>`; }).join('');
+  }
+  let barraChars = 0;
   function desenharRodape() {
     const a = art(); if (!a) return;
-    const [t, cl] = estado(a), n = contarPalavras(corpo.innerHTML);
-    $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span>${a.publicado ? ` <span class="small muted">no painel desde ${fmtDate(a.publicado.publicadoEm)}</span>` : ''}`;
-    $('#ed-cont').textContent = `${n} palavra${n === 1 ? '' : 's'} · ${minLeitura(corpo.innerHTML)} min de leitura`;
+    const [t, cl] = estado(a), html = corpo.innerHTML, n = contarPalavras(html), ch = contarChars(html), nImg = corpo.querySelectorAll('img').length;
+    const e = expiraDe(a, c0), d = e ? diasAte(e) : null;
+    const prazo = !a.publicado ? (R.dias ? `Ao publicar, fica no painel por ${R.dias} dias${a.publicadoOrig ? ', contados da primeira publicação' : ''}` : 'Ao publicar, fica no painel sem prazo de expiração')
+      : !e ? 'No painel, sem prazo de expiração' : e < Date.now() ? `Saiu do painel em ${fmtDate(e)}` : `No painel até ${fmtDate(e)} (${prazoTxt(d)})`;
+    const alerta = a.publicado && e && (e < Date.now() || d <= R.avisoDias);
+    $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>`;
+    const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
+    const dica = ch > R.maxChars ? `passou ${fmtN0(ch - R.maxChars)} do limite` : ch < R.minChars ? `faltam ${fmtN0(R.minChars - ch)} para o mínimo` : ch > R.maxChars * .9 ? `restam ${fmtN0(R.maxChars - ch)}` : '';
+    $('#ed-cont').innerHTML = `<span class="ed-chars ${cls}" title="Caracteres com espaços"><b>${fmtN0(ch)}</b> / ${fmtN0(R.maxChars)} caracteres<span class="ed-barra"><i style="width:${Math.min(100, ch / R.maxChars * 100).toFixed(1)}%"></i></span>${dica ? `<em>${dica}</em>` : ''}</span>
+      <span class="ed-meta">${n} palavra${n === 1 ? '' : 's'} · ${minLeitura(html)} min${R.maxImagens ? ` · <span class="${nImg > R.maxImagens ? 'ed-err' : ''}">${nImg}/${R.maxImagens} imagens</span>` : ''}</span>`;
     $('#ed-ret').classList.toggle('hidden', !a.publicado);
-    const pb = $('#ed-pub');
-    pb.innerHTML = `${ic('check', 16)} ${!a.publicado ? 'Salvar e publicar no painel' : mudou(a) ? 'Salvar e atualizar no painel' : 'Publicado no painel'}`;
-    pb.disabled = !!a.publicado && !mudou(a);
+    const pb = $('#ed-pub'), exp = expirado(a, c0);
+    pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo no painel encerrado' : !a.publicado ? 'Salvar e publicar no painel' : mudou(a) ? 'Salvar e atualizar no painel' : 'Publicado no painel'}`;
+    pb.disabled = exp || (!!a.publicado && !mudou(a));
     $('#ed-av').innerHTML = avatarCol(autor(), 34);
   }
   function abrir(id) {
@@ -4771,18 +4950,19 @@ async function viewEscrever(main, chave) {
     tit.value = a.titulo || ''; sub.value = a.subtitulo || ''; disc.value = a.disciplina || '';
     if (a.disciplina && disc.value !== a.disciplina) { disc.insertAdjacentHTML('beforeend', `<option>${esc(a.disciplina)}</option>`); disc.value = a.disciplina; }
     corpo.innerHTML = limparHTML(a.html) || '<p><br></p>';
-    ajustarTit(); marcarVazio(); desenharLista();
+    esconderImgBar(); ajustarTit(); marcarVazio(); desenharLista(); hidratarImagens(corpo);
   }
   const ajustarTit = () => { for (const t of [tit, sub]) { t.style.height = 'auto'; t.style.height = t.scrollHeight + 'px'; } };
-  const marcarVazio = () => corpo.classList.toggle('vazio', !corpo.textContent.trim() && !corpo.querySelector('li,hr'));
+  const marcarVazio = () => corpo.classList.toggle('vazio', !corpo.textContent.trim() && !corpo.querySelector('li,hr,img'));
+  const normalizarMarcas = () => corpo.querySelectorAll('span[style*="background"], font[style*="background"]').forEach(sp => { const m = document.createElement('mark'); m.append(...sp.childNodes); sp.replaceWith(m); });
   function alterou() {
     const a = art(); if (!a) return;
-    a.titulo = tit.value; a.subtitulo = sub.value; a.disciplina = disc.value; a.html = corpo.innerHTML; a.atualizadoEm = Date.now();
+    a.titulo = tit.value; a.subtitulo = sub.value; a.disciplina = disc.value; a.html = limparHTML(corpo.innerHTML); a.atualizadoEm = Date.now();
     marcarVazio(); desenharRodape();
     corpo.dataset.mexeu = '1';
     clearTimeout(tLocal); tLocal = setTimeout(() => {
       const x = art(); if (!x || x.id !== aberto) return;
-      x.html = limparHTML(corpo.innerHTML); gravarLocal();
+      gravarLocal();
       const it = $(`.ed-item[data-id="${CSS.escape(x.id)}"]`); if (it) it.outerHTML = itemHTML(x);
     }, 500);
     sujo();
@@ -4792,15 +4972,45 @@ async function viewEscrever(main, chave) {
   sub.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); corpo.focus(); } });
   sub.addEventListener('input', () => { ajustarTit(); alterou(); }); disc.addEventListener('change', alterou);
   corpo.addEventListener('input', alterou);
+  let tAvisoLim = 0;
+  const avisarLimite = () => { if (Date.now() - tAvisoLim > 4000) { tAvisoLim = Date.now(); toast(`Limite de ${fmtN0(R.maxChars)} caracteres atingido. Para continuar, reduza o texto.`, true); } };
+  corpo.addEventListener('beforeinput', e => {
+    if (!/^insert(Text|ReplacementText|FromDrop|Paragraph|LineBreak)$/.test(e.inputType)) return;
+    const sel = getSelection(), selLen = sel.rangeCount ? sel.toString().length : 0;
+    if (contarChars(corpo.innerHTML) - selLen + (e.data?.length || 1) > R.maxChars) { e.preventDefault(); avisarLimite(); }
+  });
   corpo.addEventListener('paste', e => {
     const cd = e.clipboardData; if (!cd) return;
     e.preventDefault();
+    const arq = [...(cd.files || [])].find(f => /^image\//.test(f.type));
     const html = cd.getData('text/html'), txt = cd.getData('text/plain');
+    if (arq && !txt.trim()) { guardarSel(); return inserirImagemArquivo(arq); }
     const limpo = html ? limparHTML(html) : String(txt || '').split(/\r?\n\s*\r?\n/).map(p => `<p>${esc(p).replace(/\r?\n/g, '<br>')}</p>`).join('');
-    if (limpo) document.execCommand('insertHTML', false, limpo);
-    alterou();
+    if (!limpo) return;
+    const nImg = (limpo.match(/<img\b/g) || []).length, atuais = corpo.querySelectorAll('img').length;
+    document.execCommand('insertHTML', false, nImg && atuais + nImg > R.maxImagens ? limparHTML(limpo.replace(/<img\b[^>]*>/g, '')) : limpo);
+    if (nImg && atuais + nImg > R.maxImagens) toast(`As imagens coladas foram ignoradas: o limite é de ${R.maxImagens} por artigo.`, true);
+    alterou(); hidratarImagens(corpo);
+    const ch = contarChars(corpo.innerHTML);
+    if (ch > R.maxChars) toast(`O texto ficou com ${fmtN0(ch)} caracteres. O limite é ${fmtN0(R.maxChars)}: reduza ${fmtN0(ch - R.maxChars)} para publicar.`, true);
   });
-  corpo.addEventListener('drop', e => { if (e.dataTransfer?.files?.length) { e.preventDefault(); toast('Imagens e arquivos não são aceitos no texto. Use links.', true); } });
+  corpo.addEventListener('drop', e => {
+    const f = [...(e.dataTransfer?.files || [])];
+    if (!f.length) return;
+    e.preventDefault();
+    const im = f.find(x => /^image\//.test(x.type));
+    if (!im) return toast('Só é possível soltar imagens no texto. Para outros arquivos, use links.', true);
+    const r = document.caretRangeFromPoint?.(e.clientX, e.clientY); if (r) { const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    guardarSel(); inserirImagemArquivo(im);
+  });
+  // Enter no fim de uma legenda abre um parágrafo normal
+  corpo.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' || e.shiftKey) return;
+    const s = getSelection(), n = s.anchorNode, el = n && (n.nodeType === 1 ? n : n.parentElement), lg = el?.closest('p.legenda');
+    if (!lg || !corpo.contains(lg)) return;
+    e.preventDefault(); const p = document.createElement('p'); p.innerHTML = '<br>'; lg.after(p);
+    const r = document.createRange(); r.setStart(p, 0); r.collapse(true); s.removeAllRanges(); s.addRange(r); alterou();
+  });
 
   /* ---- barra de formatação ---- */
   let faixa = null;
@@ -4822,44 +5032,159 @@ async function viewEscrever(main, chave) {
       f.onsubmit = ev => { ev.preventDefault(); let u = f.u.value.trim(); if (!/^https?:\/\//i.test(u)) u = 'https://' + u; close(); restaurarSel(); document.execCommand('createLink', false, u); corpo.querySelectorAll('a').forEach(x => { x.target = '_blank'; x.rel = 'noopener nofollow'; }); alterou(); };
       return;
     }
-    else if (c === 'removeFormat') { document.execCommand('removeFormat'); document.execCommand('unlink'); document.execCommand('formatBlock', false, 'p'); }
+    else if (c === 'imagem') {
+      guardarSel();
+      if (corpo.querySelectorAll('img').length >= R.maxImagens) return toast(`Este artigo já tem ${R.maxImagens} imagens, o máximo permitido.`, true);
+      return abrirInserirImagem();
+    }
+    else if (c === 'marca') {
+      const mk = noSel()?.closest('mark');
+      if (mk && corpo.contains(mk)) mk.replaceWith(...mk.childNodes);
+      else { if (getSelection().isCollapsed) return toast('Selecione o trecho que vai ser destacado.', true); document.execCommand('styleWithCSS', false, true); document.execCommand('hiliteColor', false, '#fdeaa0'); document.execCommand('styleWithCSS', false, false); normalizarMarcas(); }
+    }
+    else if (c === 'removeFormat') { document.execCommand('removeFormat'); document.execCommand('unlink'); document.execCommand('formatBlock', false, 'p'); document.execCommand('justifyLeft'); const mk = noSel()?.closest('mark'); if (mk) mk.replaceWith(...mk.childNodes); }
+    else if (c === 'insertHorizontalRule') { document.execCommand('insertHorizontalRule'); }
     else document.execCommand(c);
     alterou(); estadoTools();
   });
+  const noSel = () => { const n = getSelection().anchorNode; return n ? (n.nodeType === 1 ? n : n.parentElement) : null; };
+  const ESTADOS = ['bold', 'italic', 'underline', 'strikeThrough', 'superscript', 'subscript', 'insertUnorderedList', 'insertOrderedList', 'justifyCenter', 'justifyRight', 'justifyFull'];
   const estadoTools = () => {
     if (!corpo.contains(getSelection().anchorNode)) return;
     const blk = String(document.queryCommandValue('formatBlock') || '').toLowerCase();
-    $$('button[data-c]', tools).forEach(b => { const c = b.dataset.c; let on = false; try { on = ['bold', 'italic', 'underline', 'insertUnorderedList', 'insertOrderedList'].includes(c) ? document.queryCommandState(c) : ['h2', 'h3', 'blockquote'].includes(c) && blk === c; } catch {} b.classList.toggle('on', on); });
+    $$('button[data-c]', tools).forEach(b => { const c = b.dataset.c; let on = false; try { on = ESTADOS.includes(c) ? document.queryCommandState(c) : ['h2', 'h3', 'blockquote'].includes(c) ? blk === c : c === 'marca' ? !!noSel()?.closest('mark') : false; } catch {} b.classList.toggle('on', on); });
   };
   document.addEventListener('selectionchange', estadoTools);
+
+  /* ---- imagens ---- */
+  const blocoDaSel = () => {
+    let n = faixa?.startContainer; if (!n || !corpo.contains(n)) return null;
+    while (n && n.parentNode !== corpo) n = n.parentNode;
+    return n && n !== corpo ? n : null;
+  };
+  function colocarImagem(img, legenda) {
+    const p = document.createElement('p'); p.appendChild(img);
+    const nos = [p]; if (legenda) { const lg = document.createElement('p'); lg.className = 'legenda'; lg.textContent = legenda; nos.push(lg); }
+    const b = blocoDaSel();
+    if (b && b.nodeType === 1 && b.tagName === 'P' && !b.textContent.trim() && !b.querySelector('img')) b.replaceWith(...nos);
+    else if (b) b.after(...nos); else corpo.append(...nos);
+    const ult = nos[nos.length - 1];
+    if (!ult.nextElementSibling) { const v = document.createElement('p'); v.innerHTML = '<br>'; ult.after(v); }
+    alterou(); selecionarImg(img);
+  }
+  async function enviarImagem(file) {
+    if (!store.salvarImagemCol) throw new Error('O envio de imagens não está disponível neste modo. Use o endereço (link) de uma imagem.');
+    const url = await imagemOtimizada(file);
+    const ref = await store.salvarImagemCol(url); imgCache.set(ref, url);
+    const img = document.createElement('img'); img.dataset.img = ref; img.src = url; return img;
+  }
+  async function inserirImagemArquivo(file, opc = {}) {
+    if (corpo.querySelectorAll('img').length >= R.maxImagens) return toast(R.maxImagens ? `Este artigo já tem ${R.maxImagens} imagens, o máximo permitido.` : 'Imagens não são permitidas nos artigos.', true);
+    status('salvando', 'Enviando imagem…');
+    try {
+      const img = await enviarImagem(file);
+      img.className = `${opc.tam || 'img-m'} ${opc.pos || 'img-centro'}`; if (opc.alt) img.alt = opc.alt;
+      colocarImagem(img, opc.legenda); status('local'); toast('Imagem inserida.');
+    } catch (e) { status('erro', 'Imagem não enviada'); toast(e.message, true); }
+  }
+  function abrirInserirImagem() {
+    const { el, close } = modal('Inserir imagem', `<form class="form" id="fim">
+      <label class="drop" id="im-drop">${ic('image', 26)}<span id="im-dt">Clique para escolher a imagem ou arraste aqui</span><input type="file" id="im-file" accept="image/jpeg,image/png,image/webp,image/gif" hidden></label>
+      <img id="im-prev" class="hidden ed-im-prev" alt="">
+      <label>…ou o endereço de uma imagem na internet<input name="url" type="url" placeholder="https://…/imagem.jpg" autocomplete="off"><span class="hint">Use só imagens que você pode publicar (próprias, de domínio público ou com licença).</span></label>
+      <div class="row2"><label>Tamanho<select name="tam"><option value="img-p">Pequena</option><option value="img-m" selected>Média</option><option value="img-g">Grande (largura total)</option></select></label>
+        <label>Posição<select name="pos"><option value="img-centro" selected>Centralizada</option><option value="img-esq">À esquerda, com texto ao lado</option><option value="img-dir">À direita, com texto ao lado</option></select></label></div>
+      <label>Legenda (opcional)<input name="legenda" maxlength="200" placeholder="Ex.: Fachada do Supremo Tribunal Federal. Foto: autor."></label>
+      <label>Descrição da imagem<input name="alt" maxlength="200" placeholder="O que a imagem mostra (para leitores de tela)"></label>
+      <p class="hint">A imagem é reduzida automaticamente para carregar rápido. Limite: ${R.maxImagens} por artigo (este tem ${corpo.querySelectorAll('img').length}).</p>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="im-ok">Inserir imagem</button></div></form>`, { wide: true });
+    const f = $('#fim', el); let arq = null;
+    const escolher = file => { if (!file) return; if (!/^image\//.test(file.type)) return toast('Escolha um arquivo de imagem.', true); arq = file; $('#im-dt', el).textContent = file.name; const pv = $('#im-prev', el); pv.src = trackURL(URL.createObjectURL(file)); pv.classList.remove('hidden'); };
+    $('#im-file', el).onchange = e => escolher(e.target.files[0]);
+    const dr = $('#im-drop', el); dr.ondragover = e => { e.preventDefault(); dr.classList.add('over'); }; dr.ondragleave = () => dr.classList.remove('over');
+    dr.ondrop = e => { e.preventDefault(); dr.classList.remove('over'); escolher(e.dataTransfer.files[0]); };
+    f.onsubmit = async e => {
+      e.preventDefault();
+      const opc = { tam: f.tam.value, pos: f.pos.value, legenda: f.legenda.value.trim(), alt: f.alt.value.trim() || f.legenda.value.trim() };
+      if (arq) { const b = $('#im-ok', el); b.disabled = true; b.textContent = 'Enviando…'; close(); return inserirImagemArquivo(arq, opc); }
+      let u = f.url.value.trim();
+      if (!u) return toast('Escolha uma imagem ou informe o endereço.', true);
+      if (!/^https:\/\//i.test(u)) return toast('O endereço da imagem precisa começar com https://', true);
+      const img = document.createElement('img'); img.src = u; img.className = `${opc.tam} ${opc.pos}`; if (opc.alt) img.alt = opc.alt;
+      close(); colocarImagem(img, opc.legenda);
+    };
+  }
+  let imgSel = null;
+  const imgbar = $('#ed-imgbar');
+  function esconderImgBar() { imgSel?.classList.remove('ed-sel'); imgSel = null; imgbar.classList.add('hidden'); }
+  function posicionarImgBar() {
+    if (!imgSel) return;
+    const papel = $('.ed-papel'), r = imgSel.getBoundingClientRect(), pr = papel.getBoundingClientRect();
+    imgbar.style.top = Math.max(8, r.top - pr.top - imgbar.offsetHeight - 8) + 'px';
+    imgbar.style.left = Math.max(8, Math.min(pr.width - imgbar.offsetWidth - 8, r.left - pr.left + r.width / 2 - imgbar.offsetWidth / 2)) + 'px';
+    $$('button[data-i]', imgbar).forEach(b => b.classList.toggle('on', imgSel.classList.contains(b.dataset.i)));
+  }
+  function selecionarImg(img) { esconderImgBar(); imgSel = img; img.classList.add('ed-sel'); imgbar.classList.remove('hidden'); posicionarImgBar(); }
+  corpo.addEventListener('click', e => { const im = e.target.closest('img'); if (im && corpo.contains(im)) selecionarImg(im); else esconderImgBar(); });
+  const foraDaImg = e => { if (imgSel && !e.target.closest('#ed-imgbar') && e.target !== imgSel) esconderImgBar(); };
+  document.addEventListener('mousedown', foraDaImg);
+  imgbar.addEventListener('mousedown', e => e.preventDefault());
+  imgbar.addEventListener('click', async e => {
+    const b = e.target.closest('button[data-i]'); if (!b || !imgSel) return;
+    const k = b.dataset.i, img = imgSel;
+    if (/^img-(p|m|g)$/.test(k)) { img.classList.remove('img-p', 'img-m', 'img-g'); img.classList.add(k); }
+    else if (/^img-(esq|centro|dir)$/.test(k)) { img.classList.remove('img-esq', 'img-centro', 'img-dir'); img.classList.add(k); if (k !== 'img-centro' && img.classList.contains('img-g')) { img.classList.remove('img-g'); img.classList.add('img-m'); } }
+    else if (k === 'rm') { const p = img.closest('p'); const lg = p?.nextElementSibling?.classList.contains('legenda') ? p.nextElementSibling : null; esconderImgBar(); img.remove(); if (p && !p.textContent.trim() && !p.querySelector('img')) p.remove(); if (lg && await confirmar('Remover também a legenda da imagem?', 'Remover legenda')) lg.remove(); alterou(); return; }
+    else if (k === 'legenda') {
+      const p = img.closest('p'); let lg = p?.nextElementSibling?.classList.contains('legenda') ? p.nextElementSibling : null;
+      if (!lg) { lg = document.createElement('p'); lg.className = 'legenda'; lg.innerHTML = '<br>'; (p || img).after(lg); }
+      esconderImgBar(); const r = document.createRange(); r.selectNodeContents(lg); r.collapse(false); const s = getSelection(); s.removeAllRanges(); s.addRange(r); corpo.focus(); alterou(); return;
+    }
+    else if (k === 'alt') {
+      const { el, close } = modal('Descrição da imagem', `<form class="form" id="falt"><label>O que a imagem mostra<input name="a" maxlength="200" value="${esc(img.alt || '')}"></label><p class="hint">Usada por leitores de tela e quando a imagem não carrega.</p><div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar</button></div></form>`);
+      $('#falt', el).onsubmit = ev => { ev.preventDefault(); img.alt = ev.target.a.value.trim(); close(); alterou(); }; return;
+    }
+    alterou(); posicionarImgBar();
+  });
+  window.addEventListener('resize', posicionarImgBar);
 
   /* ---- ações ---- */
   $('#ed-novo').onclick = () => { const v = col.artigos.find(vazioArt); abrir((v || criar()).id); gravarLocal(); tit.focus(); };
   $('#ed-itens').onclick = e => { const b = e.target.closest('.ed-item'); if (b) { abrir(b.dataset.id); } };
+  $('#ed-avisos').onclick = e => { const b = e.target.closest('[data-abrir]'); if (b) abrir(b.dataset.abrir); };
   $('#ed-meus').onclick = () => {
-    const { el, close } = modal('Meus textos', `<button class="btn primary" id="m-novo" style="width:100%;margin-bottom:12px">${ic('plus', 16)} Novo texto</button><div class="ed-itens-m">${itensHTML()}</div>`);
+    const { el, close } = modal('Meus textos', `<button class="btn primary" id="m-novo" style="width:100%;margin-bottom:12px">${ic('plus', 16)} Novo texto</button><div class="ed-itens-m">${itensHTML()}</div><div style="margin-top:14px">${regrasHTML()}</div>`);
     el.addEventListener('click', e => { const b = e.target.closest('.ed-item'); if (b) { close(); abrir(b.dataset.id); } });
     $('#m-novo', el).onclick = () => { close(); $('#ed-novo').click(); };
   };
   $('#ed-prev').onclick = () => {
     const a = art();
-    modal('Pré-visualização: como os alunos vão ver', `<div class="doc col-folha">${artigoHTML({ ...a, html: corpo.innerHTML, publicadoEm: a.publicado?.publicadoEm || Date.now(), atualizadoEm: Date.now() }, autor())}</div>`, { wide: true });
+    const { el } = modal('Pré-visualização: como os alunos vão ver', `<div class="doc col-folha">${artigoHTML({ ...a, html: corpo.innerHTML, publicadoEm: a.publicado?.publicadoEm || Date.now(), atualizadoEm: Date.now() }, autor())}</div>`, { wide: true });
+    hidratarImagens(el);
   };
   $('#ed-pub').onclick = async () => {
     const a = art(), html = limparHTML(corpo.innerHTML);
     if (tit.value.trim().length < 3) { toast('Dê um título ao artigo antes de publicar.', true); return tit.focus(); }
-    if (contarPalavras(html) < 20) { toast('Escreva pelo menos algumas frases antes de publicar.', true); return corpo.focus(); }
+    const ch = contarChars(html), nImg = (html.match(/<img\b/g) || []).length;
+    if (ch < Math.max(R.minChars, 100)) { toast(`O artigo precisa ter pelo menos ${fmtN0(Math.max(R.minChars, 100))} caracteres. Faltam ${fmtN0(Math.max(R.minChars, 100) - ch)}.`, true); return corpo.focus(); }
+    if (ch > R.maxChars) { toast(`O artigo passou do limite de ${fmtN0(R.maxChars)} caracteres. Reduza ${fmtN0(ch - R.maxChars)} caracteres para publicar.`, true); return corpo.focus(); }
+    if (nImg > R.maxImagens) { toast(`O artigo tem ${nImg} imagens. O limite é ${R.maxImagens}. Remova ${nImg - R.maxImagens}.`, true); return; }
+    const agora = Date.now(), base = a.publicadoOrig || a.publicado?.publicadoEm || agora;
+    const expiraEm = a.publicado ? (Number(a.publicado.expiraEm) || 0) : (R.dias ? base + R.dias * DAY : 0);
+    const efetivo = expiraDe({ id: a.id, publicado: { expiraEm } }, c0);
+    if (efetivo && efetivo < agora) { toast(`O prazo deste artigo no painel terminou em ${fmtDate(efetivo)}. Peça ao administrador para prorrogar.`, true); return; }
+    if (!a.publicado && efetivo && !await confirmar(`O artigo ficará no Painel colaborativo acadêmico até ${fmtDate(efetivo)} (${diasAte(efetivo)} dias). Você será avisado aqui quando estiver perto de sair. Publicar agora?`, 'Publicar')) return;
     const btn = $('#ed-pub'); btn.disabled = true; btn.textContent = 'Publicando…';
-    const agora = Date.now();
-    Object.assign(a, { titulo: tit.value.trim(), subtitulo: sub.value.trim(), disciplina: disc.value, html, atualizadoEm: agora });
+    Object.assign(a, { titulo: tit.value.trim(), subtitulo: sub.value.trim(), disciplina: disc.value, html, atualizadoEm: agora, publicadoOrig: base });
     const primeira = !a.publicado;
-    a.publicado = { titulo: a.titulo, subtitulo: a.subtitulo, disciplina: a.disciplina, html, publicadoEm: a.publicado?.publicadoEm || agora, atualizadoEm: agora };
+    a.publicado = { titulo: a.titulo, subtitulo: a.subtitulo, disciplina: a.disciplina, html, publicadoEm: a.publicado?.publicadoEm || base, atualizadoEm: agora, expiraEm };
     gravarLocal(); lsSet(KP, '1'); clearTimeout(tSync); tSync = null;
     const ok = await sincronizar();
     desenharLista();
     if (!ok) { toast('Sem conexão agora. O texto está guardado neste aparelho e será publicado assim que a internet voltar.', true); return; }
     const url = linkAlunos() + linkArtigo({ id: a.id, autor: { id: c0.id } });
     const { el } = modal(primeira ? 'Artigo publicado!' : 'Publicação atualizada!', `<div class="ed-ok">${ART.medal('check')}<p><b>${esc(a.titulo)}</b> já está no <b>Painel colaborativo acadêmico</b> do portal${primeira ? '' : ', com as alterações'}.</p>
+      <p class="small">${efetivo ? `${ic('clock', 13)} Fica no painel até <b>${fmtDate(efetivo)}</b>.` : 'Fica no painel sem prazo de expiração.'}</p>
       <p class="small muted">Link do artigo para os alunos (eles precisam estar com o acesso ativo no portal):</p>
       <div class="form"><input class="field" readonly value="${esc(url)}" id="ok-url"></div>
       <div class="actions"><button class="btn ghost" data-close>Continuar escrevendo</button><button class="btn primary" id="ok-cp">Copiar link do artigo</button></div></div>`);
@@ -4906,11 +5231,13 @@ async function viewEscrever(main, chave) {
   window.addEventListener('beforeunload', antesDeFechar);
   S.limpar.push(() => {
     clearTimeout(tSync); clearTimeout(tLocal); gravarLocal(); if (lsGet(KP) === '1') sincronizar();
-    document.removeEventListener('selectionchange', estadoTools); document.removeEventListener('keydown', teclas);
+    document.removeEventListener('selectionchange', estadoTools); document.removeEventListener('keydown', teclas); window.removeEventListener('resize', posicionarImgBar); document.removeEventListener('mousedown', foraDaImg);
     document.removeEventListener('visibilitychange', aoSair); window.removeEventListener('beforeunload', antesDeFechar);
   });
 
   abrir(atual);
+  const al = alertas();
+  if (al.length) toast(al[0].e < Date.now() ? `"${al[0].a.titulo}" saiu do painel em ${fmtDate(al[0].e)}.` : `"${al[0].a.titulo}" sai do painel em ${fmtDate(al[0].e)} (${prazoTxt(diasAte(al[0].e))}).`, true);
   if (lsGet(KP) === '1') { status('local'); agendarSync(3000); } else status(nuvem || !col.artigos.some(a => !vazioArt(a)) ? 'ok' : 'local');
   document.title = `Espaço do colunista · ${S.config.nomePortal}`;
   if (!tit.value) tit.focus();
@@ -4965,25 +5292,44 @@ async function admColunistas(box, ag) {
   const resumo = c => {
     const arts = porId.get(c.id)?.artigos || [], pub = arts.filter(a => a.publicado);
     const ult = Math.max(0, ...arts.map(a => a.atualizadoEm || 0));
-    return { pub: pub.length, ocultos: pub.filter(a => (c.ocultos || []).includes(a.id)).length, rasc: arts.filter(a => !a.publicado).length, leituras: pub.reduce((s, a) => s + leit(a.id), 0), ult };
+    return { pub: pub.length, exp: pub.filter(a => expirado(a, c)).length, ocultos: pub.filter(a => (c.ocultos || []).includes(a.id)).length, rasc: arts.filter(a => !a.publicado).length, leituras: pub.reduce((s, a) => s + leit(a.id), 0), ult };
   };
   const totPub = cols.reduce((s, c) => s + resumo(c).pub, 0), totLeit = cols.reduce((s, c) => s + resumo(c).leituras, 0);
   const recarregar = () => go('admin/colunistas');
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:70ch">Cada professor recebe um <b>link pessoal</b> para escrever online, sem criar conta. O texto é salvo sozinho enquanto ele escreve e, ao clicar em <b>Salvar e publicar no painel</b>, aparece para os alunos no <a href="#/academico">Painel colaborativo acadêmico</a>.</p>
       <button class="btn primary sm" id="novo">${ic('plus', 15)} Novo colunista</button></div>
+    ${(() => { const R = regrasCol(); return `<form class="card pad col-regras" id="frg" novalidate><div class="list-h"><div><h3>${ic('scroll', 18)} Regras dos artigos</h3><p class="small muted" style="margin:4px 0 0">O colunista vê estas regras no editor e é avisado antes de cada artigo sair do painel.</p></div><button class="btn primary sm" id="rg-sv">Salvar regras</button></div>
+      <div class="col-regras-g">
+        <label>Mínimo de caracteres<input type="number" name="minChars" min="0" max="50000" value="${R.minChars}"></label>
+        <label>Máximo de caracteres<input type="number" name="maxChars" min="500" max="60000" value="${R.maxChars}"></label>
+        <label>Imagens por artigo<input type="number" name="maxImagens" min="0" max="20" value="${R.maxImagens}"><span class="hint">0 = sem imagens</span></label>
+        <label>Tempo no painel (dias)<input type="number" name="dias" min="0" max="3650" value="${R.dias}"><span class="hint">0 = sem prazo</span></label>
+        <label>Avisar o colunista (dias antes)<input type="number" name="avisoDias" min="0" max="90" value="${R.avisoDias}"></label></div>
+      <p class="hint" style="margin-top:12px">Sugestão do portal: de 1.500 a 12.000 caracteres (cerca de 250 a 2.000 palavras, de 2 a 10 minutos de leitura), até 6 imagens e 90 dias no painel. O prazo conta da primeira publicação e vale para as novas publicações; para mudar o de um artigo já publicado, use <b>Artigos → Prazo</b>.</p></form>`; })()}
     <div class="stats" style="margin-top:18px"><div class="stat"><span class="si">${ic('users', 20)}</span><div><div class="n">${cols.filter(c => c.ativo !== false).length}</div><div class="l">Colunistas ativos</div></div></div>
       <div class="stat"><span class="si">${ic('pen', 20)}</span><div><div class="n">${totPub}</div><div class="l">Artigos publicados</div></div></div>
       <div class="stat"><span class="si">${ic('eye', 20)}</span><div><div class="n">${fmtN(totLeit)}</div><div class="l">Leituras dos alunos</div></div></div>
       <div class="stat"><span class="si">${ic('clock', 20)}</span><div><div class="n" style="font-size:1.15rem">${(() => { const u = Math.max(0, ...cols.map(c => resumo(c).ult)); return u ? fmtDate(u) : '—'; })()}</div><div class="l">Última escrita</div></div></div></div>
     ${cols.length ? `<div class="card table-wrap"><table><tr><th>Colunista</th><th>Artigos</th><th>Leituras</th><th>Última escrita</th><th>Acesso</th><th></th></tr>
       ${cols.map(c => { const r = resumo(c), p = perfilColunista(c, porId.get(c.id)); return `<tr><td><div class="col-tab-nm">${avatarCol(p, 38)}<div><b>${esc(c.nome)}</b><div class="small muted">${esc([p.titulacao, c.email].filter(Boolean).join(' · ') || '—')}</div></div></div></td>
-        <td><b>${r.pub}</b> publicado${r.pub === 1 ? '' : 's'}${r.ocultos ? ` <span class="badge warn">${r.ocultos} oculto${r.ocultos === 1 ? '' : 's'}</span>` : ''}<div class="small muted">${r.rasc} rascunho${r.rasc === 1 ? '' : 's'}</div></td>
+        <td><b>${r.pub}</b> publicado${r.pub === 1 ? '' : 's'}${r.ocultos ? ` <span class="badge warn">${r.ocultos} oculto${r.ocultos === 1 ? '' : 's'}</span>` : ''}${r.exp ? ` <span class="badge err">${r.exp} expirado${r.exp === 1 ? '' : 's'}</span>` : ''}<div class="small muted">${r.rasc} rascunho${r.rasc === 1 ? '' : 's'}</div></td>
         <td>${fmtN(r.leituras)}</td><td>${r.ult ? fmtDate(r.ult) : '<span class="muted">Ainda não escreveu</span>'}</td>
         <td>${c.ativo === false ? '<span class="badge err">Pausado</span>' : '<span class="badge ok">Ativo</span>'}</td>
         <td><div class="acts"><button class="btn primary sm" data-act="link" data-id="${esc(c.id)}">${ic('link', 14)} Novo link</button><button class="btn ghost sm" data-act="arts" data-id="${esc(c.id)}">Artigos</button><button class="btn ghost sm" data-act="ed" data-id="${esc(c.id)}">${ic('edit', 14)}</button>
           <button class="btn ghost sm" data-act="ativo" data-id="${esc(c.id)}">${c.ativo === false ? 'Reativar' : 'Pausar'}</button><button class="btn danger sm" data-act="del" data-id="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
       : `<div class="card empty">${ART.medal('pen')}<h3>Nenhum colunista ainda</h3><p>Cadastre o primeiro professor e envie o link para ele começar a escrever.</p><button class="btn primary" id="novo2">${ic('plus', 15)} Novo colunista</button></div>`}`;
   $('#novo').onclick = () => formColunista({}, recarregar);
+  $('#frg').onsubmit = async e => {
+    e.preventDefault(); const f = e.target, v = k => Math.max(0, Math.round(Number(f[k].value) || 0));
+    const r = { minChars: v('minChars'), maxChars: v('maxChars'), maxImagens: v('maxImagens'), dias: v('dias'), avisoDias: v('avisoDias') };
+    if (r.maxChars < 500 || r.maxChars > 60000) return toast('O máximo de caracteres precisa ficar entre 500 e 60.000.', true);
+    if (r.maxImagens > 20) return toast('O limite é de 20 imagens por artigo.', true);
+    if (r.minChars >= r.maxChars) return toast('O mínimo de caracteres precisa ser menor que o máximo.', true);
+    const b = $('#rg-sv'); b.disabled = true; b.textContent = 'Salvando…';
+    try { S.config = { ...S.config, colunas: r }; await store.saveConfig(S.config); toast('Regras salvas. Valem a partir de agora no editor dos colunistas.'); }
+    catch (er) { toast(er.message, true); }
+    b.disabled = false; b.textContent = 'Salvar regras';
+  };
   const n2 = $('#novo2'); if (n2) n2.onclick = () => formColunista({}, recarregar);
   box.onclick = async e => {
     const b = e.target.closest('[data-act]'); if (!b) return;
@@ -5003,17 +5349,38 @@ async function admColunistas(box, ag) {
       }
       if (act === 'del') {
         if (!await confirmar(`Excluir ${c.nome}? O link deixa de funcionar e todos os artigos e rascunhos dele são apagados do portal.`, 'Excluir colunista')) return;
-        await store.remove('colunistas', c.id); await store.remove('colunas', c.id); toast('Colunista excluído.'); return admColunistas(box, ag);
+        const refs = [...new Set(((porId.get(c.id)?.artigos) || []).flatMap(a => [...String(a.html || '').matchAll(/data-img="([^"]+)"/g), ...String(a.publicado?.html || '').matchAll(/data-img="([^"]+)"/g)].map(m => m[1])))];
+        await store.remove('colunistas', c.id); await store.remove('colunas', c.id);
+        for (const r of refs) { try { await store.apagarImagemCol?.(r); } catch {} }
+        toast('Colunista excluído.'); return admColunistas(box, ag);
       }
       if (act === 'arts') {
         const coluna = (await store.get('colunas', c.id).catch(() => null)) || porId.get(c.id), p = perfilColunista(c, coluna), arts = (coluna?.artigos || []).filter(a => a.publicado);
-        const { el } = modal(`Artigos de ${c.nome}`, arts.length ? `<p class="small muted" style="margin-top:0">Só o professor edita os textos. Aqui você pode ocultar um artigo do painel sem apagá-lo.</p><div class="card table-wrap"><table><tr><th>Artigo</th><th>Publicado</th><th>Leituras</th><th></th></tr>
-          ${arts.map(a => { const oc = (c.ocultos || []).includes(a.id); return `<tr><td><b>${esc(a.publicado.titulo)}</b><div class="small muted">${esc(a.publicado.disciplina || '')}${oc ? ' · <span class="badge warn">Oculto</span>' : ''}</div></td><td>${fmtDate(a.publicado.publicadoEm)}</td><td>${fmtN(leit(a.id))}</td>
-            <td><div class="acts"><button class="btn ghost sm" data-ver="${esc(a.id)}">${ic('eye', 14)} Ler</button><button class="btn ${oc ? 'primary' : 'ghost'} sm" data-oc="${esc(a.id)}">${oc ? 'Mostrar no painel' : 'Ocultar'}</button></div></td></tr>`; }).join('')}</table></div>`
+        const { el } = modal(`Artigos de ${c.nome}`, arts.length ? `<p class="small muted" style="margin-top:0">Só o professor edita os textos. Aqui você pode ocultar um artigo do painel sem apagá-lo.</p><div class="card table-wrap"><table><tr><th>Artigo</th><th>Publicado</th><th>No painel até</th><th>Leituras</th><th></th></tr>
+          ${arts.map(a => { const oc = (c.ocultos || []).includes(a.id), e = expiraDe(a, c), d = e ? diasAte(e) : null; return `<tr><td><b>${esc(a.publicado.titulo)}</b><div class="small muted">${esc(a.publicado.disciplina || '')}${oc ? ' · <span class="badge warn">Oculto</span>' : ''}</div></td><td>${fmtDate(a.publicado.publicadoEm)}</td>
+            <td>${!e ? '<span class="muted">Sem prazo</span>' : e < Date.now() ? `<span class="badge err">Expirou em ${fmtDate(e)}</span>` : `${fmtDate(e)}<div class="small ${d <= regrasCol().avisoDias ? '' : 'muted'}">${prazoTxt(d)}</div>`}${c.prazos?.[a.id] !== undefined ? '<div class="small muted">definido por você</div>' : ''}</td><td>${fmtN(leit(a.id))}</td>
+            <td><div class="acts"><button class="btn ghost sm" data-ver="${esc(a.id)}">${ic('eye', 14)} Ler</button><button class="btn ghost sm" data-pz="${esc(a.id)}">${ic('clock', 14)} Prazo</button><button class="btn ${oc ? 'primary' : 'ghost'} sm" data-oc="${esc(a.id)}">${oc ? 'Mostrar no painel' : 'Ocultar'}</button></div></td></tr>`; }).join('')}</table></div>`
           : `<div class="empty"><p>${esc(c.nome)} ainda não publicou artigos${(coluna?.artigos || []).length ? ` (há ${(coluna.artigos || []).length} rascunho(s) em andamento)` : ''}.</p></div>`, { wide: true });
         el.addEventListener('click', async ev => {
-          const v = ev.target.closest('[data-ver]'), o = ev.target.closest('[data-oc]');
-          if (v) { const a = arts.find(x => x.id === v.dataset.ver); modal(a.publicado.titulo, `<div class="doc col-folha">${artigoHTML(a.publicado, p)}</div>`, { wide: true }); }
+          const v = ev.target.closest('[data-ver]'), o = ev.target.closest('[data-oc]'), pz = ev.target.closest('[data-pz]');
+          if (v) { const a = arts.find(x => x.id === v.dataset.ver); const m = modal(a.publicado.titulo, `<div class="doc col-folha">${artigoHTML(a.publicado, p)}</div>`, { wide: true }); hidratarImagens(m.el); }
+          if (pz) {
+            const a = arts.find(x => x.id === pz.dataset.pz), e = expiraDe(a, c), iso = t => hojeISO(new Date(t));
+            const m = modal('Prazo no painel', `<form class="form" id="fpz"><p style="margin:0"><b>${esc(a.publicado.titulo)}</b><br><span class="small muted">Publicado em ${fmtDate(a.publicado.publicadoEm)}. ${e ? `Prazo atual: ${fmtDate(e)}.` : 'Hoje está sem prazo.'}</span></p>
+              <label>Fica no painel até<input type="date" name="d" value="${e ? iso(e) : iso(Date.now() + (regrasCol().dias || 30) * DAY)}" min="${iso(Date.now())}"></label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">${[30, 60, 90].map(n => `<button type="button" class="btn ghost sm" data-mais="${n}">+${n} dias</button>`).join('')}</div>
+              <p class="hint">O colunista vê o novo prazo no editor. Ao prorrogar um artigo expirado, ele volta ao painel.</p>
+              <div class="actions"><button type="button" class="btn ghost" id="pz-sem">Deixar sem prazo</button>${c.prazos?.[a.id] !== undefined ? '<button type="button" class="btn ghost" id="pz-orig">Voltar ao prazo padrão</button>' : ''}<button class="btn primary">Salvar prazo</button></div></form>`);
+            const f = $('#fpz', m.el);
+            $$('[data-mais]', m.el).forEach(b => b.onclick = () => { const b0 = Math.max(Date.now(), f.d.value ? new Date(f.d.value + 'T23:59:59').getTime() : Date.now()); f.d.value = iso(b0 + Number(b.dataset.mais) * DAY); });
+            const salvar = async val => {
+              const prazos = { ...(c.prazos || {}) }; if (val === undefined) delete prazos[a.id]; else prazos[a.id] = val;
+              try { await store.save('colunistas', { ...c, prazos }); c.prazos = prazos; m.close(); el.remove(); toast(val === 0 ? 'Artigo sem prazo de expiração.' : 'Prazo atualizado.'); admColunistas(box, ag); } catch (er) { toast(er.message, true); }
+            };
+            $('#pz-sem', m.el).onclick = () => salvar(0);
+            const po = $('#pz-orig', m.el); if (po) po.onclick = () => salvar(undefined);
+            f.onsubmit = ev2 => { ev2.preventDefault(); if (!f.d.value) return toast('Escolha a data.', true); salvar(new Date(f.d.value + 'T23:59:59').getTime()); };
+          }
           if (o) {
             const id = o.dataset.oc, oc = c.ocultos || [];
             c.ocultos = oc.includes(id) ? oc.filter(x => x !== id) : [...oc, id];

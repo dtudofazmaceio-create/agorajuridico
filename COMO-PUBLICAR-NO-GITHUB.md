@@ -94,6 +94,30 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 5. Depois de publicado, ele pode editar e clicar em **Salvar e atualizar no painel**, **Retirar do painel** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
 6. Rascunhos não aparecem para os alunos; só o que foi publicado.
 
+**Recursos do editor:** negrito, itálico, sublinhado, tachado, marca-texto, sobrescrito e subscrito; intertítulo, subtítulo e citação; alinhar à esquerda, centralizar, alinhar à direita e **justificar**; listas; links; linha separadora; desfazer e refazer.
+- **Imagens:** botão **Imagem** (ou arrastar/colar a imagem no texto). O professor escolhe o tamanho (pequena, média ou grande), a posição (centralizada, à esquerda ou à direita com o texto ao lado), a legenda e a descrição. Clicando na imagem aparece uma barra para mudar tamanho, posição, legenda ou remover. As imagens são reduzidas automaticamente (cerca de 50 a 300 KB cada) e guardadas no Gist em arquivos próprios (`img-....txt`); o texto guarda só a referência. Também é possível usar o endereço (https) de uma imagem da internet.
+- A primeira imagem do artigo vira a **capa** do cartão no painel.
+
+**Regras dos artigos (Painel → Colunistas → Regras dos artigos):**
+| Regra | Padrão | Observação |
+|---|---|---|
+| Mínimo de caracteres | 1.500 | cerca de 250 palavras |
+| Máximo de caracteres | 12.000 | cerca de 2.000 palavras, até 10 min de leitura |
+| Imagens por artigo | 6 | 0 = sem imagens |
+| Tempo no painel | 90 dias | 0 = sem prazo |
+| Aviso ao colunista | 7 dias antes | |
+
+- Os caracteres são contados com espaços. O editor mostra o contador com uma barra (verde, dourada perto do limite e vermelha se passar), impede digitar além do máximo e só deixa publicar dentro dos limites. Se o professor colar um texto maior, ele é avisado de quantos caracteres precisa cortar.
+- O professor vê as regras na lateral do editor (no celular, em **Meus textos**).
+
+**Prazo de cada artigo no painel:**
+- Conta a partir da **primeira publicação**. Atualizar o texto, ou retirar e publicar de novo, **não reinicia** o prazo.
+- Antes de publicar, o professor é informado da data em que o artigo sairá do painel. Depois, o editor mostra "No painel até dd/mm (faltam X dias)" em cada artigo.
+- Quando faltar o número de dias do aviso, aparece um **alerta no topo do editor** e na lista de textos; ao abrir o link, o professor também recebe um aviso. Artigos que já saíram aparecem como **Expirado**.
+- Ao expirar, o artigo **sai do painel dos alunos** automaticamente (não é apagado).
+- Em **Painel → Colunistas → Artigos → Prazo**, você define a data de cada artigo, **prorroga** (+30, +60, +90 dias), deixa **sem prazo** ou volta ao prazo padrão. Ao prorrogar um artigo expirado, ele volta ao painel.
+- Mudar o tempo nas regras vale para as próximas publicações; os artigos já publicados mantêm a data que tinham.
+
 **Para os alunos:** o Painel acadêmico mostra o artigo mais recente em destaque, os demais em cartões, filtro por disciplina, busca e a lista de colunistas. A página **atualiza sozinha a cada 30 segundos**: quando um professor publica, o artigo aparece sem recarregar (com um aviso). Os artigos seguem a mesma regra dos demais conteúdos: é preciso ter o acesso ativo.
 
 **No Painel → Colunistas você também:**
@@ -104,7 +128,7 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 
 **Bom saber:**
 - Cada professor tem um arquivo próprio no Gist (`coluna-....json`). Por isso dois professores escrevendo ao mesmo tempo não atrapalham um ao outro nem os dados do portal.
-- Os textos não aceitam imagens nem arquivos anexados (use links).
+- Os textos aceitam imagens (JPG, PNG ou WebP), mas não outros arquivos anexados (use links).
 - O link do professor funciona como uma senha. Peça que ele não o compartilhe. Se vazar, gere um novo.
 - Como no restante da versão sem servidor, uma pessoa com conhecimento técnico consegue recuperar o token do GitHub e alterar textos. A conta do GitHub exclusiva para o portal continua sendo a proteção recomendada.
 
