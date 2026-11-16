@@ -198,6 +198,10 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 3. Clique em **Já tenho a resposta**, cole a resposta inteira e clique em **Conferir os vídeos**. O portal verifica no YouTube se cada link existe: os que não existem (vídeo removido ou link inventado pela IA) ficam de fora, e as questões incompletas são descartadas.
 4. **Criar curso como rascunho**. Assista aos vídeos, revise as questões, complete o que faltar e publique.
 
+**Importar um arquivo JSON com o curso pronto:** em **Painel → Cursos online → Importar arquivo JSON**, escolha (ou arraste) o arquivo `.json`. Ele pode vir de um assistente de IA (use o prompt do **Cadastro rápido com IA**, que pede o arquivo `curso.json`), de outro portal ou de um curso exportado. O portal confere os vídeos e cria o curso como rascunho, com as aulas, a avaliação, a nota mínima e quem pode fazer. **Baixar modelo de arquivo** mostra o formato. Aulas em PDF não vão dentro do arquivo: anexe os PDFs no editor depois de importar.
+
+**Exportar:** no editor de um curso, **Exportar JSON** baixa o curso inteiro (dados, aulas e questões) para backup ou para importar em outro portal.
+
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
 ## Leitura protegida e análises
