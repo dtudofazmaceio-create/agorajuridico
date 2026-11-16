@@ -77,6 +77,37 @@ O portal é vinculado ao **Instituto Ágora de Estudos Jurídicos**, instituiç�
 - A marca aparece no certificado, na página inicial (seção **Quem certifica**), na tela de entrada, no menu lateral, em **Minha conta** e na página **A instituição** (`#/instituto`).
 - **Aviso:** como curso livre, o certificado não depende de autorização do MEC e não equivale a diploma. Mantenha o texto legal do certificado e consulte um advogado se for formalizar a instituição (CNPJ, contrato social, CNAE de ensino).
 
+## Colunistas e Painel colaborativo acadêmico
+Professores convidados escrevem artigos direto no portal, sem criar conta. O que publicam aparece para os alunos em **Painel acadêmico** (menu lateral), no bloco **Painel colaborativo acadêmico** da tela inicial e na busca.
+
+**Convidar um professor (1 minuto):**
+1. Vá em **Painel → Colunistas → Novo colunista**.
+2. Preencha o nome e, se quiser, e-mail, titulação, instituição, disciplina principal, minibiografia e foto. Clique em **Cadastrar e gerar link**.
+3. O portal mostra o **link pessoal** do professor (termina em `#/escrever/...`). Envie pelo botão **WhatsApp** ou **E-mail**, ou copie.
+   - **Guarde o link nesse momento.** Por segurança, o portal não armazena o link, só uma versão embaralhada dele. Se ele se perder, clique em **Novo link**: o anterior deixa de funcionar.
+
+**O que o professor faz:**
+1. Abre o link no computador ou no celular. O editor aparece direto, com o nome dele.
+2. Escreve título, linha fina e texto, com negrito, itálico, intertítulos, citações, listas e links. Pode colar textos do Word ou do Google Docs (a formatação é limpa automaticamente).
+3. O texto é **salvo sozinho**: na hora, no próprio aparelho, e na nuvem (Gist) a cada minuto, ao trocar de aba ou com **Ctrl+S**. O indicador no topo mostra "Tudo salvo na nuvem".
+4. Clica em **Salvar e publicar no painel**. O artigo aparece para os alunos e o portal mostra o link do artigo para compartilhar com a turma.
+5. Depois de publicado, ele pode editar e clicar em **Salvar e atualizar no painel**, **Retirar do painel** (volta a ser rascunho) ou **Excluir**. Em **Meu perfil** ele troca a foto, a titulação e a minibiografia.
+6. Rascunhos não aparecem para os alunos; só o que foi publicado.
+
+**Para os alunos:** o Painel acadêmico mostra o artigo mais recente em destaque, os demais em cartões, filtro por disciplina, busca e a lista de colunistas. A página **atualiza sozinha a cada 30 segundos**: quando um professor publica, o artigo aparece sem recarregar (com um aviso). Os artigos seguem a mesma regra dos demais conteúdos: é preciso ter o acesso ativo.
+
+**No Painel → Colunistas você também:**
+- vê quantos artigos e rascunhos cada professor tem, a última escrita e as **leituras dos alunos**;
+- em **Artigos**, lê e **oculta** um artigo do painel sem apagá-lo (só o professor edita o texto);
+- **Pausa** o acesso (o link para de funcionar; os artigos já publicados continuam) e reativa quando quiser;
+- **Exclui** o colunista (apaga também os artigos e rascunhos dele).
+
+**Bom saber:**
+- Cada professor tem um arquivo próprio no Gist (`coluna-....json`). Por isso dois professores escrevendo ao mesmo tempo não atrapalham um ao outro nem os dados do portal.
+- Os textos não aceitam imagens nem arquivos anexados (use links).
+- O link do professor funciona como uma senha. Peça que ele não o compartilhe. Se vazar, gere um novo.
+- Como no restante da versão sem servidor, uma pessoa com conhecimento técnico consegue recuperar o token do GitHub e alterar textos. A conta do GitHub exclusiva para o portal continua sendo a proteção recomendada.
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.
