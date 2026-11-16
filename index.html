@@ -1176,6 +1176,19 @@ a.cur-aula:hover{background:var(--marmore)}.cur-aula.on{background:var(--latao-b
 .fa-prev{display:flex;gap:12px;align-items:center;font-size:.84rem;color:var(--ok)}.fa-prev img{width:150px;border-radius:6px}
 .fq-alts{display:grid;gap:8px}.fq-alt{display:flex!important;gap:8px;align-items:center}.fq-alt input[type=radio]{width:auto!important}.fq-alt b{width:16px;color:var(--toga)}.fq-alt input[name^=a]{flex:1}
 @media (max-width:1000px){.cur-sala-g,.cur-pag-g,.cur-ed-g{grid-template-columns:1fr}.cur-side,.cur-cert-box{position:static;max-height:none}.cur-hero{grid-template-columns:1fr}.cur-hero .cur-capa.grande{min-height:0;aspect-ratio:16/9}.cur-hero-b{padding:22px}}
+
+/* cadastro rápido de curso */
+.imp-passos{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 16px;counter-reset:p}
+.imp-passos li{flex:1;counter-increment:p;font-size:.8rem;font-weight:600;color:var(--cinza);border-top:3px solid var(--linha);padding-top:6px}
+.imp-passos li:before{content:counter(p) ". "}.imp-passos li.on{color:var(--toga);border-color:var(--rubi)}
+.imp-prompt{font:400 .8rem/1.5 ui-monospace,Menlo,Consolas,monospace!important;background:var(--marmore)}
+.imp-json{font:400 .8rem/1.5 ui-monospace,Menlo,Consolas,monospace;width:100%}
+.imp-cab{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start}
+.imp-nums{display:flex;gap:8px;flex-wrap:wrap}.imp-nums span{background:var(--marmore);border-radius:8px;padding:6px 10px;font-size:.8rem;color:var(--cinza)}.imp-nums b{color:var(--toga);font-size:1rem}
+.imp-aulas{display:grid;gap:8px;margin-top:12px;max-height:46vh;overflow:auto}
+.imp-aula{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--linha-2);border-radius:8px}
+.imp-aula.erro{background:var(--err-bg);border-color:#efc5ca}.imp-aula.duvida{background:var(--warn-bg)}
+.imp-aula .ce-t a{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:420px}
 </style>
 </head>
 <body>
@@ -4978,7 +4991,7 @@ async function admCursos(box, users) {
   const cursos = (await store.list('cursos')).sort(ordemCursos);
   const est = c => { let ins = 0, conc = 0, cert = 0; for (const u of users) { const p = u.cursos?.[c.id]; if (!p) continue; ins++; if (progressoCurso(c, p).tudo) conc++; if (p.aprovado) cert++; } return { ins, conc, cert }; };
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:720px">Cadastre cursos com aulas em vídeo (links do YouTube) e materiais em PDF. O aluno se inscreve, assiste às aulas e, com aproveitamento acima da nota mínima na avaliação final, baixa o certificado.</p>
-    <button class="btn primary sm" id="cs-novo">${ic('plus', 15)} Novo curso</button></div>
+    <div class="acts"><button class="btn primary sm" id="cs-imp">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost sm" id="cs-novo">${ic('plus', 15)} Novo curso</button></div></div>
     ${cursos.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th style="width:120px"></th><th>Curso</th><th>Conteúdo</th><th>Avaliação</th><th>Inscritos</th><th>Certificados</th><th>Situação</th><th></th></tr>
       ${cursos.map(c => { const e = est(c), nV = aulasDe(c).filter(a => a.tipo === 'video').length, nP = aulasDe(c).length - nV; return `<tr><td>${capaCurso(c, 'mini')}</td><td><b>${esc(c.titulo)}</b><div class="small muted">${esc(c.area || '')}${c.acesso === 'assinantes' ? ' · só assinantes' : ''}</div></td>
         <td class="small">${nV} vídeo${nV === 1 ? '' : 's'} · ${nP} PDF${nP === 1 ? '' : 's'}<div class="muted">${cargaCurso(c)}h</div></td>
@@ -4986,7 +4999,7 @@ async function admCursos(box, users) {
         <td>${e.ins}<div class="small muted">${e.conc} concluíram</div></td><td>${e.cert}</td>
         <td>${c.ativo === false ? '<span class="badge">Rascunho</span>' : '<span class="badge ok">Publicado</span>'}</td>
         <td><div class="acts"><a class="btn primary sm" href="#/admin/cursos?curso=${encodeURIComponent(c.id)}">${ic('edit', 14)} Editar</a><a class="btn ghost sm" href="#/curso/${encodeURIComponent(c.id)}">${ic('eye', 14)} Ver</a><button class="btn danger sm" data-cdel="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
-    : `<div class="card empty" style="margin-top:18px">${ART.medal('grad')}<h3>Nenhum curso cadastrado</h3><p>Crie o primeiro curso e adicione as aulas em vídeo e os PDFs.</p><button class="btn primary" id="cs-novo2">${ic('plus', 15)} Novo curso</button></div>`}`;
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('grad')}<h3>Nenhum curso cadastrado</h3><p>Crie o primeiro curso e adicione as aulas em vídeo e os PDFs.</p><div class="actions" style="justify-content:center"><button class="btn primary" id="cs-imp2">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost" id="cs-novo2">${ic('plus', 15)} Novo curso</button></div></div>`}`;
   hidratarImagens(box);
   const novo = () => {
     const { el, close } = modal('Novo curso', `<form class="form" id="fcn"><label>Título do curso *<input name="titulo" required maxlength="120" placeholder="Ex.: Prática em Processo Civil"></label>
@@ -5000,6 +5013,8 @@ async function admCursos(box, users) {
     };
   };
   $('#cs-novo').onclick = novo; const n2 = $('#cs-novo2'); if (n2) n2.onclick = novo;
+  const imp = () => importarCurso(c => go(`admin/cursos?curso=${c.id}`));
+  $('#cs-imp').onclick = imp; const i2 = $('#cs-imp2'); if (i2) i2.onclick = imp;
   box.onclick = async e => {
     const d = e.target.closest('[data-cdel]'); if (!d) return;
     const c = cursos.find(x => x.id === d.dataset.cdel); if (!c) return;
@@ -5196,6 +5211,142 @@ function cursosInicioHTML(cursos, u) {
   if (!lista.length) return '';
   return `<div class="col-home"><div class="list-h"><h3>${ic('grad', 18)} ${meus.length ? 'Continue seus cursos' : 'Cursos online'}</h3><a href="#/cursos${meus.length ? '?aba=meus' : ''}" class="small">Ver ${meus.length ? 'meus cursos' : 'todos os cursos'}</a></div>
     <div class="cur-grid mini">${lista.map(c => cardCurso(c, u?.cursos?.[c.id])).join('')}</div></div>`;
+}
+
+/* ===================== Cadastro rápido de curso: prompt + importação =====================
+   1) O administrador preenche tema, público e tamanho e copia o prompt.
+   2) Cola o prompt numa IA com busca na web (ex.: Claude com pesquisa ativada).
+   3) Cola a resposta (JSON) aqui: o portal confere os links do YouTube e cria o curso como rascunho.
+   ======================================================================================== */
+function promptCurso({ tema, publico, aulas, questoes, carga, extra }) {
+  return `Você é coordenador pedagógico de um portal de estudos para estudantes de Direito no Brasil. Monte um curso online completo sobre o tema abaixo, usando vídeos REAIS do YouTube.
+
+TEMA DO CURSO: ${tema || '[escreva o tema]'}
+PÚBLICO: ${publico || 'estudantes de graduação em Direito'}
+NÚMERO DE AULAS EM VÍDEO: ${aulas}
+NÚMERO DE QUESTÕES DA AVALIAÇÃO FINAL: ${questoes}
+CARGA HORÁRIA DO CERTIFICADO: ${carga ? `${carga} horas` : 'calcule pela soma da duração das aulas, arredondando para cima'}
+${extra ? `ORIENTAÇÕES ADICIONAIS: ${extra}\n` : ''}
+O QUE FAZER
+1. Planeje o curso em 2 a 5 módulos, numa sequência didática (do básico ao avançado).
+2. Para cada aula, PESQUISE NO YOUTUBE e escolha um vídeo que exista de verdade:
+   - em português do Brasil, com boa qualidade de áudio e conteúdo jurídico correto e atualizado;
+   - de preferência de canais confiáveis: universidades, escolas da magistratura e do Ministério Público, tribunais (STF, STJ, TV Justiça), OAB, Defensorias e professores de Direito reconhecidos;
+   - evite vídeos com a legislação desatualizada, cortes de lives sem contexto, conteúdo sensacionalista e vídeos com menos de 5 ou mais de 90 minutos;
+   - use o link completo no formato https://www.youtube.com/watch?v=XXXXXXXXXXX;
+   - CONFIRME que cada link abre o vídeo indicado. NUNCA invente links. Se não encontrar um vídeo adequado para uma aula, deixe "url" vazio e explique em "observacao".
+3. Informe a duração aproximada de cada vídeo, em minutos, e o nome do canal.
+4. Escreva uma descrição curta de cada aula: o que o aluno vai aprender e o que observar no vídeo.
+5. Elabore a avaliação final com base no conteúdo das aulas: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
+
+FORMATO DA RESPOSTA
+Responda SOMENTE com um objeto JSON válido, sem texto antes ou depois, exatamente neste formato:
+{
+  "titulo": "Título do curso",
+  "subtitulo": "O curso em uma frase",
+  "area": "Disciplina do Direito (ex.: Direito Penal)",
+  "instrutor": "Curadoria: nome do portal ou do professor responsável",
+  "cargaHoraria": 10,
+  "descricao": "Dois ou três parágrafos: o que o aluno aprende, para quem é e pré-requisitos.",
+  "aulas": [
+    {
+      "modulo": "Módulo 1: Nome do módulo",
+      "titulo": "Título da aula",
+      "url": "https://www.youtube.com/watch?v=XXXXXXXXXXX",
+      "canal": "Nome do canal no YouTube",
+      "duracao": 25,
+      "descricao": "O que o aluno aprende nesta aula.",
+      "observacao": ""
+    }
+  ],
+  "questoes": [
+    {
+      "enunciado": "Texto da questão",
+      "alternativas": ["A", "B", "C", "D", "E"],
+      "correta": 0,
+      "explicacao": "Por que a alternativa correta está certa."
+    }
+  ]
+}
+"correta" é o índice (0 a 4) da alternativa certa. "duracao" e "cargaHoraria" são números.`;
+}
+const extrairJSON = txt => {
+  const s = String(txt || '').replace(/```(?:json)?/gi, '').trim(), a = s.indexOf('{'), b = s.lastIndexOf('}');
+  if (a < 0 || b <= a) throw new Error('Não encontrei o JSON na resposta. Cole a resposta completa da IA.');
+  try { return JSON.parse(s.slice(a, b + 1)); } catch { throw new Error('A resposta não está num JSON válido. Peça à IA: "Responda somente com o JSON, sem texto antes ou depois".'); }
+};
+/* Confere se o vídeo existe: a miniatura de um vídeo real tem 320 × 180; a de um link inexistente, 120 × 90. */
+const videoExiste = id => new Promise(res => {
+  if (!id) return res(false);
+  const im = new Image(); const t = setTimeout(() => res(null), 8000);
+  im.onload = () => { clearTimeout(t); res(im.naturalWidth > 120); }; im.onerror = () => { clearTimeout(t); res(false); };
+  im.src = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+});
+function importarCurso(onCriado) {
+  const R = { aulas: 8, questoes: 10 };
+  const { el, close } = modal('Cadastro rápido de curso', `<div class="imp">
+    <ol class="imp-passos"><li class="on" data-p="1">Prompt</li><li data-p="2">Resposta da IA</li><li data-p="3">Conferir e criar</li></ol>
+    <section data-s="1"><p class="small muted" style="margin-top:0">Preencha, copie o prompt e cole numa IA <b>com busca na web ativada</b> (por exemplo, o Claude com pesquisa). Ela devolve o curso pronto, com vídeos do YouTube e a avaliação final.</p>
+      <form class="form" id="imp-f">
+        <label>Tema do curso *<input name="tema" maxlength="160" placeholder="Ex.: Prisão em flagrante e audiência de custódia"></label>
+        <label>Público<input name="publico" maxlength="160" value="estudantes de graduação em Direito" placeholder="Ex.: candidatos ao Exame da OAB"></label>
+        <div class="row2"><label>Número de aulas<select name="aulas">${[4, 6, 8, 10, 12, 15].map(n => `<option ${n === R.aulas ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+          <label>Questões da avaliação<select name="questoes">${[5, 10, 15, 20].map(n => `<option ${n === R.questoes ? 'selected' : ''}>${n}</option>`).join('')}</select></label></div>
+        <label>Carga horária do certificado (opcional)<input name="carga" type="number" min="1" max="999" placeholder="Em branco: a IA calcula pela duração"></label>
+        <label>Orientações adicionais (opcional)<textarea name="extra" rows="2" maxlength="600" placeholder="Ex.: dar ênfase à jurisprudência do STJ; incluir uma aula sobre a Lei 13.964/2019"></textarea></label>
+        <label>Prompt pronto<textarea id="imp-prompt" rows="9" readonly class="imp-prompt"></textarea></label>
+        <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button type="button" class="btn ghost" id="imp-cp">${ic('file', 15)} Copiar prompt</button><button type="button" class="btn primary" id="imp-ir2">Já tenho a resposta ${ic('arrow', 15)}</button></div></form></section>
+    <section data-s="2" class="hidden"><p class="small muted" style="margin-top:0">Cole aqui a resposta completa da IA (o JSON). Pode colar com o texto em volta: o portal encontra o JSON.</p>
+      <textarea id="imp-json" class="field imp-json" rows="14" placeholder='{ "titulo": "…", "aulas": [ … ], "questoes": [ … ] }'></textarea>
+      <div class="actions"><button type="button" class="btn ghost" id="imp-v1">${ic('back', 15)} Voltar</button><button type="button" class="btn primary" id="imp-conf">Conferir os vídeos ${ic('arrow', 15)}</button></div></section>
+    <section data-s="3" class="hidden"><div id="imp-prev"></div>
+      <div class="actions"><button type="button" class="btn ghost" id="imp-v2">${ic('back', 15)} Voltar</button><button type="button" class="btn primary" id="imp-criar" disabled>Criar curso como rascunho</button></div></section></div>`, { wide: true });
+  const f = $('#imp-f', el), passo = n => { $$('[data-s]', el).forEach(s => s.classList.toggle('hidden', s.dataset.s !== String(n))); $$('.imp-passos li', el).forEach(l => l.classList.toggle('on', Number(l.dataset.p) <= n)); };
+  const atualizar = () => { $('#imp-prompt', el).value = promptCurso({ tema: f.tema.value.trim(), publico: f.publico.value.trim(), aulas: Number(f.aulas.value), questoes: Number(f.questoes.value), carga: Number(f.carga.value) || 0, extra: f.extra.value.trim() }); };
+  f.addEventListener('input', atualizar); f.addEventListener('change', atualizar); atualizar();
+  $('#imp-cp', el).onclick = () => { if (!f.tema.value.trim()) { toast('Escreva o tema do curso.', true); return f.tema.focus(); } copiar($('#imp-prompt', el).value); };
+  $('#imp-ir2', el).onclick = () => { passo(2); $('#imp-json', el).focus(); };
+  $('#imp-v1', el).onclick = () => passo(1); $('#imp-v2', el).onclick = () => passo(2);
+  let pronto = null;
+  $('#imp-conf', el).onclick = async () => {
+    let d; try { d = extrairJSON($('#imp-json', el).value); } catch (e) { return toast(e.message, true); }
+    const titulo = String(d.titulo || '').trim();
+    if (titulo.length < 3) return toast('A resposta não tem o título do curso.', true);
+    const aulas = (Array.isArray(d.aulas) ? d.aulas : []).map((a, i) => ({ modulo: String(a.modulo || '').trim().slice(0, 80), titulo: String(a.titulo || `Aula ${i + 1}`).trim().slice(0, 140), url: String(a.url || '').trim(), canal: String(a.canal || '').trim(), duracao: Math.max(0, Math.round(Number(a.duracao) || 0)), descricao: String(a.descricao || '').trim().slice(0, 2000), observacao: String(a.observacao || '').trim() }));
+    if (!aulas.length) return toast('A resposta não tem aulas.', true);
+    let qs = []; try { qs = Array.isArray(d.questoes) && d.questoes.length ? validarQuestoes(JSON.stringify(d.questoes)) : []; } catch { qs = []; }
+    passo(3); const box = $('#imp-prev', el);
+    box.innerHTML = '<div class="loading">Conferindo os vídeos no YouTube…</div>';
+    const st = await Promise.all(aulas.map(a => videoExiste(ytId(a.url))));
+    aulas.forEach((a, i) => { a.ok = st[i] === true; a.duvida = st[i] === null; });
+    const okN = aulas.filter(a => a.ok || a.duvida).length;
+    box.innerHTML = `<div class="imp-cab"><div><span class="eyebrow">${esc(d.area || 'Curso online')}</span><h3 style="margin:4px 0">${esc(titulo)}</h3>${d.subtitulo ? `<p class="small muted" style="margin:0">${esc(d.subtitulo)}</p>` : ''}</div>
+        <div class="imp-nums"><span><b>${okN}</b> de ${aulas.length} vídeos ok</span><span><b>${qs.length}</b> questões válidas</span><span><b>${Number(d.cargaHoraria) || '—'}</b> horas</span></div></div>
+      ${okN < aulas.length ? `<div class="demo-hint" style="margin:12px 0">${aulas.length - okN} link(s) não foram encontrados no YouTube (vídeo inexistente, removido ou link inventado). Essas aulas ${'<b>não serão criadas</b>'}; depois você pode adicioná-las no editor com um link correto.</div>` : ''}
+      <div class="imp-aulas">${aulas.map((a, i) => `<div class="imp-aula ${a.ok ? '' : a.duvida ? 'duvida' : 'erro'}">
+        <span class="ce-th">${ytId(a.url) && a.ok ? `<img src="https://i.ytimg.com/vi/${ytId(a.url)}/mqdefault.jpg" alt="">` : ic(a.ok ? 'play' : 'lock', 20)}</span>
+        <div class="ce-t"><b>${i + 1}. ${esc(a.titulo)}</b><small>${a.modulo ? esc(a.modulo) + ' · ' : ''}${a.canal ? esc(a.canal) + ' · ' : ''}${a.duracao ? a.duracao + ' min' : ''}</small>
+          ${a.url ? `<a class="small" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.url)}</a>` : `<small class="ed-err">Sem link${a.observacao ? `: ${esc(a.observacao)}` : ''}</small>`}</div>
+        <span class="badge ${a.ok ? 'ok' : a.duvida ? 'warn' : 'err'}">${a.ok ? 'Vídeo encontrado' : a.duvida ? 'Não deu para conferir' : 'Não encontrado'}</span></div>`).join('')}</div>
+      ${qs.length < (Array.isArray(d.questoes) ? d.questoes.length : 0) ? `<p class="small muted">${d.questoes.length - qs.length} questão(ões) foram descartadas por estarem incompletas.</p>` : ''}
+      <p class="hint" style="margin-top:12px">O curso é criado como <b>rascunho</b>. Assista aos vídeos e revise as questões no editor antes de publicar.</p>`;
+    pronto = okN ? { d, titulo, aulas: aulas.filter(a => a.ok || a.duvida), qs } : null;
+    $('#imp-criar', el).disabled = !pronto;
+    if (!okN) toast('Nenhum vídeo da resposta foi encontrado no YouTube. Peça à IA para pesquisar de novo e confirmar os links.', true);
+  };
+  $('#imp-criar', el).onclick = async () => {
+    if (!pronto) return; const b = $('#imp-criar', el); b.disabled = true; b.textContent = 'Criando o curso…';
+    try {
+      const { d, titulo, aulas, qs } = pronto, n = (await store.list('cursos')).length;
+      const c = await store.save('cursos', {
+        titulo: titulo.slice(0, 120), subtitulo: String(d.subtitulo || '').trim().slice(0, 160), area: String(d.area || '').trim().slice(0, 80), instrutor: String(d.instrutor || '').trim().slice(0, 120),
+        cargaHoraria: Math.round(Number(d.cargaHoraria)) || '', descricao: String(d.descricao || '').trim().slice(0, 4000), acesso: 'todos', notaMinima: notaMin(), ativo: false, ordem: n, origem: 'importado',
+        aulas: aulas.map(a => ({ id: uid().slice(0, 10), tipo: 'video', titulo: a.titulo, modulo: a.modulo, url: `https://www.youtube.com/watch?v=${ytId(a.url)}`, duracao: a.duracao || '', descricao: [a.descricao, a.canal ? `Vídeo do canal ${a.canal} no YouTube.` : ''].filter(Boolean).join('\n\n') }))
+      });
+      if (qs.length) await salvarBancoCurso(c, qs);
+      close(); toast(`Curso criado com ${aulas.length} aulas e ${qs.length} questões. Revise e publique.`); onCriado?.(c);
+    } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = 'Criar curso como rascunho'; }
+  };
 }
 
 /* ========================== Instituições parceiras ==========================

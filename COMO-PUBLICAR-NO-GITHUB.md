@@ -192,6 +192,12 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 
 **Para o aluno:** escolhe o curso, clica em **Inscrever-se e começar** e entra na sala de aula, com a lista de aulas e o progresso. A videoaula é marcada como concluída quando o vídeo termina (ou pelo botão **Concluir aula**). Depois de concluir todas as aulas, a **avaliação final** é liberada; ele pode refazer quantas vezes quiser. Com nota acima da mínima, clica em **Baixar certificado (PDF)**. O certificado sai no modelo da instituição, com o nome do curso, a carga horária, a nota e o código de verificação, e pode ser baixado de novo a qualquer momento na página do curso.
 
+**Cadastro rápido com IA:** em **Painel → Cursos online → Cadastro rápido com IA**:
+1. Escreva o tema, o público, o número de aulas e de questões (e, se quiser, a carga horária e orientações). Clique em **Copiar prompt**.
+2. Cole o prompt numa IA **com busca na web ativada** (por exemplo, o Claude com pesquisa). Ela devolve o curso em JSON, com vídeos reais do YouTube, descrições e a avaliação final.
+3. Clique em **Já tenho a resposta**, cole a resposta inteira e clique em **Conferir os vídeos**. O portal verifica no YouTube se cada link existe: os que não existem (vídeo removido ou link inventado pela IA) ficam de fora, e as questões incompletas são descartadas.
+4. **Criar curso como rascunho**. Assista aos vídeos, revise as questões, complete o que faltar e publique.
+
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
 ## Leitura protegida e análises
