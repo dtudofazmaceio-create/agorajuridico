@@ -4682,7 +4682,7 @@ async function desenharCartao(canvas, { tipo, formato = 'story', link, nome = ''
   c.strokeStyle = 'rgba(216,190,138,.35)'; c.lineWidth = 1.2 * s; c.strokeRect(m + 14 * s, m + 14 * s, W - 2 * m - 28 * s, H - 2 * m - 28 * s);
   c.fillStyle = CORES.latao2; for (const [px, py] of [[m, m], [W - m, m], [m, H - m], [W - m, H - m]]) { c.beginPath(); c.moveTo(px, py - 9 * s); c.lineTo(px + 9 * s, py); c.lineTo(px, py + 9 * s); c.lineTo(px - 9 * s, py); c.closePath(); c.fill(); }
   c.textBaseline = 'top';
-  const rodape = tipo === 'professor' ? (nome ? `Convite pessoal para ${nome}` : '') : (T.mostrarEndereco && enderecoPublico(link) ? urlCurta(link) : '');
+  const rodape = tipo === 'professor' ? '' : (T.mostrarEndereco && enderecoPublico(link) ? urlCurta(link) : '');
   const marca = (cx, cy, r) => { c.fillStyle = 'rgba(216,190,138,.12)'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill(); c.strokeStyle = 'rgba(216,190,138,.45)'; c.lineWidth = 1.5 * s; c.stroke(); desenharTemplo(c, cx, cy, r * 1.15, CORES.latao2, 2.4 * s * r / 46 / s); };
   const pill = (txt, cx, y, tam, esquerda = false) => {
     c.font = `700 ${tam}px ${SANS_C}`; espacar(c, tam * .04); const tw = c.measureText(txt).width, ph = tam * 2.15, pw = tw + tam * 2.6;

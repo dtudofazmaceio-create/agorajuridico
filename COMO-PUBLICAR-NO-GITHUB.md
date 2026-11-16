@@ -153,7 +153,7 @@ Em **Painel → Configurações → Divulgação** há três QR codes, cada um c
 4. Clique em **Baixar cartão (PNG)**. Para usar o código em outra arte, clique em **Baixar só o QR code** (1200 × 1200, fundo branco).
 5. **Salvar mensagem** guarda o texto para as próximas vezes. **Voltar ao texto padrão** restaura a sugestão do portal.
 
-**Professor colaborador:** o link do professor é pessoal e o portal não o guarda. Por isso o QR dele aparece só no momento do cadastro (ou ao gerar um **Novo link**), junto com os botões **Baixar cartão do convite** e **Baixar só o QR**. O cartão leva o nome do professor; a mensagem dele é editada na aba Professor colaborador da Divulgação. Envie o QR do professor só para ele: quem o tiver consegue escrever como esse colunista.
+**Professor colaborador:** o link do professor é pessoal e o portal não o guarda. Por isso o QR dele aparece só no momento do cadastro (ou ao gerar um **Novo link**), junto com os botões **Baixar cartão do convite** e **Baixar só o QR**. O cartão não leva o nome do professor; a mensagem é editada na aba Professor colaborador da Divulgação. Envie o QR do professor só para ele: quem o tiver consegue escrever como esse colunista.
 
 Os QR codes usam correção de erro alta e o símbolo do portal no centro. Todos foram testados com leitor de QR nos três formatos.
 
