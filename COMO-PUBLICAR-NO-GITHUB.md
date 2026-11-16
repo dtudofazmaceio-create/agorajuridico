@@ -173,6 +173,27 @@ Em **Painel → Instituições parceiras** você cadastra as instituições que 
 
 A logomarca é ajustada automaticamente (até 600 × 300 px, mantendo a transparência) e guardada no Gist num arquivo próprio (`img-....txt`).
 
+## Cursos online
+Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **Início**. Você cadastra e configura tudo em **Painel → Cursos online**.
+
+**Criar um curso:**
+1. **Novo curso**: informe o título e a área. O curso nasce como **rascunho** (só você vê).
+2. Na tela do curso, preencha os **Dados do curso**: capa (imagem), subtítulo, professor ou instrutor, **carga horária** (vai no certificado; em branco, soma a duração das aulas), **nota mínima** (padrão 60: o aluno precisa de nota **acima** de 60%), **quem pode fazer** (todos os alunos cadastrados ou só assinantes) e a descrição. Clique em **Salvar dados do curso**.
+3. **Aulas**:
+   - **Vídeo do YouTube**: cole o link (youtube.com/watch, youtu.be ou shorts). O vídeo pode ser público ou **não listado**. A miniatura aparece para confirmar.
+   - **Material em PDF**: envie o arquivo. O aluno lê no leitor do portal.
+   - Use **Módulo** para agrupar as aulas (ex.: "Módulo 1: Introdução") e ↑ ↓ para ordenar. Informe a duração em minutos.
+4. **Avaliação final** (questões de múltipla escolha com explicação):
+   - **Gerar com IA**: a IA lê os PDFs do curso e elabora as questões (precisa da chave da IA em Configurações). Revise antes de publicar.
+   - **Importar da biblioteca**: copia as questões já geradas para um material.
+   - **Adicionar questão**: escreva o enunciado, de 4 a 5 alternativas, marque a correta e a explicação.
+   - Sem questões, o certificado é liberado só pela conclusão das aulas.
+5. **Publicar curso**. Para tirar do ar sem apagar, use **Voltar para rascunho**.
+
+**Para o aluno:** escolhe o curso, clica em **Inscrever-se e começar** e entra na sala de aula, com a lista de aulas e o progresso. A videoaula é marcada como concluída quando o vídeo termina (ou pelo botão **Concluir aula**). Depois de concluir todas as aulas, a **avaliação final** é liberada; ele pode refazer quantas vezes quiser. Com nota acima da mínima, clica em **Baixar certificado (PDF)**. O certificado sai no modelo da instituição, com o nome do curso, a carga horária, a nota e o código de verificação, e pode ser baixado de novo a qualquer momento na página do curso.
+
+**Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.
