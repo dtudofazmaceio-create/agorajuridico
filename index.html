@@ -1181,6 +1181,8 @@ a.cur-aula:hover{background:var(--marmore)}.cur-aula.on{background:var(--latao-b
 .imp-passos{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 16px;counter-reset:p}
 .imp-passos li{flex:1;counter-increment:p;font-size:.8rem;font-weight:600;color:var(--cinza);border-top:3px solid var(--linha);padding-top:6px}
 .imp-passos li:before{content:counter(p) ". "}.imp-passos li.on{color:var(--toga);border-color:var(--rubi)}
+.cs-botoes{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center;flex:none}
+@media (max-width:820px){.cs-botoes{width:100%;flex-direction:column;align-items:stretch}}
 .imp-drop{min-height:130px;text-align:center}.imp-drop small{color:var(--cinza)}
 .imp-prompt{font:400 .8rem/1.5 ui-monospace,Menlo,Consolas,monospace!important;background:var(--marmore)}
 .imp-json{font:400 .8rem/1.5 ui-monospace,Menlo,Consolas,monospace;width:100%}
@@ -4992,7 +4994,7 @@ async function admCursos(box, users) {
   const cursos = (await store.list('cursos')).sort(ordemCursos);
   const est = c => { let ins = 0, conc = 0, cert = 0; for (const u of users) { const p = u.cursos?.[c.id]; if (!p) continue; ins++; if (progressoCurso(c, p).tudo) conc++; if (p.aprovado) cert++; } return { ins, conc, cert }; };
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:720px">Cadastre cursos com aulas em vídeo (links do YouTube) e materiais em PDF. O aluno se inscreve, assiste às aulas e, com aproveitamento acima da nota mínima na avaliação final, baixa o certificado.</p>
-    <div class="acts"><button class="btn primary sm" id="cs-imp">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost sm" id="cs-arq">${ic('download', 15)} Importar arquivo JSON</button><button class="btn ghost sm" id="cs-novo">${ic('plus', 15)} Novo curso</button></div></div>
+    <div class="cs-botoes"><button class="btn primary sm" id="cs-imp">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost sm" id="cs-arq">${ic('download', 15)} Importar arquivo JSON</button><button class="btn ghost sm" id="cs-novo">${ic('plus', 15)} Novo curso</button></div></div>
     ${cursos.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th style="width:120px"></th><th>Curso</th><th>Conteúdo</th><th>Avaliação</th><th>Inscritos</th><th>Certificados</th><th>Situação</th><th></th></tr>
       ${cursos.map(c => { const e = est(c), nV = aulasDe(c).filter(a => a.tipo === 'video').length, nP = aulasDe(c).length - nV; return `<tr><td>${capaCurso(c, 'mini')}</td><td><b>${esc(c.titulo)}</b><div class="small muted">${esc(c.area || '')}${c.acesso === 'assinantes' ? ' · só assinantes' : ''}</div></td>
         <td class="small">${nV} vídeo${nV === 1 ? '' : 's'} · ${nP} PDF${nP === 1 ? '' : 's'}<div class="muted">${cargaCurso(c)}h</div></td>
@@ -5000,7 +5002,7 @@ async function admCursos(box, users) {
         <td>${e.ins}<div class="small muted">${e.conc} concluíram</div></td><td>${e.cert}</td>
         <td>${c.ativo === false ? '<span class="badge">Rascunho</span>' : '<span class="badge ok">Publicado</span>'}</td>
         <td><div class="acts"><a class="btn primary sm" href="#/admin/cursos?curso=${encodeURIComponent(c.id)}">${ic('edit', 14)} Editar</a><a class="btn ghost sm" href="#/curso/${encodeURIComponent(c.id)}">${ic('eye', 14)} Ver</a><button class="btn danger sm" data-cdel="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
-    : `<div class="card empty" style="margin-top:18px">${ART.medal('grad')}<h3>Nenhum curso cadastrado</h3><p>Crie o primeiro curso e adicione as aulas em vídeo e os PDFs.</p><div class="actions" style="justify-content:center"><button class="btn primary" id="cs-imp2">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost" id="cs-novo2">${ic('plus', 15)} Novo curso</button></div></div>`}`;
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('grad')}<h3>Nenhum curso cadastrado</h3><p>Crie o primeiro curso e adicione as aulas em vídeo e os PDFs.</p><div class="actions" style="justify-content:center"><button class="btn primary" id="cs-imp2">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost" id="cs-arq2">${ic('download', 15)} Importar arquivo JSON</button><button class="btn ghost" id="cs-novo2">${ic('plus', 15)} Novo curso</button></div></div>`}`;
   hidratarImagens(box);
   const novo = () => {
     const { el, close } = modal('Novo curso', `<form class="form" id="fcn"><label>Título do curso *<input name="titulo" required maxlength="120" placeholder="Ex.: Prática em Processo Civil"></label>
@@ -5016,7 +5018,8 @@ async function admCursos(box, users) {
   $('#cs-novo').onclick = novo; const n2 = $('#cs-novo2'); if (n2) n2.onclick = novo;
   const imp = () => importarCurso(c => go(`admin/cursos?curso=${c.id}`));
   $('#cs-imp').onclick = imp; const i2 = $('#cs-imp2'); if (i2) i2.onclick = imp;
-  $('#cs-arq').onclick = () => importarCurso(c => go(`admin/cursos?curso=${c.id}`), { inicio: 2 });
+  const arq = () => importarCurso(c => go(`admin/cursos?curso=${c.id}`), { inicio: 2 });
+  $('#cs-arq').onclick = arq; const a2 = $('#cs-arq2'); if (a2) a2.onclick = arq;
   box.onclick = async e => {
     const d = e.target.closest('[data-cdel]'); if (!d) return;
     const c = cursos.find(x => x.id === d.dataset.cdel); if (!c) return;
