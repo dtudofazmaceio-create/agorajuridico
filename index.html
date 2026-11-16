@@ -2969,8 +2969,10 @@ const CertDB = (() => {
 const aparelhoId = () => { let a = lsGet('agora-aparelho'); if (!a) { a = uid().slice(0, 12); lsSet('agora-aparelho', a); } return a; };
 const nomeCert = c => `Certificado - ${c.disciplina} - ${c.nome}`.replace(/[\\/:*?"<>|]/g, '');
 /* Assinatura (impressão digital) dos dados da instituição que aparecem no certificado */
+/* Aumente este número sempre que mudar o desenho do certificado: os já emitidos serão refeitos. */
+const CERT_LAYOUT = 3;
 function assinaturaInst() {
-  const i = inst(), t = JSON.stringify([i.nome, i.sigla, i.lema, i.fundacao, i.responsavel, i.cargo, i.cidade, i.cnpj, i.notaLegal, i.assinaturaTipo, i.assinatura, S.config.nomePortal]);
+  const i = inst(), t = JSON.stringify([CERT_LAYOUT, i.nome, i.sigla, i.lema, i.fundacao, i.responsavel, i.cargo, i.cidade, i.cnpj, i.notaLegal, i.assinaturaTipo, i.assinatura, S.config.nomePortal]);
   let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
   for (let k = 0; k < t.length; k++) { const ch = t.charCodeAt(k); h1 = Math.imul(h1 ^ ch, 2654435761); h2 = Math.imul(h2 ^ ch, 1597334677); }
   h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
