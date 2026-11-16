@@ -1055,6 +1055,7 @@ td .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
 #ed-estado{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:flex-end;flex:1 1 300px}
 .ed-auto{flex-basis:100%;justify-content:flex-end;text-align:right;margin-top:6px;font-size:.8rem;color:var(--ok);display:flex;gap:6px;align-items:flex-start}
 .ed-auto.alerta{color:var(--err);font-weight:600}
+.ed-ralerta{flex-basis:100%;display:flex;gap:8px;align-items:flex-start;background:var(--err-bg);color:var(--err);border-radius:8px;padding:8px 12px;font-size:.84rem}
 .ed-aviso{margin-bottom:14px;padding:14px 18px}.ed-aviso h3{font-size:1rem}
 .ed-regras ul{margin:.5em 0 0;padding-left:1.1em}.ed-regras li{margin:.3em 0}
 .ed-regras>b{display:flex;align-items:center;gap:6px}
@@ -4853,7 +4854,7 @@ async function viewEscrever(main, chave) {
   const problemaDe = a => {
     const ch = contarChars(a.html), ni = (String(a.html || '').match(/<img\b/g) || []).length, min = Math.max(R.minChars, 100);
     if (String(a.titulo || '').trim().length < 3) return 'falta o título';
-    if (ch < min) return `faltam ${fmtN0(min - ch)} caracteres para o mínimo`;
+    if (ch < min && !(a.publicado && ch >= contarChars(a.publicado.html))) return a.publicado ? `o texto ficou menor que a versão publicada e abaixo do mínimo de ${fmtN0(min)} caracteres` : `faltam ${fmtN0(min - ch)} caracteres para o mínimo`;
     if (ch > R.maxChars) return `o texto passou ${fmtN0(ch - R.maxChars)} caracteres do limite`;
     if (ni > R.maxImagens) return `há ${ni - R.maxImagens} imagem(ns) além do limite`;
     return '';
@@ -4897,7 +4898,7 @@ async function viewEscrever(main, chave) {
           <button data-i="legenda" class="tx" title="Adicionar legenda abaixo">Legenda</button><button data-i="alt" class="tx" title="Descrição para acessibilidade">Descrição</button><button data-i="rm" title="Remover imagem">${ic('trash', 16)}</button></div>
         <div id="ed-corpo" class="ed-corpo col-corpo" contenteditable="true" spellcheck="true" lang="pt-BR" data-ph="Comece a escrever aqui. Você pode colar textos do Word ou do Google Docs."></div>
       </div>
-      <div class="ed-rodape"><div class="ed-cont" id="ed-cont"></div>
+      <div class="ed-rodape"><div class="ed-ralerta hidden" id="ed-ralerta"></div><div class="ed-cont" id="ed-cont"></div>
         <div class="ed-acoes"><button class="btn ghost sm" id="ed-del" title="Excluir este texto">${ic('trash', 15)}<span class="hide-sm"> Excluir</span></button>
           <button class="btn ghost sm" id="ed-ret">Retirar do painel</button>
           <button class="btn ghost" id="ed-prev">${ic('eye', 16)} Pré-visualizar</button>
@@ -4931,13 +4932,18 @@ async function viewEscrever(main, chave) {
       ultimaSync = Date.now();
       col = mesclarColuna(env, col, c0.id); gravarLocal();
       const x = art();
-      if (lsGet(KP) === '1') { status('local'); agendarSync(); } else status('ok', x?.publicado && !expirado(x, c0) ? (mudou(x) ? 'Salvo, mas fora do painel' : 'Salvo e atualizado no painel') : 'Rascunho salvo na nuvem');
+      if (lsGet(KP) === '1') { status('local'); agendarSync(); } else statusSalvo();
       desenharLista(); return true;
     } catch (e) {
       console.warn(e); lsSet(KP, '1'); status('erro', /permiss|token|GitHub/i.test(e.message) ? e.message : undefined); agendarSync(30000); return false;
     }
   }
   const sincronizar = () => (fila = fila.then(fazerSync, fazerSync));
+  function statusSalvo() {
+    const x = art();
+    if (x?.publicado && !expirado(x, c0) && mudou(x)) return status('erro', 'Salvo, mas a alteração não foi ao painel');
+    status('ok', x?.publicado && !expirado(x, c0) ? 'Salvo e atualizado no painel' : x?.publicado ? 'Salvo (artigo fora do painel)' : 'Rascunho salvo na nuvem');
+  }
 
   /* ---- lista de textos ---- */
   const itemHTML = a => { const [t, cl] = estado(a), e = expiraDe(a, c0), d = e ? diasAte(e) : null;
@@ -4960,6 +4966,8 @@ async function viewEscrever(main, chave) {
       : !e ? 'No painel, sem prazo de expiração' : e < Date.now() ? `Saiu do painel em ${fmtDate(e)}` : `No painel até ${fmtDate(e)} (${prazoTxt(d)})`;
     const alerta = a.publicado && e && (e < Date.now() || d <= R.avisoDias);
     const prob = a.publicado && !expirado(a, c0) && mudou(a) ? problemaDe(a) : '';
+    const ra = $('#ed-ralerta'); ra.classList.toggle('hidden', !prob);
+    if (prob) ra.innerHTML = `${ic('lock', 15)} <span><b>Esta alteração ainda não aparece no painel:</b> ${prob}. Os alunos continuam vendo a versão anterior.</span>`;
     $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>
       ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para o painel porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece no painel automaticamente ao salvar.`}</div>` : ''}`;
     const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
@@ -5199,7 +5207,7 @@ async function viewEscrever(main, chave) {
     const a = art(), html = limparHTML(corpo.innerHTML);
     if (tit.value.trim().length < 3) { toast('Dê um título ao artigo antes de publicar.', true); return tit.focus(); }
     const ch = contarChars(html), nImg = (html.match(/<img\b/g) || []).length;
-    if (ch < Math.max(R.minChars, 100)) { toast(`O artigo precisa ter pelo menos ${fmtN0(Math.max(R.minChars, 100))} caracteres. Faltam ${fmtN0(Math.max(R.minChars, 100) - ch)}.`, true); return corpo.focus(); }
+    if (ch < Math.max(R.minChars, 100) && !(a.publicado && ch >= contarChars(a.publicado.html))) { toast(`O artigo precisa ter pelo menos ${fmtN0(Math.max(R.minChars, 100))} caracteres. Faltam ${fmtN0(Math.max(R.minChars, 100) - ch)}.`, true); return corpo.focus(); }
     if (ch > R.maxChars) { toast(`O artigo passou do limite de ${fmtN0(R.maxChars)} caracteres. Reduza ${fmtN0(ch - R.maxChars)} caracteres para publicar.`, true); return corpo.focus(); }
     if (nImg > R.maxImagens) { toast(`O artigo tem ${nImg} imagens. O limite é ${R.maxImagens}. Remova ${nImg - R.maxImagens}.`, true); return; }
     const agora = Date.now(), base = a.publicadoOrig || a.publicado?.publicadoEm || agora;
@@ -5271,7 +5279,9 @@ async function viewEscrever(main, chave) {
   abrir(atual);
   const al = alertas();
   if (al.length) toast(al[0].e < Date.now() ? `"${al[0].a.titulo}" saiu do painel em ${fmtDate(al[0].e)}.` : `"${al[0].a.titulo}" sai do painel em ${fmtDate(al[0].e)} (${prazoTxt(diasAte(al[0].e))}).`, true);
-  if (lsGet(KP) === '1') { status('local'); agendarSync(3000); } else status(nuvem || !col.artigos.some(a => !vazioArt(a)) ? 'ok' : 'local');
+  // alterações de artigos publicados que ficaram presas (versões anteriores) vão ao painel agora, se estiverem nas regras
+  if (col.artigos.some(a => a.publicado && !expirado(a, c0) && mudou(a) && !problemaDe(a))) lsSet(KP, '1');
+  if (lsGet(KP) === '1') { status('local'); agendarSync(2500); } else if (nuvem || !col.artigos.some(a => !vazioArt(a))) statusSalvo(); else status('local');
   document.title = `Espaço do colunista · ${S.config.nomePortal}`;
   if (!tit.value) tit.focus();
 }

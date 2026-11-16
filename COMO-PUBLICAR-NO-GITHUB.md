@@ -111,6 +111,7 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 
 - Os caracteres são contados com espaços. O editor mostra o contador com uma barra (verde, dourada perto do limite e vermelha se passar), impede digitar além do máximo e só deixa publicar dentro dos limites. Se o professor colar um texto maior, ele é avisado de quantos caracteres precisa cortar.
 - O professor vê as regras na lateral do editor (no celular, em **Meus textos**).
+- O mínimo de caracteres vale para a **primeira publicação**. Num artigo já publicado, mudanças de formatação (justificar, centralizar, imagens) sempre vão para o painel; só fica bloqueada a alteração que deixa o texto **menor que a versão publicada e abaixo do mínimo**. Nesse caso aparece um aviso vermelho fixo no rodapé do editor.
 
 **Prazo de cada artigo no painel:**
 - Conta a partir da **primeira publicação**. Atualizar o texto, ou retirar e publicar de novo, **não reinicia** o prazo.
