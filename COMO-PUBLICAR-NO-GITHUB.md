@@ -352,3 +352,10 @@ Um código pode valer para um aluno ou para a turma toda (ex.: "Turma 3º perío
 - **O controle de acesso é feito no navegador.** Basta para uma turma, mas alguém com conhecimento técnico consegue abrir os arquivos do Gist sem pagar. Para cobrança séria em escala, use o modo **Firebase** (README.md), que bloqueia de verdade no servidor.
 - O Gist é **secreto**: não aparece em buscas, mas quem tiver o endereço consegue ler. Não publique dados pessoais nele.
 - Arquivos de até 4 MB por envio. Vídeos e arquivos grandes devem ser links (YouTube ou Google Drive).
+
+## Menu lateral e rotação da tela
+
+- **Tablets e celulares:** o menu lateral fica oculto. O botão ☰ no canto superior esquerdo abre o menu por cima do conteúdo. Ele se fecha ao tocar fora, ao escolher um item ou pelo mesmo botão. No tablet deitado, a tela funciona como no computador, com o botão para ocultar ou mostrar o menu.
+- **Ocultar o menu (computador):** no topo de qualquer página, o botão ☰ oculta o menu lateral e dá mais espaço ao conteúdo, como o vídeo das aulas. Clique de novo para mostrar. A escolha fica guardada no aparelho.
+- **Girar o celular ou tablet:** a tela se ajusta sem recarregar a página, e o vídeo continua tocando. O app instalado também pode ser usado na horizontal.
+
