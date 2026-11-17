@@ -1175,7 +1175,7 @@ a.cur-aula:hover{background:var(--marmore)}.cur-aula.on{background:var(--latao-b
 .ce-q p{margin:0 0 4px;font-size:.9rem}
 .fa-prev{display:flex;gap:12px;align-items:center;font-size:.84rem;color:var(--ok)}.fa-prev img{width:150px;border-radius:6px}
 .fq-alts{display:grid;gap:8px}.fq-alt{display:flex!important;gap:8px;align-items:center}.fq-alt input[type=radio]{width:auto!important}.fq-alt b{width:16px;color:var(--toga)}.fq-alt input[name^=a]{flex:1}
-@media (max-width:1000px){.cur-sala-g,.cur-pag-g,.cur-ed-g{grid-template-columns:1fr}.cur-side,.cur-cert-box{position:static;max-height:none}.cur-hero{grid-template-columns:1fr}.cur-hero .cur-capa.grande{min-height:0;aspect-ratio:16/9;margin:0;border-radius:0}.cur-hero-b{padding:22px}}
+@media (max-width:1000px){.cur-sala-g,.cur-pag-g,.cur-ed-g{grid-template-columns:minmax(0,1fr)}.cur-side,.cur-cert-box{position:static;max-height:none}.cur-hero{grid-template-columns:1fr}.cur-hero .cur-capa.grande{min-height:0;aspect-ratio:16/9;margin:0;border-radius:0}.cur-hero-b{padding:22px}}
 
 /* cadastro rápido de curso */
 .imp-passos{display:flex;gap:6px;list-style:none;padding:0;margin:0 0 16px;counter-reset:p}
@@ -1292,6 +1292,13 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .menu-tg{flex:none;margin-left:-14px;color:var(--toga)}.menu-tg:hover{background:rgba(19,32,58,.07)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .app.sem-menu .page{max-width:1500px}
+.cur-sala-g>*,#cur-main{min-width:0}.cur-aula-h h3{overflow-wrap:anywhere}
+@media (max-width:820px){.cur-sala .cur-acoes{flex-wrap:wrap;gap:8px}.cur-sala .cur-acoes .btn{flex:1 1 auto;justify-content:center}.cur-tab-b{padding:16px 14px}.cur-tabs{padding:0 4px;overflow:visible}.cur-tabs button{flex:1 1 0;min-width:0;flex-direction:column;justify-content:center;gap:3px;white-space:normal;text-align:center;line-height:1.2;padding:11px 4px 9px;font-size:.78rem}.cur-tabs .cnt{display:none}}
+/* cabeçalho em telas médias (tablet deitado, notebook pequeno): nada é cortado */
+.deskbar .crumb{min-width:0;flex:0 1 auto;overflow:hidden}.deskbar .crumb>*{flex:none}.deskbar .crumb>:last-child{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.gsearch{flex:0 1 auto;min-width:0}.uchip{flex:none;white-space:nowrap}
+@media (max-width:1180px){.deskbar{padding:12px 22px;gap:14px}.gsearch{width:auto;flex:1 1 180px;max-width:360px}.gsearch kbd{display:none}.gsearch input{padding-right:1em}.deskbar .crumb>.muted,.deskbar .crumb>.muted+.sl{display:none}}
+@media (max-width:960px){.uchip{padding:4px}.uchip .uc-nm{display:none}}
 </style>
 </head>
 <body>
@@ -2306,7 +2313,7 @@ function shellHTML(name) {
         <button type="button" class="icon-btn menu-tg" id="menu-tg" aria-controls="side-menu" aria-expanded="${!menuOculto()}" title="${menuOculto() ? 'Mostrar o menu' : 'Ocultar o menu'}">${ic('menu', 20)}<span class="sr-only">${menuOculto() ? 'Mostrar o menu lateral' : 'Ocultar o menu lateral'}</span></button>
         <div class="crumb"><span class="muted">${esc(S.config.nomePortal)}</span>${DETAIL[name] && name !== 'assinar' && name !== 'admin' ? `<span class="sl">/</span><a href="#/${DETAIL[name]}">${esc(TITLES[DETAIL[name]])}</a>` : ''}<span class="sl">/</span><b>${esc(TITLES[name] || 'Início')}</b></div>
         ${at ? `<form class="gsearch" id="gs" role="search">${ic('search', 16)}<input name="q" placeholder="Buscar materiais, vagas, notícias e entrevistas…" autocomplete="off"><kbd>Ctrl K</kbd></form>` : '<span style="margin-left:auto"></span>'}
-        <a class="uchip" href="#/perfil"><span class="avatar sm">${esc(initials(u.nome))}</span>${esc(u.nome.split(' ')[0])}</a>
+        <a class="uchip" href="#/perfil"><span class="avatar sm">${esc(initials(u.nome))}</span><span class="uc-nm">${esc(u.nome.split(' ')[0])}</span></a>
       </header>
       <header class="apphead">
         <button type="button" class="icon-btn menu-mob" id="menu-mob" aria-controls="side-menu" aria-expanded="false" aria-label="Abrir o menu">${ic('menu', 22)}</button>
@@ -5080,6 +5087,17 @@ async function salaDeAula(main, c, p, alvo) {
   // sem aula indicada: volta para o último VÍDEO assistido (se ainda não terminou) ou para a próxima aula pendente, na ordem do curso
   const ultLocal = lsGet(`agora-ult-${S.user.id}-${c.id}`), ultVista = [ultLocal, p.ultimaVista].find(id => id && aulas.some(a => a.id === id && a.tipo === 'video') && !p.concluidas?.[id]);
   let atual = alvo === 'avaliacao' || alvo === 'certificado' ? alvo : (aulas.find(a => a.id === alvo) || aulas.find(a => a.id === ultVista) || aulas.find(a => !p.concluidas?.[a.id]) || null)?.id || (temAvaliacao(c) && !p.aprovado ? 'avaliacao' : 'certificado');
+  // Sala de aula: o centro da tela é sempre um vídeo. Material em PDF abre AO LADO, sem trocar a aula.
+  const temVideos = aulas.some(x => x.tipo === 'video');
+  let pdfAoLado = null;
+  const pedido = aulas.find(x => x.id === atual);
+  if (temVideos && pedido?.tipo === 'pdf') {
+    pdfAoLado = pedido.id;
+    const iP = aulas.indexOf(pedido), antesDele = aulas.slice(0, iP).reverse().find(x => x.tipo === 'video');
+    const v = aulas.find(x => x.id === ultVista) || antesDele || aulas.find(x => x.tipo === 'video');
+    atual = v.id;
+    try { history.replaceState(null, '', `#/curso/${encodeURIComponent(c.id)}?aula=${encodeURIComponent(v.id)}`); } catch {}
+  }
   const pr = () => progressoCurso(c, p);
   main.innerHTML = `<div class="page cur-sala">
     <a href="#/cursos?aba=meus" class="small cur-voltar">${ic('back', 14)} Meus cursos</a>
@@ -5122,12 +5140,15 @@ async function salaDeAula(main, c, p, alvo) {
   const mmss = t => `${Math.floor(t / 3600) ? Math.floor(t / 3600) + ':' : ''}${String(Math.floor(t % 3600 / 60)).padStart(Math.floor(t / 3600) ? 2 : 1, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
   const srcYT = t => `https://www.youtube.com/embed/${ytId(a.url)}?enablejsapi=1&rel=0&modestbranding=1&playsinline=1${t ? `&start=${t}` : ''}&origin=${encodeURIComponent(location.origin)}`;
   const linkAula = x => `#/curso/${encodeURIComponent(c.id)}?aula=${encodeURIComponent(x)}`;
-  const depois = prox ? linkAula(prox.id) : linkAula(temAvaliacao(c) ? 'avaliacao' : 'certificado');
+  const proxPasso = temVideos && a.tipo === 'video' ? aulas.slice(i + 1).find(x => x.tipo === 'video') : prox;
+  const antPasso = temVideos && a.tipo === 'video' ? aulas.slice(0, i).reverse().find(x => x.tipo === 'video') : ant;
+  const pdfsPendentes = () => aulas.filter(x => x.tipo === 'pdf' && !p.concluidas?.[x.id]);
+  const depois = proxPasso ? linkAula(proxPasso.id) : linkAula(temAvaliacao(c) ? 'avaliacao' : 'certificado');
   box.innerHTML = `<div class="cur-aula-h"><span class="eyebrow">Aula ${i + 1} de ${aulas.length}${a.modulo ? ` · ${esc(a.modulo)}` : ''}</span><h3>${esc(a.titulo)}</h3></div>
     ${a.tipo === 'pdf' ? '<div id="leitor-box"></div>' : ytId(a.url) ? `<div class="player embed"><iframe id="cur-yt" src="${srcYT(inicio)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(a.titulo)}"></iframe></div>` : '<div class="card empty"><p>Vídeo indisponível.</p></div>'}
-    <div class="cur-acoes">${ant ? `<a class="btn ghost" href="${linkAula(ant.id)}">${ic('back', 15)} Anterior</a>` : '<span></span>'}
-      <button class="btn ${p.concluidas?.[a.id] ? 'ghost' : 'primary'}" id="cur-ok">${p.concluidas?.[a.id] ? `${ic('check', 16)} Aula concluída` : `${ic('check', 16)} Concluir aula${prox ? ' e seguir' : ''}`}</button>
-      <a class="btn ghost" href="${depois}">${prox ? 'Próxima' : temAvaliacao(c) ? 'Avaliação final' : 'Certificado'} ${ic('arrow', 15)}</a></div>
+    <div class="cur-acoes">${antPasso ? `<a class="btn ghost" href="${linkAula(antPasso.id)}">${ic('back', 15)} Anterior</a>` : '<span></span>'}
+      <button class="btn ${p.concluidas?.[a.id] ? 'ghost' : 'primary'}" id="cur-ok">${p.concluidas?.[a.id] ? `${ic('check', 16)} Aula concluída` : `${ic('check', 16)} Concluir aula${proxPasso ? ' e seguir' : ''}`}</button>
+      <a class="btn ghost" href="${depois}">${proxPasso ? 'Próxima aula' : temAvaliacao(c) ? 'Avaliação final' : 'Certificado'} ${ic('arrow', 15)}</a></div>
     ${a.tipo === 'video' ? `<p class="hint cur-retoma" style="text-align:center;margin-top:8px">${inicio ? `${ic('play', 13)} Continuando de onde você parou (${mmss(inicio)}). <button type="button" class="btn-link" id="cur-zero">Assistir do início</button> · ` : ''}A aula é marcada como concluída sozinha quando o vídeo termina.</p>` : ''}
     <div id="cur-fim"></div>
     <div class="card cur-abas"><div class="cur-tabs" role="tablist">
@@ -5168,11 +5189,23 @@ async function salaDeAula(main, c, p, alvo) {
     try { const src = await store.fileURL(m.fileRef, 'application/pdf'); await montarLeitor($('#gv-b', g), src, { id: 'curso-' + m.id, titulo: m.titulo, disciplina: c.area || '' }); }
     catch (e) { console.warn(e); $('#gv-b', g).innerHTML = '<div class="card empty"><p>Não foi possível abrir o PDF.</p></div>'; }
   };
+  if (temVideos && a.tipo === 'video') {
+    $('#cur-side').addEventListener('click', ev => {
+      const l = ev.target.closest('a.cur-aula'); if (!l) return;
+      const id = new URLSearchParams((l.getAttribute('href') || '').split('?')[1] || '').get('aula');
+      const m = aulas.find(x => x.id === id && x.tipo === 'pdf'); if (!m) return;
+      ev.preventDefault(); abrirMaterial(m);
+      if (matchMedia('(max-width:1000px)').matches) window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    if (pdfAoLado) setTimeout(() => abrirMaterial(aulas.find(x => x.id === pdfAoLado)), 50);
+  }
   // próximo passo da sala de aula, mostrado quando a aula termina
   const proximoPasso = () => {
     const el = $('#cur-fim'); if (!el) return;
-    const matPend = a.tipo === 'video' && !aulas.slice(i + 1).some(x => x.tipo === 'video' && (x.modulo || '') === (a.modulo || '')) ? doModulo.find(x => !p.concluidas?.[x.id]) : null;
-    el.innerHTML = `<div class="cur-fim card">${ic('check', 20)}<div><b>Aula concluída!</b><small>${matPend ? `Antes de seguir, leia o material de apoio do módulo: <b>${esc(matPend.titulo)}</b>.` : prox ? `A seguir: <b>${esc(prox.titulo)}</b>${prox.tipo === 'pdf' ? ' (material em PDF)' : ''}.` : temAvaliacao(c) ? 'Você assistiu a todas as aulas. Agora é a avaliação final.' : 'Você concluiu todas as aulas do curso.'}</small></div>
+    const ultimoDoModulo = !aulas.slice(i + 1).some(x => x.tipo === 'video' && (x.modulo || '') === (a.modulo || ''));
+    const matPend = a.tipo === 'video' ? (ultimoDoModulo ? doModulo.find(x => !p.concluidas?.[x.id]) : null) || (!proxPasso ? pdfsPendentes()[0] : null) : null;
+    const prox = proxPasso;
+    el.innerHTML = `<div class="cur-fim card">${ic('check', 20)}<div><b>Aula concluída!</b><small>${matPend ? `${proxPasso ? 'Antes de seguir, leia o material de apoio do módulo' : 'Para liberar a avaliação, leia o material que falta'}: <b>${esc(matPend.titulo)}</b>. Ele abre ao lado.` : prox ? `A seguir: <b>${esc(prox.titulo)}</b>${prox.tipo === 'pdf' ? ' (material em PDF)' : ''}.` : temAvaliacao(c) ? 'Você assistiu a todas as aulas. Agora é a avaliação final.' : 'Você concluiu todas as aulas do curso.'}</small></div>
       ${matPend ? `<button type="button" class="btn ghost sm" data-mat="${esc(matPend.id)}">${ic('file', 14)} Abrir o material</button>` : ''}<a class="btn primary sm" href="${depois}">${prox ? 'Próxima aula' : temAvaliacao(c) ? 'Fazer a avaliação' : 'Ver certificado'} ${ic('arrow', 14)}</a></div>`;
   };
   $('#cur-ok').onclick = async () => {
