@@ -1249,6 +1249,7 @@ a.step:hover{box-shadow:0 14px 30px -24px rgba(19,32,58,.55)}
 .so-crit{border:1px solid var(--linha);border-radius:10px;padding:12px 14px;display:grid;gap:6px}.so-crit legend{font-weight:700;color:var(--toga);padding:0 6px;font-size:.88rem}
 @media (max-width:640px){.so-item{flex-direction:column}}
 .so-item .acts{align-items:center}.so-item .acts .btn{min-height:34px}
+.imp-sub{display:flex;gap:8px;align-items:center;margin:18px 0 8px;color:var(--toga);font-size:1rem}
 </style>
 </head>
 <body>
@@ -5322,13 +5323,200 @@ function cursosInicioHTML(cursos, u) {
    2) Cola o prompt numa IA com busca na web (ex.: Claude com pesquisa ativada).
    3) Cola a resposta (JSON) aqui: o portal confere os links do YouTube e cria o curso como rascunho.
    ======================================================================================== */
-function promptCurso({ tema, publico, aulas, questoes, carga, extra }) {
-  return `Você é coordenador pedagógico de um portal de estudos para estudantes de Direito no Brasil. Monte um curso online completo sobre o tema abaixo, usando vídeos REAIS do YouTube.
+/* ============================ Apostilas em PDF ============================
+   A IA escreve o texto da apostila no curso.json (campo "materiais"); o portal
+   transforma o texto num PDF A4 com a identidade do portal. É um PDF de texto de
+   verdade (pequeno, pesquisável e com o texto selecionável), feito sem bibliotecas,
+   com as fontes padrão Helvetica, que todo leitor de PDF tem.
+   Marcações aceitas no texto: # título, ## seção, ### subseção, - item, 1. item,
+   > citação de lei, --- linha, **negrito** e *itálico*.
+   ========================================================================= */
+const HELV = {
+  r: [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584],
+  b: [278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584]
+};
+const HELV_EXTRA = { '§': [556, 556], 'º': [365, 365], 'ª': [370, 370], '°': [400, 400], '•': [350, 350], '–': [556, 556], '—': [1000, 1000], '“': [333, 500], '”': [333, 500], '‘': [222, 278], '’': [222, 278], '…': [1000, 1000], '«': [556, 556], '»': [556, 556], '´': [333, 333], '¹': [333, 333], '²': [333, 333], '³': [333, 333], '½': [834, 834], '×': [584, 584], '€': [556, 556], 'Æ': [1000, 1000], 'æ': [889, 889], 'ß': [611, 611], 'Ø': [778, 778], 'ø': [611, 611], '¿': [611, 611], '¡': [333, 333], '·': [278, 278], ' ': [278, 278] };
+const WIN_ANSI = { '€': 128, '‚': 130, '„': 132, '…': 133, '†': 134, '‡': 135, '‰': 137, 'Œ': 140, '‘': 145, '’': 146, '“': 147, '”': 148, '•': 149, '–': 150, '—': 151, '™': 153, 'œ': 156, 'Ÿ': 159 };
+const TROCA_PDF = { '≥': '>=', '≤': '<=', '→': '->', '←': '<-', '≠': '!=', '✓': 'v', '✔': 'v', ' ': ' ', '​': '', '\t': ' ', '′': "'", '″': '"', '−': '-', '‐': '-', '‑': '-' };
+function textoPDF(s) {   // normaliza para o que as fontes padrão sabem desenhar
+  return [...String(s || '').normalize('NFC')].map(ch => {
+    if (TROCA_PDF[ch] != null) return TROCA_PDF[ch];
+    const c = ch.charCodeAt(0);
+    if ((c >= 32 && c < 127) || (c >= 160 && c <= 255) || WIN_ANSI[ch]) return ch;
+    const base = ch.normalize('NFD').replace(/[̀-ͯ]/g, '');
+    return base && base.charCodeAt(0) < 127 ? base : '?';
+  }).join('');
+}
+function larguraCar(ch, negrito) {
+  const k = negrito ? 1 : 0, c = ch.charCodeAt(0);
+  if (c >= 32 && c < 127) return HELV[negrito ? 'b' : 'r'][c - 32];
+  if (HELV_EXTRA[ch]) return HELV_EXTRA[ch][k];
+  const base = ch.normalize('NFD')[0];
+  if (base && base.charCodeAt(0) >= 32 && base.charCodeAt(0) < 127) return HELV[negrito ? 'b' : 'r'][base.charCodeAt(0) - 32];
+  return 556;
+}
+const larguraTxt = (s, negrito, tam) => [...s].reduce((t, ch) => t + larguraCar(ch, negrito), 0) * tam / 1000;
+const strPDF = s => '(' + [...s].map(ch => { const c = WIN_ANSI[ch] || ch.charCodeAt(0); const x = String.fromCharCode(c > 255 ? 63 : c); return x === '(' || x === ')' || x === '\\' ? '\\' + x : x; }).join('') + ')';
+/* "texto com **negrito** e *itálico*" → palavras com estilo (cada palavra pode ter partes de estilos diferentes) */
+function palavrasRicas(txt) {
+  const partes = []; let b = false, it = false;
+  for (const tok of textoPDF(txt).split(/(\*\*|\*)/)) {
+    if (tok === '**') { b = !b; continue; }
+    if (tok === '*') { it = !it; continue; }
+    if (tok) partes.push({ t: tok, b, i: it });
+  }
+  const palavras = []; let atual = [];
+  for (const p of partes) {
+    const pedacos = p.t.split(/( +)/);
+    for (const q of pedacos) {
+      if (/^ +$/.test(q)) { if (atual.length) palavras.push(atual); atual = []; }
+      else if (q) atual.push({ t: q, b: p.b, i: p.i });
+    }
+  }
+  if (atual.length) palavras.push(atual);
+  return palavras;
+}
+function blocosApostila(md) {
+  const linhas = String(md || '').replace(/\r\n?/g, '\n').replace(/\\n/g, '\n').split('\n'), out = [];
+  let par = [], cit = [];
+  const fecha = () => { if (par.length) out.push({ k: 'p', t: par.join(' ') }); if (cit.length) out.push({ k: 'q', t: cit.join(' ') }); par = []; cit = []; };
+  for (const l0 of linhas) {
+    const l = l0.trim().replace(/`/g, '');
+    let m;
+    if (!l) { fecha(); continue; }
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(l)) { fecha(); out.push({ k: 'hr' }); continue; }
+    if ((m = l.match(/^(#{1,4})\s+(.*)$/))) { fecha(); out.push({ k: 'h' + Math.min(3, m[1].length), t: m[2].replace(/\*\*/g, '') }); continue; }
+    if ((m = l.match(/^>\s?(.*)$/))) { if (par.length) { out.push({ k: 'p', t: par.join(' ') }); par = []; } cit.push(m[1]); continue; }
+    if ((m = l.match(/^[-*•]\s+(.*)$/))) { fecha(); out.push({ k: 'li', t: m[1] }); continue; }
+    if ((m = l.match(/^(\d{1,2})[.)]\s+(.*)$/))) { fecha(); out.push({ k: 'ol', n: m[1], t: m[2] }); continue; }
+    if (cit.length) { out.push({ k: 'q', t: cit.join(' ') }); cit = []; }
+    par.push(l);
+  }
+  fecha();
+  return out;
+}
+const COR = { toga: '0.075 0.125 0.227', ouro: '0.690 0.553 0.290', rubi: '0.557 0.106 0.180', texto: '0.13 0.14 0.17', cinza: '0.42 0.45 0.50', claro: '0.973 0.961 0.933' };
+function gerarApostilaPDF({ titulo, modulo = '', curso = '', conteudo = '', portal = S.config.nomePortal || 'Ágora Jurídica' }) {
+  const W = 595.28, H = 841.89, ML = 62, MR = 62, MT = 70, MB = 72, LARG = W - ML - MR;
+  const paginas = []; let ops = [], y = 0;
+  const F = (b, i) => b ? (i ? '/F4' : '/F2') : (i ? '/F3' : '/F1');
+  const novaPagina = () => { ops = []; paginas.push(ops); y = H - MT; };
+  const cabecalhoInterno = () => {
+    ops.push(`${COR.cinza} rg BT /F1 7.5 Tf ${ML} ${H - 40} Td ${strPDF(textoPDF(curso || titulo).slice(0, 90))} Tj ET`);
+    const p = textoPDF(portal).toUpperCase(); ops.push(`${COR.ouro} rg BT /F2 7.5 Tf ${W - MR - larguraTxt(p, true, 7.5)} ${H - 40} Td ${strPDF(p)} Tj ET`);
+    ops.push(`${COR.ouro} RG 0.6 w ${ML} ${H - 48} m ${W - MR} ${H - 48} l S`);
+  };
+  const garantir = alt => { if (y - alt < MB) { novaPagina(); cabecalhoInterno(); } };
+  // quebra em linhas: [{ palavras, larg }]
+  const quebrar = (palavras, tam, largMax) => {
+    const esp = larguraCar(' ', false) * tam / 1000, linhas = []; let at = [], la = 0;
+    const lw = w => w.reduce((t, s) => t + larguraTxt(s.t, s.b, tam), 0);
+    for (const w of palavras) {
+      let wl = lw(w);
+      if (wl > largMax) {   // palavra enorme (link): corta em pedaços
+        const s = w.map(x => x.t).join(''), st = w[0]; let ped = '';
+        for (const ch of s) { if (larguraTxt(ped + ch, st.b, tam) > largMax) { if (at.length) { linhas.push({ p: at, l: la }); at = []; la = 0; } linhas.push({ p: [[{ ...st, t: ped }]], l: larguraTxt(ped, st.b, tam) }); ped = ''; } ped += ch; }
+        w.splice(0, w.length, { ...st, t: ped }); wl = lw(w);
+      }
+      const nl = at.length ? la + esp + wl : wl;
+      if (nl > largMax && at.length) { linhas.push({ p: at, l: la }); at = [w]; la = wl; } else { at.push(w); la = nl; }
+    }
+    if (at.length) linhas.push({ p: at, l: la, ultima: true });
+    if (linhas.length) linhas[linhas.length - 1].ultima = true;
+    return linhas;
+  };
+  const escreverLinha = (ln, x, tam, cor, largMax, justificar) => {
+    const espacos = ln.p.length - 1, tw = justificar && !ln.ultima && espacos > 0 ? Math.min(6, (largMax - ln.l) / espacos) : 0;
+    let s = `${cor} rg BT ${tw ? tw.toFixed(3) + ' Tw ' : ''}${x.toFixed(2)} ${y.toFixed(2)} Td`, fonte = '';
+    ln.p.forEach((w, k) => w.forEach((seg, j) => {
+      const f = F(seg.b, seg.i); if (f !== fonte) { s += ` ${f} ${tam} Tf`; fonte = f; }
+      s += ` ${strPDF(seg.t + (j === w.length - 1 && k < ln.p.length - 1 ? ' ' : ''))} Tj`;
+    }));
+    ops.push(s + (tw ? ' 0 Tw' : '') + ' ET');
+  };
+  const paragrafo = (txt, { tam = 10.5, cor = COR.texto, x = ML, larg = LARG, entre = 1.5, depois = 7, justificar = true, marca = null, barra = false, forte = false } = {}) => {
+    const pal = palavrasRicas(forte ? `**${txt.replace(/\*\*/g, '')}**` : txt); if (!pal.length) return;
+    const linhas = quebrar(pal, tam, larg), lh = tam * entre;
+    linhas.forEach((ln, i) => {
+      garantir(lh + (i === 0 ? 0 : 0));
+      y -= tam;   // linha de base
+      if (barra) ops.push(`${COR.ouro} rg ${x - 12} ${(y - lh + tam + 2).toFixed(2)} 2.2 ${lh.toFixed(2)} re f`);
+      if (marca && i === 0) ops.push(`${COR.ouro} rg BT /F2 ${tam} Tf ${(x - (marca.l || 13)).toFixed(2)} ${y.toFixed(2)} Td ${strPDF(marca.t)} Tj ET`);
+      escreverLinha(ln, x, tam, cor, larg, justificar);
+      y -= lh - tam;
+    });
+    y -= depois;
+  };
+  /* ---- primeira página: faixa com o portal e o título ---- */
+  novaPagina();
+  const faixa = 54;
+  ops.push(`${COR.toga} rg 0 ${H - faixa} ${W} ${faixa} re f`, `${COR.ouro} rg 0 ${H - faixa - 3} ${W} 3 re f`);
+  const pn = textoPDF(portal).toUpperCase();
+  ops.push(`${COR.ouro} rg BT /F2 10 Tf 1.4 Tc ${ML} ${H - 32} Td ${strPDF(pn)} Tj 0 Tc ET`);
+  const rot = 'MATERIAL DE APOIO'; ops.push(`0.86 0.88 0.92 rg BT /F1 8 Tf 1.2 Tc ${W - MR - larguraTxt(rot, false, 8) - rot.length * 1.2} ${H - 32} Td ${strPDF(rot)} Tj 0 Tc ET`);
+  y = H - faixa - 46;
+  if (modulo) { const m = textoPDF(modulo).toUpperCase(); ops.push(`${COR.ouro} rg BT /F2 8.5 Tf 1 Tc ${ML} ${y} Td ${strPDF(m.slice(0, 80))} Tj 0 Tc ET`); y -= 14; }
+  paragrafo(titulo, { tam: 21, cor: COR.toga, entre: 1.2, depois: 4, justificar: false, forte: true });
+  if (curso) paragrafo(`Curso: ${curso}`, { tam: 10, cor: COR.cinza, depois: 6, justificar: false });
+  ops.push(`${COR.ouro} RG 1 w ${ML} ${y} m ${ML + 70} ${y} l S`); y -= 22;
+  /* ---- conteúdo ---- */
+  const blocos = blocosApostila(conteudo);
+  if (blocos[0]?.k === 'h1' && textoPDF(blocos[0].t).toLowerCase() === textoPDF(titulo).toLowerCase()) blocos.shift();
+  let n = 0;
+  for (const bl of blocos) {
+    if (bl.k === 'h1' || bl.k === 'h2') { garantir(60); y -= 8; paragrafo(bl.t, { tam: bl.k === 'h1' ? 15 : 13, cor: COR.toga, entre: 1.25, depois: 3, justificar: false, forte: true }); ops.push(`${COR.ouro} RG 0.6 w ${ML} ${y + 1} m ${ML + 34} ${y + 1} l S`); y -= 8; }
+    else if (bl.k === 'h3') { garantir(44); y -= 4; paragrafo(bl.t, { tam: 11, cor: COR.rubi, entre: 1.3, depois: 3, justificar: false, forte: true }); }
+    else if (bl.k === 'li') paragrafo(bl.t, { x: ML + 16, larg: LARG - 16, marca: { t: '•', l: 12 }, depois: 3.5 });
+    else if (bl.k === 'ol') paragrafo(bl.t, { x: ML + 18, larg: LARG - 18, marca: { t: bl.n + '.', l: 17 }, depois: 3.5 });
+    else if (bl.k === 'q') { y -= 2; paragrafo(`*${bl.t.replace(/(^|[^*])\*(?!\*)/g, '$1')}*`, { x: ML + 16, larg: LARG - 24, tam: 10, cor: '0.24 0.26 0.31', barra: true, depois: 9 }); }
+    else if (bl.k === 'hr') { garantir(20); y -= 6; ops.push(`0.82 0.80 0.75 RG 0.5 w ${ML} ${y} m ${W - MR} ${y} l S`); y -= 12; }
+    else paragrafo(bl.t);
+    n++;
+  }
+  /* ---- nota final ---- */
+  garantir(50); y -= 10; ops.push(`0.82 0.80 0.75 RG 0.5 w ${ML} ${y} m ${W - MR} ${y} l S`); y -= 6;
+  paragrafo(`Material de apoio${curso ? ` do curso ${curso}` : ''}, publicado pelo portal ${portal}. A legislação muda: confira sempre a redação atual das leis nas fontes oficiais (planalto.gov.br).`, { tam: 8, cor: COR.cinza, justificar: false, depois: 0 });
+  /* ---- rodapés ---- */
+  paginas.forEach((pg, i) => {
+    const t = `Página ${i + 1} de ${paginas.length}`;
+    pg.push(`${COR.cinza} rg BT /F1 7.5 Tf ${W - MR - larguraTxt(t, false, 7.5)} 40 Td ${strPDF(t)} Tj ET`);
+    pg.push(`${COR.cinza} rg BT /F1 7.5 Tf ${ML} 40 Td ${strPDF(textoPDF(titulo).slice(0, 80))} Tj ET`);
+    pg.push(`0.82 0.80 0.75 RG 0.5 w ${ML} 52 m ${W - MR} 52 l S`);
+  });
+  /* ---- monta o arquivo PDF ---- */
+  const objs = [], fontes = ['Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique'];
+  const add = s => (objs.push(s), objs.length);
+  const cat = add(''), pags = add('');
+  const fIds = fontes.map(f => add(`<< /Type /Font /Subtype /Type1 /BaseFont /${f} /Encoding /WinAnsiEncoding >>`));
+  const res = `<< /Font << /F1 ${fIds[0]} 0 R /F2 ${fIds[1]} 0 R /F3 ${fIds[2]} 0 R /F4 ${fIds[3]} 0 R >> >>`;
+  const kids = paginas.map(pg => { const st = pg.join('\n'); const c = add(`<< /Length ${st.length} >>\nstream\n${st}\nendstream`); return add(`<< /Type /Page /Parent ${pags} 0 R /MediaBox [0 0 ${W} ${H}] /Resources ${res} /Contents ${c} 0 R >>`); });
+  objs[cat - 1] = `<< /Type /Catalog /Pages ${pags} 0 R >>`;
+  objs[pags - 1] = `<< /Type /Pages /Kids [${kids.map(k => k + ' 0 R').join(' ')}] /Count ${kids.length} >>`;
+  const info = add(`<< /Title ${strPDF(textoPDF(titulo))} /Author ${strPDF(textoPDF(portal))} /Subject ${strPDF(textoPDF(curso))} /Producer ${strPDF(textoPDF(portal))} >>`);
+  let pdf = '%PDF-1.4\n%\xe2\xe3\xcf\xd3\n'; const off = [];
+  objs.forEach((o, i) => { off.push(pdf.length); pdf += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xref = pdf.length;
+  pdf += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${off.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size ${objs.length + 1} /Root ${cat} 0 R /Info ${info} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  const bytes = new Uint8Array(pdf.length); for (let i = 0; i < pdf.length; i++) bytes[i] = pdf.charCodeAt(i) & 255;
+  return { blob: new Blob([bytes], { type: 'application/pdf' }), paginas: paginas.length, palavras: String(conteudo).split(/\s+/).filter(Boolean).length };
+}
+/* lê o campo "materiais" (ou "apostilas") do curso.json */
+function materiaisDoJSON(d) {
+  const l = Array.isArray(d.materiais) ? d.materiais : Array.isArray(d.apostilas) ? d.apostilas : [];
+  return l.map((m, i) => ({ modulo: String(m.modulo || '').trim().slice(0, 80), titulo: String(m.titulo || `Apostila ${i + 1}`).trim().slice(0, 140), descricao: String(m.descricao || m.resumo || '').trim().slice(0, 1000),
+    conteudo: Array.isArray(m.conteudo) ? m.conteudo.join('\n') : String(m.conteudo || m.texto || '').trim() })).filter(m => m.conteudo.split(/\s+/).length >= 40);
+}
+
+const APOSTILA_TAM = { curta: ['2 a 3 páginas', '900 a 1.300 palavras'], media: ['4 a 6 páginas', '1.800 a 2.600 palavras'], completa: ['8 a 10 páginas', '3.500 a 4.500 palavras'] };
+function promptCurso({ tema, publico, aulas, questoes, carga, extra, material = 'modulo', tamanho = 'media' }) {
+  const ap = material !== 'nenhum', tm = APOSTILA_TAM[tamanho] || APOSTILA_TAM.media;
+  return `Você é coordenador pedagógico de um portal de estudos para estudantes de Direito no Brasil. Monte um curso online completo sobre o tema abaixo, usando vídeos REAIS do YouTube${ap ? ' e escrevendo o material de apoio em PDF (apostila)' : ''}.
 
 TEMA DO CURSO: ${tema || '[escreva o tema]'}
 PÚBLICO: ${publico || 'estudantes de graduação em Direito'}
 NÚMERO DE AULAS EM VÍDEO: ${aulas}
 NÚMERO DE QUESTÕES DA AVALIAÇÃO FINAL: ${questoes}
+MATERIAL EM PDF: ${!ap ? 'não precisa' : material === 'unico' ? `uma apostila única para o curso inteiro, com ${tm[0]} (${tm[1]})` : `uma apostila para cada módulo, cada uma com ${tm[0]} (${tm[1]})`}
 CARGA HORÁRIA DO CERTIFICADO: ${carga ? `${carga} horas` : 'calcule pela soma da duração das aulas, arredondando para cima'}
 ${extra ? `ORIENTAÇÕES ADICIONAIS: ${extra}\n` : ''}
 O QUE FAZER
@@ -5341,8 +5529,16 @@ O QUE FAZER
    - CONFIRME que cada link abre o vídeo indicado. NUNCA invente links. Se não encontrar um vídeo adequado para uma aula, deixe "url" vazio e explique em "observacao".
 3. Informe a duração aproximada de cada vídeo, em minutos, e o nome do canal.
 4. Escreva uma descrição curta de cada aula: o que o aluno vai aprender e o que observar no vídeo.
-5. Elabore a avaliação final com base no conteúdo das aulas: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
-6. Antes de entregar, revise: links conferidos, módulos em ordem, uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários).
+${ap ? `5. Escreva ${material === 'unico' ? 'a apostila do curso' : 'uma apostila para cada módulo'}. O portal transforma o texto em PDF sozinho, com a identidade visual do portal; você só escreve o texto. Regras:
+   - texto ORIGINAL, escrito por você, em português do Brasil, linguagem clara e didática para ${publico || 'estudantes de graduação em Direito'}; não copie trechos de livros, artigos ou sites;
+   - acompanhe a sequência dos vídeos do módulo e aprofunde o que eles explicam;
+   - estrutura sugerida: introdução; conceitos e fundamentos; base legal (cite a lei com número e ano e o artigo, por exemplo "art. 302 do Código de Processo Penal (Decreto-Lei 3.689/1941)", e transcreva só os trechos essenciais, como citação); posições da doutrina e da jurisprudência; um caso prático comentado; um quadro de "Pontos-chave" em tópicos; e "Para revisar", com 3 a 5 perguntas;
+   - use SOMENTE a legislação em vigor e, se houve mudança recente, diga qual foi a lei que alterou;
+   - NUNCA invente súmulas, julgados, números de processos, artigos ou autores. Cite súmula ou tese somente quando tiver certeza do número e do conteúdo; na dúvida, explique o entendimento sem citar número;
+   - formate o texto com estas marcações simples (o portal as converte no PDF): "## " no início da linha para títulos de seção, "### " para subtítulos, "- " para itens de lista, "1. " para listas numeradas, "> " para citações de artigos de lei, **negrito** para termos importantes e uma linha em branco entre parágrafos. Não use tabelas, imagens nem links;
+   - no JSON, o texto fica no campo "conteudo", numa única string, com as quebras de linha escritas como \\n.
+6. ` : '5. '}Elabore a avaliação final com base no conteúdo das aulas${ap ? ' e das apostilas' : ''}: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
+${ap ? '7' : '6'}. Antes de entregar, revise: links conferidos, módulos em ordem, ${ap ? 'leis e artigos citados nas apostilas conferidos, ' : ''}uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários${ap ? ', aspas dentro dos textos escapadas como \\"' : ''}).
 
 ENTREGA
 Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você não puder criar arquivos, responda SOMENTE com o conteúdo JSON, sem texto antes ou depois, para eu salvar como curso.json. Use exatamente este formato:
@@ -5365,7 +5561,15 @@ Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você nã
       "descricao": "O que o aluno aprende nesta aula.",
       "observacao": ""
     }
-  ],
+  ],${ap ? `
+  "materiais": [
+    {
+      "modulo": "Módulo 1: Nome do módulo (o mesmo nome usado nas aulas${material === 'unico' ? '; na apostila única, use o último módulo' : ''})",
+      "titulo": "Apostila: título do material",
+      "descricao": "Uma frase sobre o que a apostila traz.",
+      "conteudo": "## Introdução\\n\\nTexto do primeiro parágrafo com **termo importante**.\\n\\n## Base legal\\n\\n> Art. 1º Texto essencial do artigo (Lei 0.000/0000).\\n\\n## Pontos-chave\\n\\n- Primeiro ponto\\n- Segundo ponto\\n\\n## Para revisar\\n\\n1. Primeira pergunta?\\n2. Segunda pergunta?"
+    }
+  ],` : ''}
   "questoes": [
     {
       "enunciado": "Texto da questão",
@@ -5375,7 +5579,7 @@ Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você nã
     }
   ]
 }
-"correta" é o índice (0 a 4) da alternativa certa. "duracao", "cargaHoraria" e "notaMinima" são números ("notaMinima": o aluno precisa de nota acima desse valor para o certificado). "acesso" é "todos" (qualquer aluno cadastrado) ou "assinantes".`;
+"correta" é o índice (0 a 4) da alternativa certa. "duracao", "cargaHoraria" e "notaMinima" são números ("notaMinima": o aluno precisa de nota acima desse valor para o certificado). "acesso" é "todos" (qualquer aluno cadastrado) ou "assinantes".${ap ? ` Em "materiais", ${material === 'unico' ? 'traga uma única apostila' : 'traga uma apostila por módulo, na ordem dos módulos'}; cada apostila vira uma aula em PDF no fim do seu módulo.` : ''}${ap && tamanho !== 'curta' ? '\n\nSe a resposta ficar longa demais para caber numa mensagem, entregue o arquivo curso.json para download; se não puder, envie o JSON em partes, avisando "continua", até o fim.' : ''}`;
 }
 const MODELO_CURSO = {
   titulo: 'Título do curso', subtitulo: 'O curso em uma frase', area: 'Direito Penal', instrutor: 'Profa. Nome da Professora', cargaHoraria: 10,
@@ -5383,6 +5587,9 @@ const MODELO_CURSO = {
   aulas: [
     { modulo: 'Módulo 1: Introdução', titulo: 'Título da primeira aula', url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX', canal: 'Nome do canal', duracao: 25, descricao: 'O que o aluno aprende nesta aula.' },
     { modulo: 'Módulo 1: Introdução', titulo: 'Título da segunda aula', url: 'https://youtu.be/XXXXXXXXXXX', canal: 'Nome do canal', duracao: 30, descricao: '' }
+  ],
+  materiais: [
+    { modulo: 'Módulo 1: Introdução', titulo: 'Apostila do módulo 1', descricao: 'Resumo do conteúdo do módulo.', conteudo: '## Introdução\n\nTexto do primeiro parágrafo, com **termo importante**.\n\n## Base legal\n\n> Art. 1º Texto essencial do artigo (Lei 0.000/0000).\n\n## Pontos-chave\n\n- Primeiro ponto\n- Segundo ponto\n\n## Para revisar\n\n1. Primeira pergunta?\n2. Segunda pergunta?' }
   ],
   questoes: [
     { enunciado: 'Texto da questão', alternativas: ['Alternativa A', 'Alternativa B', 'Alternativa C', 'Alternativa D', 'Alternativa E'], correta: 0, explicacao: 'Por que a alternativa A está correta.' }
@@ -5418,12 +5625,14 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
   const R = { aulas: 8, questoes: 10 };
   const { el, close } = modal(inicio === 2 ? 'Importar curso (arquivo JSON)' : 'Cadastro rápido de curso', `<div class="imp">
     <ol class="imp-passos"><li class="on" data-p="1">Prompt</li><li data-p="2">Resposta da IA</li><li data-p="3">Conferir e criar</li></ol>
-    <section data-s="1"><p class="small muted" style="margin-top:0">Preencha, copie o prompt e cole num assistente de IA <b>com busca na web ativada</b> (por exemplo, o Claude com pesquisa). Ele devolve o arquivo <b>curso.json</b> pronto, com vídeos do YouTube e a avaliação final: depois é só importar o arquivo.</p>
+    <section data-s="1"><p class="small muted" style="margin-top:0">Preencha, copie o prompt e cole num assistente de IA <b>com busca na web ativada</b> (por exemplo, o Claude com pesquisa). Ele devolve o arquivo <b>curso.json</b> pronto, com vídeos do YouTube, o texto das apostilas e a avaliação final. Ao importar, o portal transforma as apostilas em <b>PDF</b> e as coloca no curso.</p>
       <form class="form" id="imp-f">
         <label>Tema do curso *<input name="tema" maxlength="160" placeholder="Ex.: Prisão em flagrante e audiência de custódia"></label>
         <label>Público<input name="publico" maxlength="160" value="estudantes de graduação em Direito" placeholder="Ex.: candidatos ao Exame da OAB"></label>
         <div class="row2"><label>Número de aulas<select name="aulas">${[4, 6, 8, 10, 12, 15].map(n => `<option ${n === R.aulas ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
           <label>Questões da avaliação<select name="questoes">${[5, 10, 15, 20].map(n => `<option ${n === R.questoes ? 'selected' : ''}>${n}</option>`).join('')}</select></label></div>
+        <div class="row2"><label>Material em PDF (apostila)<select name="material"><option value="modulo" selected>Uma apostila por módulo</option><option value="unico">Uma apostila para o curso todo</option><option value="nenhum">Sem apostila</option></select></label>
+          <label>Tamanho de cada apostila<select name="tamanho"><option value="curta">Curta (2 a 3 páginas)</option><option value="media" selected>Média (4 a 6 páginas)</option><option value="completa">Completa (8 a 10 páginas)</option></select></label></div>
         <label>Carga horária do certificado (opcional)<input name="carga" type="number" min="1" max="999" placeholder="Em branco: a IA calcula pela duração"></label>
         <label>Orientações adicionais (opcional)<textarea name="extra" rows="2" maxlength="600" placeholder="Ex.: dar ênfase à jurisprudência do STJ; incluir uma aula sobre a Lei 13.964/2019"></textarea></label>
         <label>Prompt pronto<textarea id="imp-prompt" rows="9" readonly class="imp-prompt"></textarea></label>
@@ -5436,7 +5645,7 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
     <section data-s="3" class="hidden"><div id="imp-prev"></div>
       <div class="actions"><button type="button" class="btn ghost" id="imp-v2">${ic('back', 15)} Voltar</button><button type="button" class="btn primary" id="imp-criar" disabled>Criar curso como rascunho</button></div></section></div>`, { wide: true });
   const f = $('#imp-f', el), passo = n => { $$('[data-s]', el).forEach(s => s.classList.toggle('hidden', s.dataset.s !== String(n))); $$('.imp-passos li', el).forEach(l => l.classList.toggle('on', Number(l.dataset.p) <= n)); };
-  const atualizar = () => { $('#imp-prompt', el).value = promptCurso({ tema: f.tema.value.trim(), publico: f.publico.value.trim(), aulas: Number(f.aulas.value), questoes: Number(f.questoes.value), carga: Number(f.carga.value) || 0, extra: f.extra.value.trim() }); };
+  const atualizar = () => { $('#imp-prompt', el).value = promptCurso({ tema: f.tema.value.trim(), publico: f.publico.value.trim(), aulas: Number(f.aulas.value), questoes: Number(f.questoes.value), carga: Number(f.carga.value) || 0, extra: f.extra.value.trim(), material: f.material.value, tamanho: f.tamanho.value }); f.tamanho.disabled = f.material.value === 'nenhum'; };
   f.addEventListener('input', atualizar); f.addEventListener('change', atualizar); atualizar();
   $('#imp-cp', el).onclick = () => { if (!f.tema.value.trim()) { toast('Escreva o tema do curso.', true); return f.tema.focus(); } copiar($('#imp-prompt', el).value); };
   $('#imp-ir2', el).onclick = () => { passo(2); $('#imp-json', el).focus(); };
@@ -5458,15 +5667,17 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
     const titulo = String(d.titulo || '').trim();
     if (titulo.length < 3) return toast('A resposta não tem o título do curso.', true);
     const aulas = (Array.isArray(d.aulas) ? d.aulas : []).map((a, i) => ({ tipo: a.tipo === 'pdf' ? 'pdf' : 'video', modulo: String(a.modulo || '').trim().slice(0, 80), titulo: String(a.titulo || `Aula ${i + 1}`).trim().slice(0, 140), url: String(a.url || '').trim(), canal: String(a.canal || '').trim(), duracao: Math.max(0, Math.round(Number(a.duracao) || 0)), descricao: String(a.descricao || '').trim().slice(0, 2000), observacao: String(a.observacao || '').trim() }));
-    if (!aulas.length) return toast('A resposta não tem aulas.', true);
     let qs = []; try { qs = Array.isArray(d.questoes) && d.questoes.length ? validarQuestoes(JSON.stringify(d.questoes)) : []; } catch { qs = []; }
+    const mats = materiaisDoJSON(d);
+    for (const m of mats) { try { Object.assign(m, gerarApostilaPDF({ titulo: m.titulo, modulo: m.modulo, curso: titulo, conteudo: m.conteudo })); } catch (e) { console.warn(e); m.erro = true; } }
+    if (!aulas.length && !mats.length) return toast('A resposta não tem aulas.', true);
     passo(3); const box = $('#imp-prev', el);
     box.innerHTML = '<div class="loading">Conferindo os vídeos no YouTube…</div>';
     const st = await Promise.all(aulas.map(a => a.tipo === 'pdf' ? false : videoExiste(ytId(a.url))));
     aulas.forEach((a, i) => { a.ok = st[i] === true; a.duvida = st[i] === null; });
     const okN = aulas.filter(a => a.ok || a.duvida).length, nPdf = aulas.filter(a => a.tipo === 'pdf').length;
     box.innerHTML = `<div class="imp-cab"><div><span class="eyebrow">${esc(d.area || 'Curso online')}</span><h3 style="margin:4px 0">${esc(titulo)}</h3>${d.subtitulo ? `<p class="small muted" style="margin:0">${esc(d.subtitulo)}</p>` : ''}</div>
-        <div class="imp-nums"><span><b>${okN}</b> de ${aulas.length} vídeos ok</span><span><b>${qs.length}</b> questões válidas</span><span><b>${Number(d.cargaHoraria) || '—'}</b> horas</span></div></div>
+        <div class="imp-nums"><span><b>${okN}</b> de ${aulas.length} vídeos ok</span><span><b>${mats.filter(m => !m.erro).length}</b> apostila${mats.length === 1 ? '' : 's'} em PDF</span><span><b>${qs.length}</b> questões válidas</span><span><b>${Number(d.cargaHoraria) || '—'}</b> horas</span></div></div>
       ${nPdf ? `<div class="demo-hint" style="margin:12px 0">${nPdf} aula(s) em PDF: o arquivo JSON não traz os PDFs. Depois de importar, adicione esses materiais no editor do curso.</div>` : ''}
       ${okN + nPdf < aulas.length ? `<div class="demo-hint" style="margin:12px 0">${aulas.length - okN - nPdf} link(s) não foram encontrados no YouTube (vídeo inexistente, removido ou link inventado). Essas aulas ${'<b>não serão criadas</b>'}; depois você pode adicioná-las no editor com um link correto.</div>` : ''}
       <div class="imp-aulas">${aulas.map((a, i) => `<div class="imp-aula ${a.ok ? '' : a.duvida ? 'duvida' : 'erro'}">
@@ -5474,24 +5685,44 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
         <div class="ce-t"><b>${i + 1}. ${esc(a.titulo)}</b><small>${a.modulo ? esc(a.modulo) + ' · ' : ''}${a.canal ? esc(a.canal) + ' · ' : ''}${a.duracao ? a.duracao + ' min' : ''}</small>
           ${a.tipo === 'pdf' ? '' : a.url ? `<a class="small" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.url)}</a>` : `<small class="ed-err">Sem link${a.observacao ? `: ${esc(a.observacao)}` : ''}</small>`}</div>
         <span class="badge ${a.ok ? 'ok' : a.duvida || a.tipo === 'pdf' ? 'warn' : 'err'}">${a.tipo === 'pdf' ? 'PDF: anexar no editor' : a.ok ? 'Vídeo encontrado' : a.duvida ? 'Não deu para conferir' : 'Não encontrado'}</span></div>`).join('')}</div>
+      ${mats.length ? `<h4 class="imp-sub">${ic('file', 16)} Apostilas em PDF geradas pelo portal</h4><div class="imp-aulas">${mats.map((m, i) => `<div class="imp-aula ${m.erro ? 'erro' : ''}">
+        <span class="ce-th">${ic('file', 20)}</span><div class="ce-t"><b>${esc(m.titulo)}</b><small>${m.modulo ? esc(m.modulo) + ' · ' : ''}${m.erro ? 'não foi possível gerar' : `${m.paginas} página${m.paginas === 1 ? '' : 's'} · ${m.palavras.toLocaleString('pt-BR')} palavras`}</small></div>
+        ${m.erro ? '<span class="badge err">Erro</span>' : `<button type="button" class="btn ghost sm" data-ver-ap="${i}">${ic('eye', 14)} Ver PDF</button>`}</div>`).join('')}</div>
+        <p class="hint">Leia as apostilas antes de publicar: confira as leis e os artigos citados. Cada apostila entra como aula em PDF no fim do seu módulo.</p>`
+      : (d.materiais || d.apostilas) ? '<div class="demo-hint" style="margin:12px 0">O arquivo tem o campo "materiais", mas sem texto suficiente para gerar as apostilas.</div>' : ''}
       ${qs.length < (Array.isArray(d.questoes) ? d.questoes.length : 0) ? `<p class="small muted">${d.questoes.length - qs.length} questão(ões) foram descartadas por estarem incompletas.</p>` : ''}
       <p class="hint" style="margin-top:12px">O curso é criado como <b>rascunho</b>. Assista aos vídeos e revise as questões no editor antes de publicar.</p>`;
-    pronto = okN ? { d, titulo, aulas: aulas.filter(a => a.tipo !== 'pdf' && (a.ok || a.duvida)), qs } : null;
+    $$('[data-ver-ap]', box).forEach(b => b.onclick = () => { const m = mats[Number(b.dataset.verAp)]; const u = URL.createObjectURL(m.blob); const w = window.open(u, '_blank'); if (!w) { const a = document.createElement('a'); a.href = u; a.download = nomeArquivo('apostila', m.titulo.replace(/^apostila\s*[:\-–]?\s*/i, '')).replace(/\.png$/, '.pdf'); a.click(); } setTimeout(() => URL.revokeObjectURL(u), 60000); });
+    const apOk = mats.filter(m => !m.erro);
+    pronto = okN || apOk.length ? { d, titulo, aulas: aulas.filter(a => a.tipo !== 'pdf' && (a.ok || a.duvida)), qs, mats: apOk } : null;
     $('#imp-criar', el).disabled = !pronto;
     if (!okN) toast('Nenhum vídeo da resposta foi encontrado no YouTube. Peça à IA para pesquisar de novo e confirmar os links.', true);
   };
   $('#imp-criar', el).onclick = async () => {
     if (!pronto) return; const b = $('#imp-criar', el); b.disabled = true; b.textContent = 'Criando o curso…';
     try {
-      const { d, titulo, aulas, qs } = pronto, n = (await store.list('cursos')).length;
+      const { d, titulo, aulas, qs, mats } = pronto, n = (await store.list('cursos')).length;
+      // envia as apostilas e encaixa cada uma no fim do seu módulo
+      const lista = aulas.map(a => ({ id: uid().slice(0, 10), tipo: 'video', titulo: a.titulo, modulo: a.modulo, url: `https://www.youtube.com/watch?v=${ytId(a.url)}`, duracao: a.duracao || '', descricao: [a.descricao, a.canal ? `Vídeo do canal ${a.canal} no YouTube.` : ''].filter(Boolean).join('\n\n') }));
+      for (const [k, m] of mats.entries()) {
+        b.textContent = `Enviando a apostila ${k + 1} de ${mats.length}…`;
+        const nome = nomeArquivo('apostila', m.titulo.replace(/^apostila\s*[:\-–]?\s*/i, '')).replace(/\.png$/, '.pdf'), arq = new File([m.blob], nome, { type: 'application/pdf' });
+        const ref = await store.uploadFile(arq);
+        const aula = { id: uid().slice(0, 10), tipo: 'pdf', titulo: m.titulo, modulo: m.modulo, duracao: Math.max(5, Math.round(m.palavras / 150)), descricao: m.descricao, fileRef: ref, mime: 'application/pdf', nomeArquivo: nome, tamanho: arq.size, paginas: m.paginas, gerado: true };
+        const mod = m.modulo.toLowerCase(); let pos = -1;
+        lista.forEach((a, i) => { if (mod && (a.modulo || '').toLowerCase() === mod) pos = i; });
+        if (pos < 0 && mod) { const num = (mod.match(/\d+/) || [])[0]; if (num) lista.forEach((a, i) => { if (((a.modulo || '').toLowerCase().match(/\d+/) || [])[0] === num) pos = i; }); }
+        if (pos < 0) lista.push(aula); else lista.splice(pos + 1, 0, aula);
+      }
+      b.textContent = 'Criando o curso…';
       const c = await store.save('cursos', {
         titulo: titulo.slice(0, 120), subtitulo: String(d.subtitulo || '').trim().slice(0, 160), area: String(d.area || '').trim().slice(0, 80), instrutor: String(d.instrutor || '').trim().slice(0, 120),
         cargaHoraria: Math.round(Number(d.cargaHoraria)) || '', descricao: String(d.descricao || '').trim().slice(0, 4000), acesso: d.acesso === 'assinantes' ? 'assinantes' : 'todos',
         notaMinima: Number.isFinite(Number(d.notaMinima)) && d.notaMinima !== '' && d.notaMinima != null ? Math.min(99, Math.max(0, Math.round(Number(d.notaMinima)))) : notaMin(), ativo: false, ordem: n, origem: 'importado',
-        aulas: aulas.map(a => ({ id: uid().slice(0, 10), tipo: 'video', titulo: a.titulo, modulo: a.modulo, url: `https://www.youtube.com/watch?v=${ytId(a.url)}`, duracao: a.duracao || '', descricao: [a.descricao, a.canal ? `Vídeo do canal ${a.canal} no YouTube.` : ''].filter(Boolean).join('\n\n') }))
+        aulas: lista
       });
       if (qs.length) await salvarBancoCurso(c, qs);
-      close(); toast(`Curso criado com ${aulas.length} aulas e ${qs.length} questões. Revise e publique.`); onCriado?.(c);
+      close(); toast(`Curso criado com ${aulas.length} videoaula${aulas.length === 1 ? '' : 's'}${mats.length ? `, ${mats.length} apostila${mats.length === 1 ? '' : 's'} em PDF` : ''} e ${qs.length} questões. Revise e publique.`); onCriado?.(c);
     } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = 'Criar curso como rascunho'; }
   };
 }

@@ -222,6 +222,20 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
+
+### Apostilas em PDF geradas com o curso
+
+No **Cadastro rápido de curso**, escolha em **Material em PDF** uma apostila por módulo, uma apostila para o curso todo ou nenhuma. Em **Tamanho**, escolha curta (2 a 3 páginas), média (4 a 6) ou completa (8 a 10). O prompt pede à IA o texto original de cada apostila, com:
+
+- base legal citada com número da lei e artigo;
+- caso prático;
+- pontos-chave;
+- perguntas para revisar.
+
+O prompt também proíbe inventar súmulas, julgados ou artigos.
+
+Ao importar o curso.json, o portal transforma cada apostila num **PDF A4 com a identidade do portal** (faixa com o nome do portal, título, módulo, numeração de páginas e nota sobre a legislação). Na tela **Conferir e criar**, use **Ver PDF** para ler antes. Cada apostila entra como aula em PDF no fim do seu módulo. Leia as apostilas e confira as leis citadas antes de publicar o curso.
+
 ## Sorteios
 
 Em **Painel → Sorteios → Novo sorteio**, informe o prêmio, a data e a hora, a foto (opcional), o regulamento e quem concorre:
