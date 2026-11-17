@@ -222,6 +222,25 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
+## Sorteios
+
+Em **Painel → Sorteios → Novo sorteio**, informe o prêmio, a data e a hora, a foto (opcional), o regulamento e quem concorre:
+
+- **Todos os usuários cadastrados**;
+- **Usuários com acesso ativo** (inclui o período grátis);
+- **Assinantes pagantes** (qualquer plano);
+- **Assinantes do plano anual**.
+
+Também dá para limitar a quem se cadastrou até uma data, escolher o número de ganhadores e deixar de fora quem já ganhou antes. Administradores nunca participam, e a assinatura precisa estar ativa no momento do sorteio.
+
+O sorteio aparece na tela inicial (computador e celular) e no Início do aluno, com um relógio contando dias, horas, minutos e segundos. Cada aluno vê se está participando ou o que falta (por exemplo, assinar o plano anual).
+
+Na hora marcada, clique em **Realizar sorteio**. O portal sorteia de forma aleatória entre quem atende aos critérios naquele momento. Em **Participantes**, veja e baixe a lista (CSV). O resultado fica na tela inicial por 10 dias, só com o nome abreviado (ex.: "Ana S."). Os contatos completos aparecem apenas para você no painel. Se o ganhador não responder, use **Sortear suplente**.
+
+## Cursos: o vídeo continua de onde parou
+
+Quando o aluno sai no meio de uma videoaula, o portal guarda o ponto do vídeo, neste aparelho e na conta dele. Ao voltar ao curso, abre a mesma aula a partir desse ponto, com a opção **Assistir do início**. Quando o vídeo termina, a aula é concluída e o ponto salvo é apagado.
+
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.
 - **PDFs do Google Drive:** o portal tampa o botão de abrir fora do visualizador, mas o Drive tem opções próprias. No Drive, em **Compartilhar → ⚙ (Configurações)**, desmarque **Leitores e comentaristas podem ver a opção de baixar, imprimir e copiar**. O mais seguro é enviar o PDF como arquivo pelo painel.

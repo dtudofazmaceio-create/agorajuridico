@@ -1203,6 +1203,52 @@ a.cur-aula:hover{background:var(--marmore)}.cur-aula.on{background:var(--latao-b
 .fh-q{display:flex;align-items:center;gap:6px}.fh-q input{width:78px!important;text-align:center}.fh-q small{color:var(--cinza);font-size:.78rem}
 .fh-resumo{font-size:.88rem;background:var(--marmore);border-radius:8px;padding:10px 12px}
 #fh-cv{background:#fff}
+
+/* cards clicáveis */
+a.stat,a.feature,a.step{color:inherit;text-decoration:none!important;transition:background .15s,box-shadow .15s}
+a.stat:hover{background:var(--latao-bg)}a.feature:hover h3,a.step:hover h3{color:var(--rubi)}
+a.feature:hover .art{transform:translateY(-2px)}a.feature .art{transition:transform .15s}
+a.step:hover{box-shadow:0 14px 30px -24px rgba(19,32,58,.55)}
+/* sorteio */
+.sorteio{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:0;background:var(--toga);color:#dfe3ea;border-radius:16px;overflow:hidden;border:1px solid var(--latao);position:relative;isolation:isolate}
+.sorteio:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 0,rgba(142,27,46,.45),transparent 55%),radial-gradient(circle at 0 100%,rgba(52,72,112,.8),transparent 60%);z-index:-1}
+.sort-img{background:rgba(255,255,255,.04);display:grid;place-items:center;min-height:220px}
+.sort-img img{width:100%;height:100%;object-fit:cover;display:block}
+.sort-pres{color:var(--latao-2);width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:rgba(216,190,138,.1);border:1px solid rgba(216,190,138,.35)}
+.sort-b{padding:28px 32px}
+.sort-eyebrow{display:inline-flex;gap:6px;align-items:center;font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--latao-2)}
+.sorteio h2{color:#fff;margin:8px 0 4px;font-size:clamp(1.5rem,2.6vw,2.1rem)}
+.sort-tit{margin:0;color:#b9c1cf}.sort-desc{margin:10px 0 0;color:#c9d0dc;max-width:62ch}
+.sort-cd{display:flex;gap:10px;margin:20px 0 14px}
+.sort-cd div{min-width:78px;text-align:center;background:rgba(255,255,255,.06);border:1px solid rgba(216,190,138,.35);border-radius:12px;padding:10px 8px}
+.sort-cd b{display:block;font:700 2.1rem/1 var(--serif);color:#fff;font-variant-numeric:tabular-nums}
+.sort-cd small{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--latao-2);margin-top:6px}
+.sort-apur{display:flex;gap:8px;align-items:center;margin:18px 0 12px;font-weight:600;color:var(--latao-2)}
+.sort-ganh{display:grid;gap:4px;margin:16px 0 10px}.sort-ganh small{color:var(--latao-2);font-size:.76rem;text-transform:uppercase;letter-spacing:.08em}.sort-ganh small:last-child{text-transform:none;letter-spacing:0;color:#8f99ab}
+.sort-ganh b{font:700 1.4rem var(--serif);color:#fff}
+.sort-quando{font-size:.84rem;color:#b9c1cf;margin:0 0 14px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sort-reg{background:none;border:0;color:var(--latao-2);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+.sort-cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sort-st{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.08);border-radius:30px;padding:.55em 1em;font-size:.88rem;font-weight:600;color:#fff}
+.sort-st.ok{background:rgba(44,106,77,.35);color:#d6f2e3}
+.sorteio.compacto{grid-template-columns:150px minmax(0,1fr);margin:0 0 22px}
+.sorteio.compacto .sort-img{min-height:0}.sorteio.compacto .sort-pres{width:84px;height:84px}
+.sorteio.compacto .sort-b{padding:20px 24px}.sorteio.compacto h2{font-size:1.4rem}
+.sorteio.compacto .sort-cd{margin:12px 0 10px}.sorteio.compacto .sort-cd div{min-width:62px;padding:8px 6px}.sorteio.compacto .sort-cd b{font-size:1.6rem}
+.sort-sec{padding-bottom:0}
+.wl-sort{margin-top:22px;text-align:left}.wl-sort .sorteio{grid-template-columns:1fr;margin:0}.wl-sort .sort-img{display:none}.wl-sort .sort-cd div{min-width:0;flex:1}
+.btn-link{background:none;border:0;padding:0;color:var(--rubi);text-decoration:underline;cursor:pointer;font:inherit}
+@media (max-width:760px){.sorteio,.sorteio.compacto{grid-template-columns:1fr}.sort-img{min-height:0;max-height:200px}.sorteio.compacto .sort-img{display:none}.sort-b{padding:22px 20px}.sort-cd div{min-width:0;flex:1}}
+/* administração dos sorteios */
+.so-lista{display:grid;gap:14px;margin-top:18px}
+.so-item{display:flex;gap:18px;align-items:flex-start}
+.so-img{width:96px;height:96px;border-radius:12px;overflow:hidden;background:var(--toga);color:var(--latao-2);display:grid;place-items:center;flex:none}.so-img img{width:100%;height:100%;object-fit:cover}
+.so-b{flex:1;min-width:0}.so-top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.so-top h3{margin:0}
+.so-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--cinza);margin-bottom:10px}.so-meta span{display:inline-flex;gap:5px;align-items:center}
+.so-res{background:var(--ok-bg);border-radius:8px;padding:10px 14px;font-size:.88rem;margin-bottom:10px}.so-res ol{margin:6px 0 0;padding-left:1.2em}
+.so-crit{border:1px solid var(--linha);border-radius:10px;padding:12px 14px;display:grid;gap:6px}.so-crit legend{font-weight:700;color:var(--toga);padding:0 6px;font-size:.88rem}
+@media (max-width:640px){.so-item{flex-direction:column}}
+.so-item .acts{align-items:center}.so-item .acts .btn{min-height:34px}
 </style>
 </head>
 <body>
@@ -1468,6 +1514,7 @@ const I = {
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8c-1.5-3-5-3.5-5-1.2C7 8 9 8 12 8zM12 8c1.5-3 5-3.5 5-1.2C17 8 15 8 12 8z"/>',
   grad: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/>',
   predio: '<path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M9 21v-5h6v5M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>',
   qr: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 17h4v4h-4z"/>',
@@ -1587,9 +1634,9 @@ function confirmar(msg, ok = 'Confirmar') {
 /* ===================== Camada de dados: IndexedDB ===================== */
 function LocalStore({ seed = true } = {}) {
   let db;
-  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos'];
+  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos', 'sorteios'];
   const open = () => new Promise((res, rej) => {
-    const r = indexedDB.open('agora-juridica', 5);
+    const r = indexedDB.open('agora-juridica', 6);
     r.onupgradeneeded = () => { for (const s of STORES) if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); };
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
@@ -1734,7 +1781,7 @@ async function pbkdf2(senha, salt, iter = 120000) {
 function GistStore() {
   const L = LocalStore({ seed: false });
   const API = 'https://api.github.com', FILE = 'agora-dados.json';
-  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos'];
+  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos', 'sorteios'];
   let G = null, data = null, loadedAt = 0, TOKEN = null, sess = null;
   const ucache = new Map(); // escritas recentes (evita ler versão antiga do cache do GitHub)
   const enc = t => 'v1.' + btoa([...t].reverse().join(''));
@@ -2246,23 +2293,24 @@ function bindInstall() {
 
 /* ============================ Página pública ============================ */
 async function viewHome(main) {
-  const c = S.config, dt = diasTeste(), mx = brocardo(), parc = await carregarParceiros();
+  const c = S.config, dt = diasTeste(), mx = brocardo(), parc = await carregarParceiros(), sort = await sorteioEmDestaque();
   if (isMobile()) {
     main.innerHTML = `<div class="welcome">${ART.facade(c.nomePortal)}
       <h1>O Direito, organizado para quem estuda.</h1>
       <div class="wl">${dt ? `<div>${ic('check', 20)} ${dt} dias grátis para novos alunos</div>` : ''}<div>${ic('play', 20)} Videoaulas, áudios e PDFs</div><div>${ic('gavel', 20)} Estágios, concursos e empregos</div><div>${ic('news', 20)} Notícias, entrevistas e leis</div></div>
-      <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div>${parceirosCelularHTML(parc)}</div>`;
+      <div class="acts"><a class="btn gold" href="#/cadastro">${dt ? 'Começar grátis' : 'Criar minha conta'}</a><a class="btn light" href="#/entrar">Já tenho conta</a></div>${sort ? `<div class="wl-sort">${sorteioHTML(sort, { compacto: true })}</div>` : ''}${parceirosCelularHTML(parc)}</div>`;
+    ligarSorteio(main, sort, () => render());
     return;
   }
   const feat = [
-    ['play', 'Videoaulas', 'Aulas gravadas por disciplina, para assistir no computador ou no celular.'],
-    ['audio', 'Áudios', 'Resumos para revisar no ônibus, na academia ou antes da prova.'],
-    ['file', 'PDFs e apostilas', 'Roteiros de estudo, mapas mentais e modelos de peças.'],
-    ['gavel', 'Estágios', 'Vagas em escritórios, tribunais, defensorias e departamentos jurídicos.'],
-    ['columns', 'Concursos', 'Editais, prazos de inscrição e conteúdo programático.'],
-    ['scroll', 'Atualizações da lei', 'O que mudou, quando entra em vigor e o link para o texto oficial.'],
-    ['news', 'Notícias', 'O que acontece nos tribunais, na OAB e no Congresso, com a fonte.'],
-    ['mic', 'Entrevistas', 'Conversas em vídeo e áudio com juízes, promotores e advogados.']
+    ['play', 'Videoaulas', 'Aulas gravadas por disciplina, para assistir no computador ou no celular.', 'materiais?tipo=video'],
+    ['audio', 'Áudios', 'Resumos para revisar no ônibus, na academia ou antes da prova.', 'materiais?tipo=audio'],
+    ['file', 'PDFs e apostilas', 'Roteiros de estudo, mapas mentais e modelos de peças.', 'materiais?tipo=pdf'],
+    ['gavel', 'Estágios', 'Vagas em escritórios, tribunais, defensorias e departamentos jurídicos.', 'oportunidades?tipo=estagio'],
+    ['columns', 'Concursos', 'Editais, prazos de inscrição e conteúdo programático.', 'oportunidades?tipo=concurso'],
+    ['scroll', 'Atualizações da lei', 'O que mudou, quando entra em vigor e o link para o texto oficial.', 'legislacao'],
+    ['news', 'Notícias', 'O que acontece nos tribunais, na OAB e no Congresso, com a fonte.', 'noticias?tipo=noticia'],
+    ['mic', 'Entrevistas', 'Conversas em vídeo e áudio com juízes, promotores e advogados.', 'noticias?tipo=entrevista']
   ];
   main.innerHTML = `
   <section class="hero"><div class="wrap">
@@ -2274,18 +2322,19 @@ async function viewHome(main) {
     </div>
     ${ART.facade(c.nomePortal)}
   </div></section>
+  ${sort ? `<section class="section sort-sec"><div class="wrap">${sorteioHTML(sort)}</div></section>` : ''}
 
   <section class="section"><div class="wrap">
     <div class="section-h"><span class="eyebrow">O acervo</span><h2>Estudo, carreira e atualidades num só lugar</h2><p>Do primeiro período à OAB, organizado pelas disciplinas do curso.</p></div>
-    <div class="features">${feat.map(f => `<div class="feature">${ART.medal(f[0])}<div><h3>${f[1]}</h3><p>${f[2]}</p></div></div>`).join('')}</div>
+    <div class="features">${feat.map(f => `<a class="feature" href="#/${f[3]}" title="${S.user ? 'Abrir' : 'Entre ou crie sua conta para acessar'}">${ART.medal(f[0])}<div><h3>${f[1]}</h3><p>${f[2]}</p></div></a>`).join('')}</div>
   </div></section>
 
   <section class="section band"><div class="wrap">
     <div class="section-h"><span class="eyebrow">Como funciona</span><h2>Do cadastro à primeira aula em minutos</h2></div>
     <div class="steps">
-      <div class="step"><span class="num">I</span><h3>Crie sua conta</h3><p>Nome, e-mail e o período em que você está.</p></div>
-      <div class="step"><span class="num">II</span><h3>${dt ? 'Estude grátis' : 'Escolha um plano'}</h3><p>${dt ? `${dt} dias com acesso completo, sem precisar pagar nada.` : 'Mensal, semestral ou anual. Todos dão acesso completo.'}</p></div>
-      <div class="step"><span class="num">III</span><h3>${dt ? 'Escolha um plano' : 'Acesse tudo'}</h3><p>${dt ? 'Gostou? Continue com o plano que cabe no seu semestre.' : 'Todo o conteúdo liberado enquanto o plano estiver ativo.'}</p></div>
+      <a class="step" href="#/cadastro"><span class="num">I</span><h3>Crie sua conta</h3><p>Nome, e-mail e o período em que você está.</p></a>
+      <a class="step" href="#/cadastro"><span class="num">II</span><h3>${dt ? 'Estude grátis' : 'Escolha um plano'}</h3><p>${dt ? `${dt} dias com acesso completo, sem precisar pagar nada.` : 'Mensal, semestral ou anual. Todos dão acesso completo.'}</p></a>
+      <a class="step" href="#/${dt ? 'cadastro' : 'entrar'}"><span class="num">III</span><h3>${dt ? 'Escolha um plano' : 'Acesse tudo'}</h3><p>${dt ? 'Gostou? Continue com o plano que cabe no seu semestre.' : 'Todo o conteúdo liberado enquanto o plano estiver ativo.'}</p></a>
     </div>
   </div></section>
 
@@ -2296,6 +2345,7 @@ async function viewHome(main) {
   ${secaoParceiros(parc)}
   ${secaoInstituicao()}
   <footer class="footer"><div class="wrap">${brandHTML()}<span>© ${new Date().getFullYear()} ${esc(c.nomePortal)}. Uma iniciativa do ${esc(inst().nome)}${inst().cnpj ? `, CNPJ ${esc(inst().cnpj)}` : ''}.</span><span class="mode-tag">${store.modo === 'local' ? 'Modo local' : store.modo === 'gist' ? 'Dados no GitHub' : 'Dados no Firebase'}</span></div></footer>`;
+  ligarSorteio(main, sort, () => render());
 }
 
 /* ======================= Instituição: página e seção ======================= */
@@ -2559,7 +2609,7 @@ async function viewPainel(main) {
   const first = u.nome.split(' ')[0];
   let mats = [], posts = [];
   let acad = { artigos: [] };
-  const parc = await carregarParceiros();
+  const parc = await carregarParceiros(), sort = await sorteioEmDestaque();
   const [cursosPub, euMesmo] = await Promise.all([store.list('cursos').then(l => l.filter(c => c.ativo !== false).sort(ordemCursos)).catch(() => []), store.getUser(u.id).catch(() => u)]);
   if (at) [mats, posts, acad] = await Promise.all([store.list('materiais'), store.list('publicacoes'), carregarAcademico().catch(e => { console.warn(e); return { artigos: [] }; })]);
   mats.sort(byNewest); posts.sort(byNewest);
@@ -2577,15 +2627,16 @@ async function viewPainel(main) {
       <span class="badge ${st.cls}">${esc(st.txt)}</span>
       <div class="maxim"><i>${mx[0]}</i><span>${mx[1]}</span></div>
     </div>${ART.facade(S.config.nomePortal)}</section>
+    ${sort ? sorteioHTML(sort, { compacto: true }) : ''}
     ${!at ? `<div class="banner"><div><h3>${ic('lock')} Seu acesso ainda não está liberado</h3><p>Escolha um plano a partir de ${brl(min)} por mês para acessar todos os materiais e oportunidades.</p></div><a class="btn primary" href="#/assinar">Ver planos</a></div>` : ''}
     ${at && u.assinatura?.tipo === 'teste' ? `<div class="banner gold"><div><h3>${ic('check')} Você está no período grátis</h3><p>${expiraEm > 1 ? `Restam ${expiraEm} dias` : 'Hoje é o último dia'} de acesso completo. Para continuar, os planos começam em ${brl(min)} por mês.</p></div><a class="btn ghost" href="#/assinar">Ver planos</a></div>` : ''}
     ${at && u.role !== 'admin' && u.assinatura?.tipo !== 'teste' && expiraEm !== null && expiraEm <= 5 ? `<div class="banner"><div><h3>Sua assinatura vence em ${expiraEm} dia${expiraEm !== 1 ? 's' : ''}</h3><p>Renove para não perder o acesso ao conteúdo.</p></div><a class="btn primary" href="#/assinar">Renovar</a></div>` : ''}
     ${at ? `
     <div class="stats">
-      <div class="stat"><span class="si">${ic('play', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div></div>
-      <div class="stat"><span class="si">${ic('audio', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div></div>
-      <div class="stat"><span class="si">${ic('file', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div></div>
-      <div class="stat"><span class="si">${ic('gavel', 20)}</span><div><div class="n">${abertas}</div><div class="l">Oportunidades abertas</div></div></div>
+      <a class="stat" href="#/materiais?tipo=video"><span class="si">${ic('play', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div></a>
+      <a class="stat" href="#/materiais?tipo=audio"><span class="si">${ic('audio', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div></a>
+      <a class="stat" href="#/materiais?tipo=pdf"><span class="si">${ic('file', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div></a>
+      <a class="stat" href="#/oportunidades"><span class="si">${ic('gavel', 20)}</span><div><div class="n">${abertas}</div><div class="l">Oportunidades abertas</div></div></a>
     </div>
     <div class="cols">
       <div>
@@ -2605,9 +2656,10 @@ async function viewPainel(main) {
           <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || vazio('Nenhuma atualização publicada ainda.', 'scroll')}</div></div>
       </div>
     </div>` : `
-    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas'], ['audio', 'Áudios'], ['file', 'PDFs'], ['gavel', 'Estágios e empregos'], ['columns', 'Concursos'], ['news', 'Notícias'], ['mic', 'Entrevistas'], ['scroll', 'Atualizações da lei']].map(x => `<div class="feature" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></div>`).join('')}</div>`}
+    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas', 'materiais?tipo=video'], ['audio', 'Áudios', 'materiais?tipo=audio'], ['file', 'PDFs', 'materiais?tipo=pdf'], ['gavel', 'Estágios e empregos', 'oportunidades?tipo=estagio'], ['columns', 'Concursos', 'oportunidades?tipo=concurso'], ['news', 'Notícias', 'noticias?tipo=noticia'], ['mic', 'Entrevistas', 'noticias?tipo=entrevista'], ['scroll', 'Atualizações da lei', 'legislacao']].map(x => `<a class="feature" href="#/${x[2]}" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></a>`).join('')}</div>`}
     ${parceirosInicioHTML(parc)}
   </div>`;
+  ligarSorteio(main, sort, () => render());
 }
 function matCard(m) {
   const t = TIPOS[m.tipo] || TIPOS.pdf, yt = !m.capaRef && m.tipo !== 'pdf' ? ytId(m.url) : null;
@@ -3700,10 +3752,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
@@ -3721,7 +3773,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3735,7 +3787,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), cursos: () => admCursos(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -4856,7 +4908,9 @@ function paginaCurso(main, c) {
 /* ------------------------------ Sala de aula ------------------------------ */
 async function salaDeAula(main, c, p, alvo) {
   const aulas = aulasDe(c);
-  let atual = alvo === 'avaliacao' || alvo === 'certificado' ? alvo : (aulas.find(a => a.id === alvo) || aulas.find(a => !p.concluidas?.[a.id]) || null)?.id || (temAvaliacao(c) && !p.aprovado ? 'avaliacao' : 'certificado');
+  // sem aula indicada: volta para a última aula vista (se ainda não concluída) ou para a primeira pendente
+  const ultLocal = lsGet(`agora-ult-${S.user.id}-${c.id}`), ultVista = [ultLocal, p.ultimaVista].find(id => id && aulas.some(a => a.id === id) && !p.concluidas?.[id]);
+  let atual = alvo === 'avaliacao' || alvo === 'certificado' ? alvo : (aulas.find(a => a.id === alvo) || aulas.find(a => a.id === ultVista) || aulas.find(a => !p.concluidas?.[a.id]) || null)?.id || (temAvaliacao(c) && !p.aprovado ? 'avaliacao' : 'certificado');
   const pr = () => progressoCurso(c, p);
   main.innerHTML = `<div class="page cur-sala">
     <a href="#/cursos?aba=meus" class="small cur-voltar">${ic('back', 14)} Meus cursos</a>
@@ -4872,7 +4926,7 @@ async function salaDeAula(main, c, p, alvo) {
   };
   const concluir = async aid => {
     if (p.concluidas?.[aid]) return;
-    p = await salvarProgresso(c.id, x => ({ ...(x || {}), concluidas: { ...(x?.concluidas || {}), [aid]: Date.now() }, ultima: aid }));
+    p = await salvarProgresso(c.id, x => { const pos = { ...(x?.posicoes || {}) }; delete pos[aid]; return { ...(x || {}), concluidas: { ...(x?.concluidas || {}), [aid]: Date.now() }, ultima: aid, posicoes: pos }; });
     desenharLado();
     if (!temAvaliacao(c) && pr().tudo && !p.aprovado) await emitirSemAvaliacao();
   };
@@ -4886,14 +4940,22 @@ async function salaDeAula(main, c, p, alvo) {
   if (atual === 'avaliacao') { desenharLado(); return avaliacaoCurso(box, c, () => p, np => { p = np; desenharLado(); }); }
   if (atual === 'certificado') { desenharLado(); return certificadoCurso(box, c, p, pr()); }
   const i = aulas.findIndex(a => a.id === atual), a = aulas[i], prox = aulas[i + 1], ant = aulas[i - 1];
+  lsSet(`agora-ult-${S.user.id}-${c.id}`, a.id);
+  // posição do vídeo: a mais recente entre este aparelho e a conta do aluno
+  const kPos = `agora-pos-${S.user.id}-${a.id}`;
+  let posL = null; try { posL = JSON.parse(lsGet(kPos) || 'null'); } catch {}
+  const pos = [posL, p.posicoes?.[a.id]].filter(x => x && typeof x.t === 'number').sort((x, y) => (y.at || 0) - (x.at || 0))[0];
+  let inicio = pos && pos.t > 5 && (!pos.d || pos.t < pos.d - 10) && !p.concluidas?.[a.id] ? Math.floor(pos.t) : 0;
+  const mmss = t => `${Math.floor(t / 3600) ? Math.floor(t / 3600) + ':' : ''}${String(Math.floor(t % 3600 / 60)).padStart(Math.floor(t / 3600) ? 2 : 1, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+  const srcYT = t => `https://www.youtube.com/embed/${ytId(a.url)}?enablejsapi=1&rel=0&modestbranding=1&playsinline=1${t ? `&start=${t}` : ''}&origin=${encodeURIComponent(location.origin)}`;
   const linkAula = x => `#/curso/${encodeURIComponent(c.id)}?aula=${encodeURIComponent(x)}`;
   const depois = prox ? linkAula(prox.id) : linkAula(temAvaliacao(c) ? 'avaliacao' : 'certificado');
   box.innerHTML = `<div class="cur-aula-h"><span class="eyebrow">Aula ${i + 1} de ${aulas.length}${a.modulo ? ` · ${esc(a.modulo)}` : ''}</span><h3>${esc(a.titulo)}</h3></div>
-    ${a.tipo === 'pdf' ? '<div id="leitor-box"></div>' : ytId(a.url) ? `<div class="player embed"><iframe id="cur-yt" src="https://www.youtube.com/embed/${ytId(a.url)}?enablejsapi=1&rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(a.titulo)}"></iframe></div>` : '<div class="card empty"><p>Vídeo indisponível.</p></div>'}
+    ${a.tipo === 'pdf' ? '<div id="leitor-box"></div>' : ytId(a.url) ? `<div class="player embed"><iframe id="cur-yt" src="${srcYT(inicio)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(a.titulo)}"></iframe></div>` : '<div class="card empty"><p>Vídeo indisponível.</p></div>'}
     <div class="cur-acoes">${ant ? `<a class="btn ghost" href="${linkAula(ant.id)}">${ic('back', 15)} Anterior</a>` : '<span></span>'}
       <button class="btn ${p.concluidas?.[a.id] ? 'ghost' : 'primary'}" id="cur-ok">${p.concluidas?.[a.id] ? `${ic('check', 16)} Aula concluída` : `${ic('check', 16)} Concluir aula${prox ? ' e seguir' : ''}`}</button>
       <a class="btn ghost" href="${depois}">${prox ? 'Próxima' : temAvaliacao(c) ? 'Avaliação final' : 'Certificado'} ${ic('arrow', 15)}</a></div>
-    ${a.tipo === 'video' ? '<p class="hint" style="text-align:center;margin-top:8px">A aula é marcada como concluída sozinha quando o vídeo termina.</p>' : ''}
+    ${a.tipo === 'video' ? `<p class="hint cur-retoma" style="text-align:center;margin-top:8px">${inicio ? `${ic('play', 13)} Continuando de onde você parou (${mmss(inicio)}). <button type="button" class="btn-link" id="cur-zero">Assistir do início</button> · ` : ''}A aula é marcada como concluída sozinha quando o vídeo termina.</p>` : ''}
     ${a.descricao ? `<div class="card pad article" style="margin-top:18px"><h4>Sobre esta aula</h4><div class="body">${paras(a.descricao)}</div></div>` : ''}`;
   desenharLado();
   $('#cur-ok').onclick = async () => {
@@ -4910,10 +4972,34 @@ async function salaDeAula(main, c, p, alvo) {
   if (yt) {
     const ouvir = () => { try { yt.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 'cur', channel: 'widget' }), '*'); yt.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'addEventListener', args: ['onStateChange'], id: 'cur', channel: 'widget' }), '*'); } catch {} };
     yt.addEventListener('load', () => { ouvir(); setTimeout(ouvir, 1200); });
+    let cur = inicio, dur = pos?.d || 0, estadoYT = -1, ultLocal = 0, ultRemoto = 0;
+    const salvarPos = async remoto => {
+      if (cur < 1 || p.concluidas?.[a.id]) return;
+      const reg = { t: Math.round(cur), d: Math.round(dur || 0), at: Date.now() };
+      lsSet(kPos, JSON.stringify(reg));
+      if (remoto && Date.now() - ultRemoto > 15000) {
+        ultRemoto = Date.now();
+        try { p = await salvarProgresso(c.id, x => ({ ...x, posicoes: { ...(x?.posicoes || {}), [a.id]: reg }, ultimaVista: a.id })); } catch (e) { console.warn(e); }
+      }
+    };
+    const zero = $('#cur-zero'); if (zero) zero.onclick = () => { cur = 0; inicio = 0; lsSet(kPos, JSON.stringify({ t: 0, at: Date.now() })); yt.src = srcYT(0); zero.parentElement.innerHTML = 'A aula é marcada como concluída sozinha quando o vídeo termina.'; };
+    const aoSair = () => { if (document.visibilityState === 'hidden') salvarPos(true); };
+    document.addEventListener('visibilitychange', aoSair);
+    const tPos = setInterval(() => { if (estadoYT === 1) salvarPos(Date.now() - ultRemoto > 90000); }, 5000);
+    S.limpar.push(() => { clearInterval(tPos); document.removeEventListener('visibilitychange', aoSair); salvarPos(true); });
+    window.addEventListener('pagehide', () => salvarPos(false), { once: true });
     const msg = async ev => {
       if (!/youtube\.com$/.test(new URL(ev.origin || 'http://x').hostname) || ev.source !== yt.contentWindow) return;
       let d; try { d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch { return; }
+      if (d?.event === 'infoDelivery' && d.info) {
+        if (typeof d.info.currentTime === 'number') cur = d.info.currentTime;
+        if (d.info.duration) dur = d.info.duration;
+        if (typeof d.info.playerState === 'number') { const antes = estadoYT; estadoYT = d.info.playerState; if (estadoYT === 2 && antes !== 2) salvarPos(true); }
+        if (Date.now() - ultLocal > 4000) { ultLocal = Date.now(); salvarPos(false); }
+      }
+      if (d?.event === 'onStateChange') { estadoYT = d.info; if (d.info === 2) salvarPos(true); }
       const fim = (d?.event === 'onStateChange' && d.info === 0) || (d?.event === 'infoDelivery' && d.info?.playerState === 0);
+      if (fim) lsSet(kPos, JSON.stringify({ t: 0, at: Date.now() }));
       if (fim && !p.concluidas?.[a.id]) { try { await concluir(a.id); const b = $('#cur-ok'); if (b) { b.className = 'btn ghost'; b.innerHTML = `${ic('check', 16)} Aula concluída`; } toast('Aula concluída.'); } catch (e) { console.warn(e); } }
     };
     window.addEventListener('message', msg); S.limpar.push(() => window.removeEventListener('message', msg));
@@ -5407,6 +5493,190 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
       if (qs.length) await salvarBancoCurso(c, qs);
       close(); toast(`Curso criado com ${aulas.length} aulas e ${qs.length} questões. Revise e publique.`); onCriado?.(c);
     } catch (e) { toast(e.message, true); b.disabled = false; b.textContent = 'Criar curso como rascunho'; }
+  };
+}
+
+/* =================================== Sorteios ===================================
+   Cadastro em Painel → Sorteios: prêmio, data e hora, quem concorre e regulamento.
+   A tela inicial mostra o sorteio com um relógio até a data. O administrador realiza o
+   sorteio (sorteio aleatório com o gerador criptográfico do navegador). O resultado
+   público mostra só o nome abreviado e o e-mail mascarado dos ganhadores.
+   ================================================================================ */
+const SORTEIO_PUBLICOS = {
+  todos: 'Todos os usuários cadastrados',
+  ativos: 'Usuários com acesso ativo (inclui o período grátis)',
+  assinantes: 'Assinantes pagantes (qualquer plano)',
+  anual: 'Assinantes do plano anual'
+};
+const SORTEIO_CONCORREM = { todos: 'todos os usuários cadastrados', ativos: 'usuários com acesso ativo', assinantes: 'assinantes de qualquer plano', anual: 'assinantes do plano anual' };
+function planoAnual(a) {
+  if (!a) return false;
+  const p = planos(true).find(x => String(x.nome || '').toLowerCase() === String(a.plano || '').toLowerCase());
+  if (p) return Number(p.dias) >= 360;
+  if (/anual|12 meses|ano/i.test(a.plano || '')) return true;
+  return !a.plano && a.inicio && a.validade - a.inicio >= 360 * DAY;
+}
+function motivoInelegivel(u, s, agora = Date.now()) {
+  if (!u) return 'Faça o cadastro para participar.';
+  if (u.role === 'admin') return 'Administradores não participam.';
+  const c = s.criterios || {}, a = u.assinatura, vig = a?.status === 'ativa' && a.validade > agora;
+  if (c.cadastroAte && (u.criadoEm || 0) > c.cadastroAte) return `Concorre quem se cadastrou até ${fmtDate(c.cadastroAte)}.`;
+  if (c.excluirGanhadores && (s._ganhadoresAnteriores || []).includes(u.id)) return 'Quem já ganhou um sorteio anterior não participa deste.';
+  if (c.publico === 'ativos' && !vig) return 'Concorre quem está com o acesso ativo.';
+  if (c.publico === 'assinantes' && !(vig && a.tipo !== 'teste')) return 'Concorre quem tem assinatura paga ativa.';
+  if (c.publico === 'anual' && !(vig && a.tipo !== 'teste' && planoAnual(a))) return 'Concorre quem tem o plano anual ativo.';
+  return '';
+}
+const abreviarNome = n => { const p = String(n || '').trim().split(/\s+/); return p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : p[0] || 'Participante'; };
+const mascararEmail = e => { const [u, d] = String(e || '').split('@'); return d ? `${u.slice(0, 2)}${'*'.repeat(Math.max(2, u.length - 2))}@${d}` : ''; };
+function sorteioAleatorio(lista, n) {
+  const pool = lista.slice(), out = [];
+  while (out.length < n && pool.length) {
+    const lim = Math.floor(4294967296 / pool.length) * pool.length; let r;
+    do { r = crypto.getRandomValues(new Uint32Array(1))[0]; } while (r >= lim);   // sem viés
+    out.push(pool.splice(r % pool.length, 1)[0]);
+  }
+  return out;
+}
+async function sorteioEmDestaque() {
+  let l = []; try { l = await store.list('sorteios'); } catch (e) { console.warn(e); return null; }
+  const agora = Date.now(), vis = l.filter(s => s.exibir !== false && s.status !== 'cancelado' && s.dataHora);
+  const proximos = vis.filter(s => s.status !== 'realizado').sort((a, b) => a.dataHora - b.dataHora);
+  const recentes = vis.filter(s => s.status === 'realizado' && agora - (s.resultado?.em || 0) < 10 * DAY).sort((a, b) => b.resultado.em - a.resultado.em);
+  const s = proximos[0] || recentes[0] || null;
+  if (s) s._ganhadoresAnteriores = l.filter(x => x.status === 'realizado' && x.id !== s.id).flatMap(x => (x.resultado?.ganhadores || []).map(g => g.id));
+  return s;
+}
+const dd = n => String(Math.max(0, n)).padStart(2, '0');
+function partesTempo(ms) { const t = Math.max(0, Math.floor(ms / 1000)); return { d: Math.floor(t / 86400), h: Math.floor(t % 86400 / 3600), m: Math.floor(t % 3600 / 60), s: t % 60 }; }
+function sorteioHTML(s, { compacto = false } = {}) {
+  if (!s) return '';
+  const u = S.user, agora = Date.now(), c = s.criterios || {}, pub = c.publico || 'todos', quando = new Date(s.dataHora);
+  const dataTxt = `${quando.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })} às ${quando.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`;
+  const realizado = s.status === 'realizado', apurando = !realizado && s.dataHora <= agora;
+  const ganhou = realizado && u && (s.resultado?.ganhadores || []).some(g => g.id === u.id);
+  const motivo = u ? motivoInelegivel(u, s) : null;
+  let cta = '';
+  if (realizado) cta = ganhou ? `<div class="sort-st ok">${ic('award', 16)} Parabéns, você foi sorteado! Vamos entrar em contato pelo seu e-mail.</div>` : '';
+  else if (!u) cta = `<a class="btn gold" href="#/cadastro">${ic('user', 16)} Cadastre-se para participar</a>`;
+  else if (!motivo) cta = `<div class="sort-st ok">${ic('check', 16)} Você está participando</div>`;
+  else cta = `<div class="sort-st">${ic('lock', 15)} ${esc(motivo)}</div>${['assinantes', 'anual', 'ativos'].includes(pub) && u.role !== 'admin' ? `<a class="btn gold sm" href="#/assinar">${pub === 'anual' ? 'Assinar o plano anual' : 'Ver planos'}</a>` : ''}`;
+  const ganh = realizado ? (s.resultado?.ganhadores || []) : [];
+  return `<section class="sorteio ${compacto ? 'compacto' : ''}" data-sorteio="${esc(s.id)}" data-quando="${s.dataHora}">
+    <div class="sort-img">${s.imagem ? `<img data-img="${esc(s.imagem)}" alt="${esc(s.premio || '')}">` : `<span class="sort-pres">${ic('gift', compacto ? 44 : 64)}</span>`}</div>
+    <div class="sort-b"><span class="sort-eyebrow">${ic('gift', 14)} ${realizado ? 'Resultado do sorteio' : 'Sorteio'}</span>
+      <h2>${esc(s.premio || s.titulo)}</h2>${s.titulo && s.premio ? `<p class="sort-tit">${esc(s.titulo)}</p>` : ''}
+      ${!compacto && s.descricao ? `<p class="sort-desc">${esc(s.descricao)}</p>` : ''}
+      ${realizado ? `<div class="sort-ganh"><small>${ganh.length === 1 ? 'Ganhador' : 'Ganhadores'}</small>${ganh.map(g => `<b>${esc(g.nome)}</b>`).join('')}<small>Sorteado em ${fmtDate(s.resultado.em)} entre ${s.resultado.participantes} participante${s.resultado.participantes === 1 ? '' : 's'}</small></div>`
+        : apurando ? `<div class="sort-apur">${ic('clock', 18)} Apuração em andamento: o resultado sai em instantes.</div>`
+        : `<div class="sort-cd" aria-live="off">${['d', 'h', 'm', 's'].map((k, i) => `<div><b data-cd="${k}">00</b><small>${['dias', 'horas', 'min', 'seg'][i]}</small></div>`).join('')}</div>`}
+      <p class="sort-quando">${realizado ? '' : `${ic('clock', 13)} Sorteio em ${dataTxt} · `}Concorrem ${SORTEIO_CONCORREM[pub]}${c.cadastroAte ? ` cadastrados até ${fmtDate(c.cadastroAte)}` : ''}.${s.regulamento ? ` <button type="button" class="sort-reg" data-reg="${esc(s.id)}">Regulamento</button>` : ''}</p>
+      <div class="sort-cta">${cta}</div></div></section>`;
+}
+/* liga o relógio e o regulamento; chame depois de pôr o HTML na tela */
+function ligarSorteio(root, s, redesenhar) {
+  const el = root && $('[data-sorteio]', root); if (!el || !s) return;
+  hidratarImagens(el);
+  const reg = $('[data-reg]', el); if (reg) reg.onclick = () => modal('Regulamento do sorteio', `<div class="article"><div class="body">${paras(s.regulamento)}</div></div>`, { wide: true });
+  if (s.status === 'realizado' || s.dataHora <= Date.now()) return;
+  const tick = () => {
+    const ms = s.dataHora - Date.now();
+    if (ms <= 0) { clearInterval(t); redesenhar?.(); return; }
+    const p = partesTempo(ms); for (const k of ['d', 'h', 'm', 's']) { const b = $(`[data-cd="${k}"]`, el); if (b) b.textContent = dd(p[k]); }
+  };
+  const t = setInterval(tick, 1000); tick(); S.limpar.push(() => clearInterval(t));
+}
+
+/* ------------------------------ Administração ------------------------------ */
+async function admSorteios(box, users) {
+  const lista = (await store.list('sorteios')).sort((a, b) => (b.dataHora || 0) - (a.dataHora || 0));
+  const anteriores = s => lista.filter(x => x.status === 'realizado' && x.id !== s.id).flatMap(x => (x.resultado?.ganhadores || []).map(g => g.id));
+  const elegiveis = s => { const ss = { ...s, _ganhadoresAnteriores: anteriores(s) }; return users.filter(u => !motivoInelegivel(u, ss)); };
+  const recarregar = () => admSorteios(box, users);
+  const porId = new Map(users.map(u => [u.id, u]));
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:720px">Cadastre o sorteio com o prêmio, a data e hora e quem concorre. Ele aparece na tela inicial com um relógio até a data. Na hora marcada, clique em <b>Realizar sorteio</b>: o portal sorteia entre os participantes que atendem aos critérios.</p>
+    <button class="btn primary sm" id="so-novo">${ic('plus', 15)} Novo sorteio</button></div>
+    ${lista.length ? `<div class="so-lista">${lista.map(s => { const e = elegiveis(s), c = s.criterios || {}, real = s.status === 'realizado', canc = s.status === 'cancelado', venceu = s.dataHora <= Date.now();
+      return `<div class="card pad so-item">
+        <div class="so-img">${s.imagem ? `<img data-img="${esc(s.imagem)}" alt="">` : ic('gift', 34)}</div>
+        <div class="so-b"><div class="so-top"><h3>${esc(s.premio || s.titulo)}</h3>${real ? '<span class="badge ok">Realizado</span>' : canc ? '<span class="badge">Cancelado</span>' : venceu ? '<span class="badge warn">Aguardando o sorteio</span>' : '<span class="badge gold">Agendado</span>'}${s.exibir === false ? '<span class="badge">Oculto da tela inicial</span>' : ''}</div>
+          <p class="small muted" style="margin:2px 0 8px">${esc(s.titulo || '')}</p>
+          <div class="so-meta"><span>${ic('clock', 13)} ${fmtDate(s.dataHora)} às ${new Date(s.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span><span>${ic('users', 13)} ${esc(SORTEIO_PUBLICOS[c.publico || 'todos'])}${c.cadastroAte ? `, cadastrados até ${fmtDate(c.cadastroAte)}` : ''}</span><span>${ic('award', 13)} ${c.ganhadores || 1} ganhador${(c.ganhadores || 1) > 1 ? 'es' : ''}</span>${!real ? `<span><b>${e.length}</b> participante${e.length === 1 ? '' : 's'} hoje</span>` : ''}</div>
+          ${real ? `<div class="so-res"><b>Ganhadores</b> (sorteados em ${fmtDate(s.resultado.em)} entre ${s.resultado.participantes} participante${s.resultado.participantes === 1 ? '' : 's'}):<ol>${(s.resultado.ganhadores || []).map(g => { const u = porId.get(g.id); return `<li><b>${esc(u?.nome || g.nome)}</b> · ${esc(u?.email || g.email)}${u?.telefone ? ` · ${esc(u.telefone)}` : ''}${g.suplente ? ' <span class="badge">suplente</span>' : ''}</li>`; }).join('')}</ol></div>` : ''}
+          <div class="acts">${!real && !canc ? `<button class="btn primary sm" data-so="sortear" data-id="${esc(s.id)}">${ic('gift', 14)} Realizar sorteio</button>` : ''}${real ? `<button class="btn ghost sm" data-so="suplente" data-id="${esc(s.id)}">Sortear suplente</button>` : ''}
+            <button class="btn ghost sm" data-so="part" data-id="${esc(s.id)}">${ic('users', 14)} Participantes</button>${!real ? `<button class="btn ghost sm" data-so="ed" data-id="${esc(s.id)}">${ic('edit', 14)} Editar</button>` : ''}
+            <button class="btn ghost sm" data-so="vis" data-id="${esc(s.id)}">${s.exibir === false ? 'Mostrar na tela inicial' : 'Ocultar da tela inicial'}</button>${!real && !canc ? `<button class="btn ghost sm" data-so="canc" data-id="${esc(s.id)}">Cancelar</button>` : ''}<button class="btn danger sm" data-so="del" data-id="${esc(s.id)}" title="Excluir">${ic('trash', 14)}</button></div></div></div>`; }).join('')}</div>`
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('gift')}<h3>Nenhum sorteio cadastrado</h3><p>Crie um sorteio para movimentar o portal: ele aparece na tela inicial com um relógio até a data.</p><button class="btn primary" id="so-novo2">${ic('plus', 15)} Novo sorteio</button></div>`}`;
+  hidratarImagens(box);
+  $('#so-novo').onclick = () => formSorteio({}, recarregar); const n2 = $('#so-novo2'); if (n2) n2.onclick = () => formSorteio({}, recarregar);
+  box.onclick = async ev => {
+    const b = ev.target.closest('[data-so]'); if (!b) return;
+    const s = lista.find(x => x.id === b.dataset.id); if (!s) return;
+    const act = b.dataset.so;
+    try {
+      if (act === 'ed') return formSorteio(s, recarregar);
+      if (act === 'vis') { await store.save('sorteios', { ...s, exibir: s.exibir === false }); return recarregar(); }
+      if (act === 'canc') { if (!await confirmar('Cancelar este sorteio? Ele sai da tela inicial.', 'Cancelar sorteio')) return; await store.save('sorteios', { ...s, status: 'cancelado' }); toast('Sorteio cancelado.'); return recarregar(); }
+      if (act === 'del') { if (!await confirmar('Excluir este sorteio e o resultado?', 'Excluir')) return; await store.remove('sorteios', s.id); if (s.imagem) store.apagarImagemCol?.(s.imagem).catch?.(() => {}); toast('Sorteio excluído.'); return recarregar(); }
+      if (act === 'part') {
+        const e = elegiveis(s);
+        const { el } = modal(`Participantes: ${s.premio || s.titulo}`, `<p class="small muted" style="margin-top:0">${e.length} pessoa${e.length === 1 ? '' : 's'} atende${e.length === 1 ? '' : 'm'} aos critérios agora (${esc(SORTEIO_PUBLICOS[s.criterios?.publico || 'todos'])}). A lista é conferida de novo na hora do sorteio.</p>
+          ${e.length ? `<div class="table-wrap" style="max-height:50vh"><table><tr><th>Nome</th><th>E-mail</th><th>Cadastro</th><th>Assinatura</th></tr>${e.map(u => `<tr><td>${esc(u.nome)}</td><td>${esc(u.email)}</td><td>${fmtDate(u.criadoEm)}</td><td>${esc(statusAss(u).txt)}</td></tr>`).join('')}</table></div>
+          <div class="actions"><button class="btn ghost" id="so-csv">${ic('download', 15)} Baixar lista (CSV)</button></div>` : '<div class="empty"><p>Ninguém atende aos critérios no momento.</p></div>'}`, { wide: true });
+        const cv = $('#so-csv', el); if (cv) cv.onclick = () => { const csv = '﻿Nome;E-mail;Cadastro;Assinatura\n' + e.map(u => [u.nome, u.email, fmtDate(u.criadoEm), statusAss(u).txt].map(x => `"${String(x || '').replace(/"/g, '""')}"`).join(';')).join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = nomeArquivo('participantes', s.premio || s.titulo).replace(/\.png$/, '.csv'); a.click(); };
+        return;
+      }
+      if (act === 'sortear' || act === 'suplente') {
+        const sup = act === 'suplente', ja = (s.resultado?.ganhadores || []).map(g => g.id);
+        const e = elegiveis(s).filter(u => !ja.includes(u.id)), n = sup ? 1 : Math.max(1, Number(s.criterios?.ganhadores) || 1);
+        if (!e.length) return toast('Nenhum participante atende aos critérios.', true);
+        if (!sup && s.dataHora > Date.now() && !await confirmar(`O sorteio está marcado para ${fmtDate(s.dataHora)}. Realizar agora, antes da hora?`, 'Realizar agora')) return;
+        if (!await confirmar(`${sup ? 'Sortear 1 suplente' : `Sortear ${n} ganhador${n > 1 ? 'es' : ''}`} entre ${e.length} participante${e.length === 1 ? '' : 's'}? O resultado aparece na tela inicial.`, sup ? 'Sortear suplente' : 'Sortear')) return;
+        b.disabled = true;
+        const g = sorteioAleatorio(e, n).map(u => ({ id: u.id, nome: abreviarNome(u.nome), email: mascararEmail(u.email), suplente: sup || undefined }));
+        await store.save('sorteios', { ...s, status: 'realizado', resultado: { em: sup ? s.resultado.em : Date.now(), participantes: sup ? s.resultado.participantes : e.length, ganhadores: [...(s.resultado?.ganhadores || []), ...g] } });
+        await recarregar();
+        const nomes = g.map(x => esc(porId.get(x.id)?.nome || x.nome)).join(', ');
+        modal(sup ? 'Suplente sorteado' : 'Resultado do sorteio', `<div class="cur-final ok">${ART.medal('gift')}<h3>${nomes}</h3><p>${sup ? 'Suplente sorteado' : `Sorteado${g.length > 1 ? 's' : ''}`} entre ${e.length} participante${e.length === 1 ? '' : 's'}. Os contatos estão na lista do sorteio. Na tela inicial aparece só o nome abreviado.</p></div>`);
+      }
+    } catch (er) { toast(er.message, true); b.disabled = false; }
+  };
+}
+function formSorteio(s = {}, onSalvo) {
+  const novo = !s.id, c = s.criterios || {};
+  const local = t => { const d = new Date(t - new Date(t).getTimezoneOffset() * 60000); return d.toISOString().slice(0, 16); };
+  const { el, close } = modal(novo ? 'Novo sorteio' : 'Editar sorteio', `<form class="form" id="fso" novalidate>
+    <div class="ed-pf-foto"><span class="so-img" id="so-prev">${s.imagem ? `<img data-img="${esc(s.imagem)}" alt="">` : ic('gift', 34)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} Foto do prêmio (opcional)<input type="file" id="so-file" accept="image/*" hidden></label><p class="hint" style="margin-top:6px">Aparece na tela inicial ao lado do relógio.</p></div></div>
+    <label>Prêmio *<input name="premio" maxlength="120" value="${esc(s.premio || '')}" placeholder="Ex.: Vade Mecum 2027 + 3 meses de assinatura"></label>
+    <label>Nome do sorteio<input name="titulo" maxlength="120" value="${esc(s.titulo || '')}" placeholder="Ex.: Sorteio de fim de ano"></label>
+    <label>Descrição (opcional)<textarea name="descricao" rows="2" maxlength="400">${esc(s.descricao || '')}</textarea></label>
+    <div class="row2"><label>Data e hora do sorteio *<input name="dataHora" type="datetime-local" value="${s.dataHora ? local(s.dataHora) : ''}"></label>
+      <label>Número de ganhadores<input name="ganhadores" type="number" min="1" max="20" value="${c.ganhadores || 1}"></label></div>
+    <fieldset class="so-crit"><legend>Quem concorre</legend>
+      ${Object.entries(SORTEIO_PUBLICOS).map(([k, t]) => `<label class="dv-chk"><input type="radio" name="publico" value="${k}" ${(c.publico || 'todos') === k ? 'checked' : ''}> ${t}</label>`).join('')}
+      <label style="margin-top:8px">Somente quem se cadastrou até (opcional)<input name="cadastroAte" type="date" value="${c.cadastroAte ? hojeISO(new Date(c.cadastroAte)) : ''}"><span class="hint">Evita cadastros feitos só para o sorteio.</span></label>
+      <label class="dv-chk"><input type="checkbox" name="excluirGanhadores" ${c.excluirGanhadores ? 'checked' : ''}> Não incluir quem já ganhou um sorteio anterior</label>
+      <p class="hint" style="margin:6px 0 0">Administradores nunca participam. A assinatura precisa estar ativa no momento do sorteio.</p></fieldset>
+    <label>Regulamento (opcional)<textarea name="regulamento" rows="5" maxlength="6000" placeholder="Prazo para retirar o prêmio, forma de contato com o ganhador, entrega…">${esc(s.regulamento || '')}</textarea></label>
+    <label class="dv-chk"><input type="checkbox" name="exibir" ${s.exibir !== false ? 'checked' : ''}> Mostrar na tela inicial com o relógio</label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="so-sv">${novo ? 'Criar sorteio' : 'Salvar'}</button></div></form>`, { wide: true });
+  hidratarImagens(el);
+  const f = $('#fso', el); let arq = null;
+  $('#so-file', el).onchange = e => { arq = e.target.files[0]; if (arq) $('#so-prev', el).innerHTML = `<img src="${trackURL(URL.createObjectURL(arq))}" alt="">`; };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const premio = f.premio.value.trim(), dh = f.dataHora.value ? new Date(f.dataHora.value).getTime() : 0;
+    if (premio.length < 3) { toast('Informe o prêmio.', true); return f.premio.focus(); }
+    if (!dh) { toast('Informe a data e a hora do sorteio.', true); return f.dataHora.focus(); }
+    if (novo && dh < Date.now()) { toast('A data do sorteio precisa ser no futuro.', true); return f.dataHora.focus(); }
+    const b = $('#so-sv', el); b.disabled = true; b.textContent = 'Salvando…';
+    try {
+      let imagem = s.imagem || '';
+      if (arq) { const url = await imagemOtimizada(arq, 1000); imagem = await store.salvarImagemCol(url); imgCache.set(imagem, url); if (s.imagem) store.apagarImagemCol?.(s.imagem).catch?.(() => {}); }
+      await store.save('sorteios', { ...s, premio, titulo: f.titulo.value.trim(), descricao: f.descricao.value.trim(), dataHora: dh, imagem, regulamento: f.regulamento.value.trim(), exibir: f.exibir.checked, status: s.status || 'agendado',
+        criterios: { publico: f.publico.value, ganhadores: Math.min(20, Math.max(1, Number(f.ganhadores.value) || 1)), cadastroAte: f.cadastroAte.value ? new Date(f.cadastroAte.value + 'T23:59:59').getTime() : null, excluirGanhadores: f.excluirGanhadores.checked } });
+      close(); toast(novo ? 'Sorteio criado. Ele já aparece na tela inicial.' : 'Sorteio atualizado.'); onSalvo?.();
+    } catch (er) { toast(er.message, true); b.disabled = false; b.textContent = novo ? 'Criar sorteio' : 'Salvar'; }
   };
 }
 
