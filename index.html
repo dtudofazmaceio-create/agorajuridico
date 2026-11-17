@@ -1250,6 +1250,8 @@ a.step:hover{box-shadow:0 14px 30px -24px rgba(19,32,58,.55)}
 @media (max-width:640px){.so-item{flex-direction:column}}
 .so-item .acts{align-items:center}.so-item .acts .btn{min-height:34px}
 .imp-sub{display:flex;gap:8px;align-items:center;margin:18px 0 8px;color:var(--toga);font-size:1rem}
+.cp-cv{width:100%;height:auto;aspect-ratio:16/9;border-radius:10px;display:block;background:var(--toga)}
+.imp-capa{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:16px;align-items:start}@media(max-width:640px){.imp-capa{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1515,6 +1517,11 @@ const I = {
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  algemas: '<circle cx="7" cy="15" r="4"/><circle cx="17" cy="15" r="4"/><path d="M7 11V8.5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2V11M10 6.5V4.5h4v2"/>',
+  dinheiro: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v.01M18 14.5v.01"/>',
+  folha: '<path d="M5 19C5 10 11 5 20 4c0 9-5 15-13 15H5z"/><path d="M5 19l8-8"/>',
+  mundo: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
+  saude: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 10v4M10 12h4"/>',
   gift: '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8c-1.5-3-5-3.5-5-1.2C7 8 9 8 12 8zM12 8c1.5-3 5-3.5 5-1.2C17 8 15 8 12 8z"/>',
   grad: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5M22 9v6"/>',
   predio: '<path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M9 21v-5h6v5M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/>',
@@ -2092,14 +2099,14 @@ function statusAss(u) {
   const a = u.assinatura;
   if (!a) return { txt: 'Sem assinatura', cls: 'warn' };
   if (a.status === 'cancelada') return { txt: 'Cancelada', cls: 'err' };
-  if (a.validade > Date.now()) return a.tipo === 'teste' ? { txt: 'Grátis até ' + fmtDate(a.validade), cls: 'gold' } : { txt: (a.plano ? a.plano + ', até ' : 'Ativa até ') + fmtDate(a.validade), cls: 'ok' };
+  if (a.validade > Date.now()) return a.tipo === 'teste' ? { txt: 'Grátis até ' + fmtDate(a.validade), cls: 'gold' } : { txt: (a.plano ? a.plano + (a.tipo === 'premio' ? ' (prêmio)' : '') + ', até ' : 'Ativa até ') + fmtDate(a.validade), cls: 'ok' };
   return { txt: 'Expirada em ' + fmtDate(a.validade), cls: 'err' };
 }
-async function ativarAssinatura(userId, dias = planos()[0]?.dias || 30, plano = '') {
+async function ativarAssinatura(userId, dias = planos()[0]?.dias || 30, plano = '', extra = {}) {
   const u = await store.getUser(userId);
   const vigente = u.assinatura?.status === 'ativa' && u.assinatura.validade > Date.now();
   const base = vigente ? u.assinatura.validade : Date.now();
-  return store.updateUser(userId, { assinatura: { status: 'ativa', tipo: 'pago', plano: plano || '', inicio: vigente ? u.assinatura.inicio : Date.now(), validade: base + dias * DAY } });
+  return store.updateUser(userId, { assinatura: { status: 'ativa', tipo: extra.tipo || 'pago', plano: plano || '', inicio: vigente ? u.assinatura.inicio : Date.now(), validade: base + dias * DAY, ...(extra.origem ? { origem: extra.origem } : {}) } });
 }
 const diasTeste = () => Math.max(0, Number(S.config.diasTeste) || 0);
 const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -5160,7 +5167,7 @@ async function admEditorCurso(box, c, users) {
       </div>
       <form class="card pad form" id="ce-f" novalidate><h3 style="margin:0">Dados do curso</h3>
         <div class="ce-capa" id="ce-capa">${capaCurso(c)}</div>
-        <div class="acts"><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} ${c.capa ? 'Trocar capa' : 'Escolher capa'}<input type="file" id="ce-capa-f" accept="image/*" hidden></label>${c.capa ? '<button type="button" class="btn ghost sm" id="ce-capa-rm">Remover capa</button>' : ''}</div>
+        <div class="acts"><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} ${c.capa ? 'Trocar capa' : 'Escolher capa'}<input type="file" id="ce-capa-f" accept="image/*" hidden></label><button type="button" class="btn ghost sm" id="ce-capa-gen">${ic('spark', 14)} Gerar capa</button>${c.capa ? '<button type="button" class="btn ghost sm" id="ce-capa-rm">Remover capa</button>' : ''}</div>
         <label>Título *<input name="titulo" maxlength="120" value="${esc(c.titulo)}"></label>
         <label>Subtítulo<input name="subtitulo" maxlength="160" value="${esc(c.subtitulo || '')}" placeholder="O curso em uma frase"></label>
         <label>Área ou disciplina<input name="area" list="dl-cs2" maxlength="80" value="${esc(c.area || '')}"></label><datalist id="dl-cs2">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist>
@@ -5185,6 +5192,7 @@ async function admEditorCurso(box, c, users) {
     try { toast('Enviando a capa…'); const url = await imagemOtimizada(file, 1280); const ref = await store.salvarImagemCol(url); imgCache.set(ref, url); const ant = c.capa; await salvar({ capa: ref }); if (ant) store.apagarImagemCol?.(ant).catch?.(() => {}); toast('Capa atualizada.'); recarregar(); }
     catch (er) { toast(er.message, true); }
   };
+  $('#ce-capa-gen').onclick = () => gerarCapaModal({ ...c, titulo: $('#ce-f').titulo.value.trim() || c.titulo, area: $('#ce-f').area.value.trim() || c.area }, async (ref, info) => { const ant = c.capa; await salvar({ capa: ref, capaInfo: info }); if (ant) store.apagarImagemCol?.(ant).catch?.(() => {}); toast('Capa atualizada.'); recarregar(); });
   const crm = $('#ce-capa-rm'); if (crm) crm.onclick = async () => { const ant = c.capa; await salvar({ capa: '' }); if (ant) store.apagarImagemCol?.(ant).catch?.(() => {}); recarregar(); };
   $('#ce-exp').onclick = () => exportarCurso(c);
   $('#ce-pub').onclick = async () => {
@@ -5507,6 +5515,120 @@ function materiaisDoJSON(d) {
     conteudo: Array.isArray(m.conteudo) ? m.conteudo.join('\n') : String(m.conteudo || m.texto || '').trim() })).filter(m => m.conteudo.split(/\s+/).length >= 40);
 }
 
+/* ============================== Capa do curso ==============================
+   A IA descreve a capa no curso.json (campo "capa": símbolo, cores, chamada e uma
+   ilustração em SVG). O portal monta a imagem 1280×720 com a tipografia do portal:
+   assim todas as capas ficam coerentes entre si. Sem ilustração (ou se ela vier com
+   problema), o portal usa um símbolo da matéria.
+   ========================================================================= */
+const CAPA_SIMBOLOS = {
+  balanca: ['scale', 'Balança (Direito em geral, Constitucional, Ética)'], martelo: ['gavel', 'Martelo (Processo, Tribunais)'], algemas: ['algemas', 'Algemas (Penal, Processo Penal)'],
+  livro: ['book', 'Livro (Teoria, Introdução, Filosofia)'], coluna: ['columns', 'Colunas (Constitucional, Administrativo, Estado)'], documento: ['scroll', 'Documento (Contratos, Civil, Notarial)'],
+  contrato: ['pen', 'Caneta (Contratos, Prática jurídica, Redação)'], escudo: ['shield', 'Escudo (Direitos fundamentais, Consumidor, Segurança)'], predio: ['predio', 'Prédio (Empresarial, Administrativo)'],
+  familia: ['users', 'Pessoas (Família, Sucessões, Direitos Humanos)'], casa: ['home', 'Casa (Imobiliário, Locação, Família)'], trabalho: ['briefcase', 'Pasta (Trabalho, Previdenciário)'],
+  dinheiro: ['dinheiro', 'Dinheiro (Tributário, Financeiro, Bancário)'], ambiente: ['folha', 'Folha (Ambiental, Agrário)'], mundo: ['mundo', 'Globo (Internacional, Digital)'],
+  saude: ['saude', 'Coração (Saúde, Médico, Bioética)'], computador: ['monitor', 'Computador (Digital, Proteção de dados)'], cadeado: ['lock', 'Cadeado (Privacidade, Sigilo)'], diploma: ['grad', 'Capelo (OAB, Concursos, Carreira)']
+};
+const hexOk = h => /^#?[0-9a-f]{6}$/i.test(String(h || '').trim());
+const hexRgb = h => { const x = String(h).trim().replace('#', ''); return [0, 2, 4].map(i => parseInt(x.slice(i, i + 2), 16)); };
+const rgbHex = c => '#' + c.map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('');
+const lumi = c => { const [r, g, b] = c.map(v => { v /= 255; return v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4; }); return .2126 * r + .7152 * g + .0722 * b; };
+const misturar = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+function coresCapa(fundo, destaque) {
+  let f = hexOk(fundo) ? hexRgb(fundo) : [19, 32, 58], d = hexOk(destaque) ? hexRgb(destaque) : [216, 190, 138];
+  while (lumi(f) > .07) f = misturar(f, [10, 16, 30], .35);          // fundo sempre escuro: o texto é claro
+  if (lumi(d) < .3) d = misturar(d, [255, 245, 225], .55);            // destaque precisa aparecer no fundo
+  return { fundo: rgbHex(f), escuro: rgbHex(misturar(f, [0, 0, 0], .45)), destaque: rgbHex(d), dRgb: d };
+}
+/* SVG da IA: só formas básicas; nada de scripts, imagens, textos, links ou estilos externos */
+function svgSeguro(src) {
+  const s = String(src || '').trim(); if (!/^<svg[\s>]/i.test(s) || s.length > 60000) return null;
+  const doc = new DOMParser().parseFromString(s, 'image/svg+xml'), r = doc.documentElement;
+  if (!r || r.nodeName.toLowerCase() !== 'svg' || doc.querySelector('parsererror')) return null;
+  const OK = new Set(['svg', 'g', 'path', 'circle', 'ellipse', 'rect', 'line', 'polyline', 'polygon', 'defs', 'lineargradient', 'radialgradient', 'stop', 'clippath', 'title', 'desc']);
+  let n = 0;
+  for (const el of [...r.querySelectorAll('*')]) {
+    const nome = el.nodeName.toLowerCase();
+    if (!OK.has(nome) || nome === 'title' || nome === 'desc') { el.remove(); continue; }
+    n++;
+    for (const at of [...el.attributes]) { const a = at.name.toLowerCase(), v = at.value; if (a.startsWith('on') || /href$/.test(a) || a === 'style' && /url\s*\(\s*['"]?(?!#)/i.test(v) || /javascript:|data:/i.test(v)) el.removeAttribute(at.name); }
+  }
+  if (n < 3) return null;
+  r.removeAttribute('width'); r.removeAttribute('height');
+  if (!r.getAttribute('viewBox')) r.setAttribute('viewBox', '0 0 600 600');
+  r.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); r.setAttribute('width', '600'); r.setAttribute('height', '600');
+  return new XMLSerializer().serializeToString(r);
+}
+const imagemDeSVG = svg => new Promise((ok, erro) => { const im = new Image(); im.onload = () => ok(im); im.onerror = () => erro(new Error('Ilustração inválida.')); im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); });
+function capaDoJSON(d) {
+  const c = d && typeof d.capa === 'object' && d.capa ? d.capa : {};
+  const simb = String(c.simbolo || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+  return { simbolo: CAPA_SIMBOLOS[simb] ? simb : simboloPorArea(d?.area || d?.titulo), corFundo: c.corFundo || c.fundo || '', corDestaque: c.corDestaque || c.destaque || '',
+    chamada: String(c.chamada || d?.subtitulo || '').trim().slice(0, 90), conceito: String(c.conceito || '').trim().slice(0, 300), svg: svgSeguro(c.svg) };
+}
+function simboloPorArea(t) {
+  const s = String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const regras = [[/penal|crim|prisao|flagrante|execucao penal/, 'algemas'], [/ambient|agrari/, 'ambiente'], [/familia|sucess|heranca|infancia|crianca/, 'familia'], [/trabalh|previd|sindic/, 'trabalho'],
+    [/tribut|fiscal|financ|bancari|imposto|economic/, 'dinheiro'], [/internac|digital|tecnolog/, 'mundo'], [/dados|lgpd|privacidade|sigilo/, 'cadeado'], [/consumidor|direitos humanos|fundament/, 'escudo'],
+    [/empresar|societar|falencia|administrativ|licitac/, 'predio'], [/constituc|estado|politic/, 'coluna'], [/contrat|obrigac|civil|notar|registr/, 'documento'], [/process|recurso|tribunal|juri/, 'martelo'],
+    [/imobil|locac|condomin|propriedade|posse/, 'casa'], [/saude|medic|bioetic/, 'saude'], [/oab|concurso|carreira|exame/, 'diploma'], [/filosof|teoria|introduc|hermeneut|historia/, 'livro']];
+  return (regras.find(([re]) => re.test(s)) || [0, 'balanca'])[1];
+}
+function quebrarTexto(ctx, txt, larg) { const out = []; let l = ''; for (const w of String(txt).split(/\s+/)) { const t = l ? l + ' ' + w : w; if (ctx.measureText(t).width > larg && l) { out.push(l); l = w; } else l = t; } if (l) out.push(l); return out; }
+async function desenharCapaCurso(canvas, { titulo, area, chamada, simbolo, corFundo, corDestaque, svg, usarSvg = true }) {
+  const W = 1280, H = 720; canvas.width = W; canvas.height = H; const x = canvas.getContext('2d');
+  try { await Promise.all([document.fonts?.load(`700 64px ${SERIF_C}`), document.fonts?.load(`700 22px ${SANS_C}`), document.fonts?.load(`400 26px ${SANS_C}`)]); } catch {}
+  const C = coresCapa(corFundo, corDestaque), [dr, dg, db] = C.dRgb, dA = a => `rgba(${dr | 0},${dg | 0},${db | 0},${a})`;
+  let g = x.createLinearGradient(0, 0, W, H); g.addColorStop(0, C.fundo); g.addColorStop(1, C.escuro); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  g = x.createRadialGradient(960, 330, 20, 960, 330, 520); g.addColorStop(0, dA(.22)); g.addColorStop(1, dA(0)); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  x.save(); x.strokeStyle = dA(.13); x.lineWidth = 1.5; for (const r of [210, 270, 330, 400]) { x.beginPath(); x.arc(960, 360, r, 0, Math.PI * 2); x.stroke(); } x.restore();
+  x.save(); x.strokeStyle = dA(.06); x.lineWidth = 1; for (let i = -H; i < W; i += 28) { x.beginPath(); x.moveTo(i, H); x.lineTo(i + H, 0); x.stroke(); } x.restore();
+  g = x.createLinearGradient(0, 0, 700, 0); g.addColorStop(0, C.escuro + 'ee'); g.addColorStop(1, C.escuro + '00'); x.fillStyle = g; x.fillRect(0, 0, 760, H);
+  // ilustração da IA ou símbolo do portal
+  let desenhou = false;
+  if (svg && usarSvg) { try { const im = await imagemDeSVG(svg), t = 470; x.drawImage(im, 960 - t / 2, 360 - t / 2, t, t); desenhou = true; } catch (e) { console.warn(e); } }
+  if (!desenhou) {
+    x.save(); x.fillStyle = dA(.08); x.beginPath(); x.arc(960, 360, 190, 0, Math.PI * 2); x.fill(); x.strokeStyle = dA(.55); x.lineWidth = 2; x.stroke(); x.restore();
+    const k = (CAPA_SIMBOLOS[simbolo] || CAPA_SIMBOLOS.balanca)[0];
+    const s = `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 24 24" fill="none" stroke="${C.destaque}" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">${I[k] || I.scale}</svg>`;
+    try { const im = await imagemDeSVG(s); x.drawImage(im, 840, 240, 240, 240); } catch {}
+  }
+  // textos
+  const X = 84, LARG = 600; x.textBaseline = 'alphabetic';
+  x.fillStyle = C.destaque; x.font = `700 21px ${SANS_C}`; if ('letterSpacing' in x) x.letterSpacing = '3px';
+  x.fillText(`CURSO ONLINE${area ? ' · ' + String(area).toUpperCase() : ''}`.slice(0, 48), X, 168); if ('letterSpacing' in x) x.letterSpacing = '0px';
+  let tam = 66, linhas; do { x.font = `700 ${tam}px ${SERIF_C}`; linhas = quebrarTexto(x, titulo || 'Curso', LARG); tam -= 4; } while ((linhas.length > 4 || linhas.some(l => x.measureText(l).width > LARG)) && tam > 34);
+  tam += 4; const lh = tam * 1.12; let y = 168 + 30 + tam;
+  x.fillStyle = '#ffffff'; linhas.slice(0, 4).forEach((l, i) => x.fillText(i === 3 && linhas.length > 4 ? l + '…' : l, X, y + i * lh)); y += (Math.min(4, linhas.length) - 1) * lh + 22;
+  x.fillStyle = C.destaque; x.fillRect(X, y, 64, 3); y += 46;
+  if (chamada) { x.font = `400 26px ${SANS_C}`; x.fillStyle = 'rgba(255,255,255,.78)'; quebrarTexto(x, chamada, LARG).slice(0, 2).forEach((l, i) => x.fillText(l, X, y + i * 36)); }
+  x.font = `700 19px ${SANS_C}`; x.fillStyle = dA(.95); if ('letterSpacing' in x) x.letterSpacing = '2.5px'; x.fillText(String(S.config.nomePortal || 'Ágora Jurídica').toUpperCase(), X, H - 64); if ('letterSpacing' in x) x.letterSpacing = '0px';
+  x.fillStyle = 'rgba(255,255,255,.55)'; x.font = `400 17px ${SANS_C}`; x.fillText('Com certificado de conclusão', X, H - 38);
+  return canvas;
+}
+async function salvarCapaCanvas(canvas) { const url = canvas.toDataURL('image/jpeg', .86); const ref = await store.salvarImagemCol(url); imgCache.set(ref, url); return ref; }
+/* editor: gerar capa para um curso que já existe */
+function gerarCapaModal(c, onSalva) {
+  const inf = c.capaInfo || {}, simb = inf.simbolo || simboloPorArea(c.area || c.titulo);
+  const { el, close } = modal('Gerar capa do curso', `<form class="form" id="fcp" novalidate>
+    <canvas id="cp-cv" class="cp-cv"></canvas>
+    <div class="row2"><label>Símbolo<select name="simbolo">${Object.entries(CAPA_SIMBOLOS).map(([k, v]) => `<option value="${k}" ${k === simb ? 'selected' : ''}>${v[1]}</option>`).join('')}</select></label>
+      <label>Frase da capa<input name="chamada" maxlength="90" value="${esc(inf.chamada || c.subtitulo || '')}"></label></div>
+    <div class="row2"><label>Cor de fundo<input name="corFundo" type="color" value="${hexOk(inf.corFundo) ? coresCapa(inf.corFundo).fundo : '#13203a'}"></label><label>Cor de destaque<input name="corDestaque" type="color" value="${hexOk(inf.corDestaque) ? coresCapa('#000000', inf.corDestaque).destaque : '#d8be8a'}"></label></div>
+    ${inf.svg ? '<label class="dv-chk"><input type="checkbox" name="usarSvg" checked> Usar a ilustração criada pela IA</label>' : ''}
+    <p class="hint" style="margin:0">A capa usa o título e a área do curso. O fundo fica sempre escuro, para o texto ser lido com facilidade.</p>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="cp-sv">Usar esta capa</button></div></form>`, { wide: true });
+  const f = $('#fcp', el), cv = $('#cp-cv', el);
+  const dados = () => ({ titulo: c.titulo, area: c.area, chamada: f.chamada.value.trim(), simbolo: f.simbolo.value, corFundo: f.corFundo.value, corDestaque: f.corDestaque.value, svg: inf.svg, usarSvg: f.usarSvg ? f.usarSvg.checked : false });
+  let t; const prev = () => { clearTimeout(t); t = setTimeout(() => desenharCapaCurso(cv, dados()), 120); };
+  f.addEventListener('input', prev); f.addEventListener('change', prev); prev();
+  f.onsubmit = async e => {
+    e.preventDefault(); const b = $('#cp-sv', el); b.disabled = true; b.textContent = 'Salvando…';
+    try { const dd = dados(); await desenharCapaCurso(cv, dd); const ref = await salvarCapaCanvas(cv); close(); onSalva?.(ref, { simbolo: dd.simbolo, chamada: dd.chamada, corFundo: dd.corFundo, corDestaque: dd.corDestaque, svg: inf.svg && inf.svg.length < 15000 ? inf.svg : undefined }); }
+    catch (er) { toast(er.message, true); b.disabled = false; b.textContent = 'Usar esta capa'; }
+  };
+}
+
 const APOSTILA_TAM = { curta: ['2 a 3 páginas', '900 a 1.300 palavras'], media: ['4 a 6 páginas', '1.800 a 2.600 palavras'], completa: ['8 a 10 páginas', '3.500 a 4.500 palavras'] };
 function promptCurso({ tema, publico, aulas, questoes, carga, extra, material = 'modulo', tamanho = 'media', duracao = 30 }) {
   const ap = material !== 'nenhum', tm = APOSTILA_TAM[tamanho] || APOSTILA_TAM.media;
@@ -5518,6 +5640,7 @@ PÚBLICO: ${publico || 'estudantes de graduação em Direito'}
 NÚMERO DE AULAS EM VÍDEO: ${aulas}
 DURAÇÃO DOS VÍDEOS: em média ${dm} minutos cada (aceitável de ${dMin} a ${dMax} minutos)
 ORDEM DAS AULAS: sequência cronológica do conteúdo, do primeiro ao último assunto
+CAPA DO CURSO: sim, coerente com a matéria e o assunto do curso
 NÚMERO DE QUESTÕES DA AVALIAÇÃO FINAL: ${questoes}
 MATERIAL EM PDF: ${!ap ? 'não precisa' : material === 'unico' ? `uma apostila única para o curso inteiro, com ${tm[0]} (${tm[1]})` : `uma apostila para cada módulo, cada uma com ${tm[0]} (${tm[1]})`}
 CARGA HORÁRIA DO CERTIFICADO: ${carga ? `${carga} horas` : 'calcule pela soma da duração das aulas, arredondando para cima'}
@@ -5546,8 +5669,15 @@ ${ap ? `5. Escreva ${material === 'unico' ? 'a apostila do curso' : 'uma apostil
    - NUNCA invente súmulas, julgados, números de processos, artigos ou autores. Cite súmula ou tese somente quando tiver certeza do número e do conteúdo; na dúvida, explique o entendimento sem citar número;
    - formate o texto com estas marcações simples (o portal as converte no PDF): "## " no início da linha para títulos de seção, "### " para subtítulos, "- " para itens de lista, "1. " para listas numeradas, "> " para citações de artigos de lei, **negrito** para termos importantes e uma linha em branco entre parágrafos. Não use tabelas, imagens nem links;
    - no JSON, o texto fica no campo "conteudo", numa única string, com as quebras de linha escritas como \\n.
-6. ` : '5. '}Elabore a avaliação final com base no conteúdo das aulas${ap ? ' e das apostilas' : ''}: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
-${ap ? '7' : '6'}. Antes de entregar, revise: links conferidos, módulos e aulas na sequência cronológica do conteúdo, duração dos vídeos perto de ${dm} minutos (média geral), ${ap ? 'leis e artigos citados nas apostilas conferidos, ' : ''}uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários${ap ? ', aspas dentro dos textos escapadas como \\"' : ''}).
+6. ` : '5. '}Crie a CAPA do curso, coerente com a matéria e com o assunto. O portal monta a imagem final (1280×720) com o título, a área e o nome do portal; você define o conceito visual e desenha a ilustração:
+   - "conceito": a ideia da capa em uma frase, ligada ao tema (por exemplo: Direito Penal, algemas e grades; Direito Ambiental, folhas e água; Direito de Família, casa e pessoas estilizadas; Direito do Trabalho, engrenagens e ferramentas; Direito Tributário, moedas e gráficos; Processo, martelo e autos);
+   - "simbolo": o símbolo de reserva que mais combina com a matéria, escolhido nesta lista: ${Object.keys(CAPA_SIMBOLOS).join(', ')};
+   - "corFundo" (uma cor ESCURA) e "corDestaque" (uma cor clara que contraste com o fundo), em hexadecimal (#RRGGBB), que combinem com o assunto e sejam sóbrias, adequadas a um curso de Direito;
+   - "chamada": uma frase curta para a capa, com até 60 caracteres, que convide o aluno a fazer o curso;
+   - "svg": uma ilustração vetorial ORIGINAL que represente o assunto, em estilo plano e elegante (linhas e formas geométricas simples), com viewBox "0 0 600 600" e fundo transparente (não desenhe retângulo de fundo). Use de 2 a 4 cores em harmonia com "corFundo" e "corDestaque", pensadas para aparecer sobre fundo escuro. Use somente os elementos svg, g, path, circle, ellipse, rect, line, polyline, polygon e linearGradient. É PROIBIDO: texto, letras ou números; logotipos, marcas, brasões, bandeiras e símbolos oficiais; pessoas reais ou reconhecíveis; imagens externas, scripts e links. Escreva os atributos do SVG com aspas simples, para não quebrar o JSON, e mantenha o SVG com até 6.000 caracteres;
+   - opcional: se você também gera imagens, crie uma imagem capa.png de 1280×720, sem nenhum texto, com o mesmo conceito; eu posso enviá-la depois no editor do curso.
+${ap ? '7' : '6'}. Elabore a avaliação final com base no conteúdo das aulas${ap ? ' e das apostilas' : ''}: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
+${ap ? '8' : '7'}. Antes de entregar, revise: links conferidos, capa coerente com o assunto e SVG sem texto, módulos e aulas na sequência cronológica do conteúdo, duração dos vídeos perto de ${dm} minutos (média geral), ${ap ? 'leis e artigos citados nas apostilas conferidos, ' : ''}uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários${ap ? ', aspas dentro dos textos escapadas como \\"' : ''}).
 
 ENTREGA
 Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você não puder criar arquivos, responda SOMENTE com o conteúdo JSON, sem texto antes ou depois, para eu salvar como curso.json. Use exatamente este formato:
@@ -5560,6 +5690,14 @@ Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você nã
   "descricao": "Dois ou três parágrafos: o que o aluno aprende, para quem é e pré-requisitos.",
   "notaMinima": 60,
   "acesso": "todos",
+  "capa": {
+    "conceito": "A ideia visual da capa em uma frase",
+    "simbolo": "uma palavra da lista de símbolos",
+    "corFundo": "#1B2A41",
+    "corDestaque": "#E3C27A",
+    "chamada": "Frase curta para a capa (até 60 caracteres)",
+    "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'>...</svg>"
+  },
   "aulas": [
     {
       "modulo": "Módulo 1: Nome do módulo",
@@ -5593,6 +5731,8 @@ Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você nã
 const MODELO_CURSO = {
   titulo: 'Título do curso', subtitulo: 'O curso em uma frase', area: 'Direito Penal', instrutor: 'Profa. Nome da Professora', cargaHoraria: 10,
   descricao: 'O que o aluno aprende, para quem é o curso e os pré-requisitos.', notaMinima: 60, acesso: 'todos',
+  capa: { conceito: 'Algemas e grades estilizadas, em linhas finas', simbolo: 'algemas', corFundo: '#1B2A41', corDestaque: '#E3C27A', chamada: 'Do flagrante à audiência de custódia, passo a passo',
+    svg: "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'><g fill='none' stroke='#E3C27A' stroke-width='10' stroke-linecap='round'><circle cx='220' cy='360' r='90'/><circle cx='380' cy='360' r='90'/><path d='M220 270v-50a40 40 0 0 1 40-40h80a40 40 0 0 1 40 40v50'/></g><g stroke='#8FA3C2' stroke-width='6' opacity='.6'><line x1='120' y1='120' x2='120' y2='500'/><line x1='480' y1='120' x2='480' y2='500'/></g></svg>" },
   aulas: [
     { modulo: 'Módulo 1: Introdução', titulo: 'Título da primeira aula', url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX', canal: 'Nome do canal', duracao: 25, descricao: 'O que o aluno aprende nesta aula.' },
     { modulo: 'Módulo 1: Introdução', titulo: 'Título da segunda aula', url: 'https://youtu.be/XXXXXXXXXXX', canal: 'Nome do canal', duracao: 30, descricao: '' }
@@ -5681,6 +5821,7 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
     const mats = materiaisDoJSON(d);
     for (const m of mats) { try { Object.assign(m, gerarApostilaPDF({ titulo: m.titulo, modulo: m.modulo, curso: titulo, conteudo: m.conteudo })); } catch (e) { console.warn(e); m.erro = true; } }
     if (!aulas.length && !mats.length) return toast('A resposta não tem aulas.', true);
+    const capa = capaDoJSON(d); let usarSvg = !!capa.svg;
     passo(3); const box = $('#imp-prev', el);
     box.innerHTML = '<div class="loading">Conferindo os vídeos no YouTube…</div>';
     const st = await Promise.all(aulas.map(a => a.tipo === 'pdf' ? false : videoExiste(ytId(a.url))));
@@ -5695,6 +5836,9 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
         <div class="ce-t"><b>${i + 1}. ${esc(a.titulo)}</b><small>${a.modulo ? esc(a.modulo) + ' · ' : ''}${a.canal ? esc(a.canal) + ' · ' : ''}${a.duracao ? a.duracao + ' min' : ''}</small>
           ${a.tipo === 'pdf' ? '' : a.url ? `<a class="small" href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.url)}</a>` : `<small class="ed-err">Sem link${a.observacao ? `: ${esc(a.observacao)}` : ''}</small>`}</div>
         <span class="badge ${a.ok ? 'ok' : a.duvida || a.tipo === 'pdf' ? 'warn' : 'err'}">${a.tipo === 'pdf' ? 'PDF: anexar no editor' : a.ok ? 'Vídeo encontrado' : a.duvida ? 'Não deu para conferir' : 'Não encontrado'}</span></div>`).join('')}</div>
+      <h4 class="imp-sub">${ic('image', 16)} Capa do curso</h4>
+      <div class="imp-capa"><canvas id="imp-cv" class="cp-cv"></canvas><div class="small"><p style="margin-top:0">${capa.conceito ? `<b>Conceito:</b> ${esc(capa.conceito)}<br>` : ''}${capa.svg ? 'Ilustração criada pela IA.' : d.capa ? 'A IA não mandou uma ilustração válida: o portal usou o símbolo da matéria.' : 'O arquivo não traz capa: o portal criou uma com o símbolo da matéria.'}</p>
+        ${capa.svg ? '<label class="dv-chk"><input type="checkbox" id="imp-svg" checked> Usar a ilustração da IA</label>' : ''}<p class="hint">Depois, no editor do curso, você pode gerar outra capa ou enviar uma imagem.</p></div></div>
       ${mats.length ? `<h4 class="imp-sub">${ic('file', 16)} Apostilas em PDF geradas pelo portal</h4><div class="imp-aulas">${mats.map((m, i) => `<div class="imp-aula ${m.erro ? 'erro' : ''}">
         <span class="ce-th">${ic('file', 20)}</span><div class="ce-t"><b>${esc(m.titulo)}</b><small>${m.modulo ? esc(m.modulo) + ' · ' : ''}${m.erro ? 'não foi possível gerar' : `${m.paginas} página${m.paginas === 1 ? '' : 's'} · ${m.palavras.toLocaleString('pt-BR')} palavras`}</small></div>
         ${m.erro ? '<span class="badge err">Erro</span>' : `<button type="button" class="btn ghost sm" data-ver-ap="${i}">${ic('eye', 14)} Ver PDF</button>`}</div>`).join('')}</div>
@@ -5702,9 +5846,11 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
       : (d.materiais || d.apostilas) ? '<div class="demo-hint" style="margin:12px 0">O arquivo tem o campo "materiais", mas sem texto suficiente para gerar as apostilas.</div>' : ''}
       ${qs.length < (Array.isArray(d.questoes) ? d.questoes.length : 0) ? `<p class="small muted">${d.questoes.length - qs.length} questão(ões) foram descartadas por estarem incompletas.</p>` : ''}
       <p class="hint" style="margin-top:12px">O curso é criado como <b>rascunho</b>. Assista aos vídeos e revise as questões no editor antes de publicar.</p>`;
+    const cv = $('#imp-cv', box), desenhaCapa = () => desenharCapaCurso(cv, { titulo, area: d.area, chamada: capa.chamada, simbolo: capa.simbolo, corFundo: capa.corFundo, corDestaque: capa.corDestaque, svg: capa.svg, usarSvg });
+    desenhaCapa(); const isv = $('#imp-svg', box); if (isv) isv.onchange = () => { usarSvg = isv.checked; desenhaCapa(); };
     $$('[data-ver-ap]', box).forEach(b => b.onclick = () => { const m = mats[Number(b.dataset.verAp)]; const u = URL.createObjectURL(m.blob); const w = window.open(u, '_blank'); if (!w) { const a = document.createElement('a'); a.href = u; a.download = nomeArquivo('apostila', m.titulo.replace(/^apostila\s*[:\-–]?\s*/i, '')).replace(/\.png$/, '.pdf'); a.click(); } setTimeout(() => URL.revokeObjectURL(u), 60000); });
     const apOk = mats.filter(m => !m.erro);
-    pronto = okN || apOk.length ? { d, titulo, aulas: aulas.filter(a => a.tipo !== 'pdf' && (a.ok || a.duvida)), qs, mats: apOk } : null;
+    pronto = okN || apOk.length ? { d, titulo, aulas: aulas.filter(a => a.tipo !== 'pdf' && (a.ok || a.duvida)), qs, mats: apOk, capa, cv, desenhaCapa, usar: () => usarSvg } : null;
     $('#imp-criar', el).disabled = !pronto;
     if (!okN) toast('Nenhum vídeo da resposta foi encontrado no YouTube. Peça à IA para pesquisar de novo e confirmar os links.', true);
   };
@@ -5724,8 +5870,11 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
         if (pos < 0 && mod) { const num = (mod.match(/\d+/) || [])[0]; if (num) lista.forEach((a, i) => { if (((a.modulo || '').toLowerCase().match(/\d+/) || [])[0] === num) pos = i; }); }
         if (pos < 0) lista.push(aula); else lista.splice(pos + 1, 0, aula);
       }
+      b.textContent = 'Criando a capa…';
+      let capaRef = '', capaInfo;
+      try { await pronto.desenhaCapa(); capaRef = await salvarCapaCanvas(pronto.cv); const cp = pronto.capa; capaInfo = { simbolo: cp.simbolo, chamada: cp.chamada, corFundo: cp.corFundo, corDestaque: cp.corDestaque, svg: cp.svg && cp.svg.length < 15000 ? cp.svg : undefined, conceito: cp.conceito }; } catch (e) { console.warn(e); }
       b.textContent = 'Criando o curso…';
-      const c = await store.save('cursos', {
+      const c = await store.save('cursos', { capa: capaRef, capaInfo,
         titulo: titulo.slice(0, 120), subtitulo: String(d.subtitulo || '').trim().slice(0, 160), area: String(d.area || '').trim().slice(0, 80), instrutor: String(d.instrutor || '').trim().slice(0, 120),
         cargaHoraria: Math.round(Number(d.cargaHoraria)) || '', descricao: String(d.descricao || '').trim().slice(0, 4000), acesso: d.acesso === 'assinantes' ? 'assinantes' : 'todos',
         notaMinima: Number.isFinite(Number(d.notaMinima)) && d.notaMinima !== '' && d.notaMinima != null ? Math.min(99, Math.max(0, Math.round(Number(d.notaMinima)))) : notaMin(), ativo: false, ordem: n, origem: 'importado',
@@ -5798,7 +5947,7 @@ function sorteioHTML(s, { compacto = false } = {}) {
   const ganhou = realizado && u && (s.resultado?.ganhadores || []).some(g => g.id === u.id);
   const motivo = u ? motivoInelegivel(u, s) : null;
   let cta = '';
-  if (realizado) cta = ganhou ? `<div class="sort-st ok">${ic('award', 16)} Parabéns, você foi sorteado! Vamos entrar em contato pelo seu e-mail.</div>` : '';
+  if (realizado) cta = ganhou ? `<div class="sort-st ok">${ic('award', 16)} Parabéns, você foi sorteado! ${(() => { const g = (s.resultado?.ganhadores || []).find(x => x.id === u.id); return s.premioPlano && g?.liberadoAte ? `Seu plano ${esc(s.premioPlano.nome)} já está liberado até ${fmtDate(g.liberadoAte)}.` : 'Vamos entrar em contato pelo seu e-mail.'; })()}</div>` : '';
   else if (!u) cta = `<a class="btn gold" href="#/cadastro">${ic('user', 16)} Cadastre-se para participar</a>`;
   else if (!motivo) cta = `<div class="sort-st ok">${ic('check', 16)} Você está participando</div>`;
   else cta = `<div class="sort-st">${ic('lock', 15)} ${esc(motivo)}</div>${['assinantes', 'anual', 'ativos'].includes(pub) && u.role !== 'admin' ? `<a class="btn gold sm" href="#/assinar">${pub === 'anual' ? 'Assinar o plano anual' : 'Ver planos'}</a>` : ''}`;
@@ -5828,6 +5977,12 @@ function ligarSorteio(root, s, redesenhar) {
   const t = setInterval(tick, 1000); tick(); S.limpar.push(() => clearInterval(t));
 }
 
+/* prêmio em assinatura: libera o plano para o ganhador, somando ao tempo que ele já tem */
+async function liberarPremio(s, g) {
+  const pl = s.premioPlano; if (!pl?.dias) return null;
+  await ativarAssinatura(g.id, Number(pl.dias), pl.nome, { tipo: 'premio', origem: `Sorteio: ${s.premio || s.titulo || ''}`.slice(0, 160) });
+  return (await store.getUser(g.id))?.assinatura?.validade || Date.now() + pl.dias * DAY;
+}
 /* ------------------------------ Administração ------------------------------ */
 async function admSorteios(box, users) {
   const lista = (await store.list('sorteios')).sort((a, b) => (b.dataHora || 0) - (a.dataHora || 0));
@@ -5842,8 +5997,9 @@ async function admSorteios(box, users) {
         <div class="so-img">${s.imagem ? `<img data-img="${esc(s.imagem)}" alt="">` : ic('gift', 34)}</div>
         <div class="so-b"><div class="so-top"><h3>${esc(s.premio || s.titulo)}</h3>${real ? '<span class="badge ok">Realizado</span>' : canc ? '<span class="badge">Cancelado</span>' : venceu ? '<span class="badge warn">Aguardando o sorteio</span>' : '<span class="badge gold">Agendado</span>'}${s.exibir === false ? '<span class="badge">Oculto da tela inicial</span>' : ''}</div>
           <p class="small muted" style="margin:2px 0 8px">${esc(s.titulo || '')}</p>
+          ${s.premioPlano ? `<p class="small" style="margin:-4px 0 8px">${ic('award', 13)} Prêmio em assinatura: <b>${esc(s.premioPlano.nome)}</b> (${s.premioPlano.dias} dias), liberada automaticamente para quem for sorteado.</p>` : ''}
           <div class="so-meta"><span>${ic('clock', 13)} ${fmtDate(s.dataHora)} às ${new Date(s.dataHora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span><span>${ic('users', 13)} ${esc(SORTEIO_PUBLICOS[c.publico || 'todos'])}${c.cadastroAte ? `, cadastrados até ${fmtDate(c.cadastroAte)}` : ''}</span><span>${ic('award', 13)} ${c.ganhadores || 1} ganhador${(c.ganhadores || 1) > 1 ? 'es' : ''}</span>${!real ? `<span><b>${e.length}</b> participante${e.length === 1 ? '' : 's'} hoje</span>` : ''}</div>
-          ${real ? `<div class="so-res"><b>Ganhadores</b> (sorteados em ${fmtDate(s.resultado.em)} entre ${s.resultado.participantes} participante${s.resultado.participantes === 1 ? '' : 's'}):<ol>${(s.resultado.ganhadores || []).map(g => { const u = porId.get(g.id); return `<li><b>${esc(u?.nome || g.nome)}</b> · ${esc(u?.email || g.email)}${u?.telefone ? ` · ${esc(u.telefone)}` : ''}${g.suplente ? ' <span class="badge">suplente</span>' : ''}</li>`; }).join('')}</ol></div>` : ''}
+          ${real ? `<div class="so-res"><b>Ganhadores</b> (sorteados em ${fmtDate(s.resultado.em)} entre ${s.resultado.participantes} participante${s.resultado.participantes === 1 ? '' : 's'}):<ol>${(s.resultado.ganhadores || []).map(g => { const u = porId.get(g.id); return `<li><b>${esc(u?.nome || g.nome)}</b> · ${esc(u?.email || g.email)}${u?.telefone ? ` · ${esc(u.telefone)}` : ''}${g.suplente ? ' <span class="badge">suplente</span>' : ''}${s.premioPlano ? (g.liberadoAte ? ` <span class="badge ok">${esc(s.premioPlano.nome)} liberado até ${fmtDate(g.liberadoAte)}</span>` : ` <span class="badge err">acesso não liberado</span> <button class="btn ghost sm" data-so="liberar" data-id="${esc(s.id)}" data-g="${esc(g.id)}">Liberar agora</button>`) : ''}</li>`; }).join('')}</ol></div>` : ''}
           <div class="acts">${!real && !canc ? `<button class="btn primary sm" data-so="sortear" data-id="${esc(s.id)}">${ic('gift', 14)} Realizar sorteio</button>` : ''}${real ? `<button class="btn ghost sm" data-so="suplente" data-id="${esc(s.id)}">Sortear suplente</button>` : ''}
             <button class="btn ghost sm" data-so="part" data-id="${esc(s.id)}">${ic('users', 14)} Participantes</button>${!real ? `<button class="btn ghost sm" data-so="ed" data-id="${esc(s.id)}">${ic('edit', 14)} Editar</button>` : ''}
             <button class="btn ghost sm" data-so="vis" data-id="${esc(s.id)}">${s.exibir === false ? 'Mostrar na tela inicial' : 'Ocultar da tela inicial'}</button>${!real && !canc ? `<button class="btn ghost sm" data-so="canc" data-id="${esc(s.id)}">Cancelar</button>` : ''}<button class="btn danger sm" data-so="del" data-id="${esc(s.id)}" title="Excluir">${ic('trash', 14)}</button></div></div></div>`; }).join('')}</div>`
@@ -5852,10 +6008,15 @@ async function admSorteios(box, users) {
   $('#so-novo').onclick = () => formSorteio({}, recarregar); const n2 = $('#so-novo2'); if (n2) n2.onclick = () => formSorteio({}, recarregar);
   box.onclick = async ev => {
     const b = ev.target.closest('[data-so]'); if (!b) return;
-    const s = lista.find(x => x.id === b.dataset.id); if (!s) return;
+    let s = lista.find(x => x.id === b.dataset.id); if (!s) return;
     const act = b.dataset.so;
     try {
       if (act === 'ed') return formSorteio(s, recarregar);
+      if (act === 'liberar') {
+        b.disabled = true; const gs = s.resultado.ganhadores.map(x => ({ ...x }));
+        const g = gs.find(x => x.id === b.dataset.g); g.liberadoAte = await liberarPremio(s, g);
+        await store.save('sorteios', { ...s, resultado: { ...s.resultado, ganhadores: gs } }); toast(`Acesso liberado até ${fmtDate(g.liberadoAte)}.`); return recarregar();
+      }
       if (act === 'vis') { await store.save('sorteios', { ...s, exibir: s.exibir === false }); return recarregar(); }
       if (act === 'canc') { if (!await confirmar('Cancelar este sorteio? Ele sai da tela inicial.', 'Cancelar sorteio')) return; await store.save('sorteios', { ...s, status: 'cancelado' }); toast('Sorteio cancelado.'); return recarregar(); }
       if (act === 'del') { if (!await confirmar('Excluir este sorteio e o resultado?', 'Excluir')) return; await store.remove('sorteios', s.id); if (s.imagem) store.apagarImagemCol?.(s.imagem).catch?.(() => {}); toast('Sorteio excluído.'); return recarregar(); }
@@ -5875,10 +6036,15 @@ async function admSorteios(box, users) {
         if (!await confirmar(`${sup ? 'Sortear 1 suplente' : `Sortear ${n} ganhador${n > 1 ? 'es' : ''}`} entre ${e.length} participante${e.length === 1 ? '' : 's'}? O resultado aparece na tela inicial.`, sup ? 'Sortear suplente' : 'Sortear')) return;
         b.disabled = true;
         const g = sorteioAleatorio(e, n).map(u => ({ id: u.id, nome: abreviarNome(u.nome), email: mascararEmail(u.email), suplente: sup || undefined }));
+        // grava o resultado antes de liberar o acesso: se a liberação falhar, o sorteio não se perde
         await store.save('sorteios', { ...s, status: 'realizado', resultado: { em: sup ? s.resultado.em : Date.now(), participantes: sup ? s.resultado.participantes : e.length, ganhadores: [...(s.resultado?.ganhadores || []), ...g] } });
+        let falhas = 0;
+        if (s.premioPlano) for (const x of g) { try { x.liberadoAte = await liberarPremio(s, x); } catch (er) { console.warn(er); falhas++; } }
+        s = (await store.get('sorteios', s.id)) || s;
+        await store.save('sorteios', { ...s, status: 'realizado', resultado: { em: sup ? s.resultado.em : Date.now(), participantes: sup ? s.resultado.participantes : e.length, ganhadores: [...(s.resultado?.ganhadores || []).filter(x => !g.some(y => y.id === x.id)), ...g] } });
         await recarregar();
         const nomes = g.map(x => esc(porId.get(x.id)?.nome || x.nome)).join(', ');
-        modal(sup ? 'Suplente sorteado' : 'Resultado do sorteio', `<div class="cur-final ok">${ART.medal('gift')}<h3>${nomes}</h3><p>${sup ? 'Suplente sorteado' : `Sorteado${g.length > 1 ? 's' : ''}`} entre ${e.length} participante${e.length === 1 ? '' : 's'}. Os contatos estão na lista do sorteio. Na tela inicial aparece só o nome abreviado.</p></div>`);
+        modal(sup ? 'Suplente sorteado' : 'Resultado do sorteio', `<div class="cur-final ok">${ART.medal('gift')}<h3>${nomes}</h3><p>${sup ? 'Suplente sorteado' : `Sorteado${g.length > 1 ? 's' : ''}`} entre ${e.length} participante${e.length === 1 ? '' : 's'}. Os contatos estão na lista do sorteio. Na tela inicial aparece só o nome abreviado.</p>${s.premioPlano ? (falhas ? `<p class="ed-err">Não foi possível liberar o acesso de ${falhas} ganhador(es). Use “Liberar agora” na lista do sorteio.</p>` : `<p><b>Plano ${esc(s.premioPlano.nome)} liberado automaticamente</b>${g.map(x => ` · ${esc(porId.get(x.id)?.nome || x.nome)} até ${fmtDate(x.liberadoAte)}`).join('')}.</p>`) : ''}</div>`);
       }
     } catch (er) { toast(er.message, true); b.disabled = false; }
   };
@@ -5888,6 +6054,10 @@ function formSorteio(s = {}, onSalvo) {
   const local = t => { const d = new Date(t - new Date(t).getTimezoneOffset() * 60000); return d.toISOString().slice(0, 16); };
   const { el, close } = modal(novo ? 'Novo sorteio' : 'Editar sorteio', `<form class="form" id="fso" novalidate>
     <div class="ed-pf-foto"><span class="so-img" id="so-prev">${s.imagem ? `<img data-img="${esc(s.imagem)}" alt="">` : ic('gift', 34)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} Foto do prêmio (opcional)<input type="file" id="so-file" accept="image/*" hidden></label><p class="hint" style="margin-top:6px">Aparece na tela inicial ao lado do relógio.</p></div></div>
+    <fieldset class="so-crit"><legend>Tipo de prêmio</legend>
+      <label class="dv-chk"><input type="radio" name="tipoPremio" value="plano" ${s.premioPlano ? 'checked' : ''}> Assinatura do portal: o plano é liberado automaticamente para o ganhador</label>
+      <label class="so-plano ${s.premioPlano ? '' : 'hidden'}">Plano do prêmio<select name="plano">${planos(true).map(p => `<option value="${esc(p.id)}" ${s.premioPlano?.id === p.id ? 'selected' : ''}>${esc(p.nome)} (${p.dias} dias)</option>`).join('')}</select><span class="hint">Se o ganhador já tiver acesso, os dias do prêmio são somados ao que ele já tem.</span></label>
+      <label class="dv-chk"><input type="radio" name="tipoPremio" value="outro" ${s.premioPlano ? '' : 'checked'}> Outro prêmio (livro, curso, brinde): você combina a entrega com o ganhador</label></fieldset>
     <label>Prêmio *<input name="premio" maxlength="120" value="${esc(s.premio || '')}" placeholder="Ex.: Vade Mecum 2027 + 3 meses de assinatura"></label>
     <label>Nome do sorteio<input name="titulo" maxlength="120" value="${esc(s.titulo || '')}" placeholder="Ex.: Sorteio de fim de ano"></label>
     <label>Descrição (opcional)<textarea name="descricao" rows="2" maxlength="400">${esc(s.descricao || '')}</textarea></label>
@@ -5903,6 +6073,11 @@ function formSorteio(s = {}, onSalvo) {
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="so-sv">${novo ? 'Criar sorteio' : 'Salvar'}</button></div></form>`, { wide: true });
   hidratarImagens(el);
   const f = $('#fso', el); let arq = null;
+  const nomePlano = () => { const p = planos(true).find(x => x.id === f.plano.value); return p ? `Assinatura ${p.nome} do portal` : ''; };
+  let auto = !s.premio || s.premio === (s.premioPlano ? `Assinatura ${s.premioPlano.nome} do portal` : '');
+  const tp = () => { const pl = f.tipoPremio.value === 'plano'; $('.so-plano', el).classList.toggle('hidden', !pl); if (pl && auto) f.premio.value = nomePlano(); };
+  f.premio.oninput = () => { auto = false; };
+  $$('input[name=tipoPremio]', el).forEach(r => r.onchange = tp); f.plano.onchange = tp;
   $('#so-file', el).onchange = e => { arq = e.target.files[0]; if (arq) $('#so-prev', el).innerHTML = `<img src="${trackURL(URL.createObjectURL(arq))}" alt="">`; };
   f.onsubmit = async e => {
     e.preventDefault();
@@ -5914,7 +6089,8 @@ function formSorteio(s = {}, onSalvo) {
     try {
       let imagem = s.imagem || '';
       if (arq) { const url = await imagemOtimizada(arq, 1000); imagem = await store.salvarImagemCol(url); imgCache.set(imagem, url); if (s.imagem) store.apagarImagemCol?.(s.imagem).catch?.(() => {}); }
-      await store.save('sorteios', { ...s, premio, titulo: f.titulo.value.trim(), descricao: f.descricao.value.trim(), dataHora: dh, imagem, regulamento: f.regulamento.value.trim(), exibir: f.exibir.checked, status: s.status || 'agendado',
+      const plSel = f.tipoPremio.value === 'plano' ? planos(true).find(x => x.id === f.plano.value) : null;
+      await store.save('sorteios', { ...s, premio, premioPlano: plSel ? { id: plSel.id, nome: plSel.nome, dias: Number(plSel.dias) } : null, titulo: f.titulo.value.trim(), descricao: f.descricao.value.trim(), dataHora: dh, imagem, regulamento: f.regulamento.value.trim(), exibir: f.exibir.checked, status: s.status || 'agendado',
         criterios: { publico: f.publico.value, ganhadores: Math.min(20, Math.max(1, Number(f.ganhadores.value) || 1)), cadastroAte: f.cadastroAte.value ? new Date(f.cadastroAte.value + 'T23:59:59').getTime() : null, excluirGanhadores: f.excluirGanhadores.checked } });
       close(); toast(novo ? 'Sorteio criado. Ele já aparece na tela inicial.' : 'Sorteio atualizado.'); onSalvo?.();
     } catch (er) { toast(er.message, true); b.disabled = false; b.textContent = novo ? 'Criar sorteio' : 'Salvar'; }

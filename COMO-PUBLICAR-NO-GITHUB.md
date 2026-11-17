@@ -229,6 +229,17 @@ O prompt pede vídeos com duração média de **30 minutos** (entre 20 e 40). Pa
 
 As aulas vêm sempre na **sequência cronológica do conteúdo**: fundamentos primeiro, depois cada etapa na ordem da lei ou do processo, e por fim os temas especiais. Cada aula parte da anterior, e as séries de um mesmo canal seguem a ordem dos episódios.
 
+### Capa do curso
+
+O prompt também pede à IA a **capa do curso**, coerente com a matéria. A IA define:
+
+- o conceito visual;
+- as cores, sóbrias e combinando com o assunto;
+- uma frase curta;
+- uma ilustração vetorial original, sem texto, logotipos ou brasões.
+
+Ao importar, o portal monta a capa (1280×720) com o título, a área e o nome do portal. Assim todas as capas seguem o mesmo padrão. Se a ilustração não vier, ou vier com problema, o portal usa um símbolo da matéria (balança, algemas, folha, globo, etc.). No editor do curso, o botão **Gerar capa** cria outra capa (escolhendo símbolo, cores e frase), e **Trocar capa** envia uma imagem pronta.
+
 ### Apostilas em PDF geradas com o curso
 
 No **Cadastro rápido de curso**, escolha em **Material em PDF** uma apostila por módulo, uma apostila para o curso todo ou nenhuma. Em **Tamanho**, escolha curta (2 a 3 páginas), média (4 a 6) ou completa (8 a 10). O prompt pede à IA o texto original de cada apostila, com:
@@ -254,6 +265,8 @@ Em **Painel → Sorteios → Novo sorteio**, informe o prêmio, a data e a hora,
 Também dá para limitar a quem se cadastrou até uma data, escolher o número de ganhadores e deixar de fora quem já ganhou antes. Administradores nunca participam, e a assinatura precisa estar ativa no momento do sorteio.
 
 O sorteio aparece na tela inicial (computador e celular) e no Início do aluno, com um relógio contando dias, horas, minutos e segundos. Cada aluno vê se está participando ou o que falta (por exemplo, assinar o plano anual).
+
+**Prêmio em assinatura:** em **Tipo de prêmio**, escolha "Assinatura do portal" e o plano (mensal, semestral, anual ou outro que você cadastrou). Quando o sorteio for realizado, o portal libera o plano automaticamente para cada ganhador e suplente. Se o ganhador já tiver acesso, os dias do prêmio são somados ao que ele tem. A assinatura fica marcada como "prêmio" e não entra na conta dos assinantes pagantes. O ganhador vê na tela inicial até quando o acesso está liberado. Se a liberação falhar (por exemplo, sem internet), o botão **Liberar agora** aparece ao lado do nome do ganhador.
 
 Na hora marcada, clique em **Realizar sorteio**. O portal sorteia de forma aleatória entre quem atende aos critérios naquele momento. Em **Participantes**, veja e baixe a lista (CSV). O resultado fica na tela inicial por 10 dias, só com o nome abreviado (ex.: "Ana S."). Os contatos completos aparecem apenas para você no painel. Se o ganhador não responder, use **Sortear suplente**.
 
