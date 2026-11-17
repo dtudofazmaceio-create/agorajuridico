@@ -223,6 +223,12 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
 
+### Duração e ordem das videoaulas
+
+O prompt pede vídeos com duração média de **30 minutos** (entre 20 e 40). Para mudar, use o campo **Duração média de cada videoaula** (15, 20, 30, 45 ou 60 minutos).
+
+As aulas vêm sempre na **sequência cronológica do conteúdo**: fundamentos primeiro, depois cada etapa na ordem da lei ou do processo, e por fim os temas especiais. Cada aula parte da anterior, e as séries de um mesmo canal seguem a ordem dos episódios.
+
 ### Apostilas em PDF geradas com o curso
 
 No **Cadastro rápido de curso**, escolha em **Material em PDF** uma apostila por módulo, uma apostila para o curso todo ou nenhuma. Em **Tamanho**, escolha curta (2 a 3 páginas), média (4 a 6) ou completa (8 a 10). O prompt pede à IA o texto original de cada apostila, com:
