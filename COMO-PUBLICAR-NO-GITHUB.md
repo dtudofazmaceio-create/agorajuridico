@@ -223,6 +223,18 @@ Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **In
 **Acompanhamento:** na lista de cursos aparecem inscritos, concluintes e certificados. Dentro de cada curso, **Alunos inscritos** mostra o progresso, a melhor nota e o código do certificado de cada aluno.
 
 
+### Compartilhar um curso
+
+Há um botão **Compartilhar** em três lugares: na página do curso, no ícone sobre a capa em **Cursos online** e na lista de **Painel → Cursos**. Ele abre:
+
+- o link do curso, com o botão **Copiar link**;
+- uma mensagem pronta, que você pode editar;
+- **Enviar pelo WhatsApp**, que abre o WhatsApp com a mensagem e o link;
+- **Copiar mensagem**;
+- no celular, **Outros apps**.
+
+Quem abre o link sem conta vê a página do curso (capa, descrição e lista de aulas) com os botões **Criar conta e fazer o curso** e **Já tenho conta**. Depois de criar a conta ou entrar, a pessoa volta direto para o curso e se inscreve. Compartilhe só cursos publicados: rascunhos só abrem para o administrador.
+
 ### Duração e ordem das videoaulas
 
 O prompt pede vídeos com duração média de **30 minutos** (entre 20 e 40). Para mudar, use o campo **Duração média de cada videoaula** (15, 20, 30, 45 ou 60 minutos).
@@ -270,9 +282,12 @@ O sorteio aparece na tela inicial (computador e celular) e no Início do aluno, 
 
 Na hora marcada, clique em **Realizar sorteio**. O portal sorteia de forma aleatória entre quem atende aos critérios naquele momento. Em **Participantes**, veja e baixe a lista (CSV). O resultado fica na tela inicial por 10 dias, só com o nome abreviado (ex.: "Ana S."). Os contatos completos aparecem apenas para você no painel. Se o ganhador não responder, use **Sortear suplente**.
 
-## Cursos: o vídeo continua de onde parou
+## Cursos: a sala de aula
 
-Quando o aluno sai no meio de uma videoaula, o portal guarda o ponto do vídeo, neste aparelho e na conta dele. Ao voltar ao curso, abre a mesma aula a partir desse ponto, com a opção **Assistir do início**. Quando o vídeo termina, a aula é concluída e o ponto salvo é apagado.
+- **Continuar de onde parou (só vídeos):** o portal guarda o ponto do último vídeo assistido. Ao voltar ao curso, abre esse vídeo no ponto em que o aluno parou, com a opção **Assistir do início**. Abrir um PDF não muda esse ponto. Se o último vídeo já terminou, o curso abre na próxima aula pendente, na ordem do curso.
+- **Material de apoio sem parar o vídeo:** abaixo do vídeo, a aba **Material de apoio** lista os PDFs do módulo e os demais do curso. Ao clicar, o PDF abre ao lado (no celular, por cima) e o vídeo continua tocando. O aluno pode **Marcar como lido**, o que conta no progresso. Os PDFs também continuam na lista de aulas, na ordem do curso.
+- **Próximo passo:** quando o vídeo termina, a aula é concluída e aparece o que fazer a seguir: a próxima aula, o material do módulo que ainda não foi lido, a avaliação final ou o certificado.
+- **Minhas anotações:** cada curso tem um bloco de notas na aba **Minhas anotações**. Ele salva sozinho enquanto o aluno digita, e **Marcar a aula** insere o nome da aula e o minuto do vídeo. As anotações ficam só no navegador do aparelho (IndexedDB) e **não vão para a nuvem**, nem para o Gist. Para levar a outro aparelho, use **Baixar (.txt)**. Limpar os dados do navegador apaga as anotações.
 
 ## Leitura protegida e análises
 - **Sem download:** os PDFs são lidos somente dentro do portal, no leitor próprio. Não há botão de baixar, abrir em outra aba ou compartilhar, o clique com o botão direito fica bloqueado, e Ctrl+S e Ctrl+P não salvam nem imprimem o material. Vídeos e áudios enviados também não mostram a opção de download.

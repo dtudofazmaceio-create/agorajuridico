@@ -1253,6 +1253,33 @@ a.step:hover{box-shadow:0 14px 30px -24px rgba(19,32,58,.55)}
 .cp-cv{width:100%;height:auto;aspect-ratio:16/9;border-radius:10px;display:block;background:var(--toga)}
 .imp-capa{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:16px;align-items:start}@media(max-width:640px){.imp-capa{grid-template-columns:1fr}}
 .cur-capa img.capa-auto{position:absolute;inset:0;opacity:0;transition:opacity .25s}.cur-capa img.capa-auto.ok{opacity:1}
+.sh-cur{display:flex;gap:14px;align-items:center}.sh-cur .cur-capa{width:150px;flex:none;border-radius:8px}.sh-cur b{display:block;font-family:var(--serif);font-size:1.1rem}.sh-cur small{color:var(--cinza)}
+.sh-link{display:flex;gap:8px;margin-top:4px}.sh-link input{flex:1;min-width:0}
+.btn.sh-wa{background:#1f8f4e;color:#fff;border-color:#1f8f4e}.btn.sh-wa:hover{background:#18763f;color:#fff}
+.cur-card{position:relative}.cur-sh{position:absolute;top:10px;right:10px;z-index:2;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--toga);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 16px -8px rgba(0,0,0,.5);opacity:.92}.cur-sh:hover{opacity:1;background:#fff;color:var(--rubi)}
+.cur-abas{margin-top:18px;overflow:hidden}
+.cur-tabs{display:flex;gap:2px;border-bottom:1px solid var(--linha);padding:0 10px;overflow-x:auto}
+.cur-tabs button{display:inline-flex;gap:7px;align-items:center;background:none;border:0;border-bottom:3px solid transparent;padding:14px 12px 11px;font:600 .9rem var(--sans,inherit);color:var(--cinza);cursor:pointer;white-space:nowrap}
+.cur-tabs button.on{color:var(--toga);border-bottom-color:var(--rubi)}.cur-tabs button:hover{color:var(--toga)}
+.cur-tabs .cnt{background:var(--latao-bg);color:var(--toga);border-radius:20px;padding:1px 8px;font-size:.75rem}
+.cur-tab-b{padding:18px 20px}
+.cur-mat{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:#fff;border:1px solid var(--linha);border-radius:10px;padding:11px 14px;margin-bottom:8px;cursor:pointer;font:inherit;color:inherit}
+.cur-mat:hover{border-color:var(--latao);background:var(--latao-bg)}.cur-mat .ca-t{flex:1;min-width:0}.cur-mat b{display:block}.cur-mat small{color:var(--cinza)}
+.cur-mat .ca-ic{width:32px;height:32px;border-radius:8px;background:var(--latao-bg);color:var(--toga);display:grid;place-items:center;flex:none}.cur-mat.ok .ca-ic{background:var(--ok-bg);color:var(--ok)}
+.cur-fim{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:14px 18px;margin-top:16px;border-left:4px solid var(--ok)}
+.cur-fim>svg{color:var(--ok);flex:none}.cur-fim>div{flex:1;min-width:200px}.cur-fim>div>b{display:block}.cur-fim small{color:var(--cinza)}
+.notas-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.notas-st{display:inline-flex;gap:6px;align-items:center;font-size:.82rem;color:var(--cinza)}.notas-st.ok{color:var(--ok)}.notas-st.err{color:var(--rubi)}
+.notas-txt{width:100%;min-height:260px;resize:vertical;font:1rem/1.6 var(--sans,inherit);padding:14px 16px;border:1px solid var(--linha);border-radius:10px;background:#fffdf7;background-image:repeating-linear-gradient(#fffdf7 0 31px,#efe8d6 31px 32px);background-attachment:local;line-height:32px}
+.notas-txt:focus{outline:2px solid var(--latao);border-color:var(--latao)}
+.cur-gaveta{position:fixed;top:0;right:0;bottom:0;width:min(760px,52vw);background:#fff;z-index:900;display:flex;flex-direction:column;box-shadow:-24px 0 50px -30px rgba(19,32,58,.7);animation:gv-in .2s ease}
+@keyframes gv-in{from{transform:translateX(30px);opacity:0}}
+.gv-h{display:flex;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--linha);background:var(--toga);color:#fff}
+.gv-h>div{flex:1;min-width:0}.gv-h small{display:flex;gap:5px;align-items:center;color:var(--latao-2);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em}.gv-h b{display:block;font-family:var(--serif);font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gv-h .icon-btn{color:#fff}.gv-h .btn.ghost{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.25)}
+.gv-b{flex:1;min-height:0;overflow:auto;background:#1b2436}.gv-b .leitor{height:100%;border-radius:0;margin:0}
+body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sala-g{grid-template-columns:minmax(0,1fr)}body.com-gaveta .cur-sala{max-width:none}body.com-gaveta .cur-side{display:none}
+@media (max-width:900px){.cur-gaveta{width:100%;top:auto;height:88vh;border-radius:16px 16px 0 0}body.com-gaveta .cur-sala{padding-right:0}}
 </style>
 </head>
 <body>
@@ -1518,6 +1545,8 @@ const I = {
   phone: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>',
   monitor: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  whats: '<path d="M3.5 20.5l1.3-4.6A8.5 8.5 0 1 1 8 19.2l-4.5 1.3z"/><path d="M9 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.6l-.5.6c-.1.2-.1.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.6-.5c.2-.1.4-.2.6-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.4-3-.3a9 9 0 0 1-4.2-4.2c-.6-1.4-.6-2.4-.3-3z"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
   algemas: '<circle cx="7" cy="15" r="4"/><circle cx="17" cy="15" r="4"/><path d="M7 11V8.5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2V11M10 6.5V4.5h4v2"/>',
   dinheiro: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v.01M18 14.5v.01"/>',
   folha: '<path d="M5 19C5 10 11 5 20 4c0 9-5 15-13 15H5z"/><path d="M5 19l8-8"/>',
@@ -2127,6 +2156,14 @@ async function resgatarCodigo(code) {
   await store.updateUser(u.id, { codigosUsados: [...usados, c.id] });
   return c;
 }
+/* destino guardado para depois de entrar ou criar a conta (ex.: link de curso compartilhado) */
+document.addEventListener('click', async ev => {
+  const b = ev.target.closest?.('[data-share-curso]'); if (!b) return;
+  ev.preventDefault(); ev.stopPropagation();
+  try { const c = await store.get('cursos', b.dataset.shareCurso); if (c) compartilharCurso(c); } catch (e) { toast(e.message, true); }
+}, true);
+const guardarVolta = h => { try { if (h && !/^#\/(entrar|cadastro|sair)?$/.test(h)) sessionStorage.setItem('agora-volta', h); } catch {} };
+const irDepoisDeEntrar = padrao => { let h = null; try { h = sessionStorage.getItem('agora-volta'); sessionStorage.removeItem('agora-volta'); } catch {} if (h) location.hash = h; else go(padrao); };
 async function copiar(txt) { try { await navigator.clipboard.writeText(txt); toast('Copiado!'); } catch { toast('Selecione o texto e copie manualmente.', true); } }
 const CAT_DATA = ['lei', 'noticia', 'entrevista'];
 const CAT_INFO = ['noticia', 'entrevista', 'lei'];
@@ -2158,7 +2195,7 @@ const ROUTES = {
   quiz:          { view: viewQuiz, auth: true, ativo: true },
   academico:     { view: viewAcademico, auth: true, ativo: true },
   cursos:        { view: viewCursos, auth: true },
-  curso:         { view: viewCurso, auth: true },
+  curso:         { view: viewCurso },
   artigo:        { view: viewArtigo, auth: true, ativo: true },
   escrever:      { view: viewEscrever, avulsa: true },
   'seja-colunista': { view: viewSejaColunista, avulsa: true },
@@ -2176,7 +2213,7 @@ async function render() {
   const r = ROUTES[name] || ROUTES[''];
   try { S.user = await store.currentUser(); } catch (e) { console.error(e); S.user = null; }
   if (S.user && S.sessaoReg !== S.user.id) { S.sessaoReg = S.user.id; registrar('sessao'); }
-  if (r.auth && !S.user) return go('entrar');
+  if (r.auth && !S.user) { guardarVolta(location.hash); return go('entrar'); }
   if (r.guest && S.user) return go('painel');
   if (name === '' && S.user) return go('painel');
   if (r.admin && S.user?.role !== 'admin') return go('painel');
@@ -2512,7 +2549,7 @@ async function viewLogin(main) {
   $('#f').onsubmit = async e => {
     e.preventDefault(); const fd = new FormData(e.target), b = $('button', e.target);
     b.disabled = true;
-    try { await store.login(fd.get('email'), fd.get('senha')); toast('Bem-vindo(a) de volta!'); go('painel'); }
+    try { await store.login(fd.get('email'), fd.get('senha')); toast('Bem-vindo(a) de volta!'); irDepoisDeEntrar('painel'); }
     catch (err) { $('#err').textContent = err.message; $('#err').classList.remove('hidden'); b.disabled = false; }
   };
 }
@@ -2538,7 +2575,7 @@ async function viewCadastro(main) {
     const dt = diasTeste();
     if (dt) d.assinatura = { status: 'ativa', tipo: 'teste', inicio: Date.now(), validade: Date.now() + dt * DAY };
     delete d.senha2; delete d.termos;
-    try { await store.register(d); toast(dt ? `Conta criada! Aproveite seus ${dt} dias grátis.` : 'Conta criada! Agora ative sua assinatura.'); go(dt ? 'painel' : 'assinar'); }
+    try { await store.register(d); toast(dt ? `Conta criada! Aproveite seus ${dt} dias grátis.` : 'Conta criada! Agora ative sua assinatura.'); dt ? irDepoisDeEntrar('painel') : go('assinar'); }
     catch (err) { showErr(err.message); b.disabled = false; }
   };
 }
@@ -4838,7 +4875,7 @@ function metaCurso(c) {
 }
 function cardCurso(c, p) {
   const pr = progressoCurso(c, p);
-  return `<a class="card cur-card" href="#/curso/${encodeURIComponent(c.id)}">${capaCurso(c)}
+  return `<a class="card cur-card" href="#/curso/${encodeURIComponent(c.id)}">${capaCurso(c)}<button type="button" class="cur-sh" data-share-curso="${esc(c.id)}" title="Compartilhar" aria-label="Compartilhar curso">${ic('share', 16)}</button>
     <div class="cur-card-b"><span class="eyebrow">${esc(c.area || 'Curso online')}</span>${c.ativo === false ? ' <span class="badge">Rascunho</span>' : ''}
       <h3>${esc(c.titulo)}</h3>${c.subtitulo ? `<p>${esc(c.subtitulo)}</p>` : ''}
       <div class="cur-meta">${metaCurso(c)}</div>
@@ -4872,7 +4909,8 @@ async function viewCursos(main, _, q) {
 /* --------------------------- Página do curso --------------------------- */
 async function viewCurso(main, id, q) {
   const c = await store.get('cursos', decodeURIComponent(id || ''));
-  if (!c || (c.ativo === false && S.user.role !== 'admin')) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Curso não encontrado</h3><p>Ele pode ter sido retirado do catálogo.</p><a class="btn ghost" href="#/cursos">Ver os cursos</a></div></div>`; return; }
+  if (!c || (c.ativo === false && S.user?.role !== 'admin')) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Curso não encontrado</h3><p>Ele pode ter sido retirado do catálogo.</p><a class="btn ghost" href="#/cursos">Ver os cursos</a></div></div>`; return; }
+  if (!S.user) { guardarVolta(location.hash); return paginaCurso(main, c); }
   const u = await store.getUser(S.user.id), p = u?.cursos?.[c.id];
   marcarNav('#/cursos', '#/painel');
   if (!p) return paginaCurso(main, c);
@@ -4890,16 +4928,18 @@ function listaAulasHTML(c, p, atual, link = true) {
   return html || '<p class="small muted" style="padding:10px">Nenhuma aula cadastrada ainda.</p>';
 }
 function paginaCurso(main, c) {
-  const pode = podeVerCurso(c), nA = aulasDe(c).length;
+  const vis = !S.user, pode = !vis && podeVerCurso(c), nA = aulasDe(c).length;
   main.innerHTML = `<div class="page cur-pag">
-    <a href="#/cursos" class="small cur-voltar">${ic('back', 14)} Cursos online</a>
+    ${vis ? '' : `<a href="#/cursos" class="small cur-voltar">${ic('back', 14)} Cursos online</a>`}
     <div class="cur-hero card">${capaCurso(c, 'grande')}
       <div class="cur-hero-b"><span class="eyebrow">${esc(c.area || 'Curso online')}</span><h1>${esc(c.titulo)}</h1>${c.subtitulo ? `<p class="lead">${esc(c.subtitulo)}</p>` : ''}
         <div class="cur-meta">${metaCurso(c)}</div>
         ${c.instrutor ? `<p class="small" style="margin:12px 0 0">${ic('user', 13)} Com <b>${esc(c.instrutor)}</b></p>` : ''}
-        <div class="actions" style="justify-content:flex-start;margin-top:18px">${pode
+        <div class="actions" style="justify-content:flex-start;margin-top:18px">${vis
+          ? `<a class="btn primary" href="#/cadastro">${ic('user', 16)} Criar conta e fazer o curso</a><a class="btn ghost" href="#/entrar">Já tenho conta</a>`
+          : pode
           ? `<button class="btn primary" id="cur-insc" ${nA ? '' : 'disabled'}>${ic('check', 16)} ${nA ? 'Inscrever-se e começar' : 'Em breve'}</button>`
-          : `<a class="btn gold" href="#/assinar">${ic('lock', 15)} Curso para assinantes: ver planos</a>`}</div>
+          : `<a class="btn gold" href="#/assinar">${ic('lock', 15)} Curso para assinantes: ver planos</a>`}<button type="button" class="btn ghost" id="cur-share">${ic('share', 15)} Compartilhar</button></div>
         <p class="hint" style="margin-top:10px">${c.acesso === 'assinantes' ? 'Disponível para alunos com assinatura ativa.' : 'Gratuito para alunos cadastrados no portal.'}</p></div></div>
     <div class="cur-pag-g">
       <div>${c.descricao ? `<div class="card pad article"><h3>Sobre o curso</h3><div class="body">${paras(c.descricao)}</div></div>` : ''}
@@ -4908,6 +4948,7 @@ function paginaCurso(main, c) {
         <p>${temAvaliacao(c) ? `Conclua todas as aulas e faça a avaliação final. Com aproveitamento <b>acima de ${notaCurso(c)}%</b>, você baixa o certificado em PDF, com carga horária de ${cargaCurso(c)} horas e código de verificação.` : `Conclua todas as aulas para baixar o certificado em PDF, com carga horária de ${cargaCurso(c)} horas e código de verificação.`}</p>
         <p class="small muted" style="margin:0">Emitido por ${esc(inst().nome)}.</p></aside></div></div>`;
   hidratarImagens(main);
+  $('#cur-share').onclick = () => compartilharCurso(c);
   const b = $('#cur-insc');
   if (b) b.onclick = async () => {
     b.disabled = true; b.textContent = 'Inscrevendo…';
@@ -4916,11 +4957,94 @@ function paginaCurso(main, c) {
   };
 }
 
+
+/* ------------------------- Compartilhar curso ------------------------- */
+const linkCurso = c => `${linkAlunos()}#/curso/${encodeURIComponent(c.id)}`;
+function textoCompartilharCurso(c) {
+  const v = aulasDe(c).filter(a => a.tipo === 'video').length, pdf = aulasDe(c).length - v;
+  return [`📚 *${c.titulo}*`, c.subtitulo || '', '',
+    `Curso online ${c.acesso === 'assinantes' ? 'para assinantes' : 'gratuito para alunos cadastrados'} no portal ${S.config.nomePortal}:`,
+    `▶️ ${v} videoaula${v === 1 ? '' : 's'}${pdf ? ` e ${pdf} ${pdf === 1 ? 'material' : 'materiais'} em PDF` : ''} · ${cargaCurso(c)}h`, `🎓 Certificado de conclusão`, '', `Inscreva-se: ${linkCurso(c)}`].filter((l, i, a) => l !== '' || a[i - 1] !== '').join('\n');
+}
+function compartilharCurso(c) {
+  const link = linkCurso(c), publico = enderecoPublico(link);
+  const { el } = modal('Compartilhar curso', `<div class="sh-cur">${capaCurso(c, 'mini')}<div><b>${esc(c.titulo)}</b><small>${esc(c.area || 'Curso online')}</small></div></div>
+    ${c.ativo === false ? '<div class="demo-hint" style="margin:12px 0">Este curso ainda é um <b>rascunho</b>: só você consegue abrir o link. Publique antes de divulgar.</div>' : ''}
+    ${publico ? '' : '<div class="demo-hint" style="margin:12px 0">Você está usando o portal neste computador (endereço local): o link só funciona aqui. Compartilhe a partir do endereço publicado do portal.</div>'}
+    <div class="form"><label>Link do curso<div class="sh-link"><input id="sh-url" readonly value="${esc(link)}"><button type="button" class="btn primary sm" id="sh-cp">${ic('link', 14)} Copiar link</button></div></label>
+    <label>Mensagem<textarea id="sh-msg" rows="8">${esc(textoCompartilharCurso(c))}</textarea><span class="hint">Edite à vontade antes de enviar. Quem abrir o link vê a página do curso e pode criar a conta para se inscrever.</span></label></div>
+    <div class="actions" style="justify-content:flex-start"><a class="btn sh-wa" id="sh-wa" target="_blank" rel="noopener">${ic('whats', 17)} Enviar pelo WhatsApp</a><button type="button" class="btn ghost" id="sh-cpm">${ic('file', 15)} Copiar mensagem</button>${navigator.share ? `<button type="button" class="btn ghost" id="sh-mais">${ic('share', 15)} Outros apps</button>` : ''}</div>`, { wide: true });
+  hidratarImagens(el);
+  const msg = $('#sh-msg', el), wa = $('#sh-wa', el);
+  const atual = () => { wa.href = 'https://wa.me/?text=' + encodeURIComponent(msg.value); };
+  msg.oninput = atual; atual();
+  $('#sh-url', el).onclick = e => e.target.select();
+  $('#sh-cp', el).onclick = () => copiar(link);
+  $('#sh-cpm', el).onclick = () => copiar(msg.value);
+  const mais = $('#sh-mais', el); if (mais) mais.onclick = async () => { try { await navigator.share({ title: c.titulo, text: msg.value.replace(link, '').trim(), url: link }); } catch {} };
+}
+
+/* ------------------- Anotações do curso (só neste aparelho) -------------------
+   Banco IndexedDB próprio ("agora-notas"), separado dos dados do portal: as anotações
+   nunca vão para a nuvem, nem no modo Gist. Uma anotação por aluno e por curso.
+   ------------------------------------------------------------------------------ */
+const NotasDB = (() => {
+  let dbp = null;
+  const abrir = () => dbp || (dbp = new Promise((ok, erro) => {
+    if (!('indexedDB' in window)) return erro(new Error('Este navegador não guarda anotações.'));
+    const q = indexedDB.open('agora-notas', 1);
+    q.onupgradeneeded = () => { if (!q.result.objectStoreNames.contains('notas')) q.result.createObjectStore('notas', { keyPath: 'id' }); };
+    q.onsuccess = () => ok(q.result); q.onerror = () => { dbp = null; erro(q.error || new Error('Não foi possível abrir as anotações.')); };
+  }));
+  const tx = async (modo, fn) => { const db = await abrir(); return new Promise((ok, erro) => { const t = db.transaction('notas', modo), st = t.objectStore('notas'); const r = fn(st); t.oncomplete = () => ok(r?.result); t.onerror = () => erro(t.error); }); };
+  return {
+    chave: (uid, cid) => `${uid}::${cid}`,
+    get: id => tx('readonly', st => st.get(id)),
+    put: obj => tx('readwrite', st => st.put(obj))
+  };
+})();
+function notasHTML() {
+  return `<div class="notas">
+    <div class="notas-bar"><span class="notas-st" id="nt-st">${ic('lock', 13)} Salvas só neste aparelho</span>
+      <div class="acts"><button type="button" class="btn ghost sm" id="nt-marca">${ic('clock', 14)} Marcar a aula</button><button type="button" class="btn ghost sm" id="nt-baixar">${ic('download', 14)} Baixar (.txt)</button></div></div>
+    <textarea id="nt-txt" class="notas-txt" rows="12" maxlength="200000" placeholder="Escreva aqui suas anotações deste curso: dúvidas, artigos de lei, exemplos, o que cair na prova… Elas são salvas sozinhas, enquanto você digita."></textarea>
+    <p class="hint" style="margin:6px 0 0">Suas anotações ficam guardadas no navegador deste aparelho e não são enviadas para a internet. Para levar para outro aparelho, use <b>Baixar (.txt)</b>.</p></div>`;
+}
+async function ligarNotas(root, { c, aula, tempo }) {
+  const ta = $('#nt-txt', root), st = $('#nt-st', root); if (!ta) return;
+  const id = NotasDB.chave(S.user.id, c.id);
+  let reg = null;
+  try { reg = await NotasDB.get(id); } catch (e) { st.innerHTML = `${ic('lock', 13)} ${esc(e.message)}`; ta.disabled = true; return; }
+  ta.value = reg?.texto || '';
+  const mostrar = (txt, cls = '') => { st.className = 'notas-st ' + cls; st.innerHTML = txt; };
+  if (reg?.em) mostrar(`${ic('check', 13)} Salvas neste aparelho · ${new Date(reg.em).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}`);
+  let t = null, pend = false;
+  const salvar = async () => {
+    clearTimeout(t); if (!pend) return; pend = false;
+    try { const em = Date.now(); await NotasDB.put({ id, usuario: S.user.id, curso: c.id, titulo: c.titulo, texto: ta.value, em }); mostrar(`${ic('check', 13)} Salvas neste aparelho · ${new Date(em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`, 'ok'); }
+    catch (e) { pend = true; mostrar(`${ic('lock', 13)} Não foi possível salvar: ${esc(e.message)}`, 'err'); }
+  };
+  ta.addEventListener('input', () => { pend = true; mostrar('Salvando…'); clearTimeout(t); t = setTimeout(salvar, 600); });
+  ta.addEventListener('blur', salvar);
+  S.limpar.push(() => salvar());
+  window.addEventListener('pagehide', salvar, { once: true });
+  $('#nt-marca', root).onclick = () => {
+    const s = tempo?.(), hh = s != null && s > 0 ? ` · ${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}` : '';
+    const linha = `[${aula ? aula.titulo : c.titulo}${hh}] `;
+    const ini = ta.selectionStart ?? ta.value.length, antes = ta.value.slice(0, ini), pre = antes && !antes.endsWith('\n') ? '\n\n' : '';
+    ta.setRangeText(pre + linha, ini, ta.selectionEnd ?? ini, 'end'); ta.focus(); pend = true; salvar();
+  };
+  $('#nt-baixar', root).onclick = () => {
+    const txt = `Anotações: ${c.titulo}\n${S.config.nomePortal} · ${new Date().toLocaleString('pt-BR')}\n\n${ta.value}`;
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + txt], { type: 'text/plain;charset=utf-8' })); a.download = nomeArquivo('anotacoes', c.titulo).replace(/\.png$/, '.txt'); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  };
+}
+
 /* ------------------------------ Sala de aula ------------------------------ */
 async function salaDeAula(main, c, p, alvo) {
   const aulas = aulasDe(c);
-  // sem aula indicada: volta para a última aula vista (se ainda não concluída) ou para a primeira pendente
-  const ultLocal = lsGet(`agora-ult-${S.user.id}-${c.id}`), ultVista = [ultLocal, p.ultimaVista].find(id => id && aulas.some(a => a.id === id) && !p.concluidas?.[id]);
+  // sem aula indicada: volta para o último VÍDEO assistido (se ainda não terminou) ou para a próxima aula pendente, na ordem do curso
+  const ultLocal = lsGet(`agora-ult-${S.user.id}-${c.id}`), ultVista = [ultLocal, p.ultimaVista].find(id => id && aulas.some(a => a.id === id && a.tipo === 'video') && !p.concluidas?.[id]);
   let atual = alvo === 'avaliacao' || alvo === 'certificado' ? alvo : (aulas.find(a => a.id === alvo) || aulas.find(a => a.id === ultVista) || aulas.find(a => !p.concluidas?.[a.id]) || null)?.id || (temAvaliacao(c) && !p.aprovado ? 'avaliacao' : 'certificado');
   const pr = () => progressoCurso(c, p);
   main.innerHTML = `<div class="page cur-sala">
@@ -4951,7 +5075,11 @@ async function salaDeAula(main, c, p, alvo) {
   if (atual === 'avaliacao') { desenharLado(); return avaliacaoCurso(box, c, () => p, np => { p = np; desenharLado(); }); }
   if (atual === 'certificado') { desenharLado(); return certificadoCurso(box, c, p, pr()); }
   const i = aulas.findIndex(a => a.id === atual), a = aulas[i], prox = aulas[i + 1], ant = aulas[i - 1];
-  lsSet(`agora-ult-${S.user.id}-${c.id}`, a.id);
+  if (a.tipo === 'video') lsSet(`agora-ult-${S.user.id}-${c.id}`, a.id);   // material em PDF não muda o ponto de retomada
+  const tempoVideo = { t: 0 };
+  // materiais de apoio: os PDFs do mesmo módulo primeiro, depois os demais do curso
+  const pdfs = aulas.filter(x => x.tipo === 'pdf' && x.id !== a.id);
+  const doModulo = pdfs.filter(x => (x.modulo || '') === (a.modulo || '')), outros = pdfs.filter(x => !doModulo.includes(x));
   // posição do vídeo: a mais recente entre este aparelho e a conta do aluno
   const kPos = `agora-pos-${S.user.id}-${a.id}`;
   let posL = null; try { posL = JSON.parse(lsGet(kPos) || 'null'); } catch {}
@@ -4967,8 +5095,52 @@ async function salaDeAula(main, c, p, alvo) {
       <button class="btn ${p.concluidas?.[a.id] ? 'ghost' : 'primary'}" id="cur-ok">${p.concluidas?.[a.id] ? `${ic('check', 16)} Aula concluída` : `${ic('check', 16)} Concluir aula${prox ? ' e seguir' : ''}`}</button>
       <a class="btn ghost" href="${depois}">${prox ? 'Próxima' : temAvaliacao(c) ? 'Avaliação final' : 'Certificado'} ${ic('arrow', 15)}</a></div>
     ${a.tipo === 'video' ? `<p class="hint cur-retoma" style="text-align:center;margin-top:8px">${inicio ? `${ic('play', 13)} Continuando de onde você parou (${mmss(inicio)}). <button type="button" class="btn-link" id="cur-zero">Assistir do início</button> · ` : ''}A aula é marcada como concluída sozinha quando o vídeo termina.</p>` : ''}
-    ${a.descricao ? `<div class="card pad article" style="margin-top:18px"><h4>Sobre esta aula</h4><div class="body">${paras(a.descricao)}</div></div>` : ''}`;
+    <div id="cur-fim"></div>
+    <div class="card cur-abas"><div class="cur-tabs" role="tablist">
+      <button type="button" role="tab" data-tab="sobre">${ic('book', 15)} Sobre a aula</button>
+      ${pdfs.length ? `<button type="button" role="tab" data-tab="mat">${ic('file', 15)} Material de apoio <span class="cnt">${pdfs.length}</span></button>` : ''}
+      <button type="button" role="tab" data-tab="notas">${ic('pen', 15)} Minhas anotações</button></div>
+      <div class="cur-tab-b" data-b="sobre">${a.descricao ? `<div class="article"><div class="body">${paras(a.descricao)}</div></div>` : '<p class="muted" style="margin:0">Esta aula não tem descrição.</p>'}
+        ${a.tipo === 'video' && doModulo.length ? `<p class="small" style="margin:14px 0 0">${ic('file', 13)} Este módulo tem material de apoio em PDF. Você pode abrir ao lado <b>sem parar o vídeo</b>, na aba Material de apoio.</p>` : ''}</div>
+      ${pdfs.length ? `<div class="cur-tab-b hidden" data-b="mat"><div id="cur-mats"></div></div>` : ''}
+      <div class="cur-tab-b hidden" data-b="notas">${notasHTML()}</div></div>`;
   desenharLado();
+  // abas da sala de aula
+  const abrirAba = k => { $$('.cur-tabs [data-tab]', box).forEach(b => b.classList.toggle('on', b.dataset.tab === k)); $$('.cur-tab-b', box).forEach(d => d.classList.toggle('hidden', d.dataset.b !== k)); try { sessionStorage.setItem('agora-aba-curso', k); } catch {} };
+  $$('.cur-tabs [data-tab]', box).forEach(b => b.onclick = () => abrirAba(b.dataset.tab));
+  let abaIni = null; try { abaIni = sessionStorage.getItem('agora-aba-curso'); } catch {}
+  abrirAba($(`.cur-tabs [data-tab="${abaIni}"]`, box) ? abaIni : 'sobre');
+  ligarNotas(box, { c, aula: a, tempo: () => a.tipo === 'video' ? tempoVideo.t : null });
+  // material de apoio: abre numa gaveta ao lado, sem sair da aula (o vídeo continua)
+  const desenharMats = () => {
+    const el = $('#cur-mats', box); if (!el) return;
+    const item = m => `<button type="button" class="cur-mat ${p.concluidas?.[m.id] ? 'ok' : ''}" data-mat="${esc(m.id)}"><span class="ca-ic">${p.concluidas?.[m.id] ? ic('check', 15) : ic('file', 15)}</span><span class="ca-t"><b>${esc(m.titulo)}</b><small>${m.modulo ? esc(m.modulo) + ' · ' : ''}${m.paginas ? m.paginas + ' página' + (m.paginas > 1 ? 's' : '') + ' · ' : ''}${p.concluidas?.[m.id] ? 'Lido' : 'Abrir ao lado'}</small></span>${ic('arrow', 15)}</button>`;
+    el.innerHTML = (doModulo.length ? `<p class="small muted" style="margin:0 0 8px">${a.modulo ? `Do ${esc(a.modulo)}` : 'Desta parte do curso'}</p>${doModulo.map(item).join('')}` : '')
+      + (outros.length ? `<p class="small muted" style="margin:${doModulo.length ? '16px' : '0'} 0 8px">Outros materiais do curso</p>${outros.map(item).join('')}` : '');
+  };
+  desenharMats();
+  box.addEventListener('click', ev => { const b = ev.target.closest('[data-mat]'); if (b) abrirMaterial(aulas.find(x => x.id === b.dataset.mat)); });
+  const abrirMaterial = async m => {
+    if (!m) return;
+    $('.cur-gaveta')?.remove();
+    const g = document.createElement('div'); g.className = 'cur-gaveta'; g.setAttribute('role', 'dialog'); g.setAttribute('aria-label', m.titulo);
+    g.innerHTML = `<div class="gv-h"><div><small>${a.tipo === 'video' ? `${ic('play', 12)} O vídeo continua tocando` : 'Material de apoio'}</small><b>${esc(m.titulo)}</b></div>
+      <button type="button" class="btn ${p.concluidas?.[m.id] ? 'ghost' : 'primary'} sm" id="gv-lido" ${p.concluidas?.[m.id] ? 'disabled' : ''}>${ic('check', 14)} ${p.concluidas?.[m.id] ? 'Lido' : 'Marcar como lido'}</button>
+      <button type="button" class="icon-btn" id="gv-x" aria-label="Fechar o material">${ic('x', 20)}</button></div><div class="gv-b" id="gv-b"><div class="loading">Abrindo o PDF…</div></div>`;
+    document.body.appendChild(g); document.body.classList.add('com-gaveta');
+    const fechar = () => { g.remove(); document.body.classList.remove('com-gaveta'); };
+    $('#gv-x', g).onclick = fechar; S.limpar.push(fechar);
+    $('#gv-lido', g).onclick = async ev => { const b = ev.currentTarget; b.disabled = true; try { await concluir(m.id); b.className = 'btn ghost sm'; b.innerHTML = `${ic('check', 14)} Lido`; desenharMats(); toast('Material marcado como lido.'); } catch (e) { b.disabled = false; toast(e.message, true); } };
+    try { const src = await store.fileURL(m.fileRef, 'application/pdf'); await montarLeitor($('#gv-b', g), src, { id: 'curso-' + m.id, titulo: m.titulo, disciplina: c.area || '' }); }
+    catch (e) { console.warn(e); $('#gv-b', g).innerHTML = '<div class="card empty"><p>Não foi possível abrir o PDF.</p></div>'; }
+  };
+  // próximo passo da sala de aula, mostrado quando a aula termina
+  const proximoPasso = () => {
+    const el = $('#cur-fim'); if (!el) return;
+    const matPend = a.tipo === 'video' && !aulas.slice(i + 1).some(x => x.tipo === 'video' && (x.modulo || '') === (a.modulo || '')) ? doModulo.find(x => !p.concluidas?.[x.id]) : null;
+    el.innerHTML = `<div class="cur-fim card">${ic('check', 20)}<div><b>Aula concluída!</b><small>${matPend ? `Antes de seguir, leia o material de apoio do módulo: <b>${esc(matPend.titulo)}</b>.` : prox ? `A seguir: <b>${esc(prox.titulo)}</b>${prox.tipo === 'pdf' ? ' (material em PDF)' : ''}.` : temAvaliacao(c) ? 'Você assistiu a todas as aulas. Agora é a avaliação final.' : 'Você concluiu todas as aulas do curso.'}</small></div>
+      ${matPend ? `<button type="button" class="btn ghost sm" data-mat="${esc(matPend.id)}">${ic('file', 14)} Abrir o material</button>` : ''}<a class="btn primary sm" href="${depois}">${prox ? 'Próxima aula' : temAvaliacao(c) ? 'Fazer a avaliação' : 'Ver certificado'} ${ic('arrow', 14)}</a></div>`;
+  };
   $('#cur-ok').onclick = async () => {
     const b = $('#cur-ok'); b.disabled = true;
     try { await concluir(a.id); if (prox || temAvaliacao(c) || !p.aprovado) go(depois.slice(2)); else go(`curso/${c.id}?aula=certificado`); }
@@ -5003,7 +5175,7 @@ async function salaDeAula(main, c, p, alvo) {
       if (!/youtube\.com$/.test(new URL(ev.origin || 'http://x').hostname) || ev.source !== yt.contentWindow) return;
       let d; try { d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data; } catch { return; }
       if (d?.event === 'infoDelivery' && d.info) {
-        if (typeof d.info.currentTime === 'number') cur = d.info.currentTime;
+        if (typeof d.info.currentTime === 'number') { cur = d.info.currentTime; tempoVideo.t = cur; }
         if (d.info.duration) dur = d.info.duration;
         if (typeof d.info.playerState === 'number') { const antes = estadoYT; estadoYT = d.info.playerState; if (estadoYT === 2 && antes !== 2) salvarPos(true); }
         if (Date.now() - ultLocal > 4000) { ultLocal = Date.now(); salvarPos(false); }
@@ -5011,7 +5183,7 @@ async function salaDeAula(main, c, p, alvo) {
       if (d?.event === 'onStateChange') { estadoYT = d.info; if (d.info === 2) salvarPos(true); }
       const fim = (d?.event === 'onStateChange' && d.info === 0) || (d?.event === 'infoDelivery' && d.info?.playerState === 0);
       if (fim) lsSet(kPos, JSON.stringify({ t: 0, at: Date.now() }));
-      if (fim && !p.concluidas?.[a.id]) { try { await concluir(a.id); const b = $('#cur-ok'); if (b) { b.className = 'btn ghost'; b.innerHTML = `${ic('check', 16)} Aula concluída`; } toast('Aula concluída.'); } catch (e) { console.warn(e); } }
+      if (fim && !p.concluidas?.[a.id]) { try { await concluir(a.id); const b = $('#cur-ok'); if (b) { b.className = 'btn ghost'; b.innerHTML = `${ic('check', 16)} Aula concluída`; } proximoPasso(); } catch (e) { console.warn(e); } }
     };
     window.addEventListener('message', msg); S.limpar.push(() => window.removeEventListener('message', msg));
   }
@@ -5111,7 +5283,7 @@ async function admCursos(box, users) {
         <td class="small">${temAvaliacao(c) ? `${c.avaliacao.total} questões<div class="muted">nota acima de ${notaCurso(c)}%</div>` : '<span class="badge warn">Sem avaliação</span>'}</td>
         <td>${e.ins}<div class="small muted">${e.conc} concluíram</div></td><td>${e.cert}</td>
         <td>${c.ativo === false ? '<span class="badge">Rascunho</span>' : '<span class="badge ok">Publicado</span>'}</td>
-        <td><div class="acts"><a class="btn primary sm" href="#/admin/cursos?curso=${encodeURIComponent(c.id)}">${ic('edit', 14)} Editar</a><a class="btn ghost sm" href="#/curso/${encodeURIComponent(c.id)}">${ic('eye', 14)} Ver</a><button class="btn danger sm" data-cdel="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
+        <td><div class="acts"><a class="btn primary sm" href="#/admin/cursos?curso=${encodeURIComponent(c.id)}">${ic('edit', 14)} Editar</a><button type="button" class="btn ghost sm" data-share-curso="${esc(c.id)}" title="Compartilhar">${ic('share', 14)}</button><a class="btn ghost sm" href="#/curso/${encodeURIComponent(c.id)}">${ic('eye', 14)} Ver</a><button class="btn danger sm" data-cdel="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></div></td></tr>`; }).join('')}</table></div>`
     : `<div class="card empty" style="margin-top:18px">${ART.medal('grad')}<h3>Nenhum curso cadastrado</h3><p>Crie o primeiro curso e adicione as aulas em vídeo e os PDFs.</p><div class="actions" style="justify-content:center"><button class="btn primary" id="cs-imp2">${ic('spark', 15)} Cadastro rápido com IA</button><button class="btn ghost" id="cs-arq2">${ic('download', 15)} Importar arquivo JSON</button><button class="btn ghost" id="cs-novo2">${ic('plus', 15)} Novo curso</button></div></div>`}`;
   hidratarImagens(box);
   const bcp = $('#cs-capas', box); if (bcp) bcp.onclick = async () => {
