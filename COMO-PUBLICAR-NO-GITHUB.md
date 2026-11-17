@@ -238,7 +238,7 @@ O prompt também pede à IA a **capa do curso**, coerente com a matéria. A IA d
 - uma frase curta;
 - uma ilustração vetorial original, sem texto, logotipos ou brasões.
 
-Ao importar, o portal monta a capa (1280×720) com o título, a área e o nome do portal. Assim todas as capas seguem o mesmo padrão. Se a ilustração não vier, ou vier com problema, o portal usa um símbolo da matéria (balança, algemas, folha, globo, etc.). No editor do curso, o botão **Gerar capa** cria outra capa (escolhendo símbolo, cores e frase), e **Trocar capa** envia uma imagem pronta.
+Ao importar, o portal monta a capa (1280×720) com o título, a área e o nome do portal. Assim todas as capas seguem o mesmo padrão. Se a ilustração não vier, ou vier com problema, o portal usa um símbolo da matéria (balança, algemas, folha, globo, etc.). Curso sem capa gravada (por exemplo, importado antes desta versão) aparece com uma capa padrão desenhada na hora. Em **Painel → Cursos**, o botão **Gerar capas que faltam** grava as capas de uma vez. No editor do curso, o botão **Gerar capa** cria outra capa (escolhendo símbolo, cores e frase), e **Trocar capa** envia uma imagem pronta.
 
 ### Apostilas em PDF geradas com o curso
 
