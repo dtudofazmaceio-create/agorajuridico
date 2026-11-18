@@ -135,6 +135,26 @@ Professores convidados escrevem artigos direto no portal, sem criar conta. O que
 - O link do professor funciona como uma senha. Peça que ele não o compartilhe. Se vazar, gere um novo.
 - Como no restante da versão sem servidor, uma pessoa com conhecimento técnico consegue recuperar o token do GitHub e alterar textos. A conta do GitHub exclusiva para o portal continua sendo a proteção recomendada.
 
+
+### Importar artigo do Word (.docx)
+
+No editor, o colunista clica em **Importar do Word** e escolhe o arquivo .docx. O arquivo é lido no próprio navegador, e o portal configura o artigo sozinho:
+
+- **título e linha fina**, pelo estilo "Título"/"Subtítulo" do Word ou pela primeira linha em destaque;
+- **parágrafos justificados**, com a fonte e o espaçamento da Coluna Acadêmica (a fonte e as cores do Word são descartadas);
+- **intertítulos**, pelos estilos "Título 1, 2, 3" ou por linhas curtas em negrito;
+- **citações longas**, pelo estilo "Citação" ou por recuo grande, como na ABNT;
+- negrito, itálico, sublinhado, sobrescrito, **listas**, **links**, **imagens** (com legenda quando começa por "Figura" ou "Fonte") e **notas de rodapé**, que vão para o fim do texto.
+
+**Uma página no máximo:** por padrão, o artigo pode ter até 3.500 caracteres (cerca de 550 palavras, 3 minutos de leitura) e 1 imagem, para a leitura em tela não cansar. Se o arquivo passar disso, o colunista escolhe entre duas opções:
+
+- **Ajustar para uma página:** mantém o texto do início, com parágrafos inteiros, e tira primeiro as notas.
+- **Importar tudo e eu reduzo:** o excesso fica marcado em vermelho no editor, com a linha "Fim da página", e o artigo só é publicado quando couber.
+
+O limite vale também para quem escreve direto no editor. Em **Painel → Colunistas → Regras dos artigos**, desmarque **Artigo de no máximo uma página** para voltar aos limites de caracteres e imagens escolhidos por você.
+
+Arquivos no formato antigo (.doc) não são lidos: no Word, use "Salvar como" → "Documento do Word (.docx)".
+
 ## Divulgação: QR codes e cartões
 Em **Painel → Configurações → Divulgação** há três QR codes, cada um com um cartão pronto para baixar, no visual do portal (azul, latão e o símbolo das colunas):
 

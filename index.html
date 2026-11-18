@@ -1299,6 +1299,16 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .gsearch{flex:0 1 auto;min-width:0}.uchip{flex:none;white-space:nowrap}
 @media (max-width:1180px){.deskbar{padding:12px 22px;gap:14px}.gsearch{width:auto;flex:1 1 180px;max-width:360px}.gsearch kbd{display:none}.gsearch input{padding-right:1em}.deskbar .crumb>.muted,.deskbar .crumb>.muted+.sl{display:none}}
 @media (max-width:960px){.uchip{padding:4px}.uchip .uc-nm{display:none}}
+.ed-corpo .ed-alem{background:rgba(142,27,46,.07);box-shadow:-10px 0 0 rgba(142,27,46,.07),10px 0 0 rgba(142,27,46,.07);color:#6d2430}
+.ed-corpo .ed-alem-1{position:relative;margin-top:2.6em!important}
+.ed-corpo .ed-alem-1::before{content:"Fim da página — o texto abaixo passa do limite e precisa ser reduzido";position:absolute;left:0;right:0;top:-2.1em;border-top:2px dashed var(--rubi);padding-top:4px;font:700 .72rem var(--sans,sans-serif);letter-spacing:.04em;text-transform:uppercase;color:var(--rubi);text-align:center;text-indent:0}
+.wd-res{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}.wd-res b{display:block}.wd-res small{color:var(--cinza)}
+.wd-pag{min-width:240px}.wd-pag span{display:block;height:8px;border-radius:8px;background:var(--linha);overflow:hidden}.wd-pag i{display:block;height:100%;background:var(--ok)}.wd-pag.acima i{background:var(--rubi)}.wd-pag small{display:block;margin-top:4px;font-size:.8rem}.wd-pag.acima small{color:var(--rubi);font-weight:600}
+.wd-feito{background:var(--latao-bg);border-radius:10px;padding:12px 16px;font-size:.9rem}.wd-feito ul{margin:6px 0 0;padding-left:1.2em}
+.wd-opc{margin-top:14px}.wd-opc .dv-chk{display:flex;gap:10px;align-items:flex-start}.wd-opc .dv-chk input{margin-top:4px;flex:none}
+.wd-prev{margin-top:14px;max-height:46vh;overflow:auto;border:1px solid var(--linha);border-radius:10px;padding:20px 26px;background:#fff}
+.wd-alem{background:rgba(142,27,46,.07);color:#6d2430}.wd-fim{border-top:2px dashed var(--rubi);color:var(--rubi);font:700 .72rem var(--sans,sans-serif);text-transform:uppercase;letter-spacing:.04em;text-align:center;padding-top:4px;margin:18px 0 10px}
+.wd-uma{margin:8px 0 14px;align-items:flex-start}
 </style>
 </head>
 <body>
@@ -7027,12 +7037,273 @@ const textoDe = html => { const t = document.createElement('template'); t.innerH
 const contarPalavras = html => (textoDe(html).match(/\S+/g) || []).length;
 const minLeitura = html => Math.max(1, Math.round(contarPalavras(html) / 200));
 const resumoDe = (html, n = 180) => { const t = textoDe(html); return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, '') + '…' : t; };
+/* ============================ Importar artigo do Word ============================
+   Lê um arquivo .docx direto no navegador (sem enviar a lugar nenhum), sem bibliotecas:
+   o .docx é um ZIP com XML. O portal reconhece título, linha fina, intertítulos,
+   citações, listas, negrito/itálico, links, imagens e notas de rodapé, e entrega o
+   artigo já formatado no padrão da Coluna Acadêmica (parágrafos justificados).
+   ============================================================================== */
+const COL_PAGINA = 3500;   // uma página de leitura em tela: cerca de 550 palavras, 3 minutos
+async function lerZip(buf) {
+  const u8 = new Uint8Array(buf), dv = new DataView(buf);
+  let fim = -1; for (let i = u8.length - 22; i >= Math.max(0, u8.length - 70000); i--) if (dv.getUint32(i, true) === 0x06054b50) { fim = i; break; }
+  if (fim < 0) throw new Error('O arquivo não é um .docx válido.');
+  const n = dv.getUint16(fim + 10, true); let p = dv.getUint32(fim + 16, true);
+  const ents = new Map(), dec = new TextDecoder();
+  for (let k = 0; k < n; k++) {
+    if (dv.getUint32(p, true) !== 0x02014b50) break;
+    const met = dv.getUint16(p + 10, true), tam = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    ents.set(dec.decode(u8.subarray(p + 46, p + 46 + nl)), { met, tam, off });
+    p += 46 + nl + el + cl;
+  }
+  const bytes = async nome => {
+    const e = ents.get(nome); if (!e) return null;
+    const ini = e.off + 30 + dv.getUint16(e.off + 26, true) + dv.getUint16(e.off + 28, true), dados = u8.subarray(ini, ini + e.tam);
+    if (e.met === 0) return dados;
+    if (e.met !== 8) throw new Error('Compressão não suportada no arquivo.');
+    if (typeof DecompressionStream === 'undefined') throw new Error('Este navegador é antigo demais para ler arquivos do Word. Atualize o navegador ou cole o texto no editor.');
+    return new Uint8Array(await new Response(new Blob([dados]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+  };
+  return { nomes: [...ents.keys()], bytes, texto: async nome => { const b = await bytes(nome); return b ? new TextDecoder().decode(b) : null; } };
+}
+const W_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main', R_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships';
+const xmlDoc = t => t ? new DOMParser().parseFromString(t, 'application/xml') : null;
+const filhos = (el, nome) => el ? [...el.childNodes].filter(n => n.nodeType === 1 && (!nome || n.localName === nome)) : [];
+const filho = (el, nome) => filhos(el, nome)[0] || null;
+const wAttr = (el, a) => el ? (el.getAttributeNS(W_NS, a) ?? el.getAttribute('w:' + a) ?? el.getAttribute(a)) : null;
+const ligado = el => { if (!el) return false; const v = wAttr(el, 'val'); return v == null || !/^(0|false|off|none)$/i.test(v); };
+async function lerWord(file) {
+  if (/\.doc$/i.test(file.name) && !/\.docx$/i.test(file.name)) throw new Error('Este arquivo está no formato antigo do Word (.doc). No Word, use "Salvar como" e escolha "Documento do Word (.docx)".');
+  if (file.size > 25 * 1024 * 1024) throw new Error('O arquivo passa de 25 MB. Reduza as imagens no Word e tente de novo.');
+  const z = await lerZip(await file.arrayBuffer());
+  const doc = xmlDoc(await z.texto('word/document.xml')); if (!doc) throw new Error('O arquivo não parece ser um documento do Word (.docx).');
+  // estilos (com herança), numeração, vínculos e notas
+  const estilos = new Map(), stx = xmlDoc(await z.texto('word/styles.xml'));
+  for (const s of stx ? [...stx.getElementsByTagNameNS(W_NS, 'style')] : []) estilos.set(wAttr(s, 'styleId'), { nome: String(wAttr(filho(s, 'name'), 'val') || '').toLowerCase(), base: wAttr(filho(s, 'basedOn'), 'val'), pPr: filho(s, 'pPr'), rPr: filho(s, 'rPr') });
+  const catEstilo = id => { for (let k = 0; id && k < 8; k++) { const e = estilos.get(id); if (!e) break; const n = e.nome;
+    if (n === 'title' || n === 'título') return 'titulo'; if (n === 'subtitle' || n === 'subtítulo') return 'sub';
+    if (/^(heading|título) ?[12]$/.test(n)) return 'h2'; if (/^(heading|título) ?[3-9]$/.test(n)) return 'h3';
+    if (/quote|citação|citacao/.test(n)) return 'q'; if (/^caption|legenda/.test(n)) return 'leg'; if (/^toc|sumário|^index/.test(n)) return 'toc';
+    if (/^list bullet|^lista com marcadores|^marcador/.test(n)) return 'lib'; if (/^list number|^lista numerada/.test(n)) return 'lin';
+    if (/footnote|endnote|nota de rodapé/.test(n)) return 'p'; id = e.base; } return 'p'; };
+  const numEstilo = id => { for (let k = 0; id && k < 8; k++) { const e = estilos.get(id); if (!e) break; const np = e.pPr && filho(e.pPr, 'numPr'); if (np) return { numId: wAttr(filho(np, 'numId'), 'val'), ilvl: Number(wAttr(filho(np, 'ilvl'), 'val')) || 0 }; id = e.base; } return null; };
+  const estiloNeg = id => { for (let k = 0; id && k < 8; k++) { const e = estilos.get(id); if (!e) break; if (e.rPr && filho(e.rPr, 'b')) return ligado(filho(e.rPr, 'b')); id = e.base; } return false; };
+  const nums = new Map(), nx = xmlDoc(await z.texto('word/numbering.xml'));
+  if (nx) { const abs = new Map(); for (const a of nx.getElementsByTagNameNS(W_NS, 'abstractNum')) { const l0 = filhos(a, 'lvl').find(l => wAttr(l, 'ilvl') === '0'); abs.set(wAttr(a, 'abstractNumId'), wAttr(filho(l0, 'numFmt'), 'val') || 'bullet'); }
+    for (const n of nx.getElementsByTagNameNS(W_NS, 'num')) nums.set(wAttr(n, 'numId'), abs.get(wAttr(filho(n, 'abstractNumId'), 'val')) || 'bullet'); }
+  const rels = new Map(), rx = xmlDoc(await z.texto('word/_rels/document.xml.rels'));
+  for (const r of rx ? [...rx.getElementsByTagName('Relationship')] : []) rels.set(r.getAttribute('Id'), { alvo: r.getAttribute('Target'), ext: r.getAttribute('TargetMode') === 'External' });
+  const notasTxt = new Map();
+  for (const [arq, tag] of [['word/footnotes.xml', 'footnote'], ['word/endnotes.xml', 'endnote']]) {
+    const x = xmlDoc(await z.texto(arq)); if (!x) continue;
+    for (const f of x.getElementsByTagNameNS(W_NS, tag)) { const id = wAttr(f, 'id'); if (Number(id) <= 0) continue; const t = [...f.getElementsByTagNameNS(W_NS, 't')].map(t => t.textContent).join('').replace(/\s+/g, ' ').trim(); if (t) notasTxt.set(tag + id, t); }
+  }
+  let tituloDoc = ''; try { const cx = xmlDoc(await z.texto('docProps/core.xml')); tituloDoc = cx?.getElementsByTagNameNS('*', 'title')[0]?.textContent?.trim() || ''; } catch {}
+  /* ---- corpo ---- */
+  const blocos = [], imagens = [], notas = [], info = { ignoradasImg: 0 };
+  const lerRuns = (el, ctx) => {   // devolve { html, texto, todoNeg, todoIt, tamMax }
+    let html = '', texto = '', nNeg = 0, nIt = 0, nTxt = 0, tamMax = 0;
+    const run = r => {
+      if (ctx.campo === 'instr') { for (const fc of filhos(r, 'fldChar')) { const t = wAttr(fc, 'fldCharType'); if (t === 'separate') ctx.campo = 'res'; else if (t === 'end') ctx.campo = null; } return; }
+      const rp = filho(r, 'rPr'), rs = wAttr(filho(rp, 'rStyle'), 'val');
+      const neg = filho(rp, 'b') ? ligado(filho(rp, 'b')) : ctx.neg || estiloNeg(rs), it = filho(rp, 'i') ? ligado(filho(rp, 'i')) : false;
+      const sub = filho(rp, 'u') && ligado(filho(rp, 'u')) && !ctx.link, tac = filho(rp, 'strike') && ligado(filho(rp, 'strike'));
+      const va = wAttr(filho(rp, 'vertAlign'), 'val'), sz = Number(wAttr(filho(rp, 'sz'), 'val')) || 0;
+      let t = '';
+      for (const k of filhos(r)) {
+        const nm = k.localName;
+        if (nm === 't') t += esc(k.textContent);
+        else if (nm === 'tab' || nm === 'ptab') t += ' ';
+        else if (nm === 'br' || nm === 'cr') { if (wAttr(k, 'type') !== 'page' && wAttr(k, 'type') !== 'column') t += '<br>'; }
+        else if (nm === 'noBreakHyphen') t += '-';
+        else if (nm === 'fldChar') { const ty = wAttr(k, 'fldCharType'); if (ty === 'begin') ctx.campo = 'instr'; else if (ty === 'end') ctx.campo = null; }
+        else if (nm === 'footnoteReference' || nm === 'endnoteReference') { const tx = notasTxt.get((nm === 'footnoteReference' ? 'footnote' : 'endnote') + wAttr(k, 'id')); if (tx) { notas.push(tx); t += `<sup>${notas.length}</sup>`; } }
+        else if (nm === 'drawing' || nm === 'pict' || nm === 'object') {
+          const blip = k.getElementsByTagNameNS('*', 'blip')[0], vml = k.getElementsByTagNameNS('*', 'imagedata')[0];
+          const rid = blip ? (blip.getAttributeNS(R_NS, 'embed') || blip.getAttribute('r:embed')) : vml ? (vml.getAttributeNS(R_NS, 'id') || vml.getAttribute('r:id')) : null;
+          const rel = rid && rels.get(rid);
+          if (rel && !rel.ext && /\.(png|jpe?g|gif|bmp|webp)$/i.test(rel.alvo)) { imagens.push({ caminho: 'word/' + rel.alvo.replace(/^\/?word\//, '').replace(/^\.\//, ''), k: imagens.length }); html += `\u0000IMG${imagens.length - 1}\u0000`; }
+          else if (rel) info.ignoradasImg++;
+        }
+      }
+      if (!t) return;
+      const limpo = t.replace(/<br>/g, '');
+      if (limpo.trim()) { nTxt += limpo.length; if (neg) nNeg += limpo.length; if (it) nIt += limpo.length; texto += k2t(limpo); if (sz > tamMax) tamMax = sz; }
+      let h = t; if (va === 'superscript') h = `<sup>${h}</sup>`; else if (va === 'subscript') h = `<sub>${h}</sub>`;
+      if (tac) h = `<s>${h}</s>`; if (sub) h = `<u>${h}</u>`; if (it) h = `<i>${h}</i>`; if (neg) h = `<b>${h}</b>`;
+      html += h;
+    };
+    const k2t = s => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    const andar = node => {
+      for (const k of filhos(node)) {
+        const nm = k.localName;
+        if (nm === 'r') run(k);
+        else if (nm === 'hyperlink') {
+          const rel = rels.get(k.getAttributeNS(R_NS, 'id') || k.getAttribute('r:id')), url = rel?.ext ? rel.alvo : '';
+          const antes = html; html = ''; ctx.link = !!url; andar(k); ctx.link = false;
+          const dentro = html; html = antes + (/^(https?:\/\/|mailto:)/i.test(url) ? `<a href="${esc(url)}">${dentro}</a>` : dentro);
+        }
+        else if (['smartTag', 'sdt', 'sdtContent', 'ins', 'customXml', 'fldSimple', 'bdo', 'dir'].includes(nm)) andar(k);
+        else if (nm === 'del' || nm === 'moveFrom') continue;   // texto apagado com controle de alterações
+      }
+    };
+    andar(el);
+    return { html, texto: texto.replace(/\s+/g, ' ').trim(), todoNeg: nTxt > 0 && nNeg / nTxt > .9, todoIt: nTxt > 0 && nIt / nTxt > .9, tamMax };
+  };
+  const ctx = { campo: null, link: false, neg: false };
+  let b0 = false;
+  const paragrafo = (p, emTabela) => {
+    const pp = filho(p, 'pPr'), sid = wAttr(filho(pp, 'pStyle'), 'val');
+    let cat = catEstilo(sid);
+    if (cat === 'toc') return null;
+    const num = filho(pp, 'numPr'), ne = !num ? numEstilo(sid) : null;
+    let numId = num ? wAttr(filho(num, 'numId'), 'val') : ne?.numId, ilvl = num ? Number(wAttr(filho(num, 'ilvl'), 'val')) || 0 : ne?.ilvl || 0;
+    if (cat === 'lib' || cat === 'lin') { b0 = cat === 'lin'; cat = 'p'; numId = numId || (b0 ? 'estilo-num' : 'estilo-bul'); }
+    const ind = filho(pp, 'ind'), esq = Number(wAttr(ind, 'left') ?? wAttr(ind, 'start')) || 0;
+    const jc = (wAttr(filho(pp, 'jc'), 'val') || '').toLowerCase();
+    ctx.neg = estiloNeg(sid);
+    const r = lerRuns(p, ctx);
+    if (!r.texto && !r.html.includes('\u0000IMG')) return { vazio: true };
+    const b = { cat, html: r.html.replace(/^(\s|<br>)+|(\s|<br>)+$/g, ''), texto: r.texto, neg: r.todoNeg, it: r.todoIt, tam: r.tamMax, jc, esq, emTabela };
+    if (numId && numId !== '0' && cat === 'p') { b.cat = 'li'; b.ordenada = numId === 'estilo-num' ? true : numId === 'estilo-bul' ? false : !/bullet|none/.test(nums.get(numId) || 'bullet'); b.nivel = ilvl; }
+    else if (cat === 'p' && esq >= 1100 && r.texto.length > 60) b.cat = 'q';   // recuo grande = citação longa
+    return b;
+  };
+  const corpo = doc.getElementsByTagNameNS(W_NS, 'body')[0];
+  const andarCorpo = node => {
+    for (const k of filhos(node)) {
+      const nm = k.localName;
+      if (nm === 'p') { const b = paragrafo(k); if (b) blocos.push(b); }
+      else if (nm === 'tbl') {
+        for (const tr of filhos(k, 'tr')) {
+          const cel = filhos(tr, 'tc').map(tc => filhos(tc, 'p').map(p => paragrafo(p, true)).filter(b => b && !b.vazio).map(b => b.html).join(' ')).filter(Boolean);
+          if (cel.length) blocos.push({ cat: 'p', html: cel.join(' · '), texto: cel.join(' · ').replace(/<[^>]+>/g, ''), emTabela: true });
+        }
+      }
+      else if (nm === 'sdt' || nm === 'sdtContent' || nm === 'customXml') andarCorpo(k);
+    }
+  };
+  andarCorpo(corpo);
+  return { blocos: blocos.filter(b => !b.vazio), imagens, notas, info, tituloDoc, zip: z };
+}
+/* monta o artigo no padrão da Coluna Acadêmica */
+function configurarArtigo(w, R) {
+  const bl = w.blocos.slice(), feito = { titulo: '', subtitulo: '', intertitulos: 0, citacoes: 0, listas: 0, paragrafos: 0, legendas: 0 };
+  // título: estilo Título; ou 1º Título 1; ou 1º parágrafo curto em negrito, centralizado ou com fonte grande
+  let i0 = bl.findIndex(b => b.cat === 'titulo');
+  if (i0 < 0 && bl[0] && (bl[0].cat === 'h2' || (bl[0].texto.length <= 180 && !/[.:;]$/.test(bl[0].texto) && (bl[0].neg || bl[0].jc === 'center' || bl[0].tam >= 28)))) i0 = 0;
+  if (i0 >= 0 && i0 <= 2) { feito.titulo = bl[i0].texto.slice(0, 180); bl.splice(0, i0 + 1); }
+  else feito.titulo = w.tituloDoc.slice(0, 180);
+  const s0 = bl.findIndex(b => b.cat === 'sub');
+  if (s0 >= 0 && s0 <= 1) { feito.subtitulo = bl[s0].texto.slice(0, 260); bl.splice(s0, 1); }
+  else if (bl[0] && bl[0].cat === 'p' && bl[0].it && bl[0].texto.length <= 260 && bl.length > 2) { feito.subtitulo = bl[0].texto; bl.shift(); }
+  const out = []; let lista = null;
+  const fechaLista = () => { if (lista) { out.push({ tipo: 'lista', html: `<${lista.tag}>${lista.itens.map(x => `<li>${x}</li>`).join('')}</${lista.tag}>`, texto: lista.txt }); lista = null; } };
+  for (const [k, b] of bl.entries()) {
+    let cat = b.cat;
+    // intertítulo feito à mão: linha curta toda em negrito, sem ponto final
+    if (cat === 'p' && b.neg && b.texto.length <= 90 && !/[.;:,]$/.test(b.texto) && !b.emTabela && bl[k + 1]) cat = 'h3';
+    if (cat === 'leg' || (cat === 'p' && /^(figura|fonte|imagem|foto)\b/i.test(b.texto) && b.texto.length < 200 && out[out.length - 1]?.tipo === 'img')) cat = 'leg';
+    if (cat === 'li') { const tag = b.ordenada ? 'ol' : 'ul'; if (!lista || lista.tag !== tag) { fechaLista(); lista = { tag, itens: [], txt: '' }; feito.listas++; } lista.itens.push(b.html); lista.txt += ' ' + b.texto; continue; }
+    fechaLista();
+    // imagens soltas no parágrafo viram blocos próprios
+    const partes = b.html.split(/\u0000IMG(\d+)\u0000/);
+    for (let j = 0; j < partes.length; j++) {
+      if (j % 2 === 1) { out.push({ tipo: 'img', img: Number(partes[j]), texto: '' }); continue; }
+      const h = partes[j].replace(/^(\s|<br>)+|(\s|<br>)+$/g, ''); if (!h.replace(/<[^>]+>/g, '').trim()) continue;
+      const txt = partes.length > 1 ? h.replace(/<[^>]+>/g, '') : b.texto;
+      if (cat === 'h2' || cat === 'h3' || cat === 'titulo' || cat === 'sub') { out.push({ tipo: 'h', html: `<h3>${h.replace(/<\/?b>/g, '')}</h3>`, texto: txt }); feito.intertitulos++; }
+      else if (cat === 'q') { out.push({ tipo: 'q', html: `<blockquote>${h}</blockquote>`, texto: txt }); feito.citacoes++; }
+      else if (cat === 'leg') { out.push({ tipo: 'leg', html: `<p class="legenda" style="text-align: center;">${h}</p>`, texto: txt }); feito.legendas++; }
+      else { const al = b.jc === 'center' && txt.length <= 120 ? 'center' : b.jc === 'right' || b.jc === 'end' ? (txt.length <= 120 ? 'right' : 'justify') : 'justify';
+        out.push({ tipo: 'p', html: `<p style="text-align: ${al};">${h}</p>`, texto: txt }); feito.paragrafos++; }
+    }
+  }
+  fechaLista();
+  // imagens além do limite do artigo ficam de fora
+  let nImg = 0;
+  for (const b of out) if (b.tipo === 'img') { if (nImg < R.maxImagens) nImg++; else b.fora = true; }
+  const blocos = out.filter(b => !b.fora);
+  feito.imagens = nImg; feito.imagensFora = out.length - blocos.length + w.info.ignoradasImg;
+  if (w.notas.length) blocos.push({ tipo: 'notas', html: `<h3>Notas</h3><ol>${w.notas.map(n => `<li>${esc(n)}</li>`).join('')}</ol>`, texto: 'Notas ' + w.notas.join(' ') });
+  feito.notas = w.notas.length;
+  // intertítulo isolado no fim não faz sentido
+  while (blocos.length && blocos[blocos.length - 1].tipo === 'h') blocos.pop();
+  return { blocos, feito };
+}
+const charsBloco = b => b.texto.replace(/\s+/g, ' ').trim().length + 1;
+/* ajusta para caber numa página: tira as notas, depois os últimos blocos (sempre parágrafos inteiros) */
+function ajustarUmaPagina(blocos, limite) {
+  let bl = blocos.slice(), tot = () => bl.reduce((s, b) => s + charsBloco(b), 0), removidos = 0;
+  if (tot() > limite && bl.some(b => b.tipo === 'notas')) { bl = bl.filter(b => b.tipo !== 'notas'); removidos++; }
+  while (bl.length > 1 && tot() > limite) { bl.pop(); removidos++; while (bl.length > 1 && ['h', 'img', 'leg'].includes(bl[bl.length - 1].tipo)) { bl.pop(); removidos++; } }
+  return { blocos: bl, removidos };
+}
+function importarWordColuna({ R, onPronto }) {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  inp.onchange = async () => {
+    const file = inp.files[0]; if (!file) return;
+    const carregando = toast('Lendo o arquivo do Word…');
+    let w, cfg;
+    try { w = await lerWord(file); cfg = configurarArtigo(w, R); }
+    catch (e) { console.warn(e); return toast(e.message || 'Não foi possível ler o arquivo.', true); }
+    if (!cfg.blocos.length) return toast('O arquivo não tem texto para importar.', true);
+    // imagens para a pré-visualização
+    const urls = [];
+    for (const im of w.imagens) { try { const b = await w.zip.bytes(im.caminho); urls[im.k] = b ? URL.createObjectURL(new Blob([b], { type: /png$/i.test(im.caminho) ? 'image/png' : /gif$/i.test(im.caminho) ? 'image/gif' : 'image/jpeg' })) : null; } catch { urls[im.k] = null; } }
+    const limite = R.maxChars, total = cfg.blocos.reduce((s, b) => s + charsBloco(b), 0), ajuste = ajustarUmaPagina(cfg.blocos, limite);
+    const passa = total > limite, F = cfg.feito;
+    const htmlDe = (blocos, prev) => blocos.map(b => b.tipo === 'img' ? (urls[b.img] ? `<img ${prev ? `src="${urls[b.img]}"` : `data-tmp="${b.img}"`} class="img-m img-centro" alt="">` : '') : b.html).join('');
+    const prevComFim = () => { let acc = 0, marcou = false; return cfg.blocos.map(b => { acc += charsBloco(b); const alem = acc > limite; const h = b.tipo === 'img' ? (urls[b.img] ? `<img src="${urls[b.img]}" class="img-m img-centro" alt="">` : '') : b.html; const marca = alem && !marcou ? (marcou = true, '<div class="wd-fim">Fim da página: o texto abaixo passa do limite</div>') : ''; return marca + (alem ? `<div class="wd-alem">${h}</div>` : h); }).join(''); };
+    const { el, close } = modal('Importar artigo do Word', `
+      <div class="wd-res"><div><b>${esc(file.name)}</b><small>${fmtN0(total)} caracteres · ${F.paragrafos} parágrafos${F.imagens ? ` · ${F.imagens} imagem${F.imagens > 1 ? 'ns' : ''}` : ''}</small></div>
+        <div class="wd-pag ${passa ? 'acima' : 'ok'}"><span><i style="width:${Math.min(100, total / limite * 100).toFixed(1)}%"></i></span><small>${passa ? `${fmtN0(total - limite)} caracteres além de uma página` : 'Cabe em uma página'} (limite: ${fmtN0(limite)})</small></div></div>
+      <div class="wd-feito"><b>O portal configurou o artigo:</b><ul>
+        <li>${F.titulo ? `Título: <b>${esc(F.titulo)}</b>` : '<span class="ed-err">Título não encontrado: escreva no editor</span>'}</li>
+        ${F.subtitulo ? `<li>Linha fina: <i>${esc(F.subtitulo)}</i></li>` : ''}
+        <li>Parágrafos justificados, com a fonte e o espaçamento da Coluna Acadêmica</li>
+        ${F.intertitulos ? `<li>${F.intertitulos} intertítulo${F.intertitulos > 1 ? 's' : ''}</li>` : ''}${F.citacoes ? `<li>${F.citacoes} citaç${F.citacoes > 1 ? 'ões' : 'ão'} em destaque</li>` : ''}${F.listas ? `<li>${F.listas} lista${F.listas > 1 ? 's' : ''}</li>` : ''}
+        ${F.notas ? `<li>${F.notas} nota${F.notas > 1 ? 's' : ''} de rodapé no fim do texto</li>` : ''}${F.imagensFora ? `<li class="ed-err">${F.imagensFora} imagem(ns) ficaram de fora (limite de ${R.maxImagens} por artigo ou formato não aceito)</li>` : ''}</ul></div>
+      ${passa ? `<fieldset class="so-crit wd-opc"><legend>O artigo passa de uma página</legend>
+        <label class="dv-chk"><input type="radio" name="wd-modo" value="ajustar" checked> <span><b>Ajustar para uma página</b>: mantém o texto do início até completar a página, com parágrafos inteiros${ajuste.removidos ? ` (saem ${ajuste.removidos} bloco${ajuste.removidos > 1 ? 's' : ''} do fim${cfg.blocos.some(b => b.tipo === 'notas') ? ', começando pelas notas' : ''})` : ''}</span></label>
+        <label class="dv-chk"><input type="radio" name="wd-modo" value="tudo"> <span><b>Importar tudo e eu reduzo</b>: o excesso fica marcado em vermelho no editor; o artigo só é publicado quando couber em uma página</span></label></fieldset>` : ''}
+      <div class="wd-prev col-corpo" id="wd-prev"></div>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="wd-ok">${ic('check', 16)} Abrir no editor</button></div>`, { wide: true });
+    const modo = () => $('input[name=wd-modo]:checked', el)?.value || 'tudo';
+    const prev = () => { $('#wd-prev', el).innerHTML = passa && modo() === 'ajustar' ? htmlDe(ajuste.blocos, true) : prevComFim(); };
+    $$('input[name=wd-modo]', el).forEach(r => r.onchange = prev); prev();
+    const limparUrls = () => urls.forEach(u => u && URL.revokeObjectURL(u));
+    $('#wd-ok', el).onclick = async ev => {
+      const b = ev.currentTarget; b.disabled = true;
+      try {
+        const blocos = passa && modo() === 'ajustar' ? ajuste.blocos : cfg.blocos;
+        let html = htmlDe(blocos, false);
+        // envia as imagens usadas (reduzidas para carregar rápido)
+        for (const m of [...html.matchAll(/data-tmp="(\d+)"/g)]) {
+          b.textContent = 'Enviando imagem…';
+          const im = w.imagens[Number(m[1])], by = await w.zip.bytes(im.caminho);
+          const f = new File([by], im.caminho.split('/').pop(), { type: /png$/i.test(im.caminho) ? 'image/png' : 'image/jpeg' });
+          const url = await imagemOtimizada(f, 1600), ref = await store.salvarImagemCol(url); imgCache.set(ref, url);
+          html = html.replace(`data-tmp="${m[1]}"`, `data-img="${ref}"`);
+        }
+        close(); limparUrls();
+        onPronto({ titulo: F.titulo, subtitulo: F.subtitulo, html: limparHTML(html), ajustado: passa && modo() === 'ajustar' });
+      } catch (e) { console.warn(e); toast(e.message, true); b.disabled = false; b.innerHTML = `${ic('check', 16)} Abrir no editor`; }
+    };
+    $$('[data-close]', el).forEach(x => x.addEventListener('click', limparUrls));
+  };
+  inp.click();
+}
+
 /* Regras dos artigos (o administrador ajusta em Painel → Colunistas) */
-const COL_REGRAS = { minChars: 1500, maxChars: 12000, maxImagens: 6, dias: 90, avisoDias: 7 };
+const COL_REGRAS = { minChars: 1500, maxChars: 12000, maxImagens: 6, dias: 90, avisoDias: 7, umaPagina: 1 };
 function regrasCol() {
   const r = { ...COL_REGRAS, ...((S.config || {}).colunas || {}) };
   for (const k of Object.keys(COL_REGRAS)) r[k] = Math.max(0, Math.round(Number(r[k]) || 0));
   if (!r.maxChars) r.maxChars = COL_REGRAS.maxChars;
+  // artigo de uma página: leitura leve em tela (até 3.500 caracteres e 1 imagem)
+  r.umaPagina = (S.config?.colunas || {}).umaPagina === undefined ? 1 : (S.config.colunas.umaPagina ? 1 : 0);
+  if (r.umaPagina) { r.maxChars = Math.min(r.maxChars, COL_PAGINA); r.maxImagens = Math.min(r.maxImagens, 1); r.minChars = Math.min(r.minChars, 1500); }
   if (r.minChars >= r.maxChars) r.minChars = 0;
   return r;
 }
@@ -7269,7 +7540,7 @@ async function viewEscrever(main, chave) {
       <button class="btn light sm ed-meus" id="ed-meus">${ic('file', 15)} Meus textos</button>
       <button class="ed-eu" id="ed-eu" title="Meu perfil de colunista"><span id="ed-av"></span><span class="ed-eu-t"><b>${esc(c0.nome)}</b><small>Meu perfil</small></span></button></header>
     <div class="ed-app">
-      <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><div id="ed-itens"></div>
+      <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><button class="btn ghost" id="ed-word" style="width:100%;margin-top:8px" title="Importar um artigo pronto em .docx">${ic('file', 16)} Importar do Word</button><div id="ed-itens"></div>
         ${regrasHTML()}
         <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar na Coluna</b>, ele aparece para os alunos na <b>Coluna Acadêmica</b>. Depois de publicado, tudo o que você alterar (texto, alinhamento, imagens) vai para a Coluna Acadêmica sozinho a cada salvamento, em até meio minuto.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
       <section class="ed-main"><div id="ed-avisos"></div><div class="doc ed-papel">
@@ -7287,7 +7558,7 @@ async function viewEscrever(main, chave) {
           <button data-i="img-p" title="Pequena">P</button><button data-i="img-m" title="Média">M</button><button data-i="img-g" title="Grande (largura total)">G</button><span class="sep"></span>
           <button data-i="img-esq" title="À esquerda, com texto ao lado">${ic('alL', 16)}</button><button data-i="img-centro" title="Centralizada">${ic('alC', 16)}</button><button data-i="img-dir" title="À direita, com texto ao lado">${ic('alR', 16)}</button><span class="sep"></span>
           <button data-i="legenda" class="tx" title="Adicionar legenda abaixo">Legenda</button><button data-i="alt" class="tx" title="Descrição para acessibilidade">Descrição</button><button data-i="rm" title="Remover imagem">${ic('trash', 16)}</button></div>
-        <div id="ed-corpo" class="ed-corpo col-corpo" contenteditable="true" spellcheck="true" lang="pt-BR" data-ph="Comece a escrever aqui. Você pode colar textos do Word ou do Google Docs."></div>
+        <div id="ed-corpo" class="ed-corpo col-corpo" contenteditable="true" spellcheck="true" lang="pt-BR" data-ph="Comece a escrever aqui, cole um texto ou use Importar do Word (.docx)."></div>
       </div>
       <div class="ed-rodape"><div class="ed-ralerta hidden" id="ed-ralerta"></div><div class="ed-cont" id="ed-cont"></div>
         <div class="ed-acoes"><button class="btn ghost sm" id="ed-del" title="Excluir este texto">${ic('trash', 15)}<span class="hide-sm"> Excluir</span></button>
@@ -7361,6 +7632,7 @@ async function viewEscrever(main, chave) {
     if (prob) ra.innerHTML = `${ic('lock', 15)} <span><b>Esta alteração ainda não aparece na Coluna Acadêmica:</b> ${prob}. Os alunos continuam vendo a versão anterior.</span>`;
     $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>
       ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para a Coluna Acadêmica porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece na Coluna Acadêmica automaticamente ao salvar.`}</div>` : ''}`;
+    marcarExcesso();
     const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
     const dica = ch > R.maxChars ? `passou ${fmtN0(ch - R.maxChars)} do limite` : ch < R.minChars ? `faltam ${fmtN0(R.minChars - ch)} para o mínimo` : ch > R.maxChars * .9 ? `restam ${fmtN0(R.maxChars - ch)}` : '';
     $('#ed-cont').innerHTML = `<span class="ed-chars ${cls}" title="Caracteres com espaços"><b>${fmtN0(ch)}</b> / ${fmtN0(R.maxChars)} caracteres<span class="ed-barra"><i style="width:${Math.min(100, ch / R.maxChars * 100).toFixed(1)}%"></i></span>${dica ? `<em>${dica}</em>` : ''}</span>
@@ -7371,6 +7643,17 @@ async function viewEscrever(main, chave) {
     pb.innerHTML = `${ic('check', 16)} ${exp ? 'Prazo na Coluna encerrado' : !a.publicado ? 'Salvar e publicar na Coluna' : mudou(a) ? 'Atualizar na Coluna agora' : 'Publicado na Coluna'}`;
     pb.disabled = exp || (!!a.publicado && !mudou(a));
     $('#ed-av').innerHTML = avatarCol(autor(), 34);
+  }
+  // o que passa do limite (de uma página) fica marcado em vermelho; a marca não é salva
+  function marcarExcesso() {
+    let acc = 0, primeiro = true;
+    for (const el of corpo.children) {
+      acc += (el.textContent || '').replace(/\s+/g, ' ').trim().length + 1;
+      const alem = acc - 1 > R.maxChars;
+      el.classList.toggle('ed-alem', alem); el.classList.toggle('ed-alem-1', alem && primeiro);
+      if (alem) primeiro = false;
+      if (!el.classList.length) el.removeAttribute('class');
+    }
   }
   function abrir(id) {
     clearTimeout(tLocal);
@@ -7583,6 +7866,14 @@ async function viewEscrever(main, chave) {
 
   /* ---- ações ---- */
   $('#ed-novo').onclick = () => { const v = col.artigos.find(vazioArt); abrir((v || criar()).id); gravarLocal(); tit.focus(); };
+  $('#ed-word').onclick = () => importarWordColuna({ R, onPronto: r => {
+    const v = col.artigos.find(vazioArt), a = v || criar(); abrir(a.id);
+    tit.value = r.titulo || ''; sub.value = r.subtitulo || ''; corpo.innerHTML = r.html || '<p><br></p>';
+    ajustarTit(); hidratarImagens(corpo); alterou(); gravarLocal(); desenharLista();
+    const ch = contarChars(corpo.innerHTML);
+    toast(ch > R.maxChars ? `Artigo importado. Ele passa ${fmtN0(ch - R.maxChars)} caracteres de uma página: o excesso está marcado em vermelho.` : r.ajustado ? 'Artigo importado e ajustado para uma página. Revise o final do texto.' : 'Artigo importado e formatado. Revise e publique.');
+    if (!r.titulo) tit.focus();
+  } });
   $('#ed-itens').onclick = e => { const b = e.target.closest('.ed-item'); if (b) { abrir(b.dataset.id); } };
   $('#ed-avisos').onclick = e => { const b = e.target.closest('[data-abrir]'); if (b) abrir(b.dataset.abrir); };
   $('#ed-meus').onclick = () => {
@@ -7822,10 +8113,11 @@ async function admColunistas(box, ag) {
     <p class="small muted" style="margin:6px 0 0">Os professores também podem se cadastrar sozinhos pelo QR code de convite, em <a href="#/admin/config">Configurações → Divulgação → Professor colaborador</a>.</p>
     ${(() => { const pend = cols.filter(c => c.aprovado === false); return pend.length ? `<div class="banner gold" style="margin-top:16px"><div><h3>${ic('users')} ${pend.length} colunista${pend.length === 1 ? '' : 's'} aguardando aprovação</h3><p>${pend.map(c => esc(c.nome)).join(', ')} ${pend.length === 1 ? 'se cadastrou' : 'se cadastraram'} pelo QR code. Eles já podem escrever; a publicação é liberada quando você clicar em <b>Aprovar</b>.</p></div></div>` : ''; })()}
     ${(() => { const R = regrasCol(); return `<form class="card pad col-regras" id="frg" novalidate><div class="list-h"><div><h3>${ic('scroll', 18)} Regras dos artigos</h3><p class="small muted" style="margin:4px 0 0">O colunista vê estas regras no editor e é avisado antes de cada artigo sair da Coluna Acadêmica.</p></div><button class="btn primary sm" id="rg-sv">Salvar regras</button></div>
+      <label class="dv-chk wd-uma"><input type="checkbox" name="umaPagina" ${R.umaPagina ? 'checked' : ''}> <span><b>Artigo de no máximo uma página</b> (até ${fmtN0(COL_PAGINA)} caracteres, cerca de 550 palavras, e 1 imagem). Vale para o editor e para os artigos importados do Word. Desmarque para usar os limites abaixo.</span></label>
       <div class="col-regras-g">
         <label>Mínimo de caracteres<input type="number" name="minChars" min="0" max="50000" value="${R.minChars}"></label>
-        <label>Máximo de caracteres<input type="number" name="maxChars" min="500" max="60000" value="${R.maxChars}"></label>
-        <label>Imagens por artigo<input type="number" name="maxImagens" min="0" max="20" value="${R.maxImagens}"><span class="hint">0 = sem imagens</span></label>
+        <label>Máximo de caracteres<input type="number" name="maxChars" min="500" max="60000" value="${(S.config?.colunas || {}).maxChars || COL_REGRAS.maxChars}"></label>
+        <label>Imagens por artigo<input type="number" name="maxImagens" min="0" max="20" value="${(S.config?.colunas || {}).maxImagens ?? COL_REGRAS.maxImagens}"><span class="hint">0 = sem imagens</span></label>
         <label>Tempo na Coluna (dias)<input type="number" name="dias" min="0" max="3650" value="${R.dias}"><span class="hint">0 = sem prazo</span></label>
         <label>Avisar o colunista (dias antes)<input type="number" name="avisoDias" min="0" max="90" value="${R.avisoDias}"></label></div>
       <p class="hint" style="margin-top:12px">Sugestão do portal: de 1.500 a 12.000 caracteres (cerca de 250 a 2.000 palavras, de 2 a 10 minutos de leitura), até 6 imagens e 90 dias na Coluna Acadêmica. O prazo conta da primeira publicação e vale para as novas publicações; para mudar o de um artigo já publicado, use <b>Artigos → Prazo</b>.</p></form>`; })()}
@@ -7844,7 +8136,7 @@ async function admColunistas(box, ag) {
   $('#novo').onclick = () => formColunista({}, recarregar);
   $('#frg').onsubmit = async e => {
     e.preventDefault(); const f = e.target, v = k => Math.max(0, Math.round(Number(f[k].value) || 0));
-    const r = { minChars: v('minChars'), maxChars: v('maxChars'), maxImagens: v('maxImagens'), dias: v('dias'), avisoDias: v('avisoDias') };
+    const r = { minChars: v('minChars'), maxChars: v('maxChars'), maxImagens: v('maxImagens'), dias: v('dias'), avisoDias: v('avisoDias'), umaPagina: f.umaPagina.checked ? 1 : 0 };
     if (r.maxChars < 500 || r.maxChars > 60000) return toast('O máximo de caracteres precisa ficar entre 500 e 60.000.', true);
     if (r.maxImagens > 20) return toast('O limite é de 20 imagens por artigo.', true);
     if (r.minChars >= r.maxChars) return toast('O mínimo de caracteres precisa ser menor que o máximo.', true);
