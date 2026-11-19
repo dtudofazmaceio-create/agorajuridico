@@ -227,6 +227,8 @@ Em **Painel → Propostas de parceria → Nova proposta**, preencha:
 
 O texto da proposta vem pronto, em 9 partes: apresentação do portal, objetivo da parceria, o que o portal oferece à instituição, o que se propõe a ela, como funciona a validação dos certificados, benefícios para alunos e docentes, custos e compromissos, próximos passos e vigência. Cada parte pode ser editada, voltar ao texto do modelo ou ficar fora da proposta.
 
+Em **Planos para esta instituição**, ajuste os planos que aparecem na proposta de cada instituição: mude o nome, a duração e o preço, desmarque um plano para tirá-lo da proposta ou use **Adicionar plano** (por exemplo, um bienal). O texto acompanha a mudança ("com planos mensal, anual ou bienal (valores para a FDE: …)"). Os planos do portal, em Painel → Planos, não mudam. **Usar os planos do portal** volta aos valores gerais.
+
 Em **Investimento da instituição (contrato mínimo de 1 ano)**, escolha como cobrar da instituição parceira:
 
 - **por aluno ou docente com acesso**, por ano ou por mês; a proposta mostra quanto isso fica abaixo do plano anual individual;
@@ -237,7 +239,22 @@ Informe também o mínimo de acessos e a forma de pagamento. A sugestão inicial
 
 A opção **Mostrar os números do portal** inclui no documento os números atuais: estudantes, cursos, materiais, colunistas e instituições parceiras. A pré-visualização ao lado mostra o documento enquanto você digita. Antes das assinaturas, a proposta traz dois **QR codes**: um abre o portal e o outro abre o cadastro de colunistas, para os docentes da instituição se cadastrarem e começarem a escrever. Se o cadastro de colunistas estiver fechado em Configurações, o editor avisa. Para tirar os QR codes, desmarque a opção. Se você estiver usando o portal no computador (endereço local), preencha **Endereço do portal** com o endereço publicado. **Baixar PDF** gera o arquivo A4 com a identidade visual do portal, com espaço para as assinaturas. **Duplicar** reaproveita a proposta para outra instituição.
 
-As propostas ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
+### Contratos e recibos
+
+1. Na lista de **Propostas de parceria**, mude a situação da proposta (Rascunho, Enviada, Aceita ou Recusada). Quando ela for **Aceita**, aparece o botão **Gerar contrato**.
+2. O contrato sai com os mesmos termos da proposta. As 10 cláusulas cobrem:
+   - o objeto da parceria;
+   - as obrigações das duas partes, com o texto das seções "O que o portal oferece" e "O que propomos";
+   - a validação dos certificados;
+   - o preço e a forma de pagamento do plano institucional;
+   - a vigência mínima de 12 meses, com renovação e rescisão;
+   - o uso da marca, a LGPD, a não exclusividade e o foro.
+3. Em **Painel → Contratos e recibos**, complete o CNPJ, o endereço e os representantes das partes. Confira os acessos contratados, as parcelas, o 1º vencimento e a forma de pagamento. Cada cláusula pode ser ajustada. **Baixar contrato (PDF)** gera o documento com a identidade do portal, com local, data e espaço para as assinaturas e duas testemunhas.
+4. Em **Pagamentos e recibos**, cada parcela aparece com o vencimento e a situação (em aberto, em atraso ou paga). Ao clicar em **Registrar pagamento**, informe a data, o valor e a forma. O portal emite o **recibo** com número sequencial (0001/2026, 0002/2026…), valor por extenso e referência à parcela e ao contrato, e baixa o PDF. O recibo pode ser baixado de novo a qualquer momento.
+
+O contrato é um modelo. Antes de assinar, peça a revisão de um advogado ou da assessoria jurídica da instituição.
+
+As propostas, os contratos e os recibos ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
 
 Revise o texto antes de enviar, principalmente a parte de custos (planos mensal, semestral e anual, com os valores atuais cadastrados em Planos) e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
 

@@ -1353,6 +1353,9 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
   .ed-app{padding-bottom:130px}
 }
 @media (min-width:601px) and (max-width:900px){.ed-rodape{flex-wrap:nowrap}.ed-acoes{width:auto;flex-wrap:nowrap}.ed-acoes #ed-pub{flex:none;order:0}.ed-cont .ed-meta{display:block}}
+.pp-pls{display:grid;gap:6px}.pp-pl{display:grid;grid-template-columns:auto minmax(0,1fr) 112px auto 84px auto;gap:6px;align-items:center}.pp-pl.off>*:not(.dv-chk){opacity:.45}.pp-pl input,.pp-pl select{padding:.45em .55em;font-size:.88rem;min-width:0}.pp-pl .pp-rs{font-size:.8rem;color:var(--cinza)}
+@media (max-width:520px){.pp-pl{grid-template-columns:auto minmax(0,1fr) 84px auto;}.pp-pl select{grid-column:2}.pp-pl .pp-rs{display:none}}
+.pp-st{font-size:.82rem;padding:.35em .5em}#ct-status{font-size:.85rem;padding:.4em .5em;margin:0 6px}.ct-pag-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.ct-tab td,.ct-tab th{font-size:.85rem;padding:.5em .6em}
 </style>
 </head>
 <body>
@@ -3894,10 +3897,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { contratos: 'scroll', propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', contratos: 'Contratos e recibos', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
@@ -3915,7 +3918,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas', 'contratos'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3929,7 +3932,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), contratos: () => { const id = abrirContratoPend; abrirContratoPend = null; return admContratos(box, id); }, cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -6409,18 +6412,355 @@ function formSorteio(s = {}, onSalvo) {
   };
 }
 
+/* ============================ Contratos e recibos ============================
+   Proposta aceita → contrato com os mesmos termos (objeto, obrigações, validação dos
+   certificados, preço, vigência, marca e LGPD). Cada pagamento recebido gera um recibo
+   numerado. Tudo fica neste computador (IndexedDB "agora-propostas"), como as propostas.
+   ============================================================================ */
+const ContDB = (() => {
+  let dbp = null;
+  const abrir = () => dbp || (dbp = new Promise((ok, erro) => {
+    const q = indexedDB.open('agora-propostas', 2);
+    q.onupgradeneeded = () => { const db = q.result; if (!db.objectStoreNames.contains('propostas')) db.createObjectStore('propostas', { keyPath: 'id' }); if (!db.objectStoreNames.contains('contratos')) db.createObjectStore('contratos', { keyPath: 'id' }); };
+    q.onsuccess = () => ok(q.result); q.onerror = () => { dbp = null; erro(q.error); };
+  }));
+  const tx = async (loja, modo, fn) => { const db = await abrir(); return new Promise((ok, erro) => { const t = db.transaction(loja, modo), r = fn(t.objectStore(loja)); t.oncomplete = () => ok(r?.result); t.onerror = () => erro(t.error); }); };
+  return { abrir, list: (l = 'contratos') => tx(l, 'readonly', s => s.getAll()), put: (o, l = 'contratos') => tx(l, 'readwrite', s => s.put(o)), del: (id, l = 'contratos') => tx(l, 'readwrite', s => s.delete(id)) };
+})();
+/* valor por extenso (reais e centavos) */
+function porExtenso(v) {
+  const U = ['', 'um', 'dois', 'três', 'quatro', 'cinco', 'seis', 'sete', 'oito', 'nove', 'dez', 'onze', 'doze', 'treze', 'quatorze', 'quinze', 'dezesseis', 'dezessete', 'dezoito', 'dezenove'];
+  const D = ['', '', 'vinte', 'trinta', 'quarenta', 'cinquenta', 'sessenta', 'setenta', 'oitenta', 'noventa'];
+  const C = ['', 'cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seiscentos', 'setecentos', 'oitocentos', 'novecentos'];
+  const ate999 = n => { if (n === 100) return 'cem'; const c = Math.floor(n / 100), r = n % 100, p = []; if (c) p.push(C[c]); if (r) p.push(r < 20 ? U[r] : D[Math.floor(r / 10)] + (r % 10 ? ' e ' + U[r % 10] : '')); return p.join(' e '); };
+  const inteiro = n => {
+    if (!n) return 'zero';
+    const grupos = [], nomes = [['', ''], ['mil', 'mil'], ['milhão', 'milhões'], ['bilhão', 'bilhões']]; let k = 0;
+    while (n > 0) { grupos.push([n % 1000, k]); n = Math.floor(n / 1000); k++; }
+    const gs = grupos.filter(([g]) => g).reverse();
+    return gs.map(([g, k], i) => { const t = k === 1 && g === 1 ? 'mil' : `${ate999(g)}${k ? ' ' + nomes[k][g === 1 ? 0 : 1] : ''}`; return i === 0 ? t : (g < 100 || g % 100 === 0 ? ' e ' : ' ') + t; }).join('');
+  };
+  const tot = Math.round(Number(v || 0) * 100), r = Math.floor(tot / 100), c = tot % 100;
+  const milhaoExato = r >= 1e6 && r % 1e6 === 0;
+  let s = r ? `${inteiro(r)}${milhaoExato ? ' de' : ''} ${r === 1 ? 'real' : 'reais'}` : '';
+  if (c) s += `${s ? ' e ' : ''}${inteiro(c)} ${c === 1 ? 'centavo' : 'centavos'}`;
+  return s || 'zero real';
+}
+const dataBR = iso => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR') : '';
+const dataLonga = iso => iso ? new Date(iso + 'T12:00:00').toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+const somaMeses = (iso, m) => { const d = new Date(iso + 'T12:00:00'), dia = d.getDate(); d.setDate(1); d.setMonth(d.getMonth() + m); d.setDate(Math.min(dia, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate())); return hojeISO(d); };
+/* ------------------------- PDF genérico com a identidade do portal ------------------------- */
+async function pdfDocumento({ rotulo, titulo, subtitulo = '', quadro = [], secoes = [], assinaturas = [], testemunhas = false, cabecalho = '', fecho = '', destaque = null }) {
+  const W = 595.28, H = 841.89, ML = 64, MR = 64, MT = 74, MB = 78, LARG = W - ML - MR, portal = S.config.nomePortal || 'Ágora Jurídica';
+  const paginas = []; let ops = [], y = 0;
+  const F = (b, i) => b ? (i ? '/F4' : '/F2') : (i ? '/F3' : '/F1');
+  function templo(x0, yTop, tam, cor, lw) {
+    const k = tam / 24, P = (x, yy) => `${(x0 + x * k).toFixed(2)} ${(yTop - yy * k).toFixed(2)}`;
+    const seg = [[[3, 9], [12, 4], [21, 9]], [[4, 9], [20, 9]], [[6.5, 9], [6.5, 17]], [[10, 9], [10, 17]], [[14, 9], [14, 17]], [[17.5, 9], [17.5, 17]], [[4, 17], [20, 17]], [[3, 20], [21, 20]]];
+    ops.push(`${cor} RG ${lw} w 1 J 1 j ` + seg.map(s => s.map((pt, i) => `${P(...pt)} ${i ? 'l' : 'm'}`).join(' ') + ' S').join(' '));
+  }
+  const nova = () => { ops = []; paginas.push(ops); y = H - MT; };
+  const topo = () => {
+    ops.push(`${COR.toga} rg 0 ${H - 34} ${W} 34 re f`, `${COR.ouro} rg 0 ${H - 36} ${W} 2 re f`); templo(ML, H - 9, 14, COR.ouro, .9);
+    ops.push(`${COR.ouro} rg BT /F2 8 Tf 1.2 Tc ${ML + 20} ${H - 22} Td ${strPDF(textoPDF(portal).toUpperCase())} Tj 0 Tc ET`);
+    const t = textoPDF(cabecalho || titulo).slice(0, 80); ops.push(`0.82 0.85 0.9 rg BT /F1 8 Tf ${W - MR - larguraTxt(t, false, 8)} ${H - 22} Td ${strPDF(t)} Tj ET`);
+  };
+  const garantir = alt => { if (y - alt < MB) { nova(); topo(); } };
+  const quebrar = (palavras, tam, largMax) => {
+    const esp = larguraCar(' ', false) * tam / 1000, linhas = []; let at = [], la = 0;
+    const lw = w => w.reduce((t, s) => t + larguraTxt(s.t, s.b, tam), 0);
+    for (const w of palavras) { const wl = lw(w), nl = at.length ? la + esp + wl : wl; if (nl > largMax && at.length) { linhas.push({ p: at, l: la }); at = [w]; la = wl; } else { at.push(w); la = nl; } }
+    if (at.length) linhas.push({ p: at, l: la }); if (linhas.length) linhas[linhas.length - 1].ultima = true; return linhas;
+  };
+  const linha = (ln, x, tam, cor, largMax, just) => {
+    const esp = ln.p.length - 1, tw = just && !ln.ultima && esp > 0 ? Math.min(5, (largMax - ln.l) / esp) : 0;
+    let s = `${cor} rg BT ${tw ? tw.toFixed(3) + ' Tw ' : ''}${x.toFixed(2)} ${y.toFixed(2)} Td`, f0 = '';
+    ln.p.forEach((w, k) => w.forEach((seg, j) => { const f = F(seg.b, seg.i); if (f !== f0) { s += ` ${f} ${tam} Tf`; f0 = f; } s += ` ${strPDF(seg.t + (j === w.length - 1 && k < ln.p.length - 1 ? ' ' : ''))} Tj`; }));
+    ops.push(s + (tw ? ' 0 Tw' : '') + ' ET');
+  };
+  const texto = (txt, { tam = 10.5, cor = COR.texto, x = ML, larg = LARG, entre = 1.5, depois = 7, just = true, marca = null, forte = false, fundo = null } = {}) => {
+    const pal = palavrasRicas(forte ? `**${String(txt).replace(/\*\*/g, '')}**` : txt); if (!pal.length) return;
+    const lns = quebrar(pal, tam, larg), lh = tam * entre;
+    lns.forEach((ln, i) => {
+      garantir(lh); y -= tam;
+      if (fundo) ops.push(`${fundo} rg ${x - 14} ${(y - lh + tam + 1).toFixed(2)} ${larg + 26} ${lh.toFixed(2)} re f`, `${COR.ouro} rg ${x - 14} ${(y - lh + tam + 1).toFixed(2)} 3 ${lh.toFixed(2)} re f`);
+      if (marca && i === 0) ops.push(`${COR.ouro} rg BT /F2 ${tam} Tf ${(x - marca.l).toFixed(2)} ${y.toFixed(2)} Td ${strPDF(marca.t)} Tj ET`);
+      linha(ln, x, tam, cor, larg, just); y -= lh - tam;
+    });
+    y -= depois;
+  };
+  /* abertura */
+  nova();
+  const fx = 118;
+  ops.push(`${COR.toga} rg 0 ${H - fx} ${W} ${fx} re f`, `${COR.ouro} rg 0 ${H - fx - 4} ${W} 4 re f`);
+  templo(ML, H - 34, 30, COR.ouro, 1.3);
+  ops.push(`1 1 1 rg BT /F2 18 Tf ${ML + 42} ${H - 54} Td ${strPDF(textoPDF(portal))} Tj ET`);
+  ops.push(`0.75 0.79 0.86 rg BT /F1 9 Tf ${ML + 42} ${H - 68} Td ${strPDF(textoPDF(inst().nome || 'Portal de estudos para estudantes e docentes de Direito'))} Tj ET`);
+  ops.push(`${COR.ouro} rg BT /F2 8.5 Tf 1.6 Tc ${ML} ${H - 98} Td ${strPDF(textoPDF(rotulo).toUpperCase())} Tj 0 Tc ET`);
+  y = H - fx - 40;
+  texto(titulo, { tam: 20, cor: COR.toga, entre: 1.2, depois: 2, just: false, forte: true });
+  if (subtitulo) texto(subtitulo, { tam: 11.5, cor: COR.rubi, entre: 1.35, depois: 12, just: false, forte: true }); else y -= 10;
+  if (destaque) {   // caixa grande (valor do recibo)
+    garantir(70); const h = 56;
+    ops.push(`${COR.toga} rg ${ML} ${(y - h).toFixed(2)} ${LARG} ${h} re f`, `${COR.ouro} rg ${ML} ${(y - h).toFixed(2)} ${LARG} 3 re f`);
+    ops.push(`${COR.ouro} rg BT /F2 8 Tf 1.2 Tc ${ML + 18} ${(y - 20).toFixed(2)} Td ${strPDF(textoPDF(destaque.rot).toUpperCase())} Tj 0 Tc ET`);
+    const v = textoPDF(destaque.valor); ops.push(`1 1 1 rg BT /F2 20 Tf ${ML + 18} ${(y - 44).toFixed(2)} Td ${strPDF(v)} Tj ET`);
+    if (destaque.lado) { const l = textoPDF(destaque.lado); ops.push(`0.82 0.85 0.9 rg BT /F1 9 Tf ${(ML + LARG - 18 - larguraTxt(l, false, 9)).toFixed(2)} ${(y - 40).toFixed(2)} Td ${strPDF(l)} Tj ET`); }
+    y -= h + 18;
+  }
+  if (quadro.length) {
+    const qh = 20 + quadro.length * 17, qy = y; garantir(qh + 10);
+    ops.push(`${COR.claro} rg ${ML} ${(y - qh).toFixed(2)} ${LARG} ${qh} re f`, `${COR.ouro} rg ${ML} ${(y - qh).toFixed(2)} 3 ${qh} re f`);
+    let ly = y - 19;
+    for (const [r, v] of quadro) { ops.push(`${COR.cinza} rg BT /F2 7.2 Tf 1 Tc ${ML + 16} ${ly.toFixed(2)} Td ${strPDF(textoPDF(r).toUpperCase())} Tj 0 Tc ET`); let vv = textoPDF(v || '—'); while (larguraTxt(vv, false, 9.5) > LARG - 150 && vv.length > 4) vv = vv.slice(0, -2) + '…'; ops.push(`${COR.texto} rg BT /F1 9.5 Tf ${ML + 128} ${ly.toFixed(2)} Td ${strPDF(vv)} Tj ET`); ly -= 17; }
+    y = qy - qh - 20;
+  }
+  /* corpo */
+  for (const sc of secoes) {
+    if (sc.tit) { garantir(54); y -= 4; texto(sc.tit, { tam: 11.5, cor: COR.toga, entre: 1.25, depois: 3, just: false, forte: true }); ops.push(`${COR.ouro} RG 0.8 w ${ML} ${(y + 1).toFixed(2)} m ${ML + 34} ${(y + 1).toFixed(2)} l S`); y -= 7; }
+    for (const bl of blocosApostila(sc.md || '')) {
+      if (bl.k === 'li') texto(bl.t, { x: ML + 16, larg: LARG - 16, marca: { t: '•', l: 12 }, depois: 3.5 });
+      else if (bl.k === 'ol') texto(bl.t, { x: ML + 18, larg: LARG - 18, marca: { t: bl.n + '.', l: 17 }, depois: 3.5 });
+      else if (bl.k === 'q') { y -= 3; texto(bl.t, { tam: 10.5, cor: COR.toga, fundo: '0.965 0.937 0.875', x: ML + 4, larg: LARG - 12, depois: 10 }); }
+      else texto(bl.t);
+    }
+    y -= 6;
+  }
+  /* local e data ficam na mesma página das assinaturas */
+  const blocosAss = assinaturas.concat(testemunhas ? [['Testemunha 1', 'Nome e CPF'], ['Testemunha 2', 'Nome e CPF']] : []);
+  const linhasAss = Math.ceil(blocosAss.length / 2);
+  if (fecho) { garantir(linhasAss * 76 + 80); y -= 6; texto(fecho, { just: false, depois: 4 }); }
+  if (blocosAss.length) {
+    garantir(linhasAss * 76 + 30); y -= 40;
+    const aw = (LARG - 40) / 2;
+    for (let i = 0; i < blocosAss.length; i += 2) {
+      for (const [j, [nome, sub]] of blocosAss.slice(i, i + 2).entries()) {
+        const x = blocosAss.length === 1 ? ML + LARG / 2 - aw / 2 : ML + j * (aw + 40);
+        ops.push(`${COR.texto} RG 0.6 w ${x.toFixed(2)} ${y.toFixed(2)} m ${(x + aw).toFixed(2)} ${y.toFixed(2)} l S`);
+        let a = textoPDF(nome || ' '); while (larguraTxt(a, true, 9.5) > aw && a.length > 4) a = a.slice(0, -2) + '…';
+        ops.push(`${COR.texto} rg BT /F2 9.5 Tf ${(x + aw / 2 - larguraTxt(a, true, 9.5) / 2).toFixed(2)} ${(y - 14).toFixed(2)} Td ${strPDF(a)} Tj ET`);
+        if (sub) { let b = textoPDF(sub); while (larguraTxt(b, false, 8) > aw && b.length > 4) b = b.slice(0, -2) + '…'; ops.push(`${COR.cinza} rg BT /F1 8 Tf ${(x + aw / 2 - larguraTxt(b, false, 8) / 2).toFixed(2)} ${(y - 26).toFixed(2)} Td ${strPDF(b)} Tj ET`); }
+      }
+      y -= 76;
+    }
+  }
+  /* rodapés */
+  paginas.forEach((pg, i) => {
+    const t = `Página ${i + 1} de ${paginas.length}`, e = textoPDF(`${portal} · ${cabecalho || titulo}`).slice(0, 95);
+    pg.push(`0.82 0.80 0.75 RG 0.5 w ${ML} 54 m ${W - MR} 54 l S`, `${COR.cinza} rg BT /F1 7.5 Tf ${ML} 40 Td ${strPDF(e)} Tj ET`, `${COR.cinza} rg BT /F1 7.5 Tf ${W - MR - larguraTxt(t, false, 7.5)} 40 Td ${strPDF(t)} Tj ET`);
+  });
+  const objs = [], add = s => (objs.push(s), objs.length);
+  const cat = add(''), pags = add('');
+  const fIds = ['Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique'].map(f => add(`<< /Type /Font /Subtype /Type1 /BaseFont /${f} /Encoding /WinAnsiEncoding >>`));
+  const res = `<< /Font << /F1 ${fIds[0]} 0 R /F2 ${fIds[1]} 0 R /F3 ${fIds[2]} 0 R /F4 ${fIds[3]} 0 R >> >>`;
+  const kids = paginas.map(pg => { const st = pg.join('\n'); const c = add(`<< /Length ${st.length} >>\nstream\n${st}\nendstream`); return add(`<< /Type /Page /Parent ${pags} 0 R /MediaBox [0 0 ${W} ${H}] /Resources ${res} /Contents ${c} 0 R >>`); });
+  objs[cat - 1] = `<< /Type /Catalog /Pages ${pags} 0 R >>`;
+  objs[pags - 1] = `<< /Type /Pages /Kids [${kids.map(k => k + ' 0 R').join(' ')}] /Count ${kids.length} >>`;
+  const info = add(`<< /Title ${strPDF(textoPDF(cabecalho || titulo))} /Author ${strPDF(textoPDF(portal))} /Producer ${strPDF(textoPDF(portal))} >>`);
+  let pdf = '%PDF-1.4\n%\xe2\xe3\xcf\xd3\n'; const off = [];
+  objs.forEach((o, i) => { off.push(pdf.length); pdf += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xr = pdf.length;
+  pdf += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${off.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size ${objs.length + 1} /Root ${cat} 0 R /Info ${info} 0 R >>\nstartxref\n${xr}\n%%EOF`;
+  const bytes = new Uint8Array(pdf.length); for (let i = 0; i < pdf.length; i++) bytes[i] = pdf.charCodeAt(i) & 255;
+  return new Blob([bytes], { type: 'application/pdf' });
+}
+const baixarBlob = (blob, nome) => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nome; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); };
+/* ------------------------------- dados do contrato ------------------------------- */
+function valoresContrato(c) {
+  const v = Number(c.valorUnit) || 0, meses = Math.max(12, Number(c.meses) || 12), anos = meses / 12;
+  let anual = 0;
+  if (c.modelo === 'aluno') anual = v * (Number(c.acessos) || 0) * (c.periodo === 'mes' ? 12 : 1);
+  else if (c.modelo === 'fixo') anual = v * (c.periodo === 'mes' ? 12 : 1);
+  else anual = Number(c.valorTotalManual) / anos || 0;
+  const total = Math.round(anual * anos * 100) / 100, n = Math.max(1, Number(c.parcelas) || 1);
+  return { anual, total, n, parcela: Math.round(total / n * 100) / 100 };
+}
+function contratoDaProposta(p, existentes) {
+  const ano = new Date().getFullYear(), seq = existentes.filter(c => (c.numero || '').endsWith('/' + ano)).length + 1;
+  const i = inst(), cp = { ...custoPadrao(), ...p };
+  const inicio = hojeISO(new Date());
+  const c = { id: uid(), criadoEm: Date.now(), propostaId: p.id, numero: `${String(seq).padStart(3, '0')}/${ano}`, status: 'rascunho',
+    contratante: { nome: p.instituicao || '', sigla: p.sigla || '', cnpj: '', endereco: '', cidade: p.cidade || '', representante: p.destinatario || '', cpfRep: '', cargoRep: p.cargoDest || '', email: '' },
+    contratada: { nome: i.nome || S.config.nomePortal, cnpj: i.cnpj || '', endereco: i.endereco || '', cidade: i.cidade || '', representante: p.contatoNome || i.responsavel || '', cargo: p.contatoCargo || i.cargo || '', email: p.contatoEmail || '' },
+    inicio, meses: 12, modelo: cp.custoModelo || 'aluno', valorUnit: Number(cp.custoValor) || 0, periodo: cp.custoPeriodo || 'ano', acessos: Number(cp.custoMin) || 0, valorTotalManual: 0,
+    parcelas: /12 parcelas/.test(cp.custoPag || '') ? 12 : 1, primeiroVenc: somaMeses(inicio, 0), forma: 'PIX ou transferência bancária', dadosPagamento: '', multa: 2, juros: 1, foro: i.cidade || p.cidade || '',
+    termos: { oferece: textoSecao(p, 'oferece'), solicita: textoSecao(p, 'solicita'), validacao: textoSecao(p, 'validacao'), planos: `planos ${textoSecao(p, 'custos').match(/com planos (.+?)\.\s/)?.[1] || 'mensal, semestral ou anual'}` },
+    pagamentos: [] };
+  c.pagamentos = gerarParcelas(c, []);
+  return c;
+}
+function gerarParcelas(c, atuais) {
+  const pagos = (atuais || []).filter(x => x.pagoEm), { n, parcela, total } = valoresContrato(c), out = [...pagos];
+  const jaPago = pagos.reduce((s, x) => s + (Number(x.valor) || 0), 0), restantes = Math.max(0, n - pagos.length);
+  const valorR = restantes ? Math.round((total - jaPago) / restantes * 100) / 100 : 0;
+  for (let k = pagos.length; k < n; k++) out.push({ n: k + 1, venc: somaMeses(c.primeiroVenc || c.inicio, n === 1 ? 0 : k), valor: k === n - 1 ? Math.round((total - jaPago - valorR * (restantes - 1)) * 100) / 100 : valorR });
+  return out.map((x, k) => ({ ...x, n: k + 1 }));
+}
+const md = s => String(s || '').replace(/\r/g, '');
+function clausulasContrato(c) {
+  const ct = c.contratante, cd = c.contratada, V = valoresContrato(c), fim = somaMeses(c.inicio, c.meses);
+  const sig = ct.sigla || ct.nome || 'CONTRATANTE';
+  const preco = c.modelo === 'aluno' ? `**${brl(c.valorUnit)} por aluno ou docente com acesso, ${c.periodo === 'mes' ? 'por mês' : 'por ano'}**, para **${(Number(c.acessos) || 0).toLocaleString('pt-BR')} acessos** contratados`
+    : c.modelo === 'fixo' ? `**${brl(c.valorUnit)} ${c.periodo === 'mes' ? 'por mês' : 'por ano'}**, com acesso para os alunos e docentes indicados pela CONTRATANTE${c.acessos ? `, até ${Number(c.acessos).toLocaleString('pt-BR')} acessos` : ''}`
+    : `valor total combinado entre as partes`;
+  const L = (s, ...r) => [s, ...r].join('\n');
+  return [
+    { tit: 'Cláusula 1ª — Do objeto', md: `O presente contrato tem por objeto a **parceria institucional** entre a CONTRATADA, responsável pelo portal ${S.config.nomePortal}, e a CONTRATANTE, para: (a) a validação acadêmica, pela CONTRATANTE, dos certificados emitidos pelo portal; (b) a divulgação da marca, dos links e das atividades acadêmicas da CONTRATANTE no portal; e (c) o acesso de alunos e docentes da CONTRATANTE ao portal por meio do **plano institucional**, nos termos da proposta comercial que deu origem a este contrato.` },
+    { tit: 'Cláusula 2ª — Das obrigações da CONTRATADA', md: L('A CONTRATADA se obriga a:', md(c.termos?.oferece), '- liberar o acesso completo ao portal aos alunos e docentes indicados pela CONTRATANTE, no limite contratado, durante a vigência deste contrato.') },
+    { tit: 'Cláusula 3ª — Das obrigações da CONTRATANTE', md: L('A CONTRATANTE se obriga a:', md(c.termos?.solicita), '- efetuar os pagamentos nas datas e nas condições previstas na Cláusula 5ª;', '- informar à CONTRATADA os alunos e docentes que terão acesso ao portal.') },
+    { tit: 'Cláusula 4ª — Da validação dos certificados', md: md(c.termos?.validacao) },
+    { tit: 'Cláusula 5ª — Do preço e da forma de pagamento', md: L(
+      `Pelo plano institucional, a CONTRATANTE pagará à CONTRATADA ${preco}, totalizando **${brl(V.total)} (${porExtenso(V.total)})** pelo período de vigência de ${c.meses} meses.`, '',
+      `O valor será pago ${V.n === 1 ? `em **parcela única**, com vencimento em ${dataBR(c.primeiroVenc)}` : `em **${V.n} parcelas mensais** de ${brl(V.parcela)}, com o primeiro vencimento em ${dataBR(c.primeiroVenc)} e os demais no mesmo dia dos meses seguintes`}, por ${c.forma || 'PIX ou transferência bancária'}${c.dadosPagamento ? ` (${c.dadosPagamento})` : ''}.`, '',
+      `Para cada pagamento recebido, a CONTRATADA emitirá o respectivo **recibo**. O atraso no pagamento sujeita a CONTRATANTE a multa de ${c.multa ?? 2}% e juros de ${c.juros ?? 1}% ao mês sobre o valor em atraso. Na renovação, os valores poderão ser reajustados pelo IPCA acumulado do período ou outro índice que o substitua.`) },
+    { tit: 'Cláusula 6ª — Da vigência, renovação e rescisão', md: L(`Este contrato vigora pelo prazo mínimo de **${c.meses} meses**, de ${dataBR(c.inicio)} a ${dataBR(fim)}, e será renovado automaticamente por períodos iguais, salvo manifestação contrária de qualquer das partes com antecedência mínima de 30 dias do término.`, '',
+      'Depois do primeiro ano, qualquer das partes poderá encerrar a parceria mediante aviso prévio por escrito de 30 dias. O descumprimento de qualquer cláusula autoriza a rescisão imediata pela parte prejudicada, sem prejuízo dos valores devidos até a data da rescisão.') },
+    { tit: 'Cláusula 7ª — Do uso da marca', md: 'Cada parte poderá usar o nome e a marca da outra exclusivamente para os fins deste contrato, nos termos combinados, sendo vedado qualquer outro uso sem autorização por escrito. Encerrado o contrato, a CONTRATADA retirará a marca da CONTRATANTE do portal em até 30 dias.' },
+    { tit: 'Cláusula 8ª — Da proteção de dados', md: 'As partes tratarão os dados pessoais de alunos e docentes somente para as finalidades deste contrato, em conformidade com a Lei Geral de Proteção de Dados (Lei 13.709/2018), adotando medidas de segurança adequadas e comunicando à outra parte qualquer incidente que possa afetar esses dados.' },
+    { tit: 'Cláusula 9ª — Da não exclusividade', md: 'Este contrato não gera exclusividade: as partes podem manter outras parcerias com terceiros.' },
+    { tit: 'Cláusula 10ª — Do foro', md: `Fica eleito o foro da comarca de ${c.foro || ct.cidade || '________'} para dirimir quaisquer dúvidas oriundas deste contrato. E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 2 (duas) vias de igual teor e forma, na presença das testemunhas abaixo.` }
+  ].map(x => ({ ...x, md: (c.clausulas?.[x.tit] ?? x.md) }));
+}
+function qualificacao(c) {
+  const ct = c.contratante, cd = c.contratada, b = s => s ? `**${s}**` : '________';
+  return `**CONTRATADA:** ${b(cd.nome)}${cd.cnpj ? `, inscrita no CNPJ sob o nº ${cd.cnpj}` : ''}${cd.endereco ? `, com sede em ${cd.endereco}` : ''}${cd.cidade ? `, ${cd.cidade}` : ''}, responsável pelo portal ${S.config.nomePortal}, neste ato representada por ${cd.representante || '________'}${cd.cargo ? `, ${cd.cargo}` : ''}.
+
+**CONTRATANTE:** ${b(ct.nome)}${ct.sigla ? ` (${ct.sigla})` : ''}${ct.cnpj ? `, inscrita no CNPJ sob o nº ${ct.cnpj}` : ''}${ct.endereco ? `, com sede em ${ct.endereco}` : ''}${ct.cidade ? `, ${ct.cidade}` : ''}, neste ato representada por ${ct.representante || '________'}${ct.cargoRep ? `, ${ct.cargoRep}` : ''}${ct.cpfRep ? `, CPF ${ct.cpfRep}` : ''}.
+
+As partes acima qualificadas celebram o presente **Contrato de Parceria Institucional**, que se rege pelas cláusulas a seguir.`;
+}
+async function pdfContrato(c) {
+  const ct = c.contratante, cd = c.contratada, V = valoresContrato(c);
+  return pdfDocumento({ rotulo: `Contrato nº ${c.numero}`, titulo: 'Contrato de parceria institucional', subtitulo: `${S.config.nomePortal} e ${ct.nome || 'instituição'}${ct.sigla ? ` (${ct.sigla})` : ''}`, cabecalho: `Contrato nº ${c.numero} · ${ct.sigla || ct.nome}`,
+    quadro: [['Contrato', `nº ${c.numero}`], ['Vigência', `${dataBR(c.inicio)} a ${dataBR(somaMeses(c.inicio, c.meses))} (${c.meses} meses, mínimo)`], ['Valor total', `${brl(V.total)} · ${V.n === 1 ? 'parcela única' : `${V.n} parcelas de ${brl(V.parcela)}`}`], ['Proposta de origem', c.propostaNumero ? `nº ${c.propostaNumero}` : 'Proposta de parceria institucional']],
+    secoes: [{ md: qualificacao(c) }, ...clausulasContrato(c)],
+    fecho: `${c.foro || ct.cidade || cd.cidade || ''}${c.foro || ct.cidade || cd.cidade ? ', ' : ''}${dataLonga(c.dataAssinatura || c.inicio)}.`,
+    assinaturas: [[cd.representante || cd.nome, `CONTRATADA · ${cd.nome}`], [ct.representante || ct.nome, `CONTRATANTE · ${ct.sigla || ct.nome}`]], testemunhas: true });
+}
+async function pdfRecibo(c, pg) {
+  const ct = c.contratante, cd = c.contratada, V = valoresContrato(c);
+  return pdfDocumento({ rotulo: `Recibo nº ${pg.recibo.numero}`, titulo: 'Recibo de pagamento', subtitulo: `Contrato de parceria institucional nº ${c.numero}`, cabecalho: `Recibo nº ${pg.recibo.numero} · ${ct.sigla || ct.nome}`,
+    destaque: { rot: 'Valor recebido', valor: brl(pg.valorPago ?? pg.valor), lado: `Parcela ${pg.n} de ${V.n}` },
+    quadro: [['Recibo', `nº ${pg.recibo.numero}`], ['Pagador', `${ct.nome}${ct.cnpj ? ` · CNPJ ${ct.cnpj}` : ''}`], ['Recebedor', `${cd.nome}${cd.cnpj ? ` · CNPJ ${cd.cnpj}` : ''}`], ['Data do pagamento', dataBR(pg.pagoEm)], ['Forma de pagamento', pg.formaPaga || c.forma]],
+    secoes: [{ md: `Recebemos de **${ct.nome}**${ct.cnpj ? `, CNPJ ${ct.cnpj}` : ''}, a importância de **${brl(pg.valorPago ?? pg.valor)} (${porExtenso(pg.valorPago ?? pg.valor)})**, referente à **parcela ${pg.n} de ${V.n}** do Contrato de Parceria Institucional nº ${c.numero} (plano institucional do portal ${S.config.nomePortal}), com vencimento em ${dataBR(pg.venc)}, paga por ${pg.formaPaga || c.forma}${pg.obs ? `. ${pg.obs}` : ''}.
+
+Para clareza, firmamos o presente recibo, dando plena e geral quitação da parcela acima.` }],
+    fecho: `${cd.cidade || c.foro || ''}${cd.cidade || c.foro ? ', ' : ''}${dataLonga(pg.recibo.emitidoEm || pg.pagoEm)}.`,
+    assinaturas: [[cd.representante || cd.nome, `${cd.cargo ? cd.cargo + ' · ' : ''}${cd.nome}`]] });
+}
+const proximoRecibo = lista => { const ano = new Date().getFullYear(), ns = lista.flatMap(c => (c.pagamentos || []).map(p => p.recibo?.numero)).filter(n => n && n.endsWith('/' + ano)).map(n => parseInt(n, 10)); return `${String((ns.length ? Math.max(...ns) : 0) + 1).padStart(4, '0')}/${ano}`; };
+/* ------------------------------------- telas ------------------------------------- */
+async function admContratos(box, abrirId) {
+  let lista = []; try { lista = (await ContDB.list()).sort((a, b) => b.criadoEm - a.criadoEm); } catch (e) { box.innerHTML = `<div class="card empty"><p>${esc(e.message)}</p></div>`; return; }
+  if (abrirId) { const c = lista.find(x => x.id === abrirId); if (c) return editorContrato(box, c, lista); }
+  const resumo = c => { const pg = c.pagamentos || [], pago = pg.filter(x => x.pagoEm).reduce((s, x) => s + (Number(x.valorPago ?? x.valor) || 0), 0), V = valoresContrato(c), prox = pg.find(x => !x.pagoEm); return { pago, V, prox }; };
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:760px">Quando uma proposta é aceita, gere o contrato em <b>Propostas de parceria</b> (botão <b>Gerar contrato</b>): ele sai com os mesmos termos da proposta. Aqui você completa os dados das partes, baixa o contrato em PDF, registra os pagamentos e emite os recibos. <b>Fica tudo guardado só neste computador.</b></p></div>
+    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th>Contrato</th><th>Instituição</th><th>Vigência</th><th>Valor</th><th>Recebido</th><th></th></tr>${lista.map(c => { const r = resumo(c), atras = r.prox && r.prox.venc < hojeISO(new Date()); return `<tr><td><b>nº ${esc(c.numero)}</b><br><span class="badge ${c.status === 'assinado' ? 'ok' : c.status === 'encerrado' ? '' : 'warn'}">${{ rascunho: 'Rascunho', assinado: 'Assinado', encerrado: 'Encerrado' }[c.status] || c.status}</span></td>
+      <td>${esc(c.contratante.nome)}${c.contratante.sigla ? ` <small class="muted">${esc(c.contratante.sigla)}</small>` : ''}</td><td>${dataBR(c.inicio)} a ${dataBR(somaMeses(c.inicio, c.meses))}</td><td>${brl(r.V.total)}</td>
+      <td>${brl(r.pago)}${r.prox ? `<br><small class="${atras ? 'ed-err' : 'muted'}">${atras ? 'Em atraso: ' : 'Próxima: '}${dataBR(r.prox.venc)}</small>` : r.V.total ? '<br><small class="badge ok">Quitado</small>' : ''}</td>
+      <td class="acts"><button class="btn primary sm" data-ct="ed" data-id="${esc(c.id)}">${ic('edit', 14)} Abrir</button><button class="btn ghost sm" data-ct="pdf" data-id="${esc(c.id)}">${ic('download', 14)} Contrato</button><button class="btn danger sm" data-ct="del" data-id="${esc(c.id)}" title="Excluir">${ic('trash', 14)}</button></td></tr>`; }).join('')}</table></div>`
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('scroll')}<h3>Nenhum contrato ainda</h3><p>Quando uma instituição aceitar a proposta, abra <b>Propostas de parceria</b>, marque a proposta como <b>Aceita</b> e clique em <b>Gerar contrato</b>.</p><a class="btn primary" href="#/admin/propostas">Ir para as propostas</a></div>`}`;
+  box.onclick = async ev => {
+    const b = ev.target.closest('[data-ct]'); if (!b) return; const c = lista.find(x => x.id === b.dataset.id); if (!c) return;
+    if (b.dataset.ct === 'ed') return editorContrato(box, c, lista);
+    if (b.dataset.ct === 'pdf') return baixarBlob(await pdfContrato(c), nomeArquivo('contrato', `${c.numero}-${c.contratante.sigla || c.contratante.nome}`).replace(/\.png$/, '.pdf'));
+    if (b.dataset.ct === 'del') { if ((c.pagamentos || []).some(x => x.recibo)) return toast('Este contrato tem recibos emitidos e não pode ser excluído. Marque-o como encerrado.', true); if (!await confirmar(`Excluir o contrato nº ${c.numero}?`, 'Excluir')) return; await ContDB.del(c.id); toast('Contrato excluído.'); admContratos(box); }
+  };
+}
+async function editorContrato(box, c, lista) {
+  const ct = c.contratante, cd = c.contratada;
+  const moeda = v => Number(v) ? Number(v).toFixed(2).replace('.', ',') : '';
+  const fld = (grp, k, rot, extra = '') => `<label>${rot}<input data-g="${grp}" name="${grp}.${k}" value="${esc(['valorUnit', 'valorTotalManual'].includes(k) ? moeda(c[k]) : (grp ? c[grp][k] : c[k]) ?? '')}" ${extra}></label>`;
+  box.innerHTML = `<div class="list-h"><button class="btn ghost sm" id="ct-voltar">${ic('back', 15)} Contratos</button><div class="acts"><span class="small muted" id="ct-st"></span><select id="ct-status" class="sm"><option value="rascunho" ${c.status === 'rascunho' ? 'selected' : ''}>Rascunho</option><option value="assinado" ${c.status === 'assinado' ? 'selected' : ''}>Assinado</option><option value="encerrado" ${c.status === 'encerrado' ? 'selected' : ''}>Encerrado</option></select><button class="btn primary sm" id="ct-pdf">${ic('download', 15)} Baixar contrato (PDF)</button></div></div>
+  <div class="pp-g"><form class="form card pad pp-form" id="fct" novalidate>
+    <h4>Contratante (instituição)</h4>
+    ${fld('contratante', 'nome', 'Razão social / nome *')}<div class="row2">${fld('contratante', 'sigla', 'Sigla')}${fld('contratante', 'cnpj', 'CNPJ', 'inputmode="numeric" placeholder="00.000.000/0000-00"')}</div>
+    ${fld('contratante', 'endereco', 'Endereço da sede')}<div class="row2">${fld('contratante', 'cidade', 'Cidade/UF')}${fld('contratante', 'email', 'E-mail para cobrança', 'type="email"')}</div>
+    <div class="row2">${fld('contratante', 'representante', 'Representante legal')}${fld('contratante', 'cargoRep', 'Cargo')}</div>${fld('contratante', 'cpfRep', 'CPF do representante (opcional)')}
+    <h4>Contratada (portal)</h4>
+    ${fld('contratada', 'nome', 'Razão social / nome *')}<div class="row2">${fld('contratada', 'cnpj', 'CNPJ ou CPF')}${fld('contratada', 'cidade', 'Cidade/UF')}</div>${fld('contratada', 'endereco', 'Endereço')}
+    <div class="row2">${fld('contratada', 'representante', 'Representante')}${fld('contratada', 'cargo', 'Cargo')}</div>
+    <h4>Condições (vindas da proposta)</h4>
+    <div class="row2">${fld('', 'inicio', 'Início da vigência', 'type="date"')}${fld('', 'meses', 'Vigência (meses, mínimo 12)', 'type="number" min="12" max="60"')}</div>
+    <label>Modelo de cobrança<select name=".modelo" data-g=""><option value="aluno" ${c.modelo === 'aluno' ? 'selected' : ''}>Por aluno ou docente com acesso</option><option value="fixo" ${c.modelo === 'fixo' ? 'selected' : ''}>Valor fixo</option><option value="combinar" ${c.modelo === 'combinar' ? 'selected' : ''}>Valor total combinado</option></select></label>
+    <div class="row2 ct-v">${fld('', 'valorUnit', 'Valor (R$)', 'inputmode="decimal"')}<label>Período<select name=".periodo" data-g=""><option value="ano" ${c.periodo !== 'mes' ? 'selected' : ''}>Por ano</option><option value="mes" ${c.periodo === 'mes' ? 'selected' : ''}>Por mês</option></select></label></div>
+    <div class="row2">${fld('', 'acessos', 'Acessos contratados', 'type="number" min="0"')}<label class="ct-m">Valor total (R$)<input data-g="" name=".valorTotalManual" inputmode="decimal" value="${moeda(c.valorTotalManual)}"></label></div>
+    <div class="row2">${fld('', 'parcelas', 'Número de parcelas', 'type="number" min="1" max="60"')}${fld('', 'primeiroVenc', '1º vencimento', 'type="date"')}</div>
+    ${fld('', 'forma', 'Forma de pagamento')}${fld('', 'dadosPagamento', 'Dados para pagamento (opcional)', 'placeholder="Chave PIX, banco, agência e conta"')}
+    <div class="row2">${fld('', 'multa', 'Multa por atraso (%)', 'type="number" min="0" max="10" step="0.5"')}${fld('', 'juros', 'Juros ao mês (%)', 'type="number" min="0" max="5" step="0.5"')}</div>
+    ${fld('', 'foro', 'Foro (comarca)')}
+    <p class="small" id="ct-tot"></p>
+    <h4>Cláusulas</h4><p class="hint" style="margin-top:-4px">As cláusulas usam os termos da proposta. Ajuste o texto se precisar.</p>
+    <div id="ct-cls"></div>
+    <div class="demo-hint" style="margin-top:10px">Este contrato é um modelo. Antes de assinar, peça a revisão de um advogado ou da assessoria jurídica da instituição.</div>
+  </form><div><div class="card pad" id="ct-pag"></div><div class="pp-prev" id="ct-prev" style="margin-top:16px"></div></div></div>`;
+  const f = $('#fct', box), st = $('#ct-st', box);
+  const desenharCls = () => { $('#ct-cls', box).innerHTML = clausulasContrato(c).map(x => `<details class="pp-sec"><summary>${esc(x.tit)}${c.clausulas?.[x.tit] != null ? ' <span class="badge">editado</span>' : ''}</summary><textarea data-cl="${esc(x.tit)}" rows="8">${esc(x.md)}</textarea>${c.clausulas?.[x.tit] != null ? `<button type="button" class="btn ghost sm" data-cl-pad="${esc(x.tit)}">Voltar ao texto gerado</button>` : ''}</details>`).join(''); };
+  const ler = () => {
+    for (const el of $$('[data-g]', f)) { const [g, k] = el.name.split('.'); let v = el.value.trim(); if (['valorUnit', 'valorTotalManual'].includes(k)) v = Number(v.replace(/\./g, '').replace(',', '.')) || 0; else if (['meses', 'acessos', 'parcelas', 'multa', 'juros'].includes(k)) v = Number(v) || 0; if (g) c[g][k] = v; else c[k] = v; }
+    c.meses = Math.max(12, c.meses || 12);
+    for (const ta of $$('[data-cl]', f)) { const pad = (() => { const cl = c.clausulas; c.clausulas = { ...(cl || {}) }; delete c.clausulas[ta.dataset.cl]; const t = clausulasContrato(c).find(x => x.tit === ta.dataset.cl)?.md; c.clausulas = cl; return t; })(); c.clausulas = c.clausulas || {}; if (ta.value.trim() !== String(pad).trim()) c.clausulas[ta.dataset.cl] = ta.value; else delete c.clausulas[ta.dataset.cl]; }
+    c.status = $('#ct-status', box).value;
+  };
+  const valorTxt = () => { const V = valoresContrato(c); return `Valor total: <b>${brl(V.total)}</b> (${esc(porExtenso(V.total))}) · ${V.n === 1 ? 'parcela única' : `${V.n} parcelas de ${brl(V.parcela)}`}`; };
+  const desenharPag = () => {
+    const pg = c.pagamentos || [], hoje = hojeISO(new Date());
+    $('#ct-pag', box).innerHTML = `<div class="ct-pag-h"><h4 style="margin:0">Pagamentos e recibos</h4><button type="button" class="btn ghost sm" id="ct-ger" title="Refaz as parcelas ainda não pagas com o valor e as datas atuais">Atualizar parcelas</button></div>
+      <div class="table-wrap"><table class="ct-tab"><tr><th>Parcela</th><th>Vencimento</th><th>Valor</th><th>Situação</th><th></th></tr>${pg.map((x, i) => `<tr><td>${x.n}/${pg.length}</td><td>${dataBR(x.venc)}</td><td>${brl(x.valorPago ?? x.valor)}</td>
+        <td>${x.pagoEm ? `<span class="badge ok">Pago em ${dataBR(x.pagoEm)}</span>${x.recibo ? `<br><small>Recibo nº ${esc(x.recibo.numero)}</small>` : ''}` : x.venc < hoje ? '<span class="badge err">Em atraso</span>' : '<span class="badge">Em aberto</span>'}</td>
+        <td class="acts">${x.pagoEm ? `<button type="button" class="btn ghost sm" data-rec="${i}">${ic('download', 13)} Recibo</button>` : `<button type="button" class="btn primary sm" data-pagar="${i}">Registrar pagamento</button>`}</td></tr>`).join('')}</table></div>
+      <p class="small muted" style="margin:8px 0 0">Ao registrar um pagamento, o portal emite o recibo com número sequencial e valor por extenso.</p>`;
+    $('#ct-tot', box).innerHTML = valorTxt();
+  };
+  const desenhar = () => {
+    $('#ct-prev', box).innerHTML = `<div class="pp-folha"><div class="pp-faixa"><div class="pp-marca">${ic('columns', 28)}<div><b>${esc(S.config.nomePortal)}</b><small>${esc(inst().nome || '')}</small></div></div><span>Contrato nº ${esc(c.numero)}</span></div>
+      <div class="pp-corpo"><h1>Contrato de parceria institucional</h1><h2>${esc(S.config.nomePortal)} e ${esc(ct.nome || 'instituição')}</h2>${mdProposta(qualificacao(c))}${clausulasContrato(c).map(x => `<section><h3>${esc(x.tit)}</h3>${mdProposta(x.md)}</section>`).join('')}
+      <div class="pp-ass"><div><span></span><b>${esc(cd.representante || cd.nome)}</b><small>CONTRATADA</small></div><div><span></span><b>${esc(ct.representante || ct.nome)}</b><small>CONTRATANTE</small></div><div><span></span><b>Testemunha 1</b></div><div><span></span><b>Testemunha 2</b></div></div></div></div>`;
+    $$('.ct-v', box).forEach(d => d.classList.toggle('hidden', c.modelo === 'combinar')); $$('.ct-m', box).forEach(d => d.classList.toggle('hidden', c.modelo !== 'combinar'));
+    $('#ct-tot', box).innerHTML = valorTxt();
+  };
+  let t = null, sujo = false;
+  const salvar = async () => { ler(); await ContDB.put(structuredClone(c)); sujo = false; st.textContent = `Salvo às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`; };
+  f.addEventListener('input', () => { sujo = true; st.textContent = 'Alterações não salvas'; clearTimeout(t); t = setTimeout(() => { ler(); desenhar(); salvar(); }, 450); });
+  f.addEventListener('change', () => { ler(); desenhar(); salvar(); });
+  f.addEventListener('click', ev => { const b = ev.target.closest('[data-cl-pad]'); if (!b) return; delete c.clausulas[b.dataset.clPad]; desenharCls(); desenhar(); salvar(); });
+  $('#ct-status', box).onchange = () => { ler(); salvar(); toast(`Contrato marcado como ${$('#ct-status', box).selectedOptions[0].textContent.toLowerCase()}.`); };
+  $('#ct-pdf', box).onclick = async () => { ler(); if (!ct.nome || !cd.nome) return toast('Preencha o nome da contratante e da contratada.', true); await salvar(); baixarBlob(await pdfContrato(c), nomeArquivo('contrato', `${c.numero}-${ct.sigla || ct.nome}`).replace(/\.png$/, '.pdf')); toast('Contrato baixado.'); };
+  $('#ct-voltar', box).onclick = async () => { if (sujo) await salvar(); admContratos(box); };
+  $('#ct-pag', box).addEventListener('click', async ev => {
+    const g = ev.target.closest('#ct-ger');
+    if (g) { ler(); c.pagamentos = gerarParcelas(c, c.pagamentos); await salvar(); desenharPag(); return toast('Parcelas em aberto atualizadas.'); }
+    const rb = ev.target.closest('[data-rec]');
+    if (rb) { const pg = c.pagamentos[Number(rb.dataset.rec)]; return baixarBlob(await pdfRecibo(c, pg), nomeArquivo('recibo', `${pg.recibo.numero}-${ct.sigla || ct.nome}`).replace(/\.png$/, '.pdf')); }
+    const pb = ev.target.closest('[data-pagar]'); if (!pb) return;
+    const i = Number(pb.dataset.pagar), pg = c.pagamentos[i];
+    const { el, close } = modal(`Registrar pagamento · parcela ${pg.n}/${c.pagamentos.length}`, `<form class="form" id="frp" novalidate>
+      <div class="row2"><label>Data do pagamento<input name="data" type="date" value="${hojeISO(new Date())}"></label><label>Valor recebido (R$)<input name="valor" inputmode="decimal" value="${Number(pg.valor).toFixed(2).replace('.', ',')}"></label></div>
+      <label>Forma de pagamento<input name="forma" value="${esc(c.forma || 'PIX')}"></label><label>Observação no recibo (opcional)<input name="obs" maxlength="200" placeholder="Ex.: comprovante PIX nº…"></label>
+      <p class="hint">O recibo nº <b>${proximoRecibo(lista.map(x => x.id === c.id ? c : x))}</b> será emitido e baixado em PDF.</p>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">${ic('check', 15)} Registrar e emitir recibo</button></div></form>`);
+    $('#frp', el).onsubmit = async e => {
+      e.preventDefault(); const fr = e.target, v = Number(fr.valor.value.replace(/\./g, '').replace(',', '.')) || 0;
+      if (!fr.data.value || v <= 0) return toast('Informe a data e o valor recebido.', true);
+      ler(); const num = proximoRecibo((await ContDB.list()).map(x => x.id === c.id ? c : x));
+      Object.assign(pg, { pagoEm: fr.data.value, valorPago: v, formaPaga: fr.forma.value.trim(), obs: fr.obs.value.trim(), recibo: { numero: num, emitidoEm: hojeISO(new Date()) } });
+      await salvar(); lista = await ContDB.list(); close(); desenharPag();
+      baixarBlob(await pdfRecibo(c, pg), nomeArquivo('recibo', `${num}-${ct.sigla || ct.nome}`).replace(/\.png$/, '.pdf'));
+      toast(`Pagamento registrado. Recibo nº ${num} emitido.`);
+    };
+  });
+  S.limpar.push(() => { if (sujo) salvar(); });
+  desenharCls(); desenharPag(); desenhar();
+}
+
+let abrirContratoPend = null;
 /* ======================= Propostas de parceria institucional =======================
    Painel → Propostas: o administrador prepara a proposta para uma instituição de ensino
    superior (validação dos certificados, divulgação da marca e das atividades dela) e
    baixa em PDF com a identidade visual do portal. As propostas ficam guardadas neste
    computador (IndexedDB "agora-propostas"): não vão para o Gist nem para a nuvem.
    ================================================================================ */
-const PropDB = (() => {
-  let dbp = null;
-  const abrir = () => dbp || (dbp = new Promise((ok, erro) => { const q = indexedDB.open('agora-propostas', 1); q.onupgradeneeded = () => q.result.createObjectStore('propostas', { keyPath: 'id' }); q.onsuccess = () => ok(q.result); q.onerror = () => { dbp = null; erro(q.error); }; }));
-  const tx = async (modo, fn) => { const db = await abrir(); return new Promise((ok, erro) => { const t = db.transaction('propostas', modo), r = fn(t.objectStore('propostas')); t.oncomplete = () => ok(r?.result); t.onerror = () => erro(t.error); }); };
-  return { list: () => tx('readonly', s => s.getAll()), put: o => tx('readwrite', s => s.put(o)), del: id => tx('readwrite', s => s.delete(id)) };
-})();
+const PropDB = { list: () => ContDB.list('propostas'), put: o => ContDB.put(o, 'propostas'), del: id => ContDB.del(id, 'propostas') };
 /* Seções do modelo. Marcações: "- " item, "> " destaque, **negrito**. {portal}, {instituicao}, {sigla}, {nota}, {certificadora} são trocados na hora. */
 const PROPOSTA_SECOES = [
   ['apresentacao', 'Apresentação', `O **{portal}** é um portal de estudos criado para estudantes e docentes de Direito. Ele reúne, num só lugar e com linguagem acessível, os recursos de que o estudante precisa ao longo da graduação e na preparação para a OAB e para concursos:
@@ -6453,7 +6793,7 @@ Com a parceria, a {instituicao} define com o portal os cursos que deseja validar
 - Certificados validados por uma instituição de ensino superior, com mais valor no currículo.
 - Contato com oportunidades de estágio, concursos e atualizações da lei, num só lugar.
 - Para docentes: visibilidade para a produção acadêmica e um canal direto com os estudantes.`],
-  ['custos', 'Custos e compromissos', `O acesso completo ao portal é feito por assinatura, com planos **mensal, semestral ou anual**{planos}.
+  ['custos', 'Custos e compromissos', `O acesso completo ao portal é feito por assinatura, com planos {tiposPlanos}{planos}.
 
 {custoInstituicao}
 
@@ -6471,6 +6811,10 @@ const PROP_PADRAO = () => {
     contatoNome: i.responsavel || S.user?.nome || '', contatoCargo: i.cargo || '', contatoEmail: (String(S.config.contato || '').match(/[\w.+-]+@[\w-]+\.[\w.]+/) || [])[0] || S.user?.email || '', contatoFone: /\d{8,}/.test((S.config.contato || '').replace(/\D/g, '')) ? S.config.contato : '', site: enderecoPublico(linkPortal()) || '',
     numeros: true, qr: true, logo: '', ...custoPadrao(), secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
 };
+const planosDaProposta = p => Array.isArray(p?.planosInst) ? p.planosInst.filter(x => x.incluir !== false && Number(x.preco) > 0).map(x => ({ ...x, preco: Number(x.preco), dias: Number(x.dias) || 30 }))
+  : planos().filter(x => x.preco > 0).map(x => ({ id: x.id, nome: x.nome, preco: x.preco, dias: x.dias }));
+const anualRef = p => planosDaProposta(p).filter(x => x.dias >= 360).sort((a, b) => a.preco - b.preco)[0] || planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+const mesesTxt = d => { const m = Math.round(Number(d) / 30.4); return m >= 12 && m % 12 === 0 ? (m === 12 ? '12 meses' : `${m / 12} anos`) : m <= 1 ? '1 mês' : `${m} meses`; };
 function custoPadrao() {
   const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
   const sug = an ? Math.max(1, Math.floor(an.preco * 0.7)) + 0.9 : 0;
@@ -6480,7 +6824,7 @@ function textoCustoInstituicao(p) {
   const c = { ...custoPadrao(), ...Object.fromEntries(Object.entries(p).filter(([k, v]) => k.startsWith('custo') && v !== undefined && v !== null)) };
   const ins = p.sigla || p.instituicao || 'instituição', v = Number(String(c.custoValor).replace(',', '.')) || 0, per = c.custoPeriodo === 'mes' ? 'por mês' : 'por ano';
   const intro = `Para as instituições parceiras, com contrato de **no mínimo 1 ano (12 meses)**, o portal oferece o **plano institucional**`;
-  const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+  const an = anualRef(p);
   const anualV = v && an ? (c.custoPeriodo === 'mes' ? v * 12 : v) : 0, desc = c.custoModelo === 'aluno' && anualV && an && anualV < an.preco ? Math.round((1 - anualV / an.preco) * 100) : 0;
   const pag = c.custoPag ? ` Pagamento: ${String(c.custoPag).trim().replace(/\.$/, '')}.` : '';
   const min = Number(c.custoMin) || 0;
@@ -6491,8 +6835,9 @@ function textoCustoInstituicao(p) {
 function textoSecao(p, k) {
   const base = p.secoes?.[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2], i = inst();
   return base.replace(/\{portal\}/g, S.config.nomePortal).replace(/\{instituicao\}/g, p.sigla || p.instituicao || 'instituição').replace(/\{sigla\}/g, p.sigla || p.instituicao || '')
-    .replace(/\{planos\}/g, () => { const ps = planos().filter(x => x.preco > 0); return ps.length ? ` (valores atuais: ${ps.map(x => `${x.nome}, ${brl(x.preco)}`).join('; ')})` : ''; })
+    .replace(/\{planos\}/g, () => { const ps = planosDaProposta(p); return ps.length ? ` (${Array.isArray(p.planosInst) ? `valores para a ${p.sigla || p.instituicao || 'instituição'}` : 'valores atuais'}: ${ps.map(x => `${x.nome}, ${brl(x.preco)}`).join('; ')})` : ''; })
     .replace(/\{custoInstituicao\}/g, () => textoCustoInstituicao(p))
+    .replace(/\{tiposPlanos\}/g, () => { const nm = d => d < 45 ? 'mensal' : d < 120 ? 'trimestral' : d < 300 ? 'semestral' : d < 500 ? 'anual' : 'bienal'; const t = [...new Set(planosDaProposta(p).sort((a, b) => a.dias - b.dias).map(x => nm(x.dias)))]; return t.length ? `**${t.length > 1 ? t.slice(0, -1).join(', ') + ' ou ' + t[t.length - 1] : t[0]}**` : '**mensal, semestral ou anual**'; })
     .replace(/\{nota\}/g, String(typeof notaMin === 'function' ? notaMin() : 60)).replace(/\{certificadora\}/g, i.sigla ? `${i.nome} (${i.sigla})` : i.nome);
 }
 /* links dos QR codes: o endereço publicado do portal; no computador local, o endereço digitado em "Endereço do portal" */
@@ -6704,16 +7049,27 @@ function previaProposta(p, nums) {
 }
 /* ---------------------------------- telas ---------------------------------- */
 async function admPropostas(box) {
-  let lista = []; try { lista = (await PropDB.list()).sort((a, b) => (b.atualizadoEm || b.criadoEm) - (a.atualizadoEm || a.criadoEm)); } catch (e) { box.innerHTML = `<div class="card empty"><p>${esc(e.message || 'Este navegador não guarda propostas.')}</p></div>`; return; }
+  let lista = [], contratos = []; try { lista = (await PropDB.list()).sort((a, b) => (b.atualizadoEm || b.criadoEm) - (a.atualizadoEm || a.criadoEm)); contratos = await ContDB.list(); } catch (e) { box.innerHTML = `<div class="card empty"><p>${esc(e.message || 'Este navegador não guarda propostas.')}</p></div>`; return; }
   box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:760px">Prepare a proposta de parceria para cada instituição de ensino superior que você vai visitar: validação dos certificados do portal, divulgação da marca e das atividades da instituição. O texto vem pronto e pode ser ajustado. Baixe em PDF com a identidade visual do portal. <b>As propostas ficam guardadas só neste computador.</b></p>
     <button class="btn primary sm" id="pp-novo">${ic('plus', 15)} Nova proposta</button></div>
-    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th>Instituição</th><th>Destinatário</th><th>Data</th><th></th></tr>${lista.map(p => `<tr><td><b>${esc(p.instituicao || '(sem nome)')}</b>${p.sigla ? ` <span class="muted small">${esc(p.sigla)}</span>` : ''}${p.cidade ? `<br><small class="muted">${esc(p.cidade)}</small>` : ''}</td><td>${esc(p.destinatario || '—')}${p.cargoDest ? `<br><small class="muted">${esc(p.cargoDest)}</small>` : ''}</td><td>${p.data ? fmtDate(new Date(p.data + 'T12:00:00').getTime()) : ''}</td>
+    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th>Instituição</th><th>Destinatário</th><th>Data</th><th>Situação</th><th></th></tr>${lista.map(p => `<tr><td><b>${esc(p.instituicao || '(sem nome)')}</b>${p.sigla ? ` <span class="muted small">${esc(p.sigla)}</span>` : ''}${p.cidade ? `<br><small class="muted">${esc(p.cidade)}</small>` : ''}</td><td>${esc(p.destinatario || '—')}${p.cargoDest ? `<br><small class="muted">${esc(p.cargoDest)}</small>` : ''}</td><td>${p.data ? fmtDate(new Date(p.data + 'T12:00:00').getTime()) : ''}</td>
+      <td><select class="pp-st sm" data-pp-st="${esc(p.id)}">${[['rascunho', 'Rascunho'], ['enviada', 'Enviada'], ['aceita', 'Aceita'], ['recusada', 'Recusada']].map(([k, t]) => `<option value="${k}" ${(p.status || 'rascunho') === k ? 'selected' : ''}>${t}</option>`).join('')}</select>
+        ${p.status === 'aceita' ? (contratos.find(c => c.propostaId === p.id) ? `<button class="btn ghost sm" data-pp="ct" data-id="${esc(p.id)}" style="margin-top:6px">${ic('scroll', 14)} Abrir contrato</button>` : `<button class="btn gold sm" data-pp="ct" data-id="${esc(p.id)}" style="margin-top:6px">${ic('scroll', 14)} Gerar contrato</button>`) : ''}</td>
       <td class="acts"><button class="btn primary sm" data-pp="ed" data-id="${esc(p.id)}">${ic('edit', 14)} Abrir</button><button class="btn ghost sm" data-pp="pdf" data-id="${esc(p.id)}">${ic('download', 14)} PDF</button><button class="btn ghost sm" data-pp="dup" data-id="${esc(p.id)}" title="Duplicar para outra instituição">Duplicar</button><button class="btn danger sm" data-pp="del" data-id="${esc(p.id)}" title="Excluir">${ic('trash', 14)}</button></td></tr>`).join('')}</table></div>`
     : `<div class="card empty" style="margin-top:18px">${ART.medal('predio')}<h3>Nenhuma proposta ainda</h3><p>Crie a primeira proposta: o modelo já traz o objetivo do portal, o que ele oferece à instituição, como funciona a validação dos certificados e os próximos passos.</p><button class="btn primary" id="pp-novo2">${ic('plus', 15)} Nova proposta</button></div>`}`;
   const novo = () => editorProposta(box, PROP_PADRAO());
   $('#pp-novo', box).onclick = novo; const n2 = $('#pp-novo2', box); if (n2) n2.onclick = novo;
+  box.onchange = async ev => {
+    const sel = ev.target.closest('[data-pp-st]'); if (!sel) return; const p = lista.find(x => x.id === sel.dataset.ppSt); if (!p) return;
+    p.status = sel.value; await PropDB.put(p); toast(p.status === 'aceita' ? 'Proposta aceita. Agora você pode gerar o contrato.' : 'Situação da proposta atualizada.'); admPropostas(box);
+  };
   box.onclick = async ev => {
     const b = ev.target.closest('[data-pp]'); if (!b) return; const p = lista.find(x => x.id === b.dataset.id); if (!p) return;
+    if (b.dataset.pp === 'ct') {
+      let c = contratos.find(x => x.propostaId === p.id);
+      if (!c) { if (!await confirmar(`Gerar o contrato com a ${p.sigla || p.instituicao} usando os termos desta proposta?`, 'Gerar contrato')) return; c = contratoDaProposta(p, contratos); c.propostaNumero = p.numero || ''; await ContDB.put(c); toast(`Contrato nº ${c.numero} gerado com os termos da proposta.`); }
+      abrirContratoPend = c.id; return go('admin/contratos');
+    }
     if (b.dataset.pp === 'ed') return editorProposta(box, p);
     if (b.dataset.pp === 'pdf') { b.disabled = true; try { await garantirConvite(); await baixarProposta({ qr: true, ...p }); } finally { b.disabled = false; } return; }
     if (b.dataset.pp === 'dup') return editorProposta(box, { ...structuredClone(p), id: uid(), criadoEm: Date.now(), atualizadoEm: 0, instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', logo: '', numero: '', data: hojeISO(new Date()) });
@@ -6739,6 +7095,10 @@ async function editorProposta(box, p) {
     <h4>Proposta</h4>
     <div class="row2">${campo('data', 'Data', 'type="date"')}${campo('validadeDias', 'Validade (dias)', 'type="number" min="7" max="365"')}</div>
     ${campo('numero', 'Número da proposta (opcional)', 'maxlength="30" placeholder="Ex.: 001/2026"')}
+    <h4>Planos para esta instituição</h4>
+    <p class="hint" style="margin-top:-4px">Ajuste os planos e os preços que aparecem na proposta desta instituição. Os planos do portal (Painel → Planos) não mudam.</p>
+    <div id="pp-planos"></div>
+    <div class="acts" style="margin:6px 0 4px"><button type="button" class="btn ghost sm" id="pp-pl-add">${ic('plus', 14)} Adicionar plano</button><button type="button" class="btn ghost sm" id="pp-pl-reset">Usar os planos do portal</button></div>
     <h4>Investimento da instituição (contrato mínimo de 1 ano)</h4>
     <label>Modelo de cobrança<select name="custoModelo"><option value="aluno" ${p.custoModelo === 'aluno' ? 'selected' : ''}>Por aluno ou docente com acesso</option><option value="fixo" ${p.custoModelo === 'fixo' ? 'selected' : ''}>Valor fixo para a instituição</option><option value="combinar" ${p.custoModelo === 'combinar' ? 'selected' : ''}>A combinar na reunião</option></select></label>
     <div class="row2 pp-custo"><label>Valor (R$)<input name="custoValor" inputmode="decimal" value="${p.custoValor ? Number(p.custoValor).toFixed(2).replace('.', ',') : ''}" placeholder="Ex.: 249,90"></label>
@@ -6753,14 +7113,37 @@ async function editorProposta(box, p) {
     <label class="dv-chk"><input type="checkbox" name="numeros" ${p.numeros ? 'checked' : ''}> Mostrar os números do portal (${Object.entries(nums).filter(([k, v]) => v > 0 && ROT_NUM[k]).map(([k, v]) => `${v} ${ROT_NUM[k]}`).join(', ') || 'ainda sem números'})</label>
     <label class="dv-chk"><input type="checkbox" name="qr" ${p.qr ? 'checked' : ''}> Incluir os QR codes do portal e do cadastro de colunistas</label>
     <div id="pp-qr-aviso"></div>
-    <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição, e {planos} mostra os valores atuais dos planos.</p>
+    <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição; {tiposPlanos} e {planos} mostram os planos desta proposta.</p>
     ${PROPOSTA_SECOES.map(([k, t]) => `<details class="pp-sec"><summary><label class="dv-chk" onclick="event.stopPropagation()"><input type="checkbox" data-mostrar="${k}" ${(p.ocultas || []).includes(k) ? '' : 'checked'}></label> ${esc(t)}${p.secoes[k] != null ? ' <span class="badge">editado</span>' : ''}</summary>
       <textarea data-sec="${k}" rows="9">${esc(p.secoes[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2])}</textarea><button type="button" class="btn ghost sm" data-padrao="${k}">Voltar ao texto do modelo</button></details>`).join('')}
   </form><div class="pp-prev" id="pp-prev"></div></div>`;
   const f = $('#fpp', box), st = $('#pp-st', box);
+  const base = () => planos().filter(x => x.preco > 0).map(x => ({ id: x.id, nome: x.nome, preco: x.preco, dias: x.dias, incluir: true }));
+  const desenharPlanos = () => {
+    const l = Array.isArray(p.planosInst) ? p.planosInst : base();
+    $('#pp-planos', box).innerHTML = `<div class="pp-pls">${l.map((x, i) => `<div class="pp-pl ${x.incluir === false ? 'off' : ''}" data-i="${i}">
+      <label class="dv-chk" title="Mostrar na proposta"><input type="checkbox" data-pl="incluir" ${x.incluir === false ? '' : 'checked'}></label>
+      <input data-pl="nome" value="${esc(x.nome)}" maxlength="40" aria-label="Nome do plano">
+      <select data-pl="dias" aria-label="Duração">${[[30, '1 mês'], [90, '3 meses'], [180, '6 meses'], [365, '12 meses'], [730, '24 meses']].map(([d, t]) => `<option value="${d}" ${Math.abs((Number(x.dias) || 30) - d) < 10 ? 'selected' : ''}>${t}</option>`).join('')}</select>
+      <span class="pp-rs">R$</span><input data-pl="preco" inputmode="decimal" value="${Number(x.preco) ? Number(x.preco).toFixed(2).replace('.', ',') : ''}" aria-label="Preço">
+      <button type="button" class="icon-btn" data-pl-rm="${i}" title="Remover este plano">${ic('trash', 15)}</button></div>`).join('')}</div>
+      ${Array.isArray(p.planosInst) ? '<p class="hint" style="margin:4px 0 0">Planos personalizados para esta instituição.</p>' : '<p class="hint" style="margin:4px 0 0">Mostrando os planos do portal. Altere um preço para personalizar.</p>'}`;
+  };
+  const lerPlanos = () => {
+    const rows = $$('.pp-pl', box); if (!rows.length) return;
+    const l = rows.map(r => ({ id: 'p' + r.dataset.i, nome: $('[data-pl=nome]', r).value.trim() || 'Plano', dias: Number($('[data-pl=dias]', r).value) || 30, preco: Number($('[data-pl=preco]', r).value.replace(/\./g, '').replace(',', '.')) || 0, incluir: $('[data-pl=incluir]', r).checked }));
+    const igual = JSON.stringify(l.map(x => [x.nome, x.dias, x.preco, x.incluir])) === JSON.stringify(base().map(x => [x.nome, x.dias, x.preco, true]));
+    p.planosInst = Array.isArray(p.planosInst) || !igual ? l : null;
+  };
+  desenharPlanos();
+  $('#pp-planos', box).addEventListener('click', ev => { const b = ev.target.closest('[data-pl-rm]'); if (!b) return; lerPlanos(); const l = Array.isArray(p.planosInst) ? p.planosInst : base(); l.splice(Number(b.dataset.plRm), 1); p.planosInst = l; desenharPlanos(); desenhar(); salvar(false); });
+  $('#pp-planos', box).addEventListener('change', ev => { if (ev.target.matches('[data-pl=incluir]')) ev.target.closest('.pp-pl').classList.toggle('off', !ev.target.checked); });
+  $('#pp-pl-add', box).onclick = () => { lerPlanos(); const l = Array.isArray(p.planosInst) ? p.planosInst : base(); l.push({ id: 'n' + Date.now(), nome: 'Novo plano', dias: 365, preco: 0, incluir: true }); p.planosInst = l; desenharPlanos(); $$('.pp-pl [data-pl=nome]', box).pop()?.select(); };
+  $('#pp-pl-reset', box).onclick = () => { p.planosInst = null; desenharPlanos(); desenhar(); salvar(false); };
   const ler = () => {
     for (const k of ['instituicao', 'sigla', 'cidade', 'destinatario', 'cargoDest', 'data', 'numero', 'contatoNome', 'contatoCargo', 'contatoEmail', 'contatoFone', 'site']) p[k] = f[k].value.trim();
     p.validadeDias = Math.max(7, Math.min(365, Number(f.validadeDias.value) || 60)); p.numeros = f.numeros.checked; p.qr = f.qr.checked;
+    lerPlanos();
     p.custoModelo = f.custoModelo.value; p.custoValor = Number(String(f.custoValor.value).replace(/\./g, '').replace(',', '.')) || ''; p.custoPeriodo = f.custoPeriodo.value; p.custoMin = Number(f.custoMin.value) || ''; p.custoPag = f.custoPag.value.trim();
     for (const ta of $$('[data-sec]', f)) { const k = ta.dataset.sec, pad = PROPOSTA_SECOES.find(x => x[0] === k)[2]; p.secoes[k] = ta.value.trim() === pad.trim() ? null : ta.value; }
     p.ocultas = $$('[data-mostrar]', f).filter(c => !c.checked).map(c => c.dataset.mostrar);
@@ -6768,7 +7151,7 @@ async function editorProposta(box, p) {
   const desenhar = () => {
     $('#pp-prev', box).innerHTML = previaProposta(p, nums);
     $$('.pp-custo', box).forEach(d => d.classList.toggle('hidden', p.custoModelo === 'combinar'));
-    const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+    const an = anualRef(p);
     $('#pp-custo-h', box).innerHTML = p.custoModelo === 'combinar' ? 'A proposta diz que os valores serão definidos conforme o número de alunos e docentes.' : an ? `Referência: plano ${esc(an.nome)} individual a ${brl(an.preco)}. A sugestão inicial é 30% abaixo dele, por aluno, por ano.` : '';
     const L = linksProposta(p), av = [];
     if (p.qr && !L.ok) av.push('Você está usando o portal neste computador (endereço local). Preencha <b>Endereço do portal</b> com o endereço publicado para os QR codes funcionarem no celular de quem receber a proposta.');
