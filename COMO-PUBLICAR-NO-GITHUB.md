@@ -231,7 +231,7 @@ A opção **Mostrar os números do portal** inclui no documento os números atua
 
 As propostas ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
 
-Revise o texto antes de enviar, principalmente a parte de custos e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
+Revise o texto antes de enviar, principalmente a parte de custo financeiro (que diz que a parceria não tem custos para a instituição) e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
 
 ## Cursos online
 Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **Início**. Você cadastra e configura tudo em **Painel → Cursos online**.
