@@ -227,11 +227,19 @@ Em **Painel → Propostas de parceria → Nova proposta**, preencha:
 
 O texto da proposta vem pronto, em 9 partes: apresentação do portal, objetivo da parceria, o que o portal oferece à instituição, o que se propõe a ela, como funciona a validação dos certificados, benefícios para alunos e docentes, custos e compromissos, próximos passos e vigência. Cada parte pode ser editada, voltar ao texto do modelo ou ficar fora da proposta.
 
+Em **Investimento da instituição (contrato mínimo de 1 ano)**, escolha como cobrar da instituição parceira:
+
+- **por aluno ou docente com acesso**, por ano ou por mês; a proposta mostra quanto isso fica abaixo do plano anual individual;
+- **valor fixo** para a instituição;
+- **a combinar na reunião**.
+
+Informe também o mínimo de acessos e a forma de pagamento. A sugestão inicial é 30% abaixo do plano anual individual, por aluno, por ano. Esses dados entram na parte **Custos e compromissos**, junto com os planos mensal, semestral e anual. A parte **Vigência** diz que o contrato vale por no mínimo 1 ano, com renovação automática.
+
 A opção **Mostrar os números do portal** inclui no documento os números atuais: estudantes, cursos, materiais, colunistas e instituições parceiras. A pré-visualização ao lado mostra o documento enquanto você digita. Antes das assinaturas, a proposta traz dois **QR codes**: um abre o portal e o outro abre o cadastro de colunistas, para os docentes da instituição se cadastrarem e começarem a escrever. Se o cadastro de colunistas estiver fechado em Configurações, o editor avisa. Para tirar os QR codes, desmarque a opção. Se você estiver usando o portal no computador (endereço local), preencha **Endereço do portal** com o endereço publicado. **Baixar PDF** gera o arquivo A4 com a identidade visual do portal, com espaço para as assinaturas. **Duplicar** reaproveita a proposta para outra instituição.
 
 As propostas ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
 
-Revise o texto antes de enviar, principalmente a parte de custo financeiro (que diz que a parceria não tem custos para a instituição) e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
+Revise o texto antes de enviar, principalmente a parte de custos (planos mensal, semestral e anual, com os valores atuais cadastrados em Planos) e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
 
 ## Cursos online
 Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **Início**. Você cadastra e configura tudo em **Painel → Cursos online**.

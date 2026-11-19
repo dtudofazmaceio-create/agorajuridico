@@ -6453,23 +6453,46 @@ Com a parceria, a {instituicao} define com o portal os cursos que deseja validar
 - Certificados validados por uma instituição de ensino superior, com mais valor no currículo.
 - Contato com oportunidades de estágio, concursos e atualizações da lei, num só lugar.
 - Para docentes: visibilidade para a produção acadêmica e um canal direto com os estudantes.`],
-  ['custos', 'Custo financeiro', `> A parceria **não envolve custos** para a {instituicao}. Não há exclusividade: a instituição pode manter outras parcerias. O portal se compromete a usar a marca da instituição somente nos termos combinados e a tratar os dados dos estudantes conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018).`],
+  ['custos', 'Custos e compromissos', `O acesso completo ao portal é feito por assinatura, com planos **mensal, semestral ou anual**{planos}.
+
+{custoInstituicao}
+
+Não há exclusividade: a instituição pode manter outras parcerias. O portal se compromete a usar a marca da instituição somente nos termos combinados e a tratar os dados dos estudantes conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018).`],
   ['etapas', 'Próximos passos', `1. Reunião de apresentação do portal à coordenação ou à direção.
 2. Análise dos conteúdos, da carga horária e dos critérios de avaliação pela instituição.
 3. Assinatura de um termo de cooperação, com as condições combinadas.
 4. Cadastro da logomarca e dos links da instituição no portal.
 5. Lançamento da parceria para alunos e docentes.`],
-  ['vigencia', 'Vigência', `Sugerimos vigência inicial de **12 meses**, renovável automaticamente, podendo qualquer das partes encerrar a parceria a qualquer momento, com aviso prévio de 30 dias.`]
+  ['vigencia', 'Vigência', `O contrato de parceria tem vigência mínima de **1 ano (12 meses)**, renovável automaticamente por períodos iguais. Depois do primeiro ano, qualquer das partes pode encerrar a parceria com aviso prévio de 30 dias.`]
 ];
 const PROP_PADRAO = () => {
   const i = inst();
   return { id: uid(), criadoEm: Date.now(), numero: '', instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', data: hojeISO(new Date()), validadeDias: 60,
     contatoNome: i.responsavel || S.user?.nome || '', contatoCargo: i.cargo || '', contatoEmail: (String(S.config.contato || '').match(/[\w.+-]+@[\w-]+\.[\w.]+/) || [])[0] || S.user?.email || '', contatoFone: /\d{8,}/.test((S.config.contato || '').replace(/\D/g, '')) ? S.config.contato : '', site: enderecoPublico(linkPortal()) || '',
-    numeros: true, qr: true, logo: '', secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
+    numeros: true, qr: true, logo: '', ...custoPadrao(), secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
 };
+function custoPadrao() {
+  const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+  const sug = an ? Math.max(1, Math.floor(an.preco * 0.7)) + 0.9 : 0;
+  return { custoModelo: 'aluno', custoValor: sug ? Number(sug.toFixed(2)) : '', custoPeriodo: 'ano', custoMin: '', custoPag: 'em parcela única ou em até 12 parcelas mensais' };
+}
+function textoCustoInstituicao(p) {
+  const c = { ...custoPadrao(), ...Object.fromEntries(Object.entries(p).filter(([k, v]) => k.startsWith('custo') && v !== undefined && v !== null)) };
+  const ins = p.sigla || p.instituicao || 'instituição', v = Number(String(c.custoValor).replace(',', '.')) || 0, per = c.custoPeriodo === 'mes' ? 'por mês' : 'por ano';
+  const intro = `Para as instituições parceiras, com contrato de **no mínimo 1 ano (12 meses)**, o portal oferece o **plano institucional**`;
+  const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+  const anualV = v && an ? (c.custoPeriodo === 'mes' ? v * 12 : v) : 0, desc = c.custoModelo === 'aluno' && anualV && an && anualV < an.preco ? Math.round((1 - anualV / an.preco) * 100) : 0;
+  const pag = c.custoPag ? ` Pagamento: ${String(c.custoPag).trim().replace(/\.$/, '')}.` : '';
+  const min = Number(c.custoMin) || 0;
+  if (c.custoModelo === 'combinar' || !v) return `${intro}, com valores definidos conforme o número de alunos e docentes atendidos.${pag} Os valores e as demais condições constam do termo de cooperação.`;
+  if (c.custoModelo === 'fixo') return `${intro}: **${brl(v)} ${per}**, com acesso completo para os alunos e docentes indicados pela ${ins}${min ? `, até ${min.toLocaleString('pt-BR')} acessos` : ''}.${pag} As demais condições constam do termo de cooperação.`;
+  return `${intro}: **${brl(v)} por aluno ou docente com acesso, ${per}**${desc ? `, ${desc}% abaixo do plano anual individual` : ''}${min ? `, com mínimo de ${min.toLocaleString('pt-BR')} acessos` : ''}.${pag} As demais condições constam do termo de cooperação.`;
+}
 function textoSecao(p, k) {
   const base = p.secoes?.[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2], i = inst();
   return base.replace(/\{portal\}/g, S.config.nomePortal).replace(/\{instituicao\}/g, p.sigla || p.instituicao || 'instituição').replace(/\{sigla\}/g, p.sigla || p.instituicao || '')
+    .replace(/\{planos\}/g, () => { const ps = planos().filter(x => x.preco > 0); return ps.length ? ` (valores atuais: ${ps.map(x => `${x.nome}, ${brl(x.preco)}`).join('; ')})` : ''; })
+    .replace(/\{custoInstituicao\}/g, () => textoCustoInstituicao(p))
     .replace(/\{nota\}/g, String(typeof notaMin === 'function' ? notaMin() : 60)).replace(/\{certificadora\}/g, i.sigla ? `${i.nome} (${i.sigla})` : i.nome);
 }
 /* links dos QR codes: o endereço publicado do portal; no computador local, o endereço digitado em "Endereço do portal" */
@@ -6716,6 +6739,13 @@ async function editorProposta(box, p) {
     <h4>Proposta</h4>
     <div class="row2">${campo('data', 'Data', 'type="date"')}${campo('validadeDias', 'Validade (dias)', 'type="number" min="7" max="365"')}</div>
     ${campo('numero', 'Número da proposta (opcional)', 'maxlength="30" placeholder="Ex.: 001/2026"')}
+    <h4>Investimento da instituição (contrato mínimo de 1 ano)</h4>
+    <label>Modelo de cobrança<select name="custoModelo"><option value="aluno" ${p.custoModelo === 'aluno' ? 'selected' : ''}>Por aluno ou docente com acesso</option><option value="fixo" ${p.custoModelo === 'fixo' ? 'selected' : ''}>Valor fixo para a instituição</option><option value="combinar" ${p.custoModelo === 'combinar' ? 'selected' : ''}>A combinar na reunião</option></select></label>
+    <div class="row2 pp-custo"><label>Valor (R$)<input name="custoValor" inputmode="decimal" value="${p.custoValor ? Number(p.custoValor).toFixed(2).replace('.', ',') : ''}" placeholder="Ex.: 249,90"></label>
+      <label>Período<select name="custoPeriodo"><option value="ano" ${p.custoPeriodo !== 'mes' ? 'selected' : ''}>Por ano</option><option value="mes" ${p.custoPeriodo === 'mes' ? 'selected' : ''}>Por mês</option></select></label></div>
+    <div class="row2 pp-custo"><label>Mínimo de acessos (opcional)<input name="custoMin" type="number" min="0" value="${esc(p.custoMin ?? '')}"></label>
+      <label>Forma de pagamento<input name="custoPag" maxlength="120" value="${esc(p.custoPag ?? '')}"></label></div>
+    <p class="hint" id="pp-custo-h" style="margin-top:-4px"></p>
     <h4>Contato do portal</h4>
     <div class="row2">${campo('contatoNome', 'Responsável', 'maxlength="100"')}${campo('contatoCargo', 'Cargo', 'maxlength="100"')}</div>
     <div class="row2">${campo('contatoEmail', 'E-mail', 'type="email" maxlength="120"')}${campo('contatoFone', 'Telefone / WhatsApp', 'maxlength="40"')}</div>
@@ -6723,7 +6753,7 @@ async function editorProposta(box, p) {
     <label class="dv-chk"><input type="checkbox" name="numeros" ${p.numeros ? 'checked' : ''}> Mostrar os números do portal (${Object.entries(nums).filter(([k, v]) => v > 0 && ROT_NUM[k]).map(([k, v]) => `${v} ${ROT_NUM[k]}`).join(', ') || 'ainda sem números'})</label>
     <label class="dv-chk"><input type="checkbox" name="qr" ${p.qr ? 'checked' : ''}> Incluir os QR codes do portal e do cadastro de colunistas</label>
     <div id="pp-qr-aviso"></div>
-    <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição.</p>
+    <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição, e {planos} mostra os valores atuais dos planos.</p>
     ${PROPOSTA_SECOES.map(([k, t]) => `<details class="pp-sec"><summary><label class="dv-chk" onclick="event.stopPropagation()"><input type="checkbox" data-mostrar="${k}" ${(p.ocultas || []).includes(k) ? '' : 'checked'}></label> ${esc(t)}${p.secoes[k] != null ? ' <span class="badge">editado</span>' : ''}</summary>
       <textarea data-sec="${k}" rows="9">${esc(p.secoes[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2])}</textarea><button type="button" class="btn ghost sm" data-padrao="${k}">Voltar ao texto do modelo</button></details>`).join('')}
   </form><div class="pp-prev" id="pp-prev"></div></div>`;
@@ -6731,11 +6761,15 @@ async function editorProposta(box, p) {
   const ler = () => {
     for (const k of ['instituicao', 'sigla', 'cidade', 'destinatario', 'cargoDest', 'data', 'numero', 'contatoNome', 'contatoCargo', 'contatoEmail', 'contatoFone', 'site']) p[k] = f[k].value.trim();
     p.validadeDias = Math.max(7, Math.min(365, Number(f.validadeDias.value) || 60)); p.numeros = f.numeros.checked; p.qr = f.qr.checked;
+    p.custoModelo = f.custoModelo.value; p.custoValor = Number(String(f.custoValor.value).replace(/\./g, '').replace(',', '.')) || ''; p.custoPeriodo = f.custoPeriodo.value; p.custoMin = Number(f.custoMin.value) || ''; p.custoPag = f.custoPag.value.trim();
     for (const ta of $$('[data-sec]', f)) { const k = ta.dataset.sec, pad = PROPOSTA_SECOES.find(x => x[0] === k)[2]; p.secoes[k] = ta.value.trim() === pad.trim() ? null : ta.value; }
     p.ocultas = $$('[data-mostrar]', f).filter(c => !c.checked).map(c => c.dataset.mostrar);
   };
   const desenhar = () => {
     $('#pp-prev', box).innerHTML = previaProposta(p, nums);
+    $$('.pp-custo', box).forEach(d => d.classList.toggle('hidden', p.custoModelo === 'combinar'));
+    const an = planos(true).filter(x => x.preco > 0 && x.dias >= 360).sort((a, b) => a.preco - b.preco)[0];
+    $('#pp-custo-h', box).innerHTML = p.custoModelo === 'combinar' ? 'A proposta diz que os valores serão definidos conforme o número de alunos e docentes.' : an ? `Referência: plano ${esc(an.nome)} individual a ${brl(an.preco)}. A sugestão inicial é 30% abaixo dele, por aluno, por ano.` : '';
     const L = linksProposta(p), av = [];
     if (p.qr && !L.ok) av.push('Você está usando o portal neste computador (endereço local). Preencha <b>Endereço do portal</b> com o endereço publicado para os QR codes funcionarem no celular de quem receber a proposta.');
     if (p.qr && !L.aberto) av.push('O cadastro de colunistas está <b>fechado</b> em Configurações → Divulgação: abra o cadastro antes de entregar a proposta.');
