@@ -1305,7 +1305,7 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .wd-res{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}.wd-res b{display:block}.wd-res small{color:var(--cinza)}
 .wd-pag{min-width:240px}.wd-pag span{display:block;height:8px;border-radius:8px;background:var(--linha);overflow:hidden}.wd-pag i{display:block;height:100%;background:var(--ok)}.wd-pag.acima i{background:var(--rubi)}.wd-pag small{display:block;margin-top:4px;font-size:.8rem}.wd-pag.acima small{color:var(--rubi);font-weight:600}
 .wd-feito{background:var(--latao-bg);border-radius:10px;padding:12px 16px;font-size:.9rem}.wd-feito ul{margin:6px 0 0;padding-left:1.2em}
-.wd-opc{margin-top:14px}.wd-opc .dv-chk{display:flex;gap:10px;align-items:flex-start}.wd-opc .dv-chk input{margin-top:4px;flex:none}
+.wd-opc{margin-top:14px}.wd-opc .dv-chk,.dv-chk.wd-uma{flex-wrap:nowrap;gap:10px;align-items:flex-start}.wd-opc .dv-chk>span,.dv-chk.wd-uma>span{flex:1;min-width:0;font-weight:400}.wd-opc .dv-chk input{margin-top:4px;flex:none}
 .wd-prev{margin-top:14px;max-height:46vh;overflow:auto;border:1px solid var(--linha);border-radius:10px;padding:20px 26px;background:#fff}
 .wd-alem{background:rgba(142,27,46,.07);color:#6d2430}.wd-fim{border-top:2px dashed var(--rubi);color:var(--rubi);font:700 .72rem var(--sans,sans-serif);text-transform:uppercase;letter-spacing:.04em;text-align:center;padding-top:4px;margin:18px 0 10px}
 .wd-uma{margin:8px 0 14px;align-items:flex-start}
@@ -1329,6 +1329,30 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .pp-qr{width:96px;height:96px;background:#fff;padding:5px;flex:none}.pp-qr svg{width:100%;height:100%;display:block}.pp-qr svg rect,.pp-qr svg path{fill:var(--toga)}.pp-qr svg rect[fill="white"],.pp-qr svg rect[fill="#ffffff"]{fill:#fff}
 .pp-qrs b{display:block;color:var(--toga)}.pp-qrs small{display:block;font-size:.75rem;line-height:1.35;margin:3px 0}.pp-qrs em{font-style:normal;color:var(--rubi);font-size:.68rem;word-break:break-all}
 @media (max-width:640px){.pp-qrs{grid-template-columns:1fr}}
+/* editor do colunista: celular e tablet */
+.ed-vazio{display:flex;gap:14px;align-items:center;background:var(--latao-bg);border:1px dashed #d9c9a6;border-radius:10px;padding:12px 16px;margin:0 0 16px;color:#5f4719}.ed-vazio>svg{flex:none;color:var(--latao)}.ed-vazio>div{flex:1;min-width:0}.ed-vazio b{display:block;color:var(--toga)}.ed-vazio small{display:block;font-size:.8rem;line-height:1.4}
+#ed-word-m{display:none}
+@media (max-width:900px){
+  .ed-app{grid-template-columns:minmax(0,1fr);gap:0}.ed-main{min-width:0}.ed-papel{min-width:0}
+  #ed-word-m{display:inline-flex}
+  .ed-tools{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;margin-left:-18px;margin-right:-18px;padding:6px 12px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12px,#000 calc(100% - 22px),transparent)}
+  .ed-tools::-webkit-scrollbar{display:none}
+  .ed-tools button{min-width:40px;height:40px}
+  .ed-corpo{font-size:1.06rem}
+  .ed-tit{font-size:1.6rem}.ed-sub{font-size:1.02rem}
+}
+@media (max-width:600px){
+  .ed-top .ed-meus-t{display:none}.ed-top .ed-meus{padding:.5em .65em}
+  .ed-papel{padding:16px 14px 24px;border-radius:0;margin:0 -10px}
+  .ed-tools{margin-left:-14px;margin-right:-14px;padding-left:8px;padding-right:8px}
+  .ed-vazio{flex-wrap:wrap}.ed-vazio .btn{width:100%}
+  .ed-rodape{gap:6px}.ed-cont{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.ed-cont .ed-chars em{display:none}.ed-cont .ed-meta{font-size:.75rem}
+  .ed-acoes{flex-wrap:nowrap}.ed-acoes #ed-pub{order:0;flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.8em;padding-right:.8em}
+  .ed-acoes #ed-prev{font-size:0;padding:.6em .7em}.ed-acoes #ed-prev svg{width:18px;height:18px}
+  .ed-acoes #ed-ret{flex:none}
+  .ed-app{padding-bottom:130px}
+}
+@media (min-width:601px) and (max-width:900px){.ed-rodape{flex-wrap:nowrap}.ed-acoes{width:auto;flex-wrap:nowrap}.ed-acoes #ed-pub{flex:none;order:0}.ed-cont .ed-meta{display:block}}
 </style>
 </head>
 <body>
@@ -1700,7 +1724,7 @@ function planCard(p, { cta = false, pick = false, checked = false } = {}) {
 
 function toast(msg, err = false) {
   const t = document.createElement('div'); t.className = 'toast' + (err ? ' err' : ''); t.textContent = msg;
-  const box = $('#toasts'); while (box.children.length >= (isMobile() ? 1 : 3)) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 3800);
+  const box = $('#toasts'); while (box.children.length >= (isMobile() ? 1 : 3)) box.firstChild.remove(); box.appendChild(t); setTimeout(() => t.remove(), 3800); return t;
 }
 function modal(title, body, { wide = false } = {}) {
   const el = document.createElement('div'); el.className = 'modal-bg';
@@ -4196,7 +4220,7 @@ const DISC_PISTAS = {
   'Direito Civil': ['código civil', 'contrato', 'obrigações', 'responsabilidade civil', 'direito de família', 'sucessões', 'posse', 'propriedade', 'negócio jurídico'],
   'Direito Penal': ['código penal', 'crime', 'penal', 'dolo', 'culpa', 'tipicidade', 'homicídio', 'teoria do crime', 'pena'],
   'Processo Civil': ['processo civil', 'cpc', 'petição inicial', 'tutela provisória', 'recurso de apelação', 'cumprimento de sentença'],
-  'Processo Penal': ['processo penal', 'cpp', 'inquérito', 'ação penal', 'prisão preventiva', 'júri'],
+  'Processo Penal': ['processo penal', 'cpp', 'inquérito', 'ação penal', 'prisão preventiva', 'júri', 'prisão em flagrante', 'audiência de custódia', 'presunção de inocência', 'execução provisória', 'trânsito em julgado', 'habeas corpus'],
   'Direito Administrativo': ['administração pública', 'ato administrativo', 'licitação', 'servidor público', 'improbidade', 'direito administrativo'],
   'Direito Tributário': ['tributário', 'tributo', 'imposto', 'ctn', 'icms', 'contribuinte'],
   'Direito do Trabalho': ['clt', 'trabalhista', 'empregado', 'empregador', 'contrato de trabalho', 'direito do trabalho'],
@@ -7597,6 +7621,8 @@ function configurarArtigo(w, R) {
   while (blocos.length && blocos[blocos.length - 1].tipo === 'h') blocos.pop();
   return { blocos, feito };
 }
+// disciplina do artigo importado: usa o mesmo classificador dos materiais (título vale mais)
+const detectarDisciplina = (titulo, texto) => { const d = adivinharDisciplina(`${titulo} ${titulo} ${titulo} ${texto}`); return DISCIPLINAS.includes(d) ? d : ''; };
 const charsBloco = b => b.texto.replace(/\s+/g, ' ').trim().length + 1;
 /* ajusta para caber numa página: tira as notas, depois os últimos blocos (sempre parágrafos inteiros) */
 function ajustarUmaPagina(blocos, limite) {
@@ -7617,6 +7643,7 @@ function importarWordColuna({ R, onPronto }) {
     // imagens para a pré-visualização
     const urls = [];
     for (const im of w.imagens) { try { const b = await w.zip.bytes(im.caminho); urls[im.k] = b ? URL.createObjectURL(new Blob([b], { type: /png$/i.test(im.caminho) ? 'image/png' : /gif$/i.test(im.caminho) ? 'image/gif' : 'image/jpeg' })) : null; } catch { urls[im.k] = null; } }
+    carregando?.remove();
     const limite = R.maxChars, total = cfg.blocos.reduce((s, b) => s + charsBloco(b), 0), ajuste = ajustarUmaPagina(cfg.blocos, limite);
     const passa = total > limite, F = cfg.feito;
     const htmlDe = (blocos, prev) => blocos.map(b => b.tipo === 'img' ? (urls[b.img] ? `<img ${prev ? `src="${urls[b.img]}"` : `data-tmp="${b.img}"`} class="img-m img-centro" alt="">` : '') : b.html).join('');
@@ -7626,6 +7653,7 @@ function importarWordColuna({ R, onPronto }) {
         <div class="wd-pag ${passa ? 'acima' : 'ok'}"><span><i style="width:${Math.min(100, total / limite * 100).toFixed(1)}%"></i></span><small>${passa ? `${fmtN0(total - limite)} caracteres além de uma página` : 'Cabe em uma página'} (limite: ${fmtN0(limite)})</small></div></div>
       <div class="wd-feito"><b>O portal configurou o artigo:</b><ul>
         <li>${F.titulo ? `Título: <b>${esc(F.titulo)}</b>` : '<span class="ed-err">Título não encontrado: escreva no editor</span>'}</li>
+        ${(d => d ? `<li>Disciplina: <b>${esc(d)}</b> (pelo assunto do texto)</li>` : '')(detectarDisciplina(F.titulo + ' ' + F.subtitulo, cfg.blocos.map(x => x.texto).join(' ')))}
         ${F.subtitulo ? `<li>Linha fina: <i>${esc(F.subtitulo)}</i></li>` : ''}
         <li>Parágrafos justificados, com a fonte e o espaçamento da Coluna Acadêmica</li>
         ${F.intertitulos ? `<li>${F.intertitulos} intertítulo${F.intertitulos > 1 ? 's' : ''}</li>` : ''}${F.citacoes ? `<li>${F.citacoes} citaç${F.citacoes > 1 ? 'ões' : 'ão'} em destaque</li>` : ''}${F.listas ? `<li>${F.listas} lista${F.listas > 1 ? 's' : ''}</li>` : ''}
@@ -7653,7 +7681,7 @@ function importarWordColuna({ R, onPronto }) {
           html = html.replace(`data-tmp="${m[1]}"`, `data-img="${ref}"`);
         }
         close(); limparUrls();
-        onPronto({ titulo: F.titulo, subtitulo: F.subtitulo, html: limparHTML(html), ajustado: passa && modo() === 'ajustar' });
+        onPronto({ titulo: F.titulo, subtitulo: F.subtitulo, disciplina: detectarDisciplina(F.titulo + ' ' + F.subtitulo, cfg.blocos.map(x => x.texto).join(' ')), html: limparHTML(html), ajustado: passa && modo() === 'ajustar' });
       } catch (e) { console.warn(e); toast(e.message, true); b.disabled = false; b.innerHTML = `${ic('check', 16)} Abrir no editor`; }
     };
     $$('[data-close]', el).forEach(x => x.addEventListener('click', limparUrls));
@@ -7903,13 +7931,15 @@ async function viewEscrever(main, chave) {
 
   main.innerHTML = `<header class="ed-top">${brandHTML('#/escrever/' + encodeURIComponent(chave)).replace('Portal do estudante de Direito', 'Espaço do colunista')}
       <span class="ed-st" id="ed-st"><i></i><span>Pronto</span></span>
-      <button class="btn light sm ed-meus" id="ed-meus">${ic('file', 15)} Meus textos</button>
+      <button class="btn light sm ed-meus" id="ed-word-m" title="Importar do Word (.docx)">${ic('download', 15)}<span class="ed-meus-t"> Word</span></button>
+      <button class="btn light sm ed-meus" id="ed-meus">${ic('file', 15)}<span class="ed-meus-t"> Meus textos</span></button>
       <button class="ed-eu" id="ed-eu" title="Meu perfil de colunista"><span id="ed-av"></span><span class="ed-eu-t"><b>${esc(c0.nome)}</b><small>Meu perfil</small></span></button></header>
     <div class="ed-app">
       <aside class="ed-lista"><button class="btn primary" id="ed-novo" style="width:100%">${ic('plus', 16)} Novo texto</button><button class="btn ghost" id="ed-word" style="width:100%;margin-top:8px" title="Importar um artigo pronto em .docx">${ic('file', 16)} Importar do Word</button><div id="ed-itens"></div>
         ${regrasHTML()}
         <div class="ed-ajuda"><b>Como funciona</b><p>O texto é salvo sozinho enquanto você escreve, neste aparelho e na nuvem.</p><p>Ao clicar em <b>Salvar e publicar na Coluna</b>, ele aparece para os alunos na <b>Coluna Acadêmica</b>. Depois de publicado, tudo o que você alterar (texto, alinhamento, imagens) vai para a Coluna Acadêmica sozinho a cada salvamento, em até meio minuto.</p><p>Guarde este link: ele é a sua chave de acesso, em qualquer computador ou celular.</p></div></aside>
       <section class="ed-main"><div id="ed-avisos"></div><div class="doc ed-papel">
+        <div class="ed-vazio hidden" id="ed-vazio">${ic('download', 22)}<div><b>Já tem o artigo pronto no Word?</b><small>O portal lê o arquivo, organiza o texto no padrão da Coluna e preenche título, linha fina, disciplina e texto. Depois é só revisar.</small></div><button type="button" class="btn primary sm" id="ed-word-v">Importar .docx</button></div>
         <div class="ed-cab"><select id="ed-disc" class="ed-disc" aria-label="Disciplina"><option value="">Disciplina (opcional)</option>${DISCIPLINAS.map(d => `<option>${esc(d)}</option>`).join('')}<option value="Outra">Outra</option></select><span id="ed-estado"></span></div>
         <textarea id="ed-tit" class="ed-tit" rows="1" placeholder="Título do artigo" maxlength="180"></textarea>
         <textarea id="ed-sub" class="ed-sub" rows="1" placeholder="Linha fina: o artigo em uma frase (opcional)" maxlength="260"></textarea>
@@ -7999,6 +8029,7 @@ async function viewEscrever(main, chave) {
     $('#ed-estado').innerHTML = `<span class="badge ${cl}">${t}</span> <span class="small ${alerta ? 'ed-prazo-alerta' : 'muted'}">${ic('clock', 13)} ${prazo}</span>
       ${a.publicado && !expirado(a, c0) ? `<div class="ed-auto ${prob ? 'alerta' : ''}">${prob ? `${ic('lock', 13)} Suas últimas alterações não vão para a Coluna Acadêmica porque ${prob}. Os alunos continuam vendo a versão anterior.` : `${ic('check', 13)} Publicado: o que você altera aparece na Coluna Acadêmica automaticamente ao salvar.`}</div>` : ''}`;
     marcarExcesso();
+    $('#ed-vazio')?.classList.toggle('hidden', !!(ch || tit.value.trim() || sub.value.trim()));
     const cls = ch > R.maxChars ? 'acima' : ch < R.minChars ? 'baixo' : ch > R.maxChars * .9 ? 'quase' : 'ok';
     const dica = ch > R.maxChars ? `passou ${fmtN0(ch - R.maxChars)} do limite` : ch < R.minChars ? `faltam ${fmtN0(R.minChars - ch)} para o mínimo` : ch > R.maxChars * .9 ? `restam ${fmtN0(R.maxChars - ch)}` : '';
     $('#ed-cont').innerHTML = `<span class="ed-chars ${cls}" title="Caracteres com espaços"><b>${fmtN0(ch)}</b> / ${fmtN0(R.maxChars)} caracteres<span class="ed-barra"><i style="width:${Math.min(100, ch / R.maxChars * 100).toFixed(1)}%"></i></span>${dica ? `<em>${dica}</em>` : ''}</span>
@@ -8232,9 +8263,12 @@ async function viewEscrever(main, chave) {
 
   /* ---- ações ---- */
   $('#ed-novo').onclick = () => { const v = col.artigos.find(vazioArt); abrir((v || criar()).id); gravarLocal(); tit.focus(); };
+  const wordM = () => $('#ed-word').click();
+  $('#ed-word-m').onclick = wordM; $('#ed-word-v').onclick = wordM;
   $('#ed-word').onclick = () => importarWordColuna({ R, onPronto: r => {
     const v = col.artigos.find(vazioArt), a = v || criar(); abrir(a.id);
     tit.value = r.titulo || ''; sub.value = r.subtitulo || ''; corpo.innerHTML = r.html || '<p><br></p>';
+    const ds = $('#ed-disc'); if (r.disciplina && ds && !ds.value) ds.value = r.disciplina;
     ajustarTit(); hidratarImagens(corpo); alterou(); gravarLocal(); desenharLista();
     const ch = contarChars(corpo.innerHTML);
     toast(ch > R.maxChars ? `Artigo importado. Ele passa ${fmtN0(ch - R.maxChars)} caracteres de uma página: o excesso está marcado em vermelho.` : r.ajustado ? 'Artigo importado e ajustado para uma página. Revise o final do texto.' : 'Artigo importado e formatado. Revise e publique.');
@@ -8243,9 +8277,10 @@ async function viewEscrever(main, chave) {
   $('#ed-itens').onclick = e => { const b = e.target.closest('.ed-item'); if (b) { abrir(b.dataset.id); } };
   $('#ed-avisos').onclick = e => { const b = e.target.closest('[data-abrir]'); if (b) abrir(b.dataset.abrir); };
   $('#ed-meus').onclick = () => {
-    const { el, close } = modal('Meus textos', `<button class="btn primary" id="m-novo" style="width:100%;margin-bottom:12px">${ic('plus', 16)} Novo texto</button><div class="ed-itens-m">${itensHTML()}</div><div style="margin-top:14px">${regrasHTML()}</div>`);
+    const { el, close } = modal('Meus textos', `<button class="btn primary" id="m-novo" style="width:100%;margin-bottom:8px">${ic('plus', 16)} Novo texto</button><button class="btn ghost" id="m-word" style="width:100%;margin-bottom:12px">${ic('download', 16)} Importar do Word (.docx)</button><div class="ed-itens-m">${itensHTML()}</div><div style="margin-top:14px">${regrasHTML()}</div>`);
     el.addEventListener('click', e => { const b = e.target.closest('.ed-item'); if (b) { close(); abrir(b.dataset.id); } });
     $('#m-novo', el).onclick = () => { close(); $('#ed-novo').click(); };
+    $('#m-word', el).onclick = () => { close(); $('#ed-word').click(); };
   };
   $('#ed-prev').onclick = () => {
     const a = art();

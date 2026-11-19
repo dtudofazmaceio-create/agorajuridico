@@ -153,6 +153,10 @@ No editor, o colunista clica em **Importar do Word** e escolhe o arquivo .docx. 
 
 O limite vale também para quem escreve direto no editor. Em **Painel → Colunistas → Regras dos artigos**, desmarque **Artigo de no máximo uma página** para voltar aos limites de caracteres e imagens escolhidos por você.
 
+**Campos preenchidos sozinhos:** ao importar, o portal preenche o título, a linha fina, a **disciplina** (pelo assunto do texto, se o campo estiver vazio) e o corpo do artigo. Tudo pode ser editado depois.
+
+**No celular e no tablet:** o editor ocupa a tela inteira, a barra de formatação desliza para o lado e tem botões maiores para o toque, e a barra de publicar fica compacta. Para importar do Word nessas telas, use o botão **Word** no topo, o aviso **Já tem o artigo pronto no Word?** que aparece num texto em branco ou a opção em **Meus textos**.
+
 Arquivos no formato antigo (.doc) não são lidos: no Word, use "Salvar como" → "Documento do Word (.docx)".
 
 ## Divulgação: QR codes e cartões
