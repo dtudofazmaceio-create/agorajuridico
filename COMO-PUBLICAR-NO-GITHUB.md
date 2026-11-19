@@ -223,7 +223,7 @@ Em **Painel → Propostas de parceria → Nova proposta**, preencha:
 
 O texto da proposta vem pronto, em 9 partes: apresentação do portal, objetivo da parceria, o que o portal oferece à instituição, o que se propõe a ela, como funciona a validação dos certificados, benefícios para alunos e docentes, custos e compromissos, próximos passos e vigência. Cada parte pode ser editada, voltar ao texto do modelo ou ficar fora da proposta.
 
-A opção **Mostrar os números do portal** inclui no documento os números atuais: estudantes, cursos, materiais, colunistas e instituições parceiras. A pré-visualização ao lado mostra o documento enquanto você digita. **Baixar PDF** gera o arquivo A4 com a identidade visual do portal, com espaço para as assinaturas. **Duplicar** reaproveita a proposta para outra instituição.
+A opção **Mostrar os números do portal** inclui no documento os números atuais: estudantes, cursos, materiais, colunistas e instituições parceiras. A pré-visualização ao lado mostra o documento enquanto você digita. Antes das assinaturas, a proposta traz dois **QR codes**: um abre o portal e o outro abre o cadastro de colunistas, para os docentes da instituição se cadastrarem e começarem a escrever. Se o cadastro de colunistas estiver fechado em Configurações, o editor avisa. Para tirar os QR codes, desmarque a opção. Se você estiver usando o portal no computador (endereço local), preencha **Endereço do portal** com o endereço publicado. **Baixar PDF** gera o arquivo A4 com a identidade visual do portal, com espaço para as assinaturas. **Duplicar** reaproveita a proposta para outra instituição.
 
 As propostas ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
 

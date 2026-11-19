@@ -1325,6 +1325,10 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .pp-nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:10px 0}.pp-nums div{background:var(--toga);border-bottom:2px solid var(--latao);color:#fff;text-align:center;padding:10px 6px}.pp-nums b{display:block;font-size:1.3rem}.pp-nums small{color:var(--latao-2);font-size:.7rem}
 .pp-ass{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:46px;text-align:center}.pp-ass span{display:block;border-top:1px solid #333;margin-bottom:6px}.pp-ass b{display:block;font-size:.85rem}.pp-ass small{color:var(--cinza);font-size:.75rem}
 @media (max-width:1100px){.pp-g{grid-template-columns:minmax(0,1fr)}.pp-prev{position:static;max-height:none}}
+.pp-qrs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.pp-qrs>div{display:flex;gap:12px;align-items:center;background:#f8f5ee;border-bottom:2px solid var(--latao);padding:12px}
+.pp-qr{width:96px;height:96px;background:#fff;padding:5px;flex:none}.pp-qr svg{width:100%;height:100%;display:block}.pp-qr svg rect,.pp-qr svg path{fill:var(--toga)}.pp-qr svg rect[fill="white"],.pp-qr svg rect[fill="#ffffff"]{fill:#fff}
+.pp-qrs b{display:block;color:var(--toga)}.pp-qrs small{display:block;font-size:.75rem;line-height:1.35;margin:3px 0}.pp-qrs em{font-style:normal;color:var(--rubi);font-size:.68rem;word-break:break-all}
+@media (max-width:640px){.pp-qrs{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -6437,13 +6441,23 @@ const PROP_PADRAO = () => {
   const i = inst();
   return { id: uid(), criadoEm: Date.now(), numero: '', instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', data: hojeISO(new Date()), validadeDias: 60,
     contatoNome: i.responsavel || S.user?.nome || '', contatoCargo: i.cargo || '', contatoEmail: (String(S.config.contato || '').match(/[\w.+-]+@[\w-]+\.[\w.]+/) || [])[0] || S.user?.email || '', contatoFone: /\d{8,}/.test((S.config.contato || '').replace(/\D/g, '')) ? S.config.contato : '', site: enderecoPublico(linkPortal()) || '',
-    numeros: true, logo: '', secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
+    numeros: true, qr: true, logo: '', secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
 };
 function textoSecao(p, k) {
   const base = p.secoes?.[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2], i = inst();
   return base.replace(/\{portal\}/g, S.config.nomePortal).replace(/\{instituicao\}/g, p.sigla || p.instituicao || 'instituição').replace(/\{sigla\}/g, p.sigla || p.instituicao || '')
     .replace(/\{nota\}/g, String(typeof notaMin === 'function' ? notaMin() : 60)).replace(/\{certificadora\}/g, i.sigla ? `${i.nome} (${i.sigla})` : i.nome);
 }
+/* links dos QR codes: o endereço publicado do portal; no computador local, o endereço digitado em "Endereço do portal" */
+function linksProposta(p) {
+  let base = linkAlunos();
+  if (!enderecoPublico(base) && /^https?:\/\/[^\s]+\.[^\s]+/i.test(p.site || '')) base = p.site.replace(/#.*$/, '');
+  const ok = !!enderecoPublico(base) || /^https?:\/\/[^\s]+\.[^\s]+/i.test(base);
+  const cod = conviteCol().codigo;
+  return { portal: base, colunista: cod ? base.replace(/#.*$/, '') + '#/seja-colunista/' + cod : '', ok, aberto: conviteCol().aberto !== false };
+}
+async function garantirConvite() { if (!conviteCol().codigo) { try { await salvarConvite({ codigo: novaChaveColunista().slice(0, 14) }); } catch (e) { console.warn(e); } } }
+const qrSVG = link => { const q = qrcode(0, 'M'); q.addData(link); q.make(); return q.createSvgTag({ cellSize: 3, margin: 0, scalable: true }); };
 async function numerosPortal() {
   const n = {};
   try { const us = await store.listUsers(); n.alunos = us.filter(u => u.role !== 'admin').length; } catch {}
@@ -6563,6 +6577,30 @@ async function gerarPropostaPDF(p, nums) {
   garantir(190); y -= 4;
   texto('Contato', { tam: 14, cor: COR.toga, forte: true, just: false, depois: 4 }); ops.push(`${COR.ouro} RG 0.8 w ${ML} ${y + 1} m ${ML + 40} ${y + 1} l S`); y -= 9;
   for (const [r, v] of [['Responsável', [p.contatoNome, p.contatoCargo].filter(Boolean).join(', ')], ['E-mail', p.contatoEmail], ['Telefone / WhatsApp', p.contatoFone], ['Portal', p.site]].filter(x => x[1])) texto(`**${r}:** ${v}`, { just: false, depois: 2 });
+  // QR codes: portal e cadastro de colunistas
+  const L = linksProposta(p), qrs = p.qr ? [[L.portal, 'Conheça o portal', 'Aponte a câmera do celular para abrir o portal.'], [L.colunista, 'Seja colunista', 'Docentes fazem o cadastro e começam a escrever na Coluna Acadêmica.']].filter(x => x[0]) : [];
+  if (qrs.length) {
+    const tamQ = 104, alt = tamQ + 46; garantir(alt + 30); y -= 18;
+    const cw = (LARG - 16) / 2;
+    qrs.forEach(([link, tit, txt], i) => {
+      const x = ML + i * (cw + 16), top = y;
+      ops.push(`${COR.claro} rg ${x.toFixed(2)} ${(top - alt).toFixed(2)} ${cw.toFixed(2)} ${alt} re f`, `${COR.ouro} rg ${x.toFixed(2)} ${(top - alt).toFixed(2)} ${cw.toFixed(2)} 2.5 re f`);
+      const q = qrcode(0, 'M'); q.addData(link); q.make();
+      const n = q.getModuleCount(), m = tamQ / n, qx = x + 14, qy = top - 14;
+      ops.push(`1 1 1 rg ${(qx - 5).toFixed(2)} ${(qy - tamQ - 5).toFixed(2)} ${(tamQ + 10).toFixed(2)} ${(tamQ + 10).toFixed(2)} re f`);
+      let rs = `${COR.toga} rg`;
+      for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) rs += ` ${(qx + c * m).toFixed(2)} ${(qy - (r + 1) * m).toFixed(2)} ${(m + .05).toFixed(2)} ${(m + .05).toFixed(2)} re`;
+      ops.push(rs + ' f');
+      const tx = qx + tamQ + 14, tl = cw - tamQ - 38; let ty = top - 26;
+      ops.push(`${COR.toga} rg BT /F2 11 Tf ${tx.toFixed(2)} ${ty} Td ${strPDF(textoPDF(tit))} Tj ET`); ty -= 5;
+      const lns = quebrar(palavrasRicas(txt), 8.5, tl); const yAnt = y; y = ty;
+      for (const ln of lns.slice(0, 7)) { y -= 8.5; linha(ln, tx, 8.5, COR.texto, tl, false); y -= 3; }
+      let u = textoPDF(i ? 'Cadastro de colunistas' : urlCurta(link)); while (larguraTxt(u, false, 7) > tl && u.length > 6) u = u.slice(0, -2) + '…';
+      ops.push(`${COR.rubi} rg BT /F1 7 Tf ${tx.toFixed(2)} ${(y - 12).toFixed(2)} Td ${strPDF(u)} Tj ET`);
+      y = yAnt;
+    });
+    y -= alt;
+  }
   y -= 40; garantir(60);
   const aw = (LARG - 40) / 2;
   for (const [i, [nome, sub]] of [[p.contatoNome || portal, p.contatoCargo ? `${p.contatoCargo} · ${portal}` : portal], [p.destinatario || '', [p.cargoDest, destino].filter(Boolean).join(' · ')]].entries()) {
@@ -6614,6 +6652,7 @@ function previaProposta(p, nums) {
       ${PROPOSTA_SECOES.filter(([k]) => !(p.ocultas || []).includes(k)).map(([k, t]) => `<section><h3><span>${String(++n).padStart(2, '0')}</span>${esc(t)}</h3>${mdProposta(textoSecao(p, k))}
         ${k === 'apresentacao' && nn.length ? `<div class="pp-nums">${nn.map(([kk, v]) => `<div><b>${Number(v).toLocaleString('pt-BR')}</b><small>${ROT_NUM[kk]}</small></div>`).join('')}</div>` : ''}</section>`).join('')}
       <section><h3>Contato</h3><p>${[['Responsável', [p.contatoNome, p.contatoCargo].filter(Boolean).join(', ')], ['E-mail', p.contatoEmail], ['Telefone / WhatsApp', p.contatoFone], ['Portal', p.site]].filter(x => x[1]).map(([r, v]) => `<b>${r}:</b> ${esc(v)}`).join('<br>')}</p></section>
+      ${p.qr ? (() => { const L = linksProposta(p); return `<div class="pp-qrs">${[[L.portal, 'Conheça o portal', 'Aponte a câmera do celular para abrir o portal.'], [L.colunista, 'Seja colunista', 'Docentes fazem o cadastro e começam a escrever na Coluna Acadêmica.']].filter(x => x[0]).map(([l, t, d]) => `<div><span class="pp-qr">${qrSVG(l)}</span><div><b>${t}</b><small>${d}</small><em>${esc(/seja-colunista/.test(l) ? 'Cadastro de colunistas' : urlCurta(l))}</em></div></div>`).join('')}</div>`; })() : ''}
       <div class="pp-ass"><div><span></span><b>${esc(p.contatoNome || portal)}</b><small>${esc(p.contatoCargo ? `${p.contatoCargo} · ${portal}` : portal)}</small></div><div><span></span><b>${esc(p.destinatario || ' ')}</b><small>${esc([p.cargoDest, destino].filter(Boolean).join(' · '))}</small></div></div></div></div>`;
 }
 /* ---------------------------------- telas ---------------------------------- */
@@ -6629,7 +6668,7 @@ async function admPropostas(box) {
   box.onclick = async ev => {
     const b = ev.target.closest('[data-pp]'); if (!b) return; const p = lista.find(x => x.id === b.dataset.id); if (!p) return;
     if (b.dataset.pp === 'ed') return editorProposta(box, p);
-    if (b.dataset.pp === 'pdf') { b.disabled = true; try { await baixarProposta(p); } finally { b.disabled = false; } return; }
+    if (b.dataset.pp === 'pdf') { b.disabled = true; try { await garantirConvite(); await baixarProposta({ qr: true, ...p }); } finally { b.disabled = false; } return; }
     if (b.dataset.pp === 'dup') return editorProposta(box, { ...structuredClone(p), id: uid(), criadoEm: Date.now(), atualizadoEm: 0, instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', logo: '', numero: '', data: hojeISO(new Date()) });
     if (b.dataset.pp === 'del') { if (!await confirmar(`Excluir a proposta para ${p.instituicao || 'esta instituição'}?`, 'Excluir')) return; await PropDB.del(p.id); toast('Proposta excluída.'); admPropostas(box); }
   };
@@ -6639,6 +6678,7 @@ async function baixarProposta(p) {
   catch (e) { console.warn(e); toast('Não foi possível gerar o PDF: ' + e.message, true); }
 }
 async function editorProposta(box, p) {
+  await garantirConvite();
   p = { ...PROP_PADRAO(), ...p, secoes: { ...PROP_PADRAO().secoes, ...(p.secoes || {}) } };
   const nums = await numerosPortal();
   const campo = (n, rot, extra = '') => `<label>${rot}<input name="${n}" value="${esc(p[n] ?? '')}" ${extra}></label>`;
@@ -6657,6 +6697,8 @@ async function editorProposta(box, p) {
     <div class="row2">${campo('contatoEmail', 'E-mail', 'type="email" maxlength="120"')}${campo('contatoFone', 'Telefone / WhatsApp', 'maxlength="40"')}</div>
     ${campo('site', 'Endereço do portal', 'maxlength="160" placeholder="https://…"')}
     <label class="dv-chk"><input type="checkbox" name="numeros" ${p.numeros ? 'checked' : ''}> Mostrar os números do portal (${Object.entries(nums).filter(([k, v]) => v > 0 && ROT_NUM[k]).map(([k, v]) => `${v} ${ROT_NUM[k]}`).join(', ') || 'ainda sem números'})</label>
+    <label class="dv-chk"><input type="checkbox" name="qr" ${p.qr ? 'checked' : ''}> Incluir os QR codes do portal e do cadastro de colunistas</label>
+    <div id="pp-qr-aviso"></div>
     <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição.</p>
     ${PROPOSTA_SECOES.map(([k, t]) => `<details class="pp-sec"><summary><label class="dv-chk" onclick="event.stopPropagation()"><input type="checkbox" data-mostrar="${k}" ${(p.ocultas || []).includes(k) ? '' : 'checked'}></label> ${esc(t)}${p.secoes[k] != null ? ' <span class="badge">editado</span>' : ''}</summary>
       <textarea data-sec="${k}" rows="9">${esc(p.secoes[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2])}</textarea><button type="button" class="btn ghost sm" data-padrao="${k}">Voltar ao texto do modelo</button></details>`).join('')}
@@ -6664,11 +6706,17 @@ async function editorProposta(box, p) {
   const f = $('#fpp', box), st = $('#pp-st', box);
   const ler = () => {
     for (const k of ['instituicao', 'sigla', 'cidade', 'destinatario', 'cargoDest', 'data', 'numero', 'contatoNome', 'contatoCargo', 'contatoEmail', 'contatoFone', 'site']) p[k] = f[k].value.trim();
-    p.validadeDias = Math.max(7, Math.min(365, Number(f.validadeDias.value) || 60)); p.numeros = f.numeros.checked;
+    p.validadeDias = Math.max(7, Math.min(365, Number(f.validadeDias.value) || 60)); p.numeros = f.numeros.checked; p.qr = f.qr.checked;
     for (const ta of $$('[data-sec]', f)) { const k = ta.dataset.sec, pad = PROPOSTA_SECOES.find(x => x[0] === k)[2]; p.secoes[k] = ta.value.trim() === pad.trim() ? null : ta.value; }
     p.ocultas = $$('[data-mostrar]', f).filter(c => !c.checked).map(c => c.dataset.mostrar);
   };
-  const desenhar = () => { $('#pp-prev', box).innerHTML = previaProposta(p, nums); };
+  const desenhar = () => {
+    $('#pp-prev', box).innerHTML = previaProposta(p, nums);
+    const L = linksProposta(p), av = [];
+    if (p.qr && !L.ok) av.push('Você está usando o portal neste computador (endereço local). Preencha <b>Endereço do portal</b> com o endereço publicado para os QR codes funcionarem no celular de quem receber a proposta.');
+    if (p.qr && !L.aberto) av.push('O cadastro de colunistas está <b>fechado</b> em Configurações → Divulgação: abra o cadastro antes de entregar a proposta.');
+    $('#pp-qr-aviso', box).innerHTML = av.map(t => `<div class="demo-hint" style="margin:6px 0">${t}</div>`).join('');
+  };
   let t = null, sujo = false;
   const salvar = async (aviso) => { ler(); if (!p.instituicao) { if (aviso) toast('Informe o nome da instituição.', true); return false; } p.atualizadoEm = Date.now(); await PropDB.put(structuredClone(p)); sujo = false; st.textContent = `Salva às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`; if (aviso) toast('Proposta salva neste computador.'); return true; };
   f.addEventListener('input', () => { sujo = true; st.textContent = 'Alterações não salvas'; clearTimeout(t); t = setTimeout(() => { ler(); desenhar(); salvar(false); }, 400); });
