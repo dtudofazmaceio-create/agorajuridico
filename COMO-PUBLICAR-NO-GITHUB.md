@@ -211,6 +211,24 @@ Em **Painel → Instituições parceiras** você cadastra as instituições que 
 
 A logomarca é ajustada automaticamente (até 600 × 300 px, mantendo a transparência) e guardada no Gist num arquivo próprio (`img-....txt`).
 
+
+### Propostas de parceria (para visitar instituições)
+
+Em **Painel → Propostas de parceria → Nova proposta**, preencha:
+
+- a instituição (nome, sigla, cidade e logo, que é opcional);
+- o destinatário e o cargo;
+- a data, a validade e o número da proposta;
+- o seu contato.
+
+O texto da proposta vem pronto, em 9 partes: apresentação do portal, objetivo da parceria, o que o portal oferece à instituição, o que se propõe a ela, como funciona a validação dos certificados, benefícios para alunos e docentes, custos e compromissos, próximos passos e vigência. Cada parte pode ser editada, voltar ao texto do modelo ou ficar fora da proposta.
+
+A opção **Mostrar os números do portal** inclui no documento os números atuais: estudantes, cursos, materiais, colunistas e instituições parceiras. A pré-visualização ao lado mostra o documento enquanto você digita. **Baixar PDF** gera o arquivo A4 com a identidade visual do portal, com espaço para as assinaturas. **Duplicar** reaproveita a proposta para outra instituição.
+
+As propostas ficam guardadas **só neste computador** e não vão para o Gist, porque têm nomes e contatos. Se trocar de computador, baixe o PDF antes.
+
+Revise o texto antes de enviar, principalmente a parte de custos e a de vigência: ele é um modelo e não substitui o termo de cooperação que as partes vão assinar.
+
 ## Cursos online
 Os alunos encontram os cursos em **Cursos online** (menu lateral) e na tela **Início**. Você cadastra e configura tudo em **Painel → Cursos online**.
 

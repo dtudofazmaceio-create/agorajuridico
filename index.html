@@ -1309,6 +1309,22 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .wd-prev{margin-top:14px;max-height:46vh;overflow:auto;border:1px solid var(--linha);border-radius:10px;padding:20px 26px;background:#fff}
 .wd-alem{background:rgba(142,27,46,.07);color:#6d2430}.wd-fim{border-top:2px dashed var(--rubi);color:var(--rubi);font:700 .72rem var(--sans,sans-serif);text-transform:uppercase;letter-spacing:.04em;text-align:center;padding-top:4px;margin:18px 0 10px}
 .wd-uma{margin:8px 0 14px;align-items:flex-start}
+.pp-g{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:20px;align-items:start;margin-top:16px}
+.pp-form h4{margin:18px 0 8px;color:var(--toga);font-size:.95rem}.pp-form h4:first-child{margin-top:0}
+.pp-logo{width:72px;height:72px;border-radius:10px;border:1px solid var(--linha);display:grid;place-items:center;background:#fff;overflow:hidden;color:var(--cinza);flex:none}.pp-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.pp-sec{border:1px solid var(--linha);border-radius:10px;margin-bottom:8px;background:#fff}.pp-sec summary{padding:10px 12px;cursor:pointer;font-weight:600;display:flex;gap:8px;align-items:center}.pp-sec textarea{width:calc(100% - 24px);margin:0 12px 8px;font-size:.88rem}.pp-sec .btn{margin:0 12px 12px}
+.pp-prev{position:sticky;top:84px;max-height:calc(100vh - 110px);overflow:auto;background:#d9dde4;border-radius:12px;padding:20px}
+.pp-folha{background:#fff;max-width:720px;margin:0 auto;box-shadow:0 20px 40px -26px rgba(19,32,58,.6);font-size:.92rem;color:#22252c}
+.pp-faixa{background:var(--toga);color:#fff;padding:26px 34px 18px;border-bottom:4px solid var(--latao)}.pp-faixa>span{display:block;margin-top:16px;color:var(--latao-2);font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.pp-marca{display:flex;gap:12px;align-items:center;color:var(--latao-2)}.pp-marca b{display:block;color:#fff;font-family:var(--serif);font-size:1.35rem}.pp-marca small{color:#b9c1cf}
+.pp-corpo{padding:26px 34px 34px}.pp-corpo h1{font-size:1.6rem;margin:0;color:var(--toga)}.pp-corpo h2{font-size:1rem;color:var(--rubi);margin:4px 0 16px;font-family:var(--sans,inherit)}
+.pp-quadro{display:flex;gap:16px;align-items:center;background:#f8f5ee;border-left:3px solid var(--latao);padding:12px 16px;margin-bottom:18px}.pp-quadro dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;flex:1}.pp-quadro dt{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cinza);font-weight:700;padding-top:3px}.pp-quadro dd{margin:0}.pp-quadro img{max-width:110px;max-height:70px;object-fit:contain}
+.pp-corpo section{margin-bottom:14px}.pp-corpo h3{font-size:1.08rem;color:var(--toga);margin:16px 0 8px;display:flex;gap:8px;align-items:baseline}.pp-corpo h3 span{color:var(--latao);font-size:.8rem;font-family:var(--sans,inherit)}
+.pp-corpo p{margin:0 0 8px;text-align:justify;line-height:1.55}.pp-corpo ul,.pp-corpo ol{margin:0 0 8px;padding-left:1.3em}.pp-corpo li{margin-bottom:4px;line-height:1.5}
+.pp-corpo blockquote{margin:6px 0 12px;background:#f6efdf;border-left:3px solid var(--latao);padding:10px 14px;color:var(--toga);font-style:normal}
+.pp-nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px;margin:10px 0}.pp-nums div{background:var(--toga);border-bottom:2px solid var(--latao);color:#fff;text-align:center;padding:10px 6px}.pp-nums b{display:block;font-size:1.3rem}.pp-nums small{color:var(--latao-2);font-size:.7rem}
+.pp-ass{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:46px;text-align:center}.pp-ass span{display:block;border-top:1px solid #333;margin-bottom:6px}.pp-ass b{display:block;font-size:.85rem}.pp-ass small{color:var(--cinza);font-size:.75rem}
+@media (max-width:1100px){.pp-g{grid-template-columns:minmax(0,1fr)}.pp-prev{position:static;max-height:none}}
 </style>
 </head>
 <body>
@@ -3850,10 +3866,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
@@ -3871,7 +3887,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3885,7 +3901,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -6363,6 +6379,308 @@ function formSorteio(s = {}, onSalvo) {
       close(); toast(novo ? 'Sorteio criado. Ele já aparece na tela inicial.' : 'Sorteio atualizado.'); onSalvo?.();
     } catch (er) { toast(er.message, true); b.disabled = false; b.textContent = novo ? 'Criar sorteio' : 'Salvar'; }
   };
+}
+
+/* ======================= Propostas de parceria institucional =======================
+   Painel → Propostas: o administrador prepara a proposta para uma instituição de ensino
+   superior (validação dos certificados, divulgação da marca e das atividades dela) e
+   baixa em PDF com a identidade visual do portal. As propostas ficam guardadas neste
+   computador (IndexedDB "agora-propostas"): não vão para o Gist nem para a nuvem.
+   ================================================================================ */
+const PropDB = (() => {
+  let dbp = null;
+  const abrir = () => dbp || (dbp = new Promise((ok, erro) => { const q = indexedDB.open('agora-propostas', 1); q.onupgradeneeded = () => q.result.createObjectStore('propostas', { keyPath: 'id' }); q.onsuccess = () => ok(q.result); q.onerror = () => { dbp = null; erro(q.error); }; }));
+  const tx = async (modo, fn) => { const db = await abrir(); return new Promise((ok, erro) => { const t = db.transaction('propostas', modo), r = fn(t.objectStore('propostas')); t.oncomplete = () => ok(r?.result); t.onerror = () => erro(t.error); }); };
+  return { list: () => tx('readonly', s => s.getAll()), put: o => tx('readwrite', s => s.put(o)), del: id => tx('readwrite', s => s.delete(id)) };
+})();
+/* Seções do modelo. Marcações: "- " item, "> " destaque, **negrito**. {portal}, {instituicao}, {sigla}, {nota}, {certificadora} são trocados na hora. */
+const PROPOSTA_SECOES = [
+  ['apresentacao', 'Apresentação', `O **{portal}** é um portal de estudos criado para estudantes e docentes de Direito. Ele reúne, num só lugar e com linguagem acessível, os recursos de que o estudante precisa ao longo da graduação e na preparação para a OAB e para concursos:
+- videoaulas, áudios e materiais em PDF organizados por disciplina;
+- cursos online com aulas em vídeo, material de apoio, avaliação final e certificado;
+- quizzes por disciplina, com certificado de aproveitamento;
+- a **Coluna Acadêmica**, com artigos escritos por professores e professoras;
+- vagas de estágio, editais de concursos e oportunidades de emprego;
+- atualizações da legislação, notícias e entrevistas com profissionais do Direito.
+O portal funciona no computador, no tablet e no celular, inclusive como aplicativo instalado.`],
+  ['objetivo', 'Objetivo da parceria', `> O objetivo principal desta parceria é oferecer a alunos e docentes da {instituicao} **mais uma opção de aperfeiçoamento do conhecimento**, com conteúdo de qualidade, gratuito ou de baixo custo, e certificados reconhecidos por uma instituição de ensino superior.
+Para isso, propomos que a {instituicao} valide os certificados emitidos pelo portal e, em contrapartida, tenha sua marca, seus canais e suas atividades acadêmicas divulgados amplamente para toda a comunidade do portal.`],
+  ['oferece', 'O que o portal oferece à instituição', `- **Divulgação da marca:** logomarca e link do site da {instituicao} na página inicial do portal e na área de cada aluno, na seção Instituições parceiras.
+- **Divulgação das atividades:** eventos, semanas jurídicas, congressos, cursos de extensão, pós-graduação, processos seletivos e editais publicados nas seções de notícias e oportunidades do portal.
+- **Espaço na Coluna Acadêmica:** docentes da {instituicao} podem publicar artigos, com nome, titulação e vínculo institucional, ampliando a visibilidade da produção acadêmica.
+- **Cursos para a comunidade:** alunos e docentes da {instituicao} podem fazer os cursos online do portal, com aulas em vídeo, material de apoio e certificado.
+- **Material de divulgação:** cartazes e cartões com QR code, prontos para imprimir ou compartilhar com os estudantes.
+- **Relatórios:** informações periódicas sobre a participação dos estudantes nos cursos e avaliações, sem expor dados pessoais.`],
+  ['solicita', 'O que propomos à instituição', `- **Validar os certificados emitidos pelo portal**, depois de conhecer os conteúdos, a carga horária e os critérios de avaliação, para que o certificado indique a {instituicao} como instituição validadora.
+- Avaliar, conforme as normas internas, o aproveitamento dos certificados como **atividades complementares** ou horas de extensão.
+- Indicar docentes interessados em atuar como **colunistas** ou na curadoria de conteúdos.
+- Divulgar o portal aos seus estudantes pelos canais institucionais.`],
+  ['validacao', 'Como funciona a validação dos certificados', `Os certificados do portal seguem critérios objetivos e verificáveis:
+- o aluno só recebe o certificado de um curso depois de concluir todas as aulas e obter **aproveitamento acima de {nota}%** na avaliação final;
+- cada certificado informa o nome do aluno, o curso ou a disciplina, a carga horária, a nota, a data e um **código de verificação único**;
+- os conteúdos passam por curadoria e podem ser revistos pela instituição a qualquer momento;
+- os certificados são emitidos hoje pelo {certificadora}, como curso livre de formação complementar.
+Com a parceria, a {instituicao} define com o portal os cursos que deseja validar, os requisitos mínimos e a forma de identificação nos certificados. A validação pode ser revista ou suspensa pela instituição a qualquer tempo.`],
+  ['beneficios', 'Benefícios para alunos e docentes', `- Mais uma opção de estudo e de aperfeiçoamento, disponível a qualquer hora e em qualquer aparelho.
+- Certificados validados por uma instituição de ensino superior, com mais valor no currículo.
+- Contato com oportunidades de estágio, concursos e atualizações da lei, num só lugar.
+- Para docentes: visibilidade para a produção acadêmica e um canal direto com os estudantes.`],
+  ['custos', 'Custos e compromissos', `A parceria **não envolve custos** para a {instituicao}. Não há exclusividade: a instituição pode manter outras parcerias. O portal se compromete a usar a marca da instituição somente nos termos combinados e a tratar os dados dos estudantes conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018).`],
+  ['etapas', 'Próximos passos', `1. Reunião de apresentação do portal à coordenação ou à direção.
+2. Análise dos conteúdos, da carga horária e dos critérios de avaliação pela instituição.
+3. Assinatura de um termo de cooperação, com as condições combinadas.
+4. Cadastro da logomarca e dos links da instituição no portal.
+5. Lançamento da parceria para alunos e docentes.`],
+  ['vigencia', 'Vigência', `Sugerimos vigência inicial de **12 meses**, renovável automaticamente, podendo qualquer das partes encerrar a parceria a qualquer momento, com aviso prévio de 30 dias.`]
+];
+const PROP_PADRAO = () => {
+  const i = inst();
+  return { id: uid(), criadoEm: Date.now(), numero: '', instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', data: hojeISO(new Date()), validadeDias: 60,
+    contatoNome: i.responsavel || S.user?.nome || '', contatoCargo: i.cargo || '', contatoEmail: (String(S.config.contato || '').match(/[\w.+-]+@[\w-]+\.[\w.]+/) || [])[0] || S.user?.email || '', contatoFone: /\d{8,}/.test((S.config.contato || '').replace(/\D/g, '')) ? S.config.contato : '', site: enderecoPublico(linkPortal()) || '',
+    numeros: true, logo: '', secoes: Object.fromEntries(PROPOSTA_SECOES.map(([k]) => [k, null])), ocultas: [] };
+};
+function textoSecao(p, k) {
+  const base = p.secoes?.[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2], i = inst();
+  return base.replace(/\{portal\}/g, S.config.nomePortal).replace(/\{instituicao\}/g, p.sigla || p.instituicao || 'instituição').replace(/\{sigla\}/g, p.sigla || p.instituicao || '')
+    .replace(/\{nota\}/g, String(typeof notaMin === 'function' ? notaMin() : 60)).replace(/\{certificadora\}/g, i.sigla ? `${i.nome} (${i.sigla})` : i.nome);
+}
+async function numerosPortal() {
+  const n = {};
+  try { const us = await store.listUsers(); n.alunos = us.filter(u => u.role !== 'admin').length; } catch {}
+  try { n.cursos = (await store.list('cursos')).filter(c => c.ativo !== false).length; } catch {}
+  try { n.materiais = (await store.list('materiais')).length; } catch {}
+  try { n.colunistas = (await store.list('colunistas')).filter(c => c.ativo !== false).length; } catch {}
+  try { n.parceiros = (await store.list('parceiros')).filter(c => c.ativo !== false).length; } catch {}
+  return n;
+}
+const ROT_NUM = { alunos: 'estudantes cadastrados', cursos: 'cursos online', materiais: 'materiais de estudo', colunistas: 'colunistas', parceiros: 'instituições parceiras' };
+/* ------------------------- PDF (texto, A4, identidade do portal) ------------------------- */
+async function jpegDeImagem(src, maxL = 600) {
+  const im = await new Promise((ok, erro) => { const i = new Image(); i.onload = () => ok(i); i.onerror = erro; i.src = src; });
+  const k = Math.min(1, maxL / Math.max(im.naturalWidth, im.naturalHeight)), w = Math.max(1, Math.round(im.naturalWidth * k)), h = Math.max(1, Math.round(im.naturalHeight * k));
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h; const x = cv.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(im, 0, 0, w, h);
+  const b64 = cv.toDataURL('image/jpeg', .9).split(',')[1], bin = atob(b64);
+  return { w, h, dados: bin };
+}
+async function gerarPropostaPDF(p, nums) {
+  const W = 595.28, H = 841.89, ML = 64, MR = 64, MT = 74, MB = 78, LARG = W - ML - MR, portal = S.config.nomePortal || 'Ágora Jurídica';
+  const destino = p.instituicao || 'Instituição';
+  const paginas = []; let ops = [], y = 0;
+  const F = (b, i) => b ? (i ? '/F4' : '/F2') : (i ? '/F3' : '/F1');
+  const nova = () => { ops = []; paginas.push(ops); y = H - MT; };
+  const topo = () => {
+    ops.push(`${COR.toga} rg 0 ${H - 34} ${W} 34 re f`, `${COR.ouro} rg 0 ${H - 36} ${W} 2 re f`);
+    templo(ML, H - 9, 14, COR.ouro, .9);
+    ops.push(`${COR.ouro} rg BT /F2 8 Tf 1.2 Tc ${ML + 20} ${H - 22} Td ${strPDF(textoPDF(portal).toUpperCase())} Tj 0 Tc ET`);
+    const t = textoPDF(`Proposta de parceria · ${destino}`).slice(0, 70); ops.push(`0.82 0.85 0.9 rg BT /F1 8 Tf ${W - MR - larguraTxt(t, false, 8)} ${H - 22} Td ${strPDF(t)} Tj ET`);
+  };
+  const garantir = alt => { if (y - alt < MB) { nova(); topo(); } };
+  function templo(x0, yTop, tam, cor, lw) {   // o ícone do portal, desenhado em vetor
+    const k = tam / 24, P = (x, yy) => `${(x0 + x * k).toFixed(2)} ${(yTop - yy * k).toFixed(2)}`;
+    const seg = [[[3, 9], [12, 4], [21, 9]], [[4, 9], [20, 9]], [[6.5, 9], [6.5, 17]], [[10, 9], [10, 17]], [[14, 9], [14, 17]], [[17.5, 9], [17.5, 17]], [[4, 17], [20, 17]], [[3, 20], [21, 20]]];
+    ops.push(`${cor} RG ${lw} w 1 J 1 j ` + seg.map(s => s.map((pt, i) => `${P(...pt)} ${i ? 'l' : 'm'}`).join(' ') + ' S').join(' '));
+  }
+  const quebrar = (palavras, tam, largMax) => {
+    const esp = larguraCar(' ', false) * tam / 1000, linhas = []; let at = [], la = 0;
+    const lw = w => w.reduce((t, s) => t + larguraTxt(s.t, s.b, tam), 0);
+    for (const w of palavras) { const wl = lw(w), nl = at.length ? la + esp + wl : wl; if (nl > largMax && at.length) { linhas.push({ p: at, l: la }); at = [w]; la = wl; } else { at.push(w); la = nl; } }
+    if (at.length) linhas.push({ p: at, l: la }); if (linhas.length) linhas[linhas.length - 1].ultima = true; return linhas;
+  };
+  const linha = (ln, x, tam, cor, largMax, just) => {
+    const esp = ln.p.length - 1, tw = just && !ln.ultima && esp > 0 ? Math.min(5, (largMax - ln.l) / esp) : 0;
+    let s = `${cor} rg BT ${tw ? tw.toFixed(3) + ' Tw ' : ''}${x.toFixed(2)} ${y.toFixed(2)} Td`, f0 = '';
+    ln.p.forEach((w, k) => w.forEach((seg, j) => { const f = F(seg.b, seg.i); if (f !== f0) { s += ` ${f} ${tam} Tf`; f0 = f; } s += ` ${strPDF(seg.t + (j === w.length - 1 && k < ln.p.length - 1 ? ' ' : ''))} Tj`; }));
+    ops.push(s + (tw ? ' 0 Tw' : '') + ' ET');
+  };
+  const texto = (txt, { tam = 10.5, cor = COR.texto, x = ML, larg = LARG, entre = 1.5, depois = 7, just = true, marca = null, forte = false, fundo = null } = {}) => {
+    const pal = palavrasRicas(forte ? `**${String(txt).replace(/\*\*/g, '')}**` : txt); if (!pal.length) return;
+    const lns = quebrar(pal, tam, larg), lh = tam * entre;
+    lns.forEach((ln, i) => {
+      garantir(lh); y -= tam;
+      if (fundo) ops.push(`${fundo} rg ${x - 14} ${(y - lh + tam + 1).toFixed(2)} ${larg + 26} ${lh.toFixed(2)} re f`, `${COR.ouro} rg ${x - 14} ${(y - lh + tam + 1).toFixed(2)} 3 ${lh.toFixed(2)} re f`);
+      if (marca && i === 0) ops.push(`${COR.ouro} rg BT /F2 ${tam} Tf ${(x - marca.l).toFixed(2)} ${y.toFixed(2)} Td ${strPDF(marca.t)} Tj ET`);
+      linha(ln, x, tam, cor, larg, just); y -= lh - tam;
+    });
+    y -= depois;
+  };
+  /* ---- capa: faixa do portal ---- */
+  nova();
+  const fx = 150;
+  ops.push(`${COR.toga} rg 0 ${H - fx} ${W} ${fx} re f`, `${COR.ouro} rg 0 ${H - fx - 4} ${W} 4 re f`);
+  ops.push(`${COR.ouro} RG 0.6 w ${W - 150} ${H - fx + 18} m ${W - 20} ${H - 20} l S`, `0.15 0.22 0.36 RG 0.6 w ${W - 110} ${H - fx + 8} m ${W} ${H - 46} l S`);
+  templo(ML, H - 40, 34, COR.ouro, 1.4);
+  ops.push(`1 1 1 rg BT /F2 20 Tf ${ML + 46} ${H - 62} Td ${strPDF(textoPDF(portal))} Tj ET`);
+  ops.push(`0.75 0.79 0.86 rg BT /F1 9.5 Tf ${ML + 46} ${H - 77} Td ${strPDF(textoPDF(S.config.slogan || 'Portal de estudos para estudantes e docentes de Direito'))} Tj ET`);
+  ops.push(`${COR.ouro} rg BT /F2 8.5 Tf 1.6 Tc ${ML} ${H - 118} Td ${strPDF('PROPOSTA DE PARCERIA INSTITUCIONAL')} Tj 0 Tc ET`);
+  y = H - fx - 44;
+  texto('Proposta de parceria institucional', { tam: 24, cor: COR.toga, entre: 1.15, depois: 2, just: false, forte: true });
+  texto(`${portal} e ${destino}${p.sigla && p.sigla !== destino ? ` (${p.sigla})` : ''}`, { tam: 13, cor: COR.rubi, entre: 1.3, depois: 14, just: false, forte: true });
+  // quadro com destinatário e dados da proposta (e a logo da instituição, se houver)
+  const logo = p.logo ? await jpegDeImagem(p.logo, 500).catch(() => null) : null;
+  const dtTxt = p.data ? new Date(p.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : '';
+  const linhasQ = [['Destinatário', p.destinatario || `Direção da ${destino}`], ...(p.cargoDest ? [['Cargo', p.cargoDest]] : []), ['Instituição', `${destino}${p.cidade ? ` · ${p.cidade}` : ''}`], ['Data', `${p.cidade ? p.cidade + ', ' : ''}${dtTxt}`], ['Validade', `${p.validadeDias || 60} dias a partir da data${p.numero ? ` · Proposta nº ${p.numero}` : ''}`]];
+  const qy = y, qh = 24 + linhasQ.length * 19;
+  ops.push(`${COR.claro} rg ${ML} ${qy - qh} ${LARG} ${qh} re f`, `${COR.ouro} rg ${ML} ${qy - qh} 3 ${qh} re f`);
+  let ly = qy - 22; const largQ = logo ? LARG - 130 : LARG - 30;
+  for (const [r, v] of linhasQ) { ops.push(`${COR.cinza} rg BT /F2 7.5 Tf 1 Tc ${ML + 18} ${ly} Td ${strPDF(r.toUpperCase())} Tj 0 Tc ET`); let vv = textoPDF(v); while (larguraTxt(vv, false, 10) > largQ - 80 && vv.length > 4) vv = vv.slice(0, -2) + '…'; ops.push(`${COR.texto} rg BT /F1 10 Tf ${ML + 100} ${ly} Td ${strPDF(vv)} Tj ET`); ly -= 19; }
+  const imgs = [];
+  if (logo) { const lw = 100, lh = Math.min(70, lw * logo.h / logo.w), lw2 = lh * logo.w / logo.h; imgs.push(logo); ops.push(`q ${lw2.toFixed(2)} 0 0 ${lh.toFixed(2)} ${(ML + LARG - 16 - lw2).toFixed(2)} ${(qy - qh / 2 - lh / 2).toFixed(2)} cm /Im1 Do Q`); }
+  y = qy - qh - 26;
+  /* ---- números do portal ---- */
+  const nn = Object.entries(nums || {}).filter(([k, v]) => p.numeros && v > 0 && ROT_NUM[k]);
+  /* ---- seções ---- */
+  let n = 0;
+  for (const [k, tit] of PROPOSTA_SECOES) {
+    if ((p.ocultas || []).includes(k)) continue;
+    n++; garantir(60); y -= 6;
+    ops.push(`${COR.ouro} rg BT /F2 9 Tf ${ML} ${y - 11} Td ${strPDF(String(n).padStart(2, '0'))} Tj ET`);
+    const yy = y; y -= 0; texto(tit, { x: ML + 22, larg: LARG - 22, tam: 14, cor: COR.toga, entre: 1.2, depois: 4, just: false, forte: true });
+    ops.push(`${COR.ouro} RG 0.8 w ${ML + 22} ${y + 1} m ${ML + 62} ${y + 1} l S`); y -= 9;
+    for (const bl of blocosApostila(textoSecao(p, k))) {
+      if (bl.k === 'li') texto(bl.t, { x: ML + 16, larg: LARG - 16, marca: { t: '•', l: 12 }, depois: 4 });
+      else if (bl.k === 'ol') texto(bl.t, { x: ML + 18, larg: LARG - 18, marca: { t: bl.n + '.', l: 17 }, depois: 4 });
+      else if (bl.k === 'q') { y -= 4; texto(bl.t, { tam: 11, cor: COR.toga, fundo: '0.965 0.937 0.875', x: ML + 4, larg: LARG - 12, depois: 12 }); }
+      else if (bl.k.startsWith('h')) texto(bl.t, { tam: 11, cor: COR.rubi, forte: true, just: false, depois: 3 });
+      else texto(bl.t);
+    }
+    // os números do portal entram logo depois da apresentação
+    if (k === 'apresentacao' && nn.length) {
+      garantir(80); y -= 6;
+      const cols = Math.min(nn.length, 5), cw = (LARG - (cols - 1) * 8) / cols, ch = 58;
+      nn.slice(0, 5).forEach(([kk, v], i) => {
+        const x = ML + i * (cw + 8);
+        ops.push(`${COR.toga} rg ${x.toFixed(2)} ${(y - ch).toFixed(2)} ${cw.toFixed(2)} ${ch} re f`, `${COR.ouro} rg ${x.toFixed(2)} ${(y - ch).toFixed(2)} ${cw.toFixed(2)} 2.5 re f`);
+        const num = textoPDF(Number(v).toLocaleString('pt-BR')); ops.push(`1 1 1 rg BT /F2 18 Tf ${(x + cw / 2 - larguraTxt(num, true, 18) / 2).toFixed(2)} ${(y - 27).toFixed(2)} Td ${strPDF(num)} Tj ET`);
+        const rt = textoPDF(ROT_NUM[kk]); let tam = 7.5; while (larguraTxt(rt, false, tam) > cw - 8 && tam > 5.5) tam -= .3;
+        ops.push(`${COR.ouro} rg BT /F1 ${tam.toFixed(1)} Tf ${(x + cw / 2 - larguraTxt(rt, false, tam) / 2).toFixed(2)} ${(y - 43).toFixed(2)} Td ${strPDF(rt)} Tj ET`);
+      });
+      y -= ch + 8;
+      texto(`Números do portal em ${new Date().toLocaleDateString('pt-BR')}.`, { tam: 7.5, cor: COR.cinza, just: false, depois: 10 });
+    }
+    y -= 6;
+  }
+  /* ---- contato e assinaturas ---- */
+  garantir(190); y -= 4;
+  texto('Contato', { tam: 14, cor: COR.toga, forte: true, just: false, depois: 4 }); ops.push(`${COR.ouro} RG 0.8 w ${ML} ${y + 1} m ${ML + 40} ${y + 1} l S`); y -= 9;
+  for (const [r, v] of [['Responsável', [p.contatoNome, p.contatoCargo].filter(Boolean).join(', ')], ['E-mail', p.contatoEmail], ['Telefone / WhatsApp', p.contatoFone], ['Portal', p.site]].filter(x => x[1])) texto(`**${r}:** ${v}`, { just: false, depois: 2 });
+  y -= 40; garantir(60);
+  const aw = (LARG - 40) / 2;
+  for (const [i, [nome, sub]] of [[p.contatoNome || portal, p.contatoCargo ? `${p.contatoCargo} · ${portal}` : portal], [p.destinatario || '', [p.cargoDest, destino].filter(Boolean).join(' · ')]].entries()) {
+    const x = ML + i * (aw + 40);
+    ops.push(`${COR.texto} RG 0.6 w ${x} ${y} m ${x + aw} ${y} l S`);
+    const a = textoPDF(nome || ' '), b = textoPDF(sub || '');
+    ops.push(`${COR.texto} rg BT /F2 9.5 Tf ${(x + aw / 2 - larguraTxt(a, true, 9.5) / 2).toFixed(2)} ${y - 14} Td ${strPDF(a)} Tj ET`);
+    if (b) { let bb = b; while (larguraTxt(bb, false, 8) > aw && bb.length > 4) bb = bb.slice(0, -2) + '…'; ops.push(`${COR.cinza} rg BT /F1 8 Tf ${(x + aw / 2 - larguraTxt(bb, false, 8) / 2).toFixed(2)} ${y - 26} Td ${strPDF(bb)} Tj ET`); }
+  }
+  y -= 40;
+  /* ---- rodapés ---- */
+  paginas.forEach((pg, i) => {
+    const t = `Página ${i + 1} de ${paginas.length}`, e = textoPDF(`${portal}${p.site ? ' · ' + p.site.replace(/^https?:\/\//, '').replace(/\/$/, '') : ''}`).slice(0, 90);
+    pg.push(`0.82 0.80 0.75 RG 0.5 w ${ML} 54 m ${W - MR} 54 l S`, `${COR.cinza} rg BT /F1 7.5 Tf ${ML} 40 Td ${strPDF(e)} Tj ET`, `${COR.cinza} rg BT /F1 7.5 Tf ${W - MR - larguraTxt(t, false, 7.5)} 40 Td ${strPDF(t)} Tj ET`);
+  });
+  /* ---- arquivo ---- */
+  const objs = [], add = s => (objs.push(s), objs.length);
+  const cat = add(''), pags = add('');
+  const fIds = ['Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique'].map(f => add(`<< /Type /Font /Subtype /Type1 /BaseFont /${f} /Encoding /WinAnsiEncoding >>`));
+  const imIds = imgs.map(im => add(`<< /Type /XObject /Subtype /Image /Width ${im.w} /Height ${im.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${im.dados.length} >>\nstream\n${im.dados}\nendstream`));
+  const res = `<< /Font << /F1 ${fIds[0]} 0 R /F2 ${fIds[1]} 0 R /F3 ${fIds[2]} 0 R /F4 ${fIds[3]} 0 R >>${imIds.length ? ` /XObject << ${imIds.map((id, i) => `/Im${i + 1} ${id} 0 R`).join(' ')} >>` : ''} >>`;
+  const kids = paginas.map(pg => { const st = pg.join('\n'); const c = add(`<< /Length ${st.length} >>\nstream\n${st}\nendstream`); return add(`<< /Type /Page /Parent ${pags} 0 R /MediaBox [0 0 ${W} ${H}] /Resources ${res} /Contents ${c} 0 R >>`); });
+  objs[cat - 1] = `<< /Type /Catalog /Pages ${pags} 0 R >>`;
+  objs[pags - 1] = `<< /Type /Pages /Kids [${kids.map(k => k + ' 0 R').join(' ')}] /Count ${kids.length} >>`;
+  const info = add(`<< /Title ${strPDF(textoPDF(`Proposta de parceria - ${destino}`))} /Author ${strPDF(textoPDF(portal))} /Producer ${strPDF(textoPDF(portal))} >>`);
+  let pdf = '%PDF-1.4\n%\xe2\xe3\xcf\xd3\n'; const off = [];
+  objs.forEach((o, i) => { off.push(pdf.length); pdf += `${i + 1} 0 obj\n${o}\nendobj\n`; });
+  const xr = pdf.length;
+  pdf += `xref\n0 ${objs.length + 1}\n0000000000 65535 f \n${off.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('')}trailer\n<< /Size ${objs.length + 1} /Root ${cat} 0 R /Info ${info} 0 R >>\nstartxref\n${xr}\n%%EOF`;
+  const bytes = new Uint8Array(pdf.length); for (let i = 0; i < pdf.length; i++) bytes[i] = pdf.charCodeAt(i) & 255;
+  return { blob: new Blob([bytes], { type: 'application/pdf' }), paginas: paginas.length };
+}
+/* --------------------------- pré-visualização em HTML --------------------------- */
+function mdProposta(t) {
+  return blocosApostila(t).map(b => {
+    const h = esc(b.t || '').replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>');
+    return b.k === 'li' ? `<li>${h}</li>` : b.k === 'ol' ? `<li class="ol" data-n="${b.n}">${h}</li>` : b.k === 'q' ? `<blockquote>${h}</blockquote>` : b.k.startsWith('h') ? `<h4>${h}</h4>` : `<p>${h}</p>`;
+  }).join('').replace(/(<li(?: class="ol" data-n="\d+")?>.*?<\/li>)+/g, m => /class="ol"/.test(m) ? `<ol>${m}</ol>` : `<ul>${m}</ul>`);
+}
+function previaProposta(p, nums) {
+  const portal = S.config.nomePortal, destino = p.instituicao || 'Instituição';
+  const nn = Object.entries(nums || {}).filter(([k, v]) => p.numeros && v > 0 && ROT_NUM[k]).slice(0, 5);
+  let n = 0;
+  return `<div class="pp-folha">
+    <div class="pp-faixa"><div class="pp-marca">${ic('columns', 30)}<div><b>${esc(portal)}</b><small>${esc(S.config.slogan || 'Portal de estudos para estudantes e docentes de Direito')}</small></div></div><span>Proposta de parceria institucional</span></div>
+    <div class="pp-corpo"><h1>Proposta de parceria institucional</h1><h2>${esc(portal)} e ${esc(destino)}${p.sigla && p.sigla !== destino ? ` (${esc(p.sigla)})` : ''}</h2>
+      <div class="pp-quadro"><dl><dt>Destinatário</dt><dd>${esc(p.destinatario || `Direção da ${destino}`)}</dd>${p.cargoDest ? `<dt>Cargo</dt><dd>${esc(p.cargoDest)}</dd>` : ''}<dt>Instituição</dt><dd>${esc(destino)}${p.cidade ? ` · ${esc(p.cidade)}` : ''}</dd>
+        <dt>Data</dt><dd>${p.data ? new Date(p.data + 'T12:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }) : ''}</dd><dt>Validade</dt><dd>${p.validadeDias || 60} dias${p.numero ? ` · Proposta nº ${esc(p.numero)}` : ''}</dd></dl>${p.logo ? `<img src="${p.logo}" alt="">` : ''}</div>
+      ${PROPOSTA_SECOES.filter(([k]) => !(p.ocultas || []).includes(k)).map(([k, t]) => `<section><h3><span>${String(++n).padStart(2, '0')}</span>${esc(t)}</h3>${mdProposta(textoSecao(p, k))}
+        ${k === 'apresentacao' && nn.length ? `<div class="pp-nums">${nn.map(([kk, v]) => `<div><b>${Number(v).toLocaleString('pt-BR')}</b><small>${ROT_NUM[kk]}</small></div>`).join('')}</div>` : ''}</section>`).join('')}
+      <section><h3>Contato</h3><p>${[['Responsável', [p.contatoNome, p.contatoCargo].filter(Boolean).join(', ')], ['E-mail', p.contatoEmail], ['Telefone / WhatsApp', p.contatoFone], ['Portal', p.site]].filter(x => x[1]).map(([r, v]) => `<b>${r}:</b> ${esc(v)}`).join('<br>')}</p></section>
+      <div class="pp-ass"><div><span></span><b>${esc(p.contatoNome || portal)}</b><small>${esc(p.contatoCargo ? `${p.contatoCargo} · ${portal}` : portal)}</small></div><div><span></span><b>${esc(p.destinatario || ' ')}</b><small>${esc([p.cargoDest, destino].filter(Boolean).join(' · '))}</small></div></div></div></div>`;
+}
+/* ---------------------------------- telas ---------------------------------- */
+async function admPropostas(box) {
+  let lista = []; try { lista = (await PropDB.list()).sort((a, b) => (b.atualizadoEm || b.criadoEm) - (a.atualizadoEm || a.criadoEm)); } catch (e) { box.innerHTML = `<div class="card empty"><p>${esc(e.message || 'Este navegador não guarda propostas.')}</p></div>`; return; }
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:760px">Prepare a proposta de parceria para cada instituição de ensino superior que você vai visitar: validação dos certificados do portal, divulgação da marca e das atividades da instituição. O texto vem pronto e pode ser ajustado. Baixe em PDF com a identidade visual do portal. <b>As propostas ficam guardadas só neste computador.</b></p>
+    <button class="btn primary sm" id="pp-novo">${ic('plus', 15)} Nova proposta</button></div>
+    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th>Instituição</th><th>Destinatário</th><th>Data</th><th></th></tr>${lista.map(p => `<tr><td><b>${esc(p.instituicao || '(sem nome)')}</b>${p.sigla ? ` <span class="muted small">${esc(p.sigla)}</span>` : ''}${p.cidade ? `<br><small class="muted">${esc(p.cidade)}</small>` : ''}</td><td>${esc(p.destinatario || '—')}${p.cargoDest ? `<br><small class="muted">${esc(p.cargoDest)}</small>` : ''}</td><td>${p.data ? fmtDate(new Date(p.data + 'T12:00:00').getTime()) : ''}</td>
+      <td class="acts"><button class="btn primary sm" data-pp="ed" data-id="${esc(p.id)}">${ic('edit', 14)} Abrir</button><button class="btn ghost sm" data-pp="pdf" data-id="${esc(p.id)}">${ic('download', 14)} PDF</button><button class="btn ghost sm" data-pp="dup" data-id="${esc(p.id)}" title="Duplicar para outra instituição">Duplicar</button><button class="btn danger sm" data-pp="del" data-id="${esc(p.id)}" title="Excluir">${ic('trash', 14)}</button></td></tr>`).join('')}</table></div>`
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('predio')}<h3>Nenhuma proposta ainda</h3><p>Crie a primeira proposta: o modelo já traz o objetivo do portal, o que ele oferece à instituição, como funciona a validação dos certificados e os próximos passos.</p><button class="btn primary" id="pp-novo2">${ic('plus', 15)} Nova proposta</button></div>`}`;
+  const novo = () => editorProposta(box, PROP_PADRAO());
+  $('#pp-novo', box).onclick = novo; const n2 = $('#pp-novo2', box); if (n2) n2.onclick = novo;
+  box.onclick = async ev => {
+    const b = ev.target.closest('[data-pp]'); if (!b) return; const p = lista.find(x => x.id === b.dataset.id); if (!p) return;
+    if (b.dataset.pp === 'ed') return editorProposta(box, p);
+    if (b.dataset.pp === 'pdf') { b.disabled = true; try { await baixarProposta(p); } finally { b.disabled = false; } return; }
+    if (b.dataset.pp === 'dup') return editorProposta(box, { ...structuredClone(p), id: uid(), criadoEm: Date.now(), atualizadoEm: 0, instituicao: '', sigla: '', cidade: '', destinatario: '', cargoDest: '', logo: '', numero: '', data: hojeISO(new Date()) });
+    if (b.dataset.pp === 'del') { if (!await confirmar(`Excluir a proposta para ${p.instituicao || 'esta instituição'}?`, 'Excluir')) return; await PropDB.del(p.id); toast('Proposta excluída.'); admPropostas(box); }
+  };
+}
+async function baixarProposta(p) {
+  try { const nums = p.numeros ? await numerosPortal() : {}; const { blob } = await gerarPropostaPDF(p, nums); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nomeArquivo('proposta-parceria', p.sigla || p.instituicao || 'instituicao').replace(/\.png$/, '.pdf'); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); toast('PDF da proposta baixado.'); }
+  catch (e) { console.warn(e); toast('Não foi possível gerar o PDF: ' + e.message, true); }
+}
+async function editorProposta(box, p) {
+  p = { ...PROP_PADRAO(), ...p, secoes: { ...PROP_PADRAO().secoes, ...(p.secoes || {}) } };
+  const nums = await numerosPortal();
+  const campo = (n, rot, extra = '') => `<label>${rot}<input name="${n}" value="${esc(p[n] ?? '')}" ${extra}></label>`;
+  box.innerHTML = `<div class="list-h"><button class="btn ghost sm" id="pp-voltar">${ic('back', 15)} Propostas</button><div class="acts"><span class="small muted" id="pp-st"></span><button class="btn ghost sm" id="pp-sv">${ic('check', 15)} Salvar</button><button class="btn primary sm" id="pp-pdf">${ic('download', 15)} Baixar PDF</button></div></div>
+  <div class="pp-g"><form class="form card pad pp-form" id="fpp" novalidate>
+    <h4>Instituição visitada</h4>
+    ${campo('instituicao', 'Nome da instituição *', 'maxlength="140" placeholder="Ex.: Faculdade de Direito de…"')}
+    <div class="row2">${campo('sigla', 'Sigla', 'maxlength="20"')}${campo('cidade', 'Cidade/UF', 'maxlength="60"')}</div>
+    <div class="row2">${campo('destinatario', 'Destinatário', 'maxlength="100" placeholder="Nome de quem vai receber"')}${campo('cargoDest', 'Cargo', 'maxlength="100" placeholder="Ex.: Coordenador(a) do curso de Direito"')}</div>
+    <div class="ed-pf-foto"><span class="pp-logo" id="pp-logo">${p.logo ? `<img src="${p.logo}" alt="">` : ic('predio', 26)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} Logo da instituição (opcional)<input type="file" id="pp-file" accept="image/*" hidden></label>${p.logo ? ' <button type="button" class="btn ghost sm" id="pp-logo-rm">Remover</button>' : ''}<p class="hint" style="margin-top:6px">Aparece no quadro de abertura da proposta.</p></div></div>
+    <h4>Proposta</h4>
+    <div class="row2">${campo('data', 'Data', 'type="date"')}${campo('validadeDias', 'Validade (dias)', 'type="number" min="7" max="365"')}</div>
+    ${campo('numero', 'Número da proposta (opcional)', 'maxlength="30" placeholder="Ex.: 001/2026"')}
+    <h4>Contato do portal</h4>
+    <div class="row2">${campo('contatoNome', 'Responsável', 'maxlength="100"')}${campo('contatoCargo', 'Cargo', 'maxlength="100"')}</div>
+    <div class="row2">${campo('contatoEmail', 'E-mail', 'type="email" maxlength="120"')}${campo('contatoFone', 'Telefone / WhatsApp', 'maxlength="40"')}</div>
+    ${campo('site', 'Endereço do portal', 'maxlength="160" placeholder="https://…"')}
+    <label class="dv-chk"><input type="checkbox" name="numeros" ${p.numeros ? 'checked' : ''}> Mostrar os números do portal (${Object.entries(nums).filter(([k, v]) => v > 0 && ROT_NUM[k]).map(([k, v]) => `${v} ${ROT_NUM[k]}`).join(', ') || 'ainda sem números'})</label>
+    <h4>Texto da proposta</h4><p class="hint" style="margin-top:-4px">Ajuste o texto de cada parte. Use "- " para itens, "> " para destaque e **negrito**. {instituicao} vira a sigla ou o nome da instituição.</p>
+    ${PROPOSTA_SECOES.map(([k, t]) => `<details class="pp-sec"><summary><label class="dv-chk" onclick="event.stopPropagation()"><input type="checkbox" data-mostrar="${k}" ${(p.ocultas || []).includes(k) ? '' : 'checked'}></label> ${esc(t)}${p.secoes[k] != null ? ' <span class="badge">editado</span>' : ''}</summary>
+      <textarea data-sec="${k}" rows="9">${esc(p.secoes[k] ?? PROPOSTA_SECOES.find(x => x[0] === k)[2])}</textarea><button type="button" class="btn ghost sm" data-padrao="${k}">Voltar ao texto do modelo</button></details>`).join('')}
+  </form><div class="pp-prev" id="pp-prev"></div></div>`;
+  const f = $('#fpp', box), st = $('#pp-st', box);
+  const ler = () => {
+    for (const k of ['instituicao', 'sigla', 'cidade', 'destinatario', 'cargoDest', 'data', 'numero', 'contatoNome', 'contatoCargo', 'contatoEmail', 'contatoFone', 'site']) p[k] = f[k].value.trim();
+    p.validadeDias = Math.max(7, Math.min(365, Number(f.validadeDias.value) || 60)); p.numeros = f.numeros.checked;
+    for (const ta of $$('[data-sec]', f)) { const k = ta.dataset.sec, pad = PROPOSTA_SECOES.find(x => x[0] === k)[2]; p.secoes[k] = ta.value.trim() === pad.trim() ? null : ta.value; }
+    p.ocultas = $$('[data-mostrar]', f).filter(c => !c.checked).map(c => c.dataset.mostrar);
+  };
+  const desenhar = () => { $('#pp-prev', box).innerHTML = previaProposta(p, nums); };
+  let t = null, sujo = false;
+  const salvar = async (aviso) => { ler(); if (!p.instituicao) { if (aviso) toast('Informe o nome da instituição.', true); return false; } p.atualizadoEm = Date.now(); await PropDB.put(structuredClone(p)); sujo = false; st.textContent = `Salva às ${new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}`; if (aviso) toast('Proposta salva neste computador.'); return true; };
+  f.addEventListener('input', () => { sujo = true; st.textContent = 'Alterações não salvas'; clearTimeout(t); t = setTimeout(() => { ler(); desenhar(); salvar(false); }, 400); });
+  f.addEventListener('change', () => { ler(); desenhar(); salvar(false); });
+  $$('[data-padrao]', f).forEach(b => b.onclick = () => { const k = b.dataset.padrao; $(`[data-sec="${k}"]`, f).value = PROPOSTA_SECOES.find(x => x[0] === k)[2]; ler(); desenhar(); salvar(false); });
+  $('#pp-file', box).onchange = async e => { const arq = e.target.files[0]; if (!arq) return; try { p.logo = await logoOtimizado(arq); $('#pp-logo', box).innerHTML = `<img src="${p.logo}" alt="">`; desenhar(); salvar(false); } catch (er) { toast(er.message, true); } };
+  const rm = $('#pp-logo-rm', box); if (rm) rm.onclick = () => { p.logo = ''; $('#pp-logo', box).innerHTML = ic('predio', 26); rm.remove(); desenhar(); salvar(false); };
+  $('#pp-sv', box).onclick = () => salvar(true);
+  $('#pp-pdf', box).onclick = async ev => { const b = ev.currentTarget; ler(); if (!p.instituicao) { toast('Informe o nome da instituição.', true); return f.instituicao.focus(); } b.disabled = true; await salvar(false); await baixarProposta(p); b.disabled = false; };
+  $('#pp-voltar', box).onclick = async () => { if (sujo) await salvar(false); admPropostas(box); };
+  S.limpar.push(() => { if (sujo) salvar(false); });
+  desenhar();
 }
 
 /* ========================== Instituições parceiras ==========================
