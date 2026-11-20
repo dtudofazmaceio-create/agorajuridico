@@ -426,3 +426,39 @@ Um código pode valer para um aluno ou para a turma toda (ex.: "Turma 3º perío
 - **Ocultar o menu (computador):** no topo de qualquer página, o botão ☰ oculta o menu lateral e dá mais espaço ao conteúdo, como o vídeo das aulas. Clique de novo para mostrar. A escolha fica guardada no aparelho.
 - **Girar o celular ou tablet:** a tela se ajusta sem recarregar a página, e o vídeo continua tocando. O app instalado também pode ser usado na horizontal.
 
+## Fotos em notícias e entrevistas
+
+Ao cadastrar uma notícia ou uma entrevista, use **Fotos (até 2)**: escolha a primeira e a segunda foto e escreva a legenda com o crédito. A primeira foto aparece como miniatura na lista. As duas aparecem na publicação, lado a lado. Use fotos próprias ou com autorização.
+
+## Alunos colunistas
+
+Os alunos também podem escrever na **Coluna Acadêmica**. Na página da Coluna, o aluno conectado vê o convite **Quero ser colunista**. O cadastro já vem preenchido com o nome, o e-mail, a instituição e o semestre dele, e os artigos aparecem com o selo **Estudante**.
+
+Em **Configurações → Divulgação → Colunista**, você controla duas opções:
+
+- **Alunos também podem ser colunistas** (ligada por padrão);
+- **Exigir a minha aprovação antes de o aluno publicar** (ligada por padrão).
+
+Para aprovar, use **Painel → Colunistas**: os alunos aparecem com o selo "Aluno".
+
+## Ferramentas
+
+O menu **Ferramentas** reúne sites e aplicativos úteis para estudantes e profissionais do Direito, com busca e filtros por categoria, público e preço. Cadastre em **Painel → Ferramentas**: nome, link, categoria, para que serve, público, preço, onde funciona e logo. Você pode marcar uma ferramenta como **Destaque** ou ocultá-la.
+
+Na primeira vez, **Adicionar sugestões iniciais** cadastra 12 ferramentas para você revisar: Planalto, LexML, STF, STJ, TST, Diário Oficial, Calculadora do Cidadão, Exame de Ordem, Google Acadêmico, Anki, Notion e Jusbrasil.
+
+## Radar de concursos
+
+O radar busca sozinho, a cada 6 horas, os concursos com **inscrições abertas** nas listas públicas do PCI Concursos. Ele separa os da área jurídica:
+
+- magistratura, Ministério Público, defensorias e procuradorias;
+- tribunais (analista e técnico judiciário, oficial de justiça, escrevente);
+- delegado, cartórios e advogado.
+
+Cada concurso aparece em **Estágios, concursos e empregos → Concursos**, com o selo **Radar de concursos**, o prazo de inscrição e o link para os detalhes e o edital. Quando o prazo termina, ele sai sozinho do portal.
+
+- **Funcionamento:** o radar roda no **GitHub Actions** (arquivo `.github/workflows/radar-concursos.yml`), como a sincronização das leis. Envie para o repositório também os arquivos `concursos-sync.mjs` e `scripts/radar-concursos.mjs`. Ele usa o mesmo token e o mesmo Gist da sincronização das leis.
+- **Configuração:** em **Painel → Oportunidades**, o quadro do radar mostra a última verificação. Em **Configurar**, você pode limitar o radar a alguns estados (os concursos nacionais sempre entram), incluir palavras extras ou desligar o radar. **Executar agora no GitHub** roda o radar na hora.
+- **Exclusão:** um concurso do radar excluído no painel não volta nas próximas verificações.
+- **Avisos:** a fonte é um site de terceiros. Se ele mudar o formato das páginas, o radar mostra um aviso no painel e os concursos já publicados continuam no portal até o fim do prazo. Os alunos veem o lembrete de conferir sempre o edital oficial.
+

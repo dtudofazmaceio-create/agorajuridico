@@ -1356,6 +1356,23 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .pp-pls{display:grid;gap:6px}.pp-pl{display:grid;grid-template-columns:auto minmax(0,1fr) 112px auto 84px auto;gap:6px;align-items:center}.pp-pl.off>*:not(.dv-chk){opacity:.45}.pp-pl input,.pp-pl select{padding:.45em .55em;font-size:.88rem;min-width:0}.pp-pl .pp-rs{font-size:.8rem;color:var(--cinza)}
 @media (max-width:520px){.pp-pl{grid-template-columns:auto minmax(0,1fr) 84px auto;}.pp-pl select{grid-column:2}.pp-pl .pp-rs{display:none}}
 .pp-st{font-size:.82rem;padding:.35em .5em}#ct-status{font-size:.85rem;padding:.4em .5em;margin:0 6px}.ct-pag-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.ct-tab td,.ct-tab th{font-size:.85rem;padding:.5em .6em}
+.pf-slots{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pf-slot{display:flex;gap:10px;align-items:flex-start}.pf-prev{width:96px;height:72px;border-radius:8px;background:var(--latao-bg);display:grid;place-items:center;overflow:hidden;flex:none;color:var(--latao)}.pf-prev img{width:100%;height:100%;object-fit:cover}.pf-ctl{display:grid;gap:6px;flex:1;min-width:0}.pf-ctl .field{font-size:.85rem;padding:.45em .6em}
+@media (max-width:640px){.pf-slots{grid-template-columns:1fr}}
+.pub-fotos{display:grid;gap:12px;margin:18px 0 0}.pub-fotos.n2{grid-template-columns:1fr 1fr}.pub-fotos figure{margin:0}.pub-fotos img{width:100%;border-radius:10px;display:block;aspect-ratio:16/10;object-fit:cover;background:var(--latao-bg)}.pub-fotos.n1 img{aspect-ratio:auto;max-height:480px}.pub-fotos figcaption{font-size:.8rem;color:var(--cinza);margin-top:6px;line-height:1.4}
+@media (max-width:640px){.pub-fotos.n2{grid-template-columns:1fr}}
+.post .pf-th{width:92px;height:70px;border-radius:8px;overflow:hidden;padding:0;flex:none}.post .pf-th img{width:100%;height:100%;object-fit:cover;display:block}
+/* ferramentas */
+.fe-filtros{padding:16px 18px;display:grid;gap:12px;margin-bottom:18px}.fe-sel{display:flex;gap:10px;flex-wrap:wrap}.fe-sel .field{width:auto;min-width:200px}
+.fe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.fe-card{padding:18px;display:flex;flex-direction:column;gap:10px}.fe-card.dest{border-color:var(--latao);box-shadow:0 0 0 1px var(--latao) inset}
+.fe-top{display:flex;gap:12px;align-items:center}.fe-top h3{margin:0;font-size:1.05rem}.fe-cat{font-size:.75rem;color:var(--cinza)}
+.fe-logo{width:48px;height:48px;border-radius:12px;background:var(--toga);color:var(--latao-2);display:grid;place-items:center;overflow:hidden;flex:none;font-family:var(--serif)}.fe-logo img{width:100%;height:100%;object-fit:contain;background:#fff}.fe-logo.sm{width:38px;height:38px;border-radius:9px;font-size:.85rem}
+.fe-card p{margin:0;font-size:.9rem;color:#3c4250;flex:1}.fe-tags{display:flex;gap:6px;flex-wrap:wrap}.fe-ir{align-self:flex-start}
+.fe-plats{display:flex;gap:6px 16px;flex-wrap:wrap}
+.selo-est{font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--latao-bg);color:#7a5a1c;border-radius:20px;padding:1px 7px;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.col-convite{padding:16px;margin-top:16px;display:grid;gap:6px;background:linear-gradient(160deg,#fff,var(--latao-bg));border-color:#e5d6b4}.col-convite>svg{color:var(--latao)}.col-convite b{color:var(--toga)}.col-convite p{margin:0;font-size:.86rem;color:#4a4f5c}.col-convite .btn{justify-self:start;margin-top:4px}
+.badge.radar{background:#e8eef9;color:#23407a}.radar-adm{margin-bottom:16px}.rd-ufs{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}.rd-uf{display:flex!important;align-items:center;gap:4px;font-size:.85rem;border:1px solid var(--linha);border-radius:8px;padding:4px 6px;cursor:pointer}.rd-uf input{margin:0}
+.radar-al{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:14px;background:#f2f5fb;border-color:#d6dff0}.radar-al>svg{color:#23407a;flex:none}.radar-al b{display:block;color:var(--toga)}.radar-al span{font-size:.86rem;color:#4a4f5c}
 </style>
 </head>
 <body>
@@ -1623,6 +1640,7 @@ const I = {
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
   whats: '<path d="M3.5 20.5l1.3-4.6A8.5 8.5 0 1 1 8 19.2l-4.5 1.3z"/><path d="M9 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.6l-.5.6c-.1.2-.1.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.6-.5c.2-.1.4-.2.6-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.4-3-.3a9 9 0 0 1-4.2-4.2c-.6-1.4-.6-2.4-.3-3z"/>',
   x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  ferr: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
   algemas: '<circle cx="7" cy="15" r="4"/><circle cx="17" cy="15" r="4"/><path d="M7 11V8.5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2V11M10 6.5V4.5h4v2"/>',
   dinheiro: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v.01M18 14.5v.01"/>',
   folha: '<path d="M5 19C5 10 11 5 20 4c0 9-5 15-13 15H5z"/><path d="M5 19l8-8"/>',
@@ -1748,9 +1766,9 @@ function confirmar(msg, ok = 'Confirmar') {
 /* ===================== Camada de dados: IndexedDB ===================== */
 function LocalStore({ seed = true } = {}) {
   let db;
-  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos', 'sorteios'];
+  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos', 'sorteios', 'ferramentas'];
   const open = () => new Promise((res, rej) => {
-    const r = indexedDB.open('agora-juridica', 6);
+    const r = indexedDB.open('agora-juridica', 7);
     r.onupgradeneeded = () => { for (const s of STORES) if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); };
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
@@ -1895,7 +1913,7 @@ async function pbkdf2(senha, salt, iter = 120000) {
 function GistStore() {
   const L = LocalStore({ seed: false });
   const API = 'https://api.github.com', FILE = 'agora-dados.json';
-  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos', 'sorteios'];
+  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'ferramentas'];
   let G = null, data = null, loadedAt = 0, TOKEN = null, sess = null;
   const ucache = new Map(); // escritas recentes (evita ler versão antiga do cache do GitHub)
   const enc = t => 'v1.' + btoa([...t].reverse().join(''));
@@ -2117,7 +2135,8 @@ function GistStore() {
       if (!cv?.codigo || cv.aberto === false || cv.codigo !== codigo) throw new Error('Este convite não é mais válido. Peça um novo QR code ao administrador do portal.');
       data.colunistas = data.colunistas || [];
       if (o.email && data.colunistas.some(c => String(c.email || '').toLowerCase() === o.email)) throw new Error('Já existe um colunista com este e-mail. Peça ao administrador um novo link de acesso.');
-      const rec = { ...o, id: uid(), criadoEm: Date.now(), atualizadoEm: Date.now(), aprovado: cv.aprovacao ? false : true };
+      if (o.tipo === 'aluno' && cv.alunos === false) throw new Error('O cadastro de alunos como colunistas está fechado no momento.');
+      const rec = { ...o, id: uid(), criadoEm: Date.now(), atualizadoEm: Date.now(), aprovado: (o.tipo === 'aluno' ? cv.aprovacaoAlunos !== false : cv.aprovacao) ? false : true };
       data.colunistas.push(rec); await commit(); colAuth = rec.id; return rec;
     },
     async salvarImagemCol(url) {
@@ -2262,6 +2281,7 @@ const ROUTES = {
   materiais:     { view: viewMateriais, auth: true, ativo: true },
   material:      { view: viewMaterial, auth: true, ativo: true },
   oportunidades: { view: viewOportunidades, auth: true, ativo: true },
+  ferramentas:   { view: viewFerramentas, auth: true },
   legislacao:    { view: viewLegislacao, auth: true, ativo: true },
   noticias:      { view: viewNoticias, auth: true, ativo: true },
   configurar:    { view: viewConfigurar },
@@ -2352,6 +2372,7 @@ function shellHTML(name) {
         ${item('quiz', 'Quiz e certificados', 'quiz', true)}
         ${item('academico', 'Coluna Acadêmica', 'pen', true)}
         ${item('oportunidades', 'Estágios, concursos e empregos', 'briefcase', true)}
+        ${item('ferramentas', 'Ferramentas', 'ferr', false)}
         <div class="sep">Atualidades</div>
         ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
         ${item('noticias?tipo=entrevista', 'Entrevistas', 'mic', true)}
@@ -3696,11 +3717,17 @@ function admQuiz(box, users, mats) {
 }
 
 /* =========================== Oportunidades/Leis =========================== */
+const fotosPub = p => (p.fotos || []).filter(x => x?.ref).slice(0, 2);
+function fotosHTML(p) {
+  const fs = fotosPub(p); if (!fs.length) return '';
+  return `<div class="pub-fotos n${fs.length}">${fs.map(x => `<figure><img data-img="${esc(x.ref)}" alt="${esc(x.legenda || p.titulo)}" loading="lazy">${x.legenda ? `<figcaption>${esc(x.legenda)}</figcaption>` : ''}</figure>`).join('')}</div>`;
+}
 function postCard(p) {
   const c = CATS[p.categoria] || CATS.estagio;
   const pi = p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'audio' : 'play') : c.icon;
-  return `<article class="card post"><span class="pi">${ic(pi, 22)}</span>
-    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+  const f1 = fotosPub(p)[0];
+  return `<article class="card post ${f1 ? 'com-foto' : ''}">${f1 ? `<a class="pi pf-th" href="#/publicacao/${encodeURIComponent(p.id)}"><img data-img="${esc(f1.ref)}" alt=""></a>` : `<span class="pi">${ic(pi, 22)}</span>`}
+    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
       <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
       <div class="meta">${metaPost(p)}</div>
       ${p.resumo ? `<p>${esc(p.resumo)}</p>` : ''}</div>
@@ -3722,6 +3749,7 @@ async function viewOportunidades(main, _, q) {
   main.innerHTML = `<div class="page">
     <div class="page-h"><div><div class="eyebrow">Carreira</div><h2>Estágios, concursos e empregos</h2><p>Oportunidades selecionadas para estudantes e recém-formados em Direito.</p></div></div>
     <div class="tabs">${['estagio', 'concurso', 'emprego'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/oportunidades?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
+    ${cat === 'concurso' ? (() => { const rz = radarCfg(), n = list.filter(p => p.radar && aberto(p)).length; return rz.ativo && (n || rz.ultima) ? `<div class="card radar-al">${ic('search', 20)}<div><b>Radar de concursos</b><span>${n ? `${n} concurso${n === 1 ? '' : 's'} da área jurídica com inscrições abertas, encontrado${n === 1 ? '' : 's'} automaticamente` : 'Nenhum concurso da área jurídica com inscrições abertas no momento'}${rz.ultima ? `. Atualizado em ${fmtDT(rz.ultima.em)}` : ''}. Confira sempre o edital oficial antes de se inscrever.</span></div></div>` : ''; })() : ''}
     <div class="plist">${list.map(postCard).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
   </div>`;
 }
@@ -3805,13 +3833,14 @@ async function viewPublicacao(main, id) {
   if (!p) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Publicação não encontrada</h3></div></div>`; return; }
   const c = CATS[p.categoria] || CATS.estagio, back = p.categoria === 'lei' ? '#/legislacao' : CAT_INFO.includes(p.categoria) ? `#/noticias?tipo=${p.categoria}` : `#/oportunidades?tipo=${p.categoria}`;
   const ent = p.categoria === 'entrevista';
-  const linkTxt = { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
+  const linkTxt = p.radar ? 'Ver detalhes e o edital na fonte' : { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
   main.innerHTML = `<div class="page"><div class="article">
     <a href="${back}" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} ${c.plural}</a>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
     <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
     <div class="meta">${metaPost(p)}</div>
-    ${ent ? `<div style="margin-top:16px">${p.midia ? midiaPlayer(p.midia, p.formato, p.titulo, [p.instituicao, p.cargo].filter(Boolean).join(', ')) : '<div class="card empty"><p>Link da entrevista não informado.</p></div>'}</div>` : ''}
+    ${!ent ? fotosHTML(p) : ''}
+    ${ent ? `<div style="margin-top:16px">${p.midia ? midiaPlayer(p.midia, p.formato, p.titulo, [p.instituicao, p.cargo].filter(Boolean).join(', ')) : '<div class="card empty"><p>Link da entrevista não informado.</p></div>'}</div>${fotosHTML(p)}` : ''}
     <div class="doc" style="margin-top:16px;padding:34px 38px">${p.resumo ? `<p style="font-size:1.05rem;color:var(--toga)"><b>${esc(p.resumo)}</b></p>` : ''}<div class="article body">${paras(p.conteudo || '')}</div>
     ${p.link ? `<a class="btn primary" href="${esc(safeURL(p.link))}" target="_blank" rel="noopener">${linkTxt} ${ic('ext', 15)}</a>` : ''}</div>
     <p class="small muted" style="margin-top:14px">Publicado em ${fmtDate(p.criadoEm)}</p>
@@ -3897,11 +3926,12 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { contratos: 'scroll', propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { ferramentas: 'ferr', contratos: 'scroll', propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', contratos: 'Contratos e recibos', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', ferramentas: 'Ferramentas', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', contratos: 'Contratos e recibos', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
+  if (!conviteCol().codigo) garantirConvite().catch(() => {});   // o convite de colunista (professores e alunos) sempre existe
   if (!TABS[tab]) tab = 'analises';
   const [mats, posts, codigos, users, pags] = await Promise.all([store.list('materiais'), store.list('publicacoes'), TABS.codigos ? store.list('codigos') : [], store.listUsers().catch(e => { console.warn(e); return []; }), gist ? [] : store.list('pagamentos')]);
   const alunos = users.filter(u => u.role !== 'admin');
@@ -3918,7 +3948,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas', 'contratos'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas', 'contratos', 'ferramentas'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3932,7 +3962,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), contratos: () => { const id = abrirContratoPend; abrirContratoPend = null; return admContratos(box, id); }, cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), contratos: () => { const id = abrirContratoPend; abrirContratoPend = null; return admContratos(box, id); }, cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), ferramentas: () => admFerramentas(box), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -4653,12 +4683,41 @@ const GRUPOS_PUB = {
 };
 const btnsLinha = (id, extra = '') => `<div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(id)}">Ver</a>${extra}<button class="btn ghost sm" data-ed="${esc(id)}">Editar</button><button class="btn danger sm" data-del="${esc(id)}">Excluir</button></div>`;
 async function excluirPublicacao(p) {
-  if (!await confirmar(p.origem ? 'Excluir esta atualização? Ela não volta nas próximas sincronizações.' : 'Excluir esta publicação?', 'Excluir')) return;
+  if (!await confirmar(p.radar ? 'Excluir este concurso do radar? Ele não volta nas próximas verificações.' : p.origem ? 'Excluir esta atualização? Ela não volta nas próximas sincronizações.' : 'Excluir esta publicação?', 'Excluir')) return;
   try {
     await store.remove('publicacoes', p.id);
-    if (p.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+    if (p.radar && p.origem) { const cfg = await store.getConfig(), rz = radarCfg(cfg); await store.saveConfig({ ...cfg, radarConcursos: { ...rz, ignorados: [...new Set([...(rz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+    else if (p.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
     toast('Publicação excluída.'); render();
   } catch (err) { toast(err.message, true); }
+}
+/* ------------------------------ Radar de concursos ------------------------------ */
+const UFS_BR = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'];
+const radarCfg = c => ({ ativo: true, apenasDireito: true, ufs: [], extras: '', ignorados: [], ultima: null, ...((c || S.config || {}).radarConcursos || {}) });
+const linkRadar = cfg => { const r = repoDoSite((cfg || S.config).leisAuto || {}); return r ? `https://github.com/${r.owner}/${r.repo}/actions/workflows/radar-concursos.yml` : ''; };
+function radarAdmHTML(posts) {
+  const c = radarCfg(), u = c.ultima, link = linkRadar(), hoje = hojeISO(new Date());
+  const abertos = posts.filter(p => p.radar && p.prazo >= hoje).length;
+  const st = !c.ativo ? ['', 'Desligado'] : !u ? ['', 'Aguardando a 1ª verificação'] : u.erros?.length && !u.encontrados ? ['err', 'Com falha'] : ['ok', 'Ativo'];
+  return `<div class="card lsync radar-adm"><div class="lsync-st"><span class="lsync-dot ${st[0]}"></span><div><b>${ic('search', 15)} Radar de concursos: ${st[1]}</b>
+      <span>${u ? `Última verificação em <b>${fmtDT(u.em)}</b>: ${u.encontrados} concursos com inscrições abertas lidos, ${u.relevantes} da área jurídica${c.ufs.length ? ` (${c.ufs.join(', ')})` : ''}; ${u.novas} novo${u.novas === 1 ? '' : 's'}, ${u.atualizadas} atualizado${u.atualizadas === 1 ? '' : 's'}.` : 'O radar roda sozinho no GitHub a cada 6 horas, depois que o portal estiver publicado.'} <b>${abertos}</b> concurso${abertos === 1 ? '' : 's'} do radar com inscrições abertas no portal. Cada um sai sozinho quando o prazo termina.</span>
+      ${u?.erros?.length ? `<details class="lsync-av"><summary>Ver avisos (${u.erros.length})</summary><p>${esc(u.erros.join('; '))}</p></details>` : ''}</div></div>
+    <div class="lsync-ac"><button class="btn ghost sm" id="rd-cfg">${ic('settings', 14)} Configurar</button>${link ? `<a class="btn ghost sm" href="${esc(link)}" target="_blank" rel="noopener">${ic('ext', 14)} Executar agora no GitHub</a>` : ''}</div></div>`;
+}
+function configurarRadar(onSalvo) {
+  const c = radarCfg();
+  const { el, close } = modal('Radar de concursos', `<form class="form" id="frd" novalidate>
+    <p class="small muted" style="margin-top:0">O radar lê as listas públicas de concursos com inscrições abertas (PCI Concursos), separa os da área jurídica (magistratura, Ministério Público, defensoria, procuradorias, tribunais, delegado, cartórios, analista e técnico judiciário, advogado…) e publica cada um na aba <b>Concursos</b>, com o prazo e o link da fonte.</p>
+    <label class="dv-chk"><input type="checkbox" name="ativo" ${c.ativo ? 'checked' : ''}> Radar ligado</label>
+    <label class="dv-chk"><input type="checkbox" name="apenasDireito" ${c.apenasDireito ? 'checked' : ''}> Só concursos da área jurídica</label>
+    <fieldset class="so-crit"><legend>Estados (vazio = todo o Brasil)</legend><div class="rd-ufs">${UFS_BR.map(uf => `<label class="rd-uf"><input type="checkbox" name="uf" value="${uf}" ${c.ufs.includes(uf) ? 'checked' : ''}><span>${uf}</span></label>`).join('')}</div><span class="hint">Concursos nacionais sempre entram.</span></fieldset>
+    <label>Palavras extras (separadas por vírgula)<input name="extras" value="${esc(c.extras)}" placeholder="Ex.: perito, auditor fiscal"><span class="hint">Concursos com essas palavras também entram, mesmo fora da área jurídica.</span></label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar</button></div></form>`, { wide: true });
+  $('#frd', el).onsubmit = async e => {
+    e.preventDefault(); const f = e.target;
+    try { const cfg = await store.getConfig(); await store.saveConfig({ ...cfg, radarConcursos: { ...radarCfg(cfg), ativo: f.ativo.checked, apenasDireito: f.apenasDireito.checked, ufs: $$('input[name=uf]:checked', f).map(x => x.value), extras: f.extras.value.trim() } }); S.config = await store.getConfig(); close(); toast('Radar configurado. As mudanças valem na próxima verificação.'); onSalvo?.(); }
+    catch (er) { toast(er.message, true); }
+  };
 }
 function admPublicacoes(box, posts, grupo = 'oportunidades') {
   const G = GRUPOS_PUB[grupo], meus = posts.filter(p => G.cats.includes(p.categoria));
@@ -4666,15 +4725,16 @@ function admPublicacoes(box, posts, grupo = 'oportunidades') {
   const draw = () => {
     const l = meus.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
     $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>${G.data}</th><th>Publicado</th><th></th></tr>
-      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td><span class="badge gold">${esc((CATS[p.categoria] || {}).nome)}</span></td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td><span class="badge gold">${esc((CATS[p.categoria] || {}).nome)}</span>${p.radar ? ' <span class="badge">Radar</span>' : ''}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
       <td>${btnsLinha(p.id)}</td></tr>`).join('')}</table>` : `<div class="empty"><p>${G.vazio}</p></div>`;
   };
-  box.innerHTML = `<p class="muted adm-desc">${G.desc}</p>
+  box.innerHTML = `<p class="muted adm-desc">${G.desc}</p>${grupo === 'oportunidades' ? radarAdmHTML(posts) : ''}
     <div class="list-h"><div class="chips" id="pf">${[['', 'Todas', meus.length], ...G.cats.map(k => [k, CATS[k].plural, meus.filter(p => p.categoria === k).length])].map(([v, l, n]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l} <span class="cn">${n}</span></button>`).join('')}</div>
     <button class="btn primary sm" id="novo">${ic('plus', 15)} ${G.novo}</button></div><div class="card table-wrap" id="ptab"></div>`;
   draw();
   $('#pf').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.v; $$('.chip', $('#pf')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
   $('#novo').onclick = () => formPost({ categoria: filtro || G.cats[0] }, G.cats);
+  const rc = $('#rd-cfg'); if (rc) rc.onclick = () => configurarRadar(() => render());
   $('#ptab').onclick = e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
     if (ed) formPost(posts.find(p => p.id === ed.dataset.ed), G.cats);
@@ -4733,8 +4793,20 @@ function formPost(p = {}, cats = null) {
     <label>Resumo<input name="resumo" value="${esc(p.resumo)}" maxlength="700"></label>
     <label><span id="lb-cont">Conteúdo completo</span><textarea name="conteudo" rows="7">${esc(p.conteudo)}</textarea></label>
     <label><span id="lb-link">Link oficial (edital, vaga ou texto da lei)</span><input type="url" name="link" value="${esc(p.link)}" placeholder="https://"></label>
+    <fieldset class="so-crit pf-fotos" id="g-fotos"><legend>Fotos (até 2)</legend>
+      <div class="pf-slots">${[0, 1].map(i => `<div class="pf-slot" data-slot="${i}"><span class="pf-prev" id="pf-prev${i}">${p.fotos?.[i]?.ref ? `<img data-img="${esc(p.fotos[i].ref)}" alt="">` : ic('image', 26)}</span>
+        <div class="pf-ctl"><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} ${i ? 'Segunda foto' : 'Primeira foto'}<input type="file" accept="image/*" id="pf-file${i}" hidden></label>
+          <button type="button" class="btn ghost sm ${p.fotos?.[i]?.ref ? '' : 'hidden'}" id="pf-rm${i}">Remover</button>
+          <input class="field" id="pf-leg${i}" maxlength="160" placeholder="Legenda e crédito da foto (opcional)" value="${esc(p.fotos?.[i]?.legenda || '')}"></div></div>`).join('')}</div>
+      <p class="hint" style="margin:6px 0 0">A primeira foto aparece na lista e no topo da publicação. Use fotos próprias ou com autorização, e informe o crédito.</p></fieldset>
     <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Publicar</button></div></form>`, { wide: true });
   const f = $('#fp', el);
+  hidratarImagens(el);
+  const fotos = [0, 1].map(i => ({ ref: p.fotos?.[i]?.ref || '', arq: null }));
+  [0, 1].forEach(i => {
+    $(`#pf-file${i}`, el).onchange = e => { const a = e.target.files[0]; if (!a) return; if (!/^image\//.test(a.type)) return toast('Escolha um arquivo de imagem.', true); fotos[i].arq = a; $(`#pf-prev${i}`, el).innerHTML = `<img src="${trackURL(URL.createObjectURL(a))}" alt="">`; $(`#pf-rm${i}`, el).classList.remove('hidden'); };
+    $(`#pf-rm${i}`, el).onclick = () => { fotos[i] = { ref: '', arq: null, removida: fotos[i].ref }; $(`#pf-prev${i}`, el).innerHTML = ic('image', 26); $(`#pf-file${i}`, el).value = ''; $(`#pf-rm${i}`, el).classList.add('hidden'); };
+  });
   const L = {
     estagio: ['Prazo de inscrição', 'Instituição / órgão', 'Local / abrangência', 'Conteúdo completo', 'Link da vaga ou do edital'],
     concurso: ['Prazo de inscrição', 'Órgão', 'Local / abrangência', 'Conteúdo completo', 'Link do edital'],
@@ -4747,6 +4819,7 @@ function formPost(p = {}, cats = null) {
     const k = f.categoria.value, t = L[k] || L.estagio;
     ['lb-prazo', 'lb-inst', 'lb-local', 'lb-cont', 'lb-link'].forEach((id, i) => { $('#' + id, el).textContent = t[i]; });
     $('#g-ent', el).classList.toggle('hidden', k !== 'entrevista');
+    $('#g-fotos', el).classList.toggle('hidden', !['noticia', 'entrevista'].includes(k));
     f.midia.required = k === 'entrevista';
   };
   f.categoria.onchange = lbl; lbl();
@@ -4755,7 +4828,19 @@ function formPost(p = {}, cats = null) {
     if (d.categoria === 'entrevista') { const er = validarMidia(d.midia); if (er) return toast(er, true); }
     else { delete d.midia; delete d.formato; delete d.cargo; }
     if (CAT_DATA.includes(d.categoria) && !d.prazo) { const n = new Date(); d.prazo = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`; }
-    try { await store.save('publicacoes', { ...p, ...d }); close(); toast('Publicação salva.'); render(); } catch (err) { toast(err.message, true); }
+    const bt = $('#fp .btn.primary', el);
+    try {
+      if (['noticia', 'entrevista'].includes(d.categoria)) {
+        bt.disabled = true; bt.textContent = 'Enviando fotos…';
+        const out = [];
+        for (const [i, x] of fotos.entries()) {
+          let ref = x.ref;
+          if (x.arq) { const url = await imagemOtimizada(x.arq, 1400); ref = await store.salvarImagemCol(url); imgCache.set(ref, url); }
+          if (ref) out.push({ ref, legenda: $(`#pf-leg${i}`, el).value.trim() });
+        }
+        d.fotos = out;
+      } else d.fotos = [];
+      await store.save('publicacoes', { ...p, ...d }); close(); toast('Publicação salva.'); render(); } catch (err) { toast(err.message, true); bt.disabled = false; bt.textContent = 'Publicar'; }
   };
 }
 
@@ -7172,6 +7257,116 @@ async function editorProposta(box, p) {
   desenhar();
 }
 
+/* ================================= Ferramentas =================================
+   Ferramentas e aplicativos úteis para estudantes e profissionais do Direito.
+   O administrador cadastra em Painel → Ferramentas; todos os usuários veem em #/ferramentas.
+   ============================================================================== */
+const FERR_CATS = ['Pesquisa de jurisprudência', 'Legislação', 'Processo eletrônico e consultas', 'Cálculos jurídicos', 'Estudo e revisão', 'Organização e produtividade', 'Redação e documentos', 'Inteligência artificial', 'Carreira e OAB', 'Outros'];
+const FERR_PLAT = { web: 'Web', android: 'Android', ios: 'iPhone', windows: 'Windows', mac: 'Mac' };
+const FERR_PRECO = { gratis: 'Gratuito', freemium: 'Grátis com plano pago', pago: 'Pago' };
+const FERR_PUB = { ambos: 'Estudantes e profissionais', estudante: 'Estudantes', profissional: 'Profissionais' };
+const FERR_SUGESTOES = [
+  { nome: 'Planalto: Legislação', categoria: 'Legislação', link: 'https://www4.planalto.gov.br/legislacao', descricao: 'Texto oficial e atualizado da Constituição, dos códigos e das leis federais, com as alterações.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'LexML Brasil', categoria: 'Legislação', link: 'https://www.lexml.gov.br', descricao: 'Busca unificada de leis, jurisprudência, projetos de lei e doutrina de órgãos dos três Poderes.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'STF: Pesquisa de jurisprudência', categoria: 'Pesquisa de jurisprudência', link: 'https://jurisprudencia.stf.jus.br', descricao: 'Acórdãos, decisões monocráticas, súmulas e temas de repercussão geral do Supremo Tribunal Federal.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'STJ: Pesquisa de jurisprudência', categoria: 'Pesquisa de jurisprudência', link: 'https://scon.stj.jus.br/SCON/', descricao: 'Acórdãos, súmulas e recursos repetitivos do Superior Tribunal de Justiça.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'TST: Jurisprudência', categoria: 'Pesquisa de jurisprudência', link: 'https://jurisprudencia.tst.jus.br', descricao: 'Pesquisa de acórdãos, súmulas e orientações jurisprudenciais do Tribunal Superior do Trabalho.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'Diário Oficial da União', categoria: 'Legislação', link: 'https://www.in.gov.br', descricao: 'Publicações oficiais do Governo Federal: leis, decretos, portarias e editais de concursos.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'Calculadora do Cidadão (Banco Central)', categoria: 'Cálculos jurídicos', link: 'https://www3.bcb.gov.br/CALCIDADAO/', descricao: 'Correção de valores por índices oficiais (IPCA, INPC, IGP-M, Selic), útil em cálculos de liquidação.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'Exame de Ordem (FGV)', categoria: 'Carreira e OAB', link: 'https://oab.fgv.br', descricao: 'Editais, inscrições, provas anteriores e gabaritos do Exame da OAB.', preco: 'gratis', publico: 'estudante', plataformas: ['web'] },
+  { nome: 'Google Acadêmico', categoria: 'Estudo e revisão', link: 'https://scholar.google.com.br', descricao: 'Busca de artigos científicos, teses e livros jurídicos, com citações e versões em PDF.', preco: 'gratis', publico: 'ambos', plataformas: ['web'] },
+  { nome: 'Anki', categoria: 'Estudo e revisão', link: 'https://apps.ankiweb.net', descricao: 'Cartões de revisão com repetição espaçada: ótimo para memorizar prazos, súmulas e artigos de lei.', preco: 'freemium', publico: 'estudante', plataformas: ['web', 'android', 'ios', 'windows', 'mac'] },
+  { nome: 'Notion', categoria: 'Organização e produtividade', link: 'https://www.notion.so', descricao: 'Anotações, cronogramas de estudo, controle de prazos e bases de dados de casos.', preco: 'freemium', publico: 'ambos', plataformas: ['web', 'android', 'ios', 'windows', 'mac'] },
+  { nome: 'Jusbrasil', categoria: 'Pesquisa de jurisprudência', link: 'https://www.jusbrasil.com.br', descricao: 'Jurisprudência, diários oficiais, modelos de peças e consulta de processos em um só lugar.', preco: 'freemium', publico: 'ambos', plataformas: ['web', 'android', 'ios'] }
+];
+const iniciaisFerr = n => String(n || '?').replace(/[^\p{L}\p{N} ]/gu, '').split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0]).join('').toUpperCase() || '?';
+function cardFerramenta(f) {
+  return `<article class="card fe-card ${f.destaque ? 'dest' : ''}">
+    <div class="fe-top"><span class="fe-logo">${f.logo ? `<img data-img="${esc(f.logo)}" alt="">` : `<b>${esc(iniciaisFerr(f.nome))}</b>`}</span>
+      <div><h3>${esc(f.nome)}</h3><span class="fe-cat">${esc(f.categoria || 'Outros')}</span></div></div>
+    <p>${esc(f.descricao || '')}</p>
+    <div class="fe-tags"><span class="badge ${f.preco === 'gratis' ? 'ok' : f.preco === 'pago' ? 'warn' : 'gold'}">${FERR_PRECO[f.preco] || 'Gratuito'}</span>${(f.plataformas || []).map(p => `<span class="badge">${FERR_PLAT[p] || p}</span>`).join('')}${f.publico && f.publico !== 'ambos' ? `<span class="badge">${FERR_PUB[f.publico]}</span>` : ''}</div>
+    <a class="btn primary sm fe-ir" href="${esc(safeURL(f.link))}" target="_blank" rel="noopener" data-ferr="${esc(f.id)}">Abrir ${ic('ext', 14)}</a></article>`;
+}
+async function viewFerramentas(main) {
+  const todas = (await store.list('ferramentas')).filter(f => f.ativo !== false).sort((a, b) => (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0) || String(a.nome).localeCompare(String(b.nome), 'pt-BR'));
+  const cats = FERR_CATS.filter(c => todas.some(f => (f.categoria || 'Outros') === c));
+  const st = { q: '', cat: '', pub: '', preco: '' };
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Ferramentas</div><h2>Ferramentas e aplicativos</h2><p>Sites e aplicativos úteis para quem estuda e para quem já atua no Direito: pesquisa, legislação, cálculos, organização e estudo.</p></div></div>
+    ${todas.length ? `<div class="card fe-filtros"><div class="search">${ic('search')}<input class="field" id="fe-q" placeholder="Buscar ferramenta ou assunto…" autocomplete="off"></div>
+      <div class="chips" id="fe-c"><button class="chip on" data-v="">Todas <span class="cn">${todas.length}</span></button>${cats.map(c => `<button class="chip" data-v="${esc(c)}">${esc(c)} <span class="cn">${todas.filter(f => (f.categoria || 'Outros') === c).length}</span></button>`).join('')}</div>
+      <div class="fe-sel"><select class="field" id="fe-p"><option value="">Para todos</option><option value="estudante">Para estudantes</option><option value="profissional">Para profissionais</option></select>
+        <select class="field" id="fe-pr"><option value="">Qualquer preço</option><option value="gratis">Só gratuitas</option><option value="freemium">Grátis com plano pago</option><option value="pago">Pagas</option></select></div></div>
+      <div class="fe-grid" id="fe-l"></div>`
+    : `<div class="card empty">${ART.medal('briefcase')}<h3>Nenhuma ferramenta cadastrada ainda</h3><p>As ferramentas e os aplicativos indicados pelo portal aparecem aqui.</p>${S.user?.role === 'admin' ? '<a class="btn primary" href="#/admin/ferramentas">Cadastrar ferramentas</a>' : ''}</div>`}</div>`;
+  if (!todas.length) return;
+  const desenhar = () => {
+    const t = st.q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const l = todas.filter(f => (!st.cat || (f.categoria || 'Outros') === st.cat) && (!st.pub || f.publico === st.pub || f.publico === 'ambos' || !f.publico) && (!st.preco || f.preco === st.preco)
+      && (!t || `${f.nome} ${f.descricao} ${f.categoria}`.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').includes(t)));
+    $('#fe-l').innerHTML = l.map(cardFerramenta).join('') || '<div class="card empty" style="grid-column:1/-1"><p>Nenhuma ferramenta com esses filtros.</p></div>';
+    hidratarImagens($('#fe-l'));
+  };
+  $('#fe-q').oninput = e => { st.q = e.target.value; desenhar(); };
+  $('#fe-c').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; st.cat = b.dataset.v; $$('.chip', $('#fe-c')).forEach(x => x.classList.toggle('on', x === b)); desenhar(); };
+  $('#fe-p').onchange = e => { st.pub = e.target.value; desenhar(); };
+  $("#fe-pr").onchange = e => { st.preco = e.target.value; desenhar(); };
+  $('#fe-l').addEventListener('click', e => { const a = e.target.closest('[data-ferr]'); if (a) try { registrar('ferr', a.dataset.ferr); } catch {} });
+  desenhar();
+}
+async function admFerramentas(box) {
+  const lista = (await store.list('ferramentas')).sort((a, b) => String(a.nome).localeCompare(String(b.nome), 'pt-BR'));
+  const recarregar = () => admFerramentas(box);
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:720px">Cadastre sites e aplicativos úteis para estudantes e profissionais do Direito. Eles aparecem para todos os usuários em <b>Ferramentas</b>, com busca e filtros por categoria, público e preço.</p>
+    <div class="acts">${!lista.length ? `<button class="btn ghost sm" id="fe-sug">${ic('spark', 15)} Adicionar sugestões iniciais</button>` : ''}<button class="btn primary sm" id="fe-novo">${ic('plus', 15)} Nova ferramenta</button></div></div>
+    ${lista.length ? `<div class="card table-wrap" style="margin-top:18px"><table><tr><th>Ferramenta</th><th>Categoria</th><th>Preço</th><th>Público</th><th></th></tr>${lista.map(f => `<tr>
+      <td><div class="col-tab-nm"><span class="fe-logo sm">${f.logo ? `<img data-img="${esc(f.logo)}" alt="">` : `<b>${esc(iniciaisFerr(f.nome))}</b>`}</span><div><b>${esc(f.nome)}</b>${f.destaque ? ' <span class="badge gold">Destaque</span>' : ''}${f.ativo === false ? ' <span class="badge">Oculta</span>' : ''}<div class="small muted">${esc(urlCurta(f.link || ''))}</div></div></div></td>
+      <td>${esc(f.categoria || 'Outros')}</td><td>${FERR_PRECO[f.preco] || 'Gratuito'}</td><td>${FERR_PUB[f.publico] || FERR_PUB.ambos}</td>
+      <td class="acts"><button class="btn primary sm" data-fe="ed" data-id="${esc(f.id)}">${ic('edit', 14)} Editar</button><button class="btn ghost sm" data-fe="vis" data-id="${esc(f.id)}">${f.ativo === false ? 'Mostrar' : 'Ocultar'}</button><button class="btn danger sm" data-fe="del" data-id="${esc(f.id)}" title="Excluir">${ic('trash', 14)}</button></td></tr>`).join('')}</table></div>`
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('briefcase')}<h3>Nenhuma ferramenta cadastrada</h3><p>Comece pelas sugestões iniciais (sites oficiais de legislação e jurisprudência, cálculos, OAB e estudo) e ajuste como quiser, ou cadastre a sua primeira ferramenta.</p></div>`}`;
+  hidratarImagens(box);
+  $('#fe-novo', box).onclick = () => formFerramenta({}, recarregar);
+  const sg = $('#fe-sug', box); if (sg) sg.onclick = async () => { sg.disabled = true; try { for (const f of FERR_SUGESTOES) await store.save('ferramentas', { ...f, ativo: true }); toast(`${FERR_SUGESTOES.length} ferramentas adicionadas. Revise e ajuste à vontade.`); recarregar(); } catch (e) { toast(e.message, true); sg.disabled = false; } };
+  box.onclick = async ev => {
+    const b = ev.target.closest('[data-fe]'); if (!b) return; const f = lista.find(x => x.id === b.dataset.id); if (!f) return;
+    try {
+      if (b.dataset.fe === 'ed') return formFerramenta(f, recarregar);
+      if (b.dataset.fe === 'vis') { await store.save('ferramentas', { ...f, ativo: f.ativo === false }); return recarregar(); }
+      if (b.dataset.fe === 'del') { if (!await confirmar(`Excluir ${f.nome}?`, 'Excluir')) return; await store.remove('ferramentas', f.id); toast('Ferramenta excluída.'); recarregar(); }
+    } catch (e) { toast(e.message, true); }
+  };
+}
+function formFerramenta(f = {}, onSalvo) {
+  const novo = !f.id;
+  const { el, close } = modal(novo ? 'Nova ferramenta' : 'Editar ferramenta', `<form class="form" id="ffe" novalidate>
+    <div class="ed-pf-foto"><span class="fe-logo" id="fe-lg">${f.logo ? `<img data-img="${esc(f.logo)}" alt="">` : `<b>${esc(iniciaisFerr(f.nome))}</b>`}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('image', 14)} Logo ou ícone (opcional)<input type="file" id="fe-file" accept="image/*" hidden></label><p class="hint" style="margin-top:6px">Sem logo, o portal mostra as iniciais.</p></div></div>
+    <div class="row2"><label>Nome *<input name="nome" maxlength="80" value="${esc(f.nome || '')}"></label><label>Categoria<select name="categoria">${FERR_CATS.map(c => `<option ${(f.categoria || '') === c ? 'selected' : ''}>${c}</option>`).join('')}</select></label></div>
+    <label>Link (site ou loja de aplicativos) *<input name="link" type="url" value="${esc(f.link || '')}" placeholder="https://"></label>
+    <label>Para que serve<textarea name="descricao" rows="3" maxlength="300">${esc(f.descricao || '')}</textarea></label>
+    <div class="row2"><label>Público<select name="publico">${Object.entries(FERR_PUB).map(([k, t]) => `<option value="${k}" ${(f.publico || 'ambos') === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label>
+      <label>Preço<select name="preco">${Object.entries(FERR_PRECO).map(([k, t]) => `<option value="${k}" ${(f.preco || 'gratis') === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div>
+    <fieldset class="so-crit"><legend>Onde funciona</legend><div class="fe-plats">${Object.entries(FERR_PLAT).map(([k, t]) => `<label class="dv-chk"><input type="checkbox" name="plat" value="${k}" ${(f.plataformas || ['web']).includes(k) ? 'checked' : ''}> ${t}</label>`).join('')}</div></fieldset>
+    <label class="dv-chk"><input type="checkbox" name="destaque" ${f.destaque ? 'checked' : ''}> Destacar no topo da lista</label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary" id="fe-sv">${novo ? 'Cadastrar' : 'Salvar'}</button></div></form>`, { wide: true });
+  hidratarImagens(el);
+  const fm = $('#ffe', el); let arq = null;
+  $('#fe-file', el).onchange = e => { arq = e.target.files[0]; if (arq) $('#fe-lg', el).innerHTML = `<img src="${trackURL(URL.createObjectURL(arq))}" alt="">`; };
+  fm.onsubmit = async e => {
+    e.preventDefault();
+    const nome = fm.nome.value.trim(), link = fm.link.value.trim();
+    if (nome.length < 2) { toast('Informe o nome da ferramenta.', true); return fm.nome.focus(); }
+    if (!/^https?:\/\/[^\s]+\.[^\s]+/i.test(link)) { toast('Informe o link completo, começando com https://', true); return fm.link.focus(); }
+    const b = $('#fe-sv', el); b.disabled = true; b.textContent = 'Salvando…';
+    try {
+      let logo = f.logo || '';
+      if (arq) { const url = await logoOtimizado(arq); logo = await store.salvarImagemCol(url); imgCache.set(logo, url); }
+      await store.save('ferramentas', { ...f, nome, link, categoria: fm.categoria.value, descricao: fm.descricao.value.trim(), publico: fm.publico.value, preco: fm.preco.value, plataformas: $$('input[name=plat]:checked', fm).map(x => x.value), destaque: fm.destaque.checked, logo, ativo: f.ativo !== false });
+      close(); toast(novo ? 'Ferramenta cadastrada.' : 'Ferramenta atualizada.'); onSalvo?.();
+    } catch (er) { toast(er.message, true); b.disabled = false; b.textContent = novo ? 'Cadastrar' : 'Salvar'; }
+  };
+}
+
 /* ========================== Instituições parceiras ==========================
    Cadastro no Painel → Instituições parceiras (logomarca, nome, site, descrição).
    As ativas aparecem na tela inicial (visitantes e alunos), na ordem definida.
@@ -7310,7 +7505,7 @@ const DIV_PADRAO = {
 const DIV_PESSOAL = { titulo: 'Seu acesso de colunista', mensagem: 'Aponte a câmera do celular para abrir o seu editor pessoal na Coluna Acadêmica do portal.', chamada: 'Link pessoal e intransferível' };
 const conviteCol = () => S.config.colunistaConvite || {};
 const linkConviteColunista = () => conviteCol().codigo ? linkAlunos() + '#/seja-colunista/' + conviteCol().codigo : '';
-async function salvarConvite(mud) { const n = { ...S.config, colunistaConvite: { aberto: true, aprovacao: false, ...conviteCol(), ...mud } }; await store.saveConfig(n); S.config = n; }
+async function salvarConvite(mud) { const n = { ...S.config, colunistaConvite: { aberto: true, aprovacao: false, alunos: true, aprovacaoAlunos: true, ...conviteCol(), ...mud } }; await store.saveConfig(n); S.config = n; }
 const DIV_ROTULO = { portal: 'Estudo, prática e carreira jurídica', aluno: 'Para estudantes de Direito', professor: 'Convite ao professor colaborador' };
 const DIV_NOMES = { portal: 'Portal', aluno: 'Aluno', professor: 'Professor colaborador' };
 const DIV_FORMATOS = {
@@ -7528,11 +7723,15 @@ function ligarDivulgacao() {
       ${tipo === 'professor' ? `<div class="dv-conv-cfg">
         <label class="dv-chk"><input type="checkbox" id="cc-aberto" ${cvc.aberto !== false ? 'checked' : ''}> Cadastro de colunistas aberto</label>
         <label class="dv-chk"><input type="checkbox" id="cc-aprov" ${cvc.aprovacao ? 'checked' : ''}> Exigir a minha aprovação antes de o professor publicar<span class="hint">Desligado: quem se cadastrar pelo QR já pode publicar na Coluna Acadêmica. Ligado: ele escreve normalmente, mas só publica depois que você aprovar em Painel → Colunistas.</span></label>
+        <label class="dv-chk"><input type="checkbox" id="cc-alunos" ${cvc.alunos !== false ? 'checked' : ''}> Alunos também podem ser colunistas<span class="hint">O aluno se cadastra pela Coluna Acadêmica, na área dele, e aparece com o selo "Estudante".</span></label>
+        <label class="dv-chk"><input type="checkbox" id="cc-aprov-al" ${cvc.aprovacaoAlunos !== false ? 'checked' : ''}> Exigir a minha aprovação antes de o aluno publicar</label>
         <button type="button" class="btn ghost sm" id="cc-novo">${ic('link', 14)} Gerar novo código</button><span class="hint">O QR code antigo deixa de funcionar. Quem já se cadastrou continua com o próprio acesso.</span></div>` : ''}`;
     if (tipo === 'professor') {
       const salvarCfg = async (mud, msg) => { try { await salvarConvite(mud); toast(msg); preencher(); } catch (e) { toast(e.message, true); } };
       $('#cc-aberto').onchange = e => salvarCfg({ aberto: e.target.checked }, e.target.checked ? 'Cadastro de colunistas aberto.' : 'Cadastro de colunistas fechado: o QR mostra que as inscrições estão encerradas.');
       $('#cc-aprov').onchange = e => salvarCfg({ aprovacao: e.target.checked }, e.target.checked ? 'Novos colunistas vão precisar da sua aprovação para publicar.' : 'Novos colunistas já podem publicar.');
+      $('#cc-alunos').onchange = e => salvarCfg({ alunos: e.target.checked }, e.target.checked ? 'Alunos podem se cadastrar como colunistas.' : 'Cadastro de alunos como colunistas fechado.');
+      $('#cc-aprov-al').onchange = e => salvarCfg({ aprovacaoAlunos: e.target.checked }, e.target.checked ? 'Alunos colunistas vão precisar da sua aprovação para publicar.' : 'Alunos colunistas já podem publicar.');
       $('#cc-novo').onclick = async () => { if (await confirmar('Gerar um novo código? O QR code e o link de cadastro atuais deixam de funcionar.', 'Gerar novo código')) salvarCfg({ codigo: novaChaveColunista().slice(0, 14) }, 'Novo código gerado. Baixe o novo QR code.'); };
     }
     const cp = $('#dv-cp'); if (cp) cp.onclick = () => copiar(l);
@@ -8222,7 +8421,7 @@ function cardArtigo(a, { dest = false } = {}) {
     ${dest && !capa ? `<span class="col-aspas">${ic('quote', 30)}</span>` : ''}
     <h3>${esc(a.titulo || 'Sem título')}</h3>
     <p>${esc(a.subtitulo || resumoDe(a.html, dest ? 260 : 150))}</p>
-    <div class="col-por">${avatarCol(a.autor, dest ? 40 : 32)}<span><b>${esc(a.autor.nome)}</b>${esc(fmtDate(a.publicadoEm))} · ${minLeitura(a.html)} min de leitura</span></div></div></a>`;
+    <div class="col-por">${avatarCol(a.autor, dest ? 40 : 32)}<span><b>${esc(a.autor.nome)}${a.autor.tipo === 'aluno' ? ' <i class="selo-est">Estudante</i>' : ''}</b>${esc(fmtDate(a.publicadoEm))} · ${minLeitura(a.html)} min de leitura</span></div></div></a>`;
 }
 function artigoHTML(a, autor) {
   const atualizado = a.atualizadoEm && a.publicadoEm && a.atualizadoEm - a.publicadoEm > 3600000;
@@ -8231,7 +8430,7 @@ function artigoHTML(a, autor) {
     <div class="col-art-tags"><span class="badge">${ic('pen', 12)} Coluna</span>${a.disciplina ? `<span class="badge gold">${esc(a.disciplina)}</span>` : ''}</div>
     <h1>${esc(a.titulo || 'Sem título')}</h1>
     ${a.subtitulo ? `<p class="col-linha">${esc(a.subtitulo)}</p>` : ''}
-    <div class="col-autor">${avatarCol(autor, 48)}<div class="ca-nm"><b>${esc(autor.nome)}</b>${sub ? `<span>${esc(sub)}</span>` : ''}</div>
+    <div class="col-autor">${avatarCol(autor, 48)}<div class="ca-nm"><b>${esc(autor.nome)}${autor.tipo === 'aluno' ? ' <i class="selo-est">Estudante</i>' : ''}</b>${sub ? `<span>${esc(sub)}</span>` : ''}</div>
       <div class="ca-qd">${a.publicadoEm ? fmtDate(a.publicadoEm) : 'Ainda não publicado'} · ${minLeitura(a.html)} min de leitura${atualizado ? `<br>Atualizado em ${fmtDate(a.atualizadoEm)}` : ''}</div></div>
     <div class="col-corpo">${limparHTML(a.html) || '<p class="muted">Sem conteúdo.</p>'}</div>
     ${autor.bio ? `<aside class="col-bio">${avatarCol(autor, 60)}<div><small>Sobre o colunista</small><b>${esc(autor.nome)}</b>${sub ? `<span>${esc(sub)}</span>` : ''}<p>${esc(autor.bio)}</p></div></aside>` : ''}
@@ -8239,12 +8438,27 @@ function artigoHTML(a, autor) {
 }
 
 /* ============================ Painel (alunos) ============================ */
+/* convite para o aluno escrever na Coluna (área do aluno) */
+let meuColunista = null;
+function convidarAlunoHTML() {
+  const u = S.user, cv = conviteCol();
+  if (!u || u.role === 'admin' || cv.alunos === false || cv.aberto === false || !cv.codigo) return '';
+  if (meuColunista) {
+    const k = chavesLocais().find(x => x.id === meuColunista.id);
+    return `<div class="card col-convite">${ic('pen', 20)}<b>Você é colunista</b><p>${meuColunista.aprovado === false ? 'Seu cadastro aguarda a aprovação do administrador. Enquanto isso, você já pode escrever.' : 'Escreva e publique seus artigos na Coluna Acadêmica.'}</p>
+      ${k ? `<a class="btn primary sm" href="#/escrever/${encodeURIComponent(k.chave)}">${ic('pen', 14)} Abrir meu editor</a>` : '<p class="small muted" style="margin:0">Use o link pessoal que você recebeu no cadastro. Se perdeu, peça um novo ao administrador.</p>'}</div>`;
+  }
+  return `<div class="card col-convite">${ic('pen', 20)}<b>Escreva na Coluna Acadêmica</b><p>Estudantes também podem ser colunistas: publique artigos com o seu nome e o selo <i class="selo-est">Estudante</i>.</p>
+    <a class="btn primary sm" href="#/seja-colunista/${encodeURIComponent(cv.codigo)}?aluno=1">${ic('pen', 14)} Quero ser colunista</a></div>`;
+}
 async function viewAcademico(main, _, q) {
+  meuColunista = null;
+  if (S.user && S.user.role !== 'admin') { try { meuColunista = (await store.list('colunistas')).find(c => c.userId === S.user.id || (c.tipo === 'aluno' && String(c.email || '').toLowerCase() === String(S.user.email || '').toLowerCase())) || null; } catch {} }
   let dados = await carregarAcademico();
   let autor = q.get('autor') || '', disc = '', termo = '';
   main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Produção dos professores</div><h2>Coluna Acadêmica</h2>
-      <p>Artigos e colunas escritos pelos professores convidados. Quando um professor publica, o texto aparece aqui.</p></div>
+    <div class="page-h"><div><div class="eyebrow">Produção acadêmica</div><h2>Coluna Acadêmica</h2>
+      <p>Artigos e colunas escritos por professores e estudantes de Direito. Quando um colunista publica, o texto aparece aqui.</p></div>
       <span class="ao-vivo" title="A página confere novos artigos a cada 30 segundos"><i></i> Atualiza sozinho</span></div>
     <div class="col-layout"><div>
       <div class="filters"><div class="search">${ic('search')}<input class="field" id="ac-q" placeholder="Buscar por tema, título ou professor…" autocomplete="off"></div>
@@ -8266,6 +8480,7 @@ async function viewAcademico(main, _, q) {
     const ativos = dados.autores.filter(a => cont(a.id));
     hidratarImagens($('#ac-lista'));
     $('#ac-autores').innerHTML = ativos.length ? `<h3>${ic('users', 18)} Colunistas</h3>${ativos.map(a => `<a class="col-autor-card ${a.id === autor ? 'on' : ''}" href="#/academico?autor=${encodeURIComponent(a.id)}">${avatarCol(a, 44)}<div><b>${esc(a.nome)}</b><span>${esc(a.titulacao || a.disciplina || '')}</span><small>${cont(a.id)} artigo${cont(a.id) === 1 ? '' : 's'}</small></div></a>`).join('')}` : '';
+    $('#ac-autores').insertAdjacentHTML('beforeend', convidarAlunoHTML());
   };
   desenhar();
   $('#ac-q').oninput = e => { termo = e.target.value.trim(); desenhar(); };
@@ -8805,10 +9020,12 @@ async function cadastrarColunistaPublico(o, codigo) {
   const cfg = await store.getConfig(), cv = cfg?.colunistaConvite;
   if (!cv?.codigo || cv.aberto === false || cv.codigo !== codigo) throw new Error('Este convite não é mais válido. Peça um novo QR code ao administrador do portal.');
   if (o.email && (await store.list('colunistas')).some(c => String(c.email || '').toLowerCase() === o.email)) throw new Error('Já existe um colunista com este e-mail. Peça ao administrador um novo link de acesso.');
-  return store.save('colunistas', { ...o, aprovado: cv.aprovacao ? false : true });
+  if (o.tipo === 'aluno' && cv.alunos === false) throw new Error('O cadastro de alunos como colunistas está fechado no momento.');
+  return store.save('colunistas', { ...o, aprovado: (o.tipo === 'aluno' ? cv.aprovacaoAlunos !== false : cv.aprovacao) ? false : true });
 }
-async function viewSejaColunista(main, codigo) {
+async function viewSejaColunista(main, codigo, q) {
   codigo = decodeURIComponent(codigo || '').trim();
+  const aluno = q?.get?.('aluno') === '1' && S.user && S.user.role !== 'admin' ? S.user : null;
   document.title = `Seja colunista · ${S.config.nomePortal}`;
   const topo = `<header class="ed-top">${brandHTML('#/').replace('Portal do estudante de Direito', 'Coluna Acadêmica')}</header>`;
   const falha = (t, p) => { main.innerHTML = `${topo}<div class="ed-falha"><div class="card pad">${ART.medal('pen')}<h2>${t}</h2><p class="muted">${p}</p></div></div>`; };
@@ -8817,13 +9034,14 @@ async function viewSejaColunista(main, codigo) {
   const cv = cfg.colunistaConvite || {};
   if (!codigo || !cv.codigo || cv.codigo !== codigo) return falha('Convite inválido ou substituído', 'Este QR code de cadastro não é mais válido. Peça o QR code atual ao administrador do portal.');
   if (cv.aberto === false) return falha('Inscrições encerradas', 'O cadastro de novos colunistas está fechado no momento. Fale com o administrador do portal.');
+  if (aluno && cv.alunos === false) return falha('Cadastro de alunos fechado', 'No momento, só professores podem se cadastrar como colunistas. Fale com o administrador do portal.');
   const R = regrasCol(), ja = chavesLocais();
   main.innerHTML = `${topo}<div class="sc-grid">
-    <section class="sc-intro"><div class="eyebrow">Coluna Acadêmica</div><h1>Seja colunista do ${esc(S.config.nomePortal)}</h1>
-      <p>Escreva artigos para estudantes de Direito, com o seu nome, foto e minibiografia. O editor é online, salva sozinho e funciona no computador e no celular.</p>
+    <section class="sc-intro"><div class="eyebrow">Coluna Acadêmica${aluno ? ' · Estudantes' : ''}</div><h1>${aluno ? 'Escreva na Coluna Acadêmica' : `Seja colunista do ${esc(S.config.nomePortal)}`}</h1>
+      <p>${aluno ? 'Estudantes também podem publicar: compartilhe o que você pesquisa, comente uma decisão ou explique um tema para os colegas. Seus artigos aparecem com o selo <b>Estudante</b>.' : 'Escreva artigos para estudantes de Direito, com o seu nome, foto e minibiografia.'} O editor é online, salva sozinho e funciona no computador e no celular.</p>
       </section><section class="sc-extra"><ol class="sc-passos"><li><div><b>Faça o seu cadastro</b><span>Leva um minuto, sem senha: você recebe um link pessoal de acesso.</span></div></li>
         <li><div><b>Escreva no editor online</b><span>Formatação, imagens e salvamento automático.</span></div></li>
-        <li><div><b>Publique na Coluna Acadêmica</b><span>${cv.aprovacao ? 'Depois da aprovação do administrador, o artigo aparece para os alunos.' : 'O artigo aparece para os alunos assim que você publicar.'}</span></div></li></ol>
+        <li><div><b>Publique na Coluna Acadêmica</b><span>${(aluno ? cv.aprovacaoAlunos !== false : cv.aprovacao) ? 'Depois da aprovação do administrador, o artigo aparece para os alunos.' : 'O artigo aparece para os alunos assim que você publicar.'}</span></div></li></ol>
       <div class="ed-ajuda ed-regras"><b>${ic('scroll', 15)} Regras dos artigos</b><ul><li>${R.minChars ? `Entre <b>${fmtN0(R.minChars)}</b> e <b>${fmtN0(R.maxChars)}</b>` : `Até <b>${fmtN0(R.maxChars)}</b>`} caracteres</li>
         <li>${R.maxImagens ? `Até <b>${R.maxImagens}</b> ${R.maxImagens === 1 ? 'imagem' : 'imagens'} por artigo` : 'Sem imagens'}</li>
         <li>${R.dias ? `Cada artigo fica <b>${R.dias} dias</b> na Coluna Acadêmica` : 'Sem prazo de expiração'}</li></ul></div></section>
@@ -8834,7 +9052,7 @@ async function viewSejaColunista(main, codigo) {
         <div class="ed-pf-foto"><span id="sc-av">${avatarCol({ nome: '?' }, 72)}</span><div><label class="btn ghost sm" style="display:inline-flex">${ic('user', 14)} Foto (opcional)<input type="file" id="sc-file" accept="image/*" hidden></label><p class="hint" style="margin-top:6px">Foto de rosto, aparece ao lado dos seus artigos.</p></div></div>
         <div class="row2"><label>Nome completo *<input name="nome" required maxlength="100" autocomplete="name" placeholder="Como vai aparecer nos artigos"></label>
           <label>E-mail *<input name="email" type="email" required maxlength="120" autocomplete="email"></label></div>
-        <div class="row2"><label>Titulação ou cargo<input name="titulacao" maxlength="120" placeholder="Ex.: Mestre em Direito Penal"></label>
+        <div class="row2"><label>${aluno ? 'Como você quer ser apresentado(a)' : 'Titulação ou cargo'}<input name="titulacao" maxlength="120" placeholder="${aluno ? 'Ex.: Estudante de Direito, 6º semestre' : 'Ex.: Mestre em Direito Penal'}"></label>
           <label>Instituição<input name="instituicao" maxlength="120" placeholder="Ex.: nome da faculdade ou universidade"></label></div>
         <label>Disciplina principal<input name="disciplina" list="dl-disc-sc" maxlength="80"></label>
         <label>Minibiografia<textarea name="bio" maxlength="500" rows="3" placeholder="Duas ou três frases sobre a sua trajetória."></textarea></label>
@@ -8843,6 +9061,7 @@ async function viewSejaColunista(main, codigo) {
       </form><datalist id="dl-disc-sc">${DISCIPLINAS.map(d => `<option>${d}</option>`).join('')}</datalist></section></div>`;
   let foto = '';
   const f = $('#fsc');
+  if (aluno) { f.nome.value = aluno.nome || ''; f.email.value = aluno.email || ''; f.email.readOnly = true; f.instituicao.value = aluno.instituicao || ''; f.titulacao.value = `Estudante de Direito${aluno.semestre ? ', ' + aluno.semestre : ''}`; }
   $('#sc-file').onchange = async e => { try { foto = await fotoQuadrada(e.target.files[0]); $('#sc-av').innerHTML = avatarCol({ nome: f.nome.value || '?', foto }, 72); } catch (er) { toast(er.message, true); } };
   f.onsubmit = async e => {
     e.preventDefault();
@@ -8854,7 +9073,7 @@ async function viewSejaColunista(main, codigo) {
     try {
       const chave = novaChaveColunista();
       const rec = await cadastrarColunistaPublico({ nome, email, titulacao: f.titulacao.value.trim(), instituicao: f.instituicao.value.trim(), disciplina: f.disciplina.value.trim(), bio: f.bio.value.trim(), foto,
-        ativo: true, ocultos: [], tokenHash: await hashChaveCol(chave), linkEm: Date.now(), origem: 'autocadastro', termoEm: Date.now() }, codigo);
+        ativo: true, ocultos: [], tokenHash: await hashChaveCol(chave), linkEm: Date.now(), origem: 'autocadastro', termoEm: Date.now(), ...(aluno ? { tipo: 'aluno', userId: aluno.id } : {}) }, codigo);
       lsSet(COL_CHAVES, JSON.stringify([...chavesLocais().filter(x => x.id !== rec.id), { id: rec.id, nome, chave }].slice(-5)));
       const link = linkColunista(chave);
       const msg = `Meu link de colunista do portal ${S.config.nomePortal}: ${link}`;
@@ -8944,7 +9163,7 @@ async function admColunistas(box, ag) {
       <div class="stat"><span class="si">${ic('eye', 20)}</span><div><div class="n">${fmtN(totLeit)}</div><div class="l">Leituras dos alunos</div></div></div>
       <div class="stat"><span class="si">${ic('clock', 20)}</span><div><div class="n" style="font-size:1.15rem">${(() => { const u = Math.max(0, ...cols.map(c => resumo(c).ult)); return u ? fmtDate(u) : '—'; })()}</div><div class="l">Última escrita</div></div></div></div>
     ${cols.length ? `<div class="card table-wrap"><table><tr><th>Colunista</th><th>Artigos</th><th>Leituras</th><th>Última escrita</th><th>Acesso</th><th></th></tr>
-      ${cols.map(c => { const r = resumo(c), p = perfilColunista(c, porId.get(c.id)); return `<tr><td><div class="col-tab-nm">${avatarCol(p, 38)}<div><b>${esc(c.nome)}</b><div class="small muted">${esc([p.titulacao, c.email].filter(Boolean).join(' · ') || '—')}</div></div></div></td>
+      ${cols.map(c => { const r = resumo(c), p = perfilColunista(c, porId.get(c.id)); return `<tr><td><div class="col-tab-nm">${avatarCol(p, 38)}<div><b>${esc(c.nome)}</b>${c.tipo === 'aluno' ? ' <span class="badge gold">Aluno</span>' : ''}<div class="small muted">${esc([p.titulacao, c.email].filter(Boolean).join(' · ') || '—')}</div></div></div></td>
         <td><b>${r.pub}</b> publicado${r.pub === 1 ? '' : 's'}${r.ocultos ? ` <span class="badge warn">${r.ocultos} oculto${r.ocultos === 1 ? '' : 's'}</span>` : ''}${r.exp ? ` <span class="badge err">${r.exp} expirado${r.exp === 1 ? '' : 's'}</span>` : ''}<div class="small muted">${r.rasc} rascunho${r.rasc === 1 ? '' : 's'}</div></td>
         <td>${fmtN(r.leituras)}</td><td>${r.ult ? fmtDate(r.ult) : '<span class="muted">Ainda não escreveu</span>'}</td>
         <td>${c.ativo === false ? '<span class="badge err">Pausado</span>' : c.aprovado === false ? '<span class="badge warn">Aguardando aprovação</span>' : '<span class="badge ok">Ativo</span>'}${c.origem === 'autocadastro' ? '<div class="small muted" style="margin-top:4px">Cadastrou-se pelo QR</div>' : ''}</td>
