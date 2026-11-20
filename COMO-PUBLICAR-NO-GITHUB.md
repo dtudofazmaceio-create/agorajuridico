@@ -462,3 +462,16 @@ Cada concurso aparece em **Estágios, concursos e empregos → Concursos**, com 
 - **Exclusão:** um concurso do radar excluído no painel não volta nas próximas verificações.
 - **Avisos:** a fonte é um site de terceiros. Se ele mudar o formato das páginas, o radar mostra um aviso no painel e os concursos já publicados continuam no portal até o fim do prazo. Os alunos veem o lembrete de conferir sempre o edital oficial.
 
+## Podcast
+
+O card **Áudios** da tela inicial virou **Podcast**, e o menu ganhou o item **Podcast**.
+
+1. Em **Painel → Podcast**, crie o **tema do debate** (por exemplo, "Inteligência artificial nos tribunais: avanço ou risco?"), com a apresentação, as perguntas para o debate e o período.
+2. Professores e alunos colunistas gravam o episódio em vídeo, publicam no YouTube (pode ser "não listado") e colam o link no editor da Coluna Acadêmica, no botão **Podcast**, com um resumo da posição deles.
+3. Todos que acessam o portal veem os episódios do tema e assistem no próprio portal, inclusive quem não tem conta. Para comentar, é preciso entrar com a conta. Cada pessoa pode excluir os próprios comentários, e o administrador pode excluir qualquer um.
+4. No painel, você encerra ou reabre o debate e oculta um episódio se precisar. Os temas anteriores continuam disponíveis para assistir.
+
+## Card Videoaulas
+
+O número do card **Videoaulas**, na tela inicial do aluno, agora soma as videoaulas dos materiais de estudo e todas as aulas em vídeo dos cursos online publicados.
+

@@ -1373,6 +1373,21 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .col-convite{padding:16px;margin-top:16px;display:grid;gap:6px;background:linear-gradient(160deg,#fff,var(--latao-bg));border-color:#e5d6b4}.col-convite>svg{color:var(--latao)}.col-convite b{color:var(--toga)}.col-convite p{margin:0;font-size:.86rem;color:#4a4f5c}.col-convite .btn{justify-self:start;margin-top:4px}
 .badge.radar{background:#e8eef9;color:#23407a}.radar-adm{margin-bottom:16px}.rd-ufs{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}.rd-uf{display:flex!important;align-items:center;gap:4px;font-size:.85rem;border:1px solid var(--linha);border-radius:8px;padding:4px 6px;cursor:pointer}.rd-uf input{margin:0}
 .radar-al{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:14px;background:#f2f5fb;border-color:#d6dff0}.radar-al>svg{color:#23407a;flex:none}.radar-al b{display:block;color:var(--toga)}.radar-al span{font-size:.86rem;color:#4a4f5c}
+/* podcast */
+.pod-tema{display:flex;gap:18px;padding:22px 24px;margin-bottom:16px;background:linear-gradient(135deg,var(--toga),#1f3157);color:#dfe3ea;border:0}.pod-tema h2{color:#fff;margin:6px 0 8px}.pod-tema-ic{width:62px;height:62px;border-radius:50%;background:rgba(216,190,138,.15);color:var(--latao-2);display:grid;place-items:center;flex:none}
+.pod-st{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aab3c3}.pod-st.on{color:var(--latao-2)}.pod-tema .pod-desc p{color:#c9d0dc;margin:0 0 6px}.pod-tema .muted{color:#aab3c3!important}.pod-tema b{color:#fff}
+.pod-nums{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--latao-2);margin-top:8px}.pod-nums span{display:inline-flex;gap:6px;align-items:center}
+.pod-temas{margin-bottom:16px}.pod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.pod-ep{overflow:hidden;display:flex;flex-direction:column}.pod-th{position:relative;border:0;padding:0;cursor:pointer;background:#000;aspect-ratio:16/9;display:block;width:100%}.pod-th img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.pod-play{position:absolute;inset:0;margin:auto;width:58px;height:58px;border-radius:50%;background:rgba(142,27,46,.92);color:#fff;display:grid;place-items:center}
+.pod-b{padding:14px 16px 16px;display:grid;gap:8px}.pod-b h3{margin:0;font-size:1.05rem}.pod-b p{margin:0;font-size:.88rem;color:#4a4f5c}.pod-b .btn{justify-self:start}
+.selo-est.prof{background:#e8eef9;color:#23407a}
+.pod-coms{margin-top:18px;border-top:1px solid var(--linha);padding-top:12px}.pod-coms h4{display:flex;gap:6px;align-items:center;margin:0 0 10px}
+.pod-com{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--linha)}.pod-com>div{flex:1;min-width:0}.pod-com small{display:block;color:var(--cinza);font-size:.75rem}.pod-com p{margin:4px 0 0;white-space:pre-wrap;font-size:.92rem}
+.pod-form{margin-top:12px}
+.pd-meu{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--linha)}.pd-meu img{width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:6px;flex:none}.pd-meu>div{flex:1;min-width:0}.pd-meu small{display:block;color:var(--cinza);font-size:.78rem}.pd-meu.off{opacity:.5}
+.pd-adm{margin-top:14px}
+@media (max-width:640px){.pod-tema{flex-direction:column;padding:18px}.pod-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1640,6 +1655,7 @@ const I = {
   spark: '<path d="M12 3l1.8 4.6L18 9.5l-4.2 1.9L12 16l-1.8-4.6L6 9.5l4.2-1.9z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
   whats: '<path d="M3.5 20.5l1.3-4.6A8.5 8.5 0 1 1 8 19.2l-4.5 1.3z"/><path d="M9 8.6c.2-.5.5-.6.8-.6h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .5-.1.6l-.5.6c-.1.2-.1.4 0 .6.6 1 1.4 1.8 2.4 2.4.2.1.4.1.6 0l.6-.5c.2-.1.4-.2.6-.1l1.6.7c.3.1.4.3.4.5v.5c0 .3-.1.6-.6.8-.6.3-1.6.4-3-.3a9 9 0 0 1-4.2-4.2c-.6-1.4-.6-2.4-.3-3z"/>',
   x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  fone: '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>',
   ferr: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>',
   algemas: '<circle cx="7" cy="15" r="4"/><circle cx="17" cy="15" r="4"/><path d="M7 11V8.5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2V11M10 6.5V4.5h4v2"/>',
   dinheiro: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v.01M18 14.5v.01"/>',
@@ -1766,9 +1782,9 @@ function confirmar(msg, ok = 'Confirmar') {
 /* ===================== Camada de dados: IndexedDB ===================== */
 function LocalStore({ seed = true } = {}) {
   let db;
-  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos', 'sorteios', 'ferramentas'];
+  const STORES = ['users', 'materiais', 'publicacoes', 'arquivos', 'pagamentos', 'config', 'codigos', 'colunistas', 'colunas', 'parceiros', 'cursos', 'sorteios', 'ferramentas', 'podcasts', 'podcom'];
   const open = () => new Promise((res, rej) => {
-    const r = indexedDB.open('agora-juridica', 7);
+    const r = indexedDB.open('agora-juridica', 8);
     r.onupgradeneeded = () => { for (const s of STORES) if (!r.result.objectStoreNames.contains(s)) r.result.createObjectStore(s, { keyPath: 'id' }); };
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   });
@@ -1913,7 +1929,7 @@ async function pbkdf2(senha, salt, iter = 120000) {
 function GistStore() {
   const L = LocalStore({ seed: false });
   const API = 'https://api.github.com', FILE = 'agora-dados.json';
-  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'ferramentas'];
+  const GIST_COLS = ['materiais', 'publicacoes', 'codigos', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'ferramentas', 'podcasts'];
   let G = null, data = null, loadedAt = 0, TOKEN = null, sess = null;
   const ucache = new Map(); // escritas recentes (evita ler versão antiga do cache do GitHub)
   const enc = t => 'v1.' + btoa([...t].reverse().join(''));
@@ -1990,6 +2006,25 @@ function GistStore() {
     if (s.length > 900000) throw new Error('A coluna ficou grande demais. Exclua textos antigos que não usa mais.');
     await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [CFILE(id)]: { content: s } } }) });
     ccache.set(id, { v: JSON.parse(s), at: Date.now(), w: Date.now() });
+  }
+
+  /* ---- Podcast: comentários num arquivo por tema (pod-<tema>.json); qualquer usuário com conta comenta ---- */
+  const PFILE = tid => `pod-${String(tid).replace(/[^\w-]/g, '')}.json`;
+  const pcache = new Map();
+  async function lerPod(tid, fresco = false) {
+    const c = pcache.get(tid);
+    if (!fresco && c && Date.now() - c.at < 15000) return JSON.parse(JSON.stringify(c.v));
+    let v = { comentarios: [] };
+    if (G) { const r = await fetchRaw(raw(PFILE(tid))); if (r.ok) v = await r.json().catch(() => v); else if (r.status !== 404) throw new Error('Não foi possível carregar os comentários.'); }
+    v.comentarios = v.comentarios || [];
+    if (c?.w && Date.now() - c.w < 600000) { const ids = new Set(v.comentarios.map(x => x.id)); v.comentarios.push(...c.v.comentarios.filter(x => !ids.has(x.id) && !(c.rem || []).includes(x.id))); v.comentarios = v.comentarios.filter(x => !(c.rem || []).includes(x.id)); }
+    pcache.set(tid, { v, at: Date.now(), w: c?.w, rem: c?.rem });
+    return JSON.parse(JSON.stringify(v));
+  }
+  async function gravarPod(tid, v, rem) {
+    if (!TOKEN) throw semToken();
+    await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [PFILE(tid)]: { content: JSON.stringify(v) } } }) });
+    const c = pcache.get(tid); pcache.set(tid, { v, at: Date.now(), w: Date.now(), rem: [...(c?.rem || []), ...(rem || [])] });
   }
 
   /* ---- Contas ---- */
@@ -2128,6 +2163,18 @@ function GistStore() {
       u.salt = uid(); u.iter = 120000; u.senhaHash = await pbkdf2(nova, u.salt, u.iter); await writeUser(u);
     },
     autorizarColunista(id) { colAuth = id; },
+    async podComentarios(tid) { await ensure(); return (await lerPod(tid)).comentarios; },
+    async comentarPod(tid, c) {
+      if (!S.user) throw new Error('Entre na sua conta para comentar.');
+      await ensure(); const v = await lerPod(tid, true);
+      const rec = { ...c, id: uid(), em: Date.now(), userId: S.user.id };
+      v.comentarios = [...v.comentarios, rec].slice(-3000); await gravarPod(tid, v); return rec;
+    },
+    async apagarComentarioPod(tid, id) {
+      await ensure(); const v = await lerPod(tid, true), x = v.comentarios.find(k => k.id === id);
+      if (x && !isAdmin() && x.userId !== S.user?.id) throw new Error('Você só pode excluir os seus comentários.');
+      v.comentarios = v.comentarios.filter(k => k.id !== id); await gravarPod(tid, v, [id]);
+    },
     async cadastrarColunista(o, codigo) {
       if (!TOKEN) throw semToken();
       await ensure(true);
@@ -2282,6 +2329,7 @@ const ROUTES = {
   material:      { view: viewMaterial, auth: true, ativo: true },
   oportunidades: { view: viewOportunidades, auth: true, ativo: true },
   ferramentas:   { view: viewFerramentas, auth: true },
+  podcast:       { view: viewPodcast },
   legislacao:    { view: viewLegislacao, auth: true, ativo: true },
   noticias:      { view: viewNoticias, auth: true, ativo: true },
   configurar:    { view: viewConfigurar },
@@ -2338,7 +2386,7 @@ async function render() {
 function brandHTML(href = '#/') {
   return `<a class="brand" href="${href}"><span class="mark">${MARK}</span><span><b>${esc(S.config.nomePortal)}</b><small>Portal do estudante de Direito</small></span></a>`;
 }
-const TITLES = { instituto: 'A instituição', painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', cursos: 'Cursos online', curso: 'Curso', academico: 'Coluna Acadêmica', artigo: 'Artigo', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
+const TITLES = { podcast: 'Podcast', ferramentas: 'Ferramentas', instituto: 'A instituição', painel: 'Início', materiais: 'Materiais de estudo', material: 'Material', oportunidades: 'Estágios, concursos e empregos', publicacao: 'Publicação', legislacao: 'Atualizações da lei', noticias: 'Notícias e entrevistas', configurar: 'Configuração', quiz: 'Quiz', cursos: 'Cursos online', curso: 'Curso', academico: 'Coluna Acadêmica', artigo: 'Artigo', perfil: 'Minha conta', assinar: 'Assinatura', admin: 'Administração', busca: 'Buscar', entrar: 'Entrar', cadastro: 'Criar conta' };
 const DETAIL = { curso: 'cursos', artigo: 'academico', instituto: 'painel', material: 'materiais', publicacao: 'oportunidades', busca: 'painel', assinar: 'painel', admin: 'perfil' };
 const naInfo = () => /[?&]tipo=(noticia|entrevista|lei)/.test(location.hash) || location.hash.startsWith('#/legislacao');
 const isMobile = () => matchMedia('(max-width: 820px)').matches;
@@ -2376,6 +2424,7 @@ function shellHTML(name) {
         <div class="sep">Atualidades</div>
         ${item('noticias?tipo=noticia', 'Notícias', 'news', true)}
         ${item('noticias?tipo=entrevista', 'Entrevistas', 'mic', true)}
+        ${item('podcast', 'Podcast', 'fone', false)}
         ${item('legislacao', 'Atualizações da lei', 'scroll', true)}
         <div class="sep">Conta</div>
         ${item('perfil', 'Minha conta', 'user')}
@@ -2469,7 +2518,7 @@ async function viewHome(main) {
   }
   const feat = [
     ['play', 'Videoaulas', 'Aulas gravadas por disciplina, para assistir no computador ou no celular.', 'materiais?tipo=video'],
-    ['audio', 'Áudios', 'Resumos para revisar no ônibus, na academia ou antes da prova.', 'materiais?tipo=audio'],
+    ['fone', 'Podcast', 'Debates em vídeo entre professores e estudantes sobre um tema do Direito. Assista e comente.', 'podcast'],
     ['file', 'PDFs e apostilas', 'Roteiros de estudo, mapas mentais e modelos de peças.', 'materiais?tipo=pdf'],
     ['gavel', 'Estágios', 'Vagas em escritórios, tribunais, defensorias e departamentos jurídicos.', 'oportunidades?tipo=estagio'],
     ['columns', 'Concursos', 'Editais, prazos de inscrição e conteúdo programático.', 'oportunidades?tipo=concurso'],
@@ -2776,6 +2825,8 @@ async function viewPainel(main) {
   let acad = { artigos: [] };
   const parc = await carregarParceiros(), sort = await sorteioEmDestaque();
   const [cursosPub, euMesmo] = await Promise.all([store.list('cursos').then(l => l.filter(c => c.ativo !== false).sort(ordemCursos)).catch(() => []), store.getUser(u.id).catch(() => u)]);
+  const videosCursos = cursosPub.reduce((n, c) => n + aulasDe(c).filter(a => a.tipo === 'video').length, 0);
+  let nPod = 0; try { nPod = (await carregarPodcast()).eps.length; } catch {}
   if (at) [mats, posts, acad] = await Promise.all([store.list('materiais'), store.list('publicacoes'), carregarAcademico().catch(e => { console.warn(e); return { artigos: [] }; })]);
   mats.sort(byNewest); posts.sort(byNewest);
   const opps = posts.filter(p => !CAT_INFO.includes(p.categoria)), leis = posts.filter(p => p.categoria === 'lei'), atual = posts.filter(p => p.categoria === 'noticia' || p.categoria === 'entrevista');
@@ -2798,8 +2849,8 @@ async function viewPainel(main) {
     ${at && u.role !== 'admin' && u.assinatura?.tipo !== 'teste' && expiraEm !== null && expiraEm <= 5 ? `<div class="banner"><div><h3>Sua assinatura vence em ${expiraEm} dia${expiraEm !== 1 ? 's' : ''}</h3><p>Renove para não perder o acesso ao conteúdo.</p></div><a class="btn primary" href="#/assinar">Renovar</a></div>` : ''}
     ${at ? `
     <div class="stats">
-      <a class="stat" href="#/materiais?tipo=video"><span class="si">${ic('play', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'video').length}</div><div class="l">Videoaulas</div></div></a>
-      <a class="stat" href="#/materiais?tipo=audio"><span class="si">${ic('audio', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'audio').length}</div><div class="l">Áudios</div></div></a>
+      <a class="stat" href="${videosCursos && !mats.some(m => m.tipo === 'video') ? '#/cursos' : '#/materiais?tipo=video'}" title="Videoaulas dos materiais e dos cursos online"><span class="si">${ic('play', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'video').length + videosCursos}</div><div class="l">Videoaulas</div></div></a>
+      <a class="stat" href="#/podcast"><span class="si">${ic('fone', 20)}</span><div><div class="n">${nPod}</div><div class="l">Podcast</div></div></a>
       <a class="stat" href="#/materiais?tipo=pdf"><span class="si">${ic('file', 20)}</span><div><div class="n">${mats.filter(m => m.tipo === 'pdf').length}</div><div class="l">PDFs</div></div></a>
       <a class="stat" href="#/oportunidades"><span class="si">${ic('gavel', 20)}</span><div><div class="n">${abertas}</div><div class="l">Oportunidades abertas</div></div></a>
     </div>
@@ -2821,7 +2872,7 @@ async function viewPainel(main) {
           <div class="card mini-list">${leis.slice(0, 3).map(miniPost).join('') || vazio('Nenhuma atualização publicada ainda.', 'scroll')}</div></div>
       </div>
     </div>` : `
-    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas', 'materiais?tipo=video'], ['audio', 'Áudios', 'materiais?tipo=audio'], ['file', 'PDFs', 'materiais?tipo=pdf'], ['gavel', 'Estágios e empregos', 'oportunidades?tipo=estagio'], ['columns', 'Concursos', 'oportunidades?tipo=concurso'], ['news', 'Notícias', 'noticias?tipo=noticia'], ['mic', 'Entrevistas', 'noticias?tipo=entrevista'], ['scroll', 'Atualizações da lei', 'legislacao']].map(x => `<a class="feature" href="#/${x[2]}" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></a>`).join('')}</div>`}
+    <div class="features card" style="padding:0 24px;border-top:1px solid var(--linha)">${[['play', 'Videoaulas', 'materiais?tipo=video'], ['fone', 'Podcast', 'podcast'], ['file', 'PDFs', 'materiais?tipo=pdf'], ['gavel', 'Estágios e empregos', 'oportunidades?tipo=estagio'], ['columns', 'Concursos', 'oportunidades?tipo=concurso'], ['news', 'Notícias', 'noticias?tipo=noticia'], ['mic', 'Entrevistas', 'noticias?tipo=entrevista'], ['scroll', 'Atualizações da lei', 'legislacao']].map(x => `<a class="feature" href="#/${x[2]}" style="opacity:.8">${ART.medal(x[0])}<div><h3>${x[1]}</h3><p>${ic('lock', 13)} Liberado nos planos</p></div></a>`).join('')}</div>`}
     ${parceirosInicioHTML(parc)}
   </div>`;
   hidratarImagens(main);
@@ -3926,10 +3977,10 @@ async function viewPerfil(main) {
 const pagBadge = s => ({ aprovado: '<span class="badge ok">Aprovado</span>', pendente: '<span class="badge warn">Pendente</span>', recusado: '<span class="badge err">Recusado</span>' }[s] || esc(s));
 
 /* =============================== Admin =============================== */
-const ADM_ICONES = { ferramentas: 'ferr', contratos: 'scroll', propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
+const ADM_ICONES = { podcast: 'fone', ferramentas: 'ferr', contratos: 'scroll', propostas: 'file', sorteios: 'gift', cursos: 'grad', parceiros: 'predio', colunistas: 'pen', analises: 'chart', quiz: 'quiz', materiais: 'book', oportunidades: 'briefcase', atualidades: 'news', leis: 'scroll', instituicao: 'award', planos: 'tag', alunos: 'user', pagamentos: 'card', codigos: 'lock', config: 'settings' };
 async function viewAdmin(main, tab = 'analises') {
   const gist = store.modo === 'gist';
-  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', ferramentas: 'Ferramentas', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', contratos: 'Contratos e recibos', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
+  const TABS = { analises: 'Análises', quiz: 'Quiz e notas', materiais: 'Materiais', cursos: 'Cursos online', sorteios: 'Sorteios', ferramentas: 'Ferramentas', podcast: 'Podcast', oportunidades: 'Oportunidades', atualidades: 'Notícias e entrevistas', colunistas: 'Colunistas', leis: 'Atualizações da lei', instituicao: 'Instituição', parceiros: 'Instituições parceiras', propostas: 'Propostas de parceria', contratos: 'Contratos e recibos', planos: 'Planos', alunos: 'Alunos', ...(gist ? {} : { pagamentos: 'Pagamentos' }), ...(gist || store.modo === 'local' ? { codigos: 'Códigos de acesso' } : {}), config: 'Configurações' };
   if (tab === 'publicacoes') tab = 'oportunidades';
   if (!conviteCol().codigo) garantirConvite().catch(() => {});   // o convite de colunista (professores e alunos) sempre existe
   if (!TABS[tab]) tab = 'analises';
@@ -3948,7 +3999,7 @@ async function viewAdmin(main, tab = 'analises') {
   main.innerHTML = `<div class="page adm-page">
     <div class="page-h"><div><div class="eyebrow">Administração</div><h2>Painel administrativo</h2><p>${gist ? `Conteúdo salvo no seu Gist do GitHub (@${esc(store.gist?.user)}).` : 'Gerencie conteúdo, alunos, assinaturas e configurações.'}</p></div>
       ${gist ? `<button class="btn primary sm" id="share">${ic('ext', 15)} Link para os alunos</button>` : ''}</div>
-    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas', 'contratos', 'ferramentas'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
+    ${['analises', 'quiz', 'leis', 'atualidades', 'oportunidades', 'instituicao', 'colunistas', 'parceiros', 'cursos', 'sorteios', 'propostas', 'contratos', 'ferramentas', 'podcast'].includes(tab) ? '' : `<div class="stats">${stats.map(([n, l], i) => `<div class="stat"><span class="si">${ic(['user', 'check', 'file', 'tag'][i], 20)}</span><div><div class="n">${n}</div><div class="l">${l}</div></div></div>`).join('')}</div>`}
     ${gist && store.precisaConfigurar ? `<div class="banner"><div><h3>${ic('settings')} Falta concluir a configuração</h3><p>Sem isso, os alunos não conseguem se cadastrar nem entrar de outro aparelho.</p></div><button class="btn primary" id="cfg2">Concluir configuração</button></div>` : ''}
     <button class="adm-secao" id="adm-sec" type="button"><span class="as-ic">${ic(ADM_ICONES[tab], 19)}</span><span class="as-tx"><small>Seção do painel</small><b>${TABS[tab]}</b></span><span class="as-mais">${ic('grid', 17)} Seções</span></button>
     <div class="tabs adm-tabs" id="adm-tabs">${Object.entries(TABS).map(([k, l]) => `<a class="tab ${k === tab ? 'on' : ''}" href="#/admin/${k}">${ic(ADM_ICONES[k], 15)} ${l}${k === 'pagamentos' && pend ? ` <span class="badge warn">${pend}</span>` : ''}</a>`).join('')}</div>
@@ -3962,7 +4013,7 @@ async function viewAdmin(main, tab = 'analises') {
   const c2 = $('#cfg2'); if (c2) c2.onclick = configurarModal;
   const box = $('#adm');
   const ag = agregar(users);
-  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), contratos: () => { const id = abrirContratoPend; abrirContratoPend = null; return admContratos(box, id); }, cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), ferramentas: () => admFerramentas(box), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
+  ({ analises: () => admAnalises(box, { users, mats, posts, pags, codigos, ag }), quiz: () => admQuiz(box, users, mats), materiais: () => admMateriais(box, mats, ag), oportunidades: () => admPublicacoes(box, posts, 'oportunidades'), atualidades: () => admPublicacoes(box, posts, 'atualidades'), colunistas: () => admColunistas(box, ag), parceiros: () => admParceiros(box), propostas: () => admPropostas(box), contratos: () => { const id = abrirContratoPend; abrirContratoPend = null; return admContratos(box, id); }, cursos: () => admCursos(box, users), sorteios: () => admSorteios(box, users), ferramentas: () => admFerramentas(box), podcast: () => admPodcast(box), leis: () => admLeis(box, posts), instituicao: () => admInstituicao(box), alunos: () => admAlunos(box, users), pagamentos: () => admPagamentos(box, pags), planos: () => admPlanos(box), codigos: () => admCodigos(box, codigos), config: () => admConfig(box) })[tab]();
 }
 function linkAlunos() {
   const base = location.origin + location.pathname;
@@ -7367,6 +7418,192 @@ function formFerramenta(f = {}, onSalvo) {
   };
 }
 
+/* =================================== Podcast ===================================
+   O administrador define o tema do debate (Painel → Podcast). Professores e alunos
+   colunistas publicam o link do episódio em vídeo pelo editor deles (botão Podcast).
+   Todos assistem no portal; quem tem conta comenta.
+   - Temas: coleção "podcasts" (dados do portal).
+   - Episódios: ficam na coluna de cada colunista (campo "podcasts").
+   - Comentários: um arquivo por tema (pod-<tema>.json) no Gist; na versão local, coleção "podcom".
+   ================================================================================ */
+const podCom = {
+  list: async tid => store.podComentarios ? store.podComentarios(tid) : (await store.list('podcom')).filter(c => c.temaId === tid),
+  add: async (tid, c) => store.comentarPod ? store.comentarPod(tid, c) : store.save('podcom', { ...c, temaId: tid, em: Date.now() }),
+  del: async (tid, id) => store.apagarComentarioPod ? store.apagarComentarioPod(tid, id) : store.remove('podcom', id)
+};
+async function carregarPodcast() {
+  const [temas, cols, colunas] = await Promise.all([store.list('podcasts').catch(() => []), store.list('colunistas').catch(() => []), store.list('colunas').catch(() => [])]);
+  const porId = new Map(colunas.map(c => [c.id, c])), tIds = new Set(temas.map(t => t.id));
+  const eps = [];
+  for (const c of cols) {
+    if (c.ativo === false || c.aprovado === false) continue;
+    const autor = perfilColunista(c, porId.get(c.id));
+    for (const e of porId.get(c.id)?.podcasts || []) if (tIds.has(e.temaId) && ytId(e.url) && !(c.ocultos || []).includes(e.id)) eps.push({ ...e, autor });
+  }
+  eps.sort((a, b) => (b.publicadoEm || 0) - (a.publicadoEm || 0));
+  const ord = temas.filter(t => t.ativo !== false).sort((a, b) => (b.status === 'aberto') - (a.status === 'aberto') || (b.inicio || '').localeCompare(a.inicio || '') || (b.criadoEm || 0) - (a.criadoEm || 0));
+  return { temas: ord, eps };
+}
+const papelAutor = a => a?.tipo === 'aluno' ? 'Estudante' : 'Professor(a)';
+function cardEpisodio(e) {
+  return `<article class="card pod-ep" data-ep="${esc(e.autor.id + ':' + e.id)}">
+    <button type="button" class="pod-th" data-play aria-label="Assistir ${esc(e.titulo)}"><img src="${esc(ytThumb(e.url))}" alt="" loading="lazy"><span class="pod-play">${ic('play', 26)}</span></button>
+    <div class="pod-b"><h3>${esc(e.titulo)}</h3>
+      <div class="col-por">${avatarCol(e.autor, 30)}<span><b>${esc(e.autor.nome)} <i class="selo-est ${e.autor.tipo === 'aluno' ? '' : 'prof'}">${papelAutor(e.autor)}</i></b>${e.publicadoEm ? fmtDate(e.publicadoEm) : ''}</span></div>
+      ${e.resumo ? `<p>${esc(e.resumo.length > 220 ? e.resumo.slice(0, 217) + '…' : e.resumo)}</p>` : ''}
+      <button type="button" class="btn ghost sm" data-play>${ic('play', 14)} Assistir e comentar <span class="pod-nc" data-nc="${esc(e.id)}"></span></button></div></article>`;
+}
+async function viewPodcast(main, param, q) {
+  const { temas, eps } = await carregarPodcast();
+  const tid = decodeURIComponent(param || q?.get?.('tema') || '') || temas[0]?.id;
+  const t = temas.find(x => x.id === tid) || temas[0];
+  if (S.user) marcarNav('#/podcast', '#/podcast');
+  if (!t) { main.innerHTML = `<div class="page"><div class="page-h"><div><div class="eyebrow">Podcast</div><h2>Podcast</h2><p>Debates em vídeo entre professores e estudantes de Direito.</p></div></div><div class="card empty">${ART.medal('mic')}<h3>Nenhum tema em debate ainda</h3><p>Quando o portal abrir um tema, os episódios dos colunistas aparecem aqui.</p>${S.user?.role === 'admin' ? '<a class="btn primary" href="#/admin/podcast">Criar o primeiro tema</a>' : ''}</div></div>`; return; }
+  const lista = eps.filter(e => e.temaId === t.id);
+  let coms = []; try { coms = await podCom.list(t.id); } catch (e) { console.warn(e); }
+  const periodo = [t.inicio && `de ${fmtDate(new Date(t.inicio + 'T12:00:00').getTime())}`, t.fim && `até ${fmtDate(new Date(t.fim + 'T12:00:00').getTime())}`].filter(Boolean).join(' ');
+  main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Podcast</div><h2>${esc(S.config.nomePortal)} Podcast</h2><p>Um tema por vez, debatido em vídeo por professores e estudantes colunistas. Assista e deixe o seu comentário.</p></div></div>
+    <section class="card pod-tema"><div class="pod-tema-ic">${ic('mic', 30)}</div><div>
+      <span class="pod-st ${t.status === 'aberto' ? 'on' : ''}">${t.status === 'aberto' ? 'Tema em debate' : 'Debate encerrado'}${periodo ? ` · ${periodo}` : ''}</span>
+      <h2>${esc(t.titulo)}</h2>${t.descricao ? `<div class="pod-desc">${paras(t.descricao)}</div>` : ''}
+      <div class="pod-nums"><span>${ic('play', 14)} ${lista.length} episódio${lista.length === 1 ? '' : 's'}</span><span>${ic('users', 14)} ${new Set(lista.map(e => e.autor.id)).size} participante${new Set(lista.map(e => e.autor.id)).size === 1 ? '' : 's'}</span><span>${ic('quote', 14)} ${coms.length} comentário${coms.length === 1 ? '' : 's'}</span></div>
+      ${t.status === 'aberto' ? `<p class="small muted" style="margin:10px 0 0">É professor(a) ou estudante colunista? Publique o seu episódio pelo seu editor da Coluna Acadêmica, no botão <b>Podcast</b>.${!S.user ? '' : ''}</p>` : ''}</div></section>
+    ${temas.length > 1 ? `<div class="chips pod-temas">${temas.map(x => `<a class="chip ${x.id === t.id ? 'on' : ''}" href="#/podcast/${encodeURIComponent(x.id)}">${x.status === 'aberto' ? '● ' : ''}${esc(x.titulo.length > 48 ? x.titulo.slice(0, 46) + '…' : x.titulo)}</a>`).join('')}</div>` : ''}
+    ${lista.length ? `<div class="pod-grid">${lista.map(cardEpisodio).join('')}</div>` : `<div class="card empty">${ART.medal('mic')}<h3>Nenhum episódio neste tema ainda</h3><p>Os episódios dos colunistas aparecem aqui assim que forem publicados.</p></div>`}
+  </div>`;
+  const nc = id => coms.filter(c => c.epId === id).length;
+  $$('[data-nc]', main).forEach(s => { const n = nc(s.dataset.nc); s.textContent = n ? `· ${n}` : ''; });
+  $('.page', main).addEventListener('click', ev => {
+    const b = ev.target.closest('[data-play]'); if (!b) return;
+    const [aid, eid] = b.closest('[data-ep]').dataset.ep.split(':'); const e = lista.find(x => x.id === eid && x.autor.id === aid);
+    if (e) abrirEpisodio(t, e, coms, () => $$('[data-nc]', main).forEach(s => { const n = nc(s.dataset.nc); s.textContent = n ? `· ${n}` : ''; }));
+  });
+  const abrir = q?.get?.('ep'); if (abrir) { const e = lista.find(x => x.id === abrir); if (e) abrirEpisodio(t, e, coms, () => {}); }
+}
+function abrirEpisodio(t, e, coms, aoMudar) {
+  const id = ytId(e.url);
+  const { el, close } = modal(e.titulo, `<div class="player embed"><iframe src="https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="${esc(e.titulo)}"></iframe></div>
+    <div class="col-por" style="margin:14px 0 6px">${avatarCol(e.autor, 36)}<span><b>${esc(e.autor.nome)} <i class="selo-est ${e.autor.tipo === 'aluno' ? '' : 'prof'}">${papelAutor(e.autor)}</i></b>${esc([e.autor.titulacao, e.autor.instituicao].filter(Boolean).join(' · '))}</span></div>
+    <p class="small muted" style="margin:0 0 6px">Tema: <b>${esc(t.titulo)}</b></p>${e.resumo ? `<div class="pod-desc">${paras(e.resumo)}</div>` : ''}
+    <div class="pod-coms"><h4>${ic('quote', 16)} Comentários</h4><div id="pc-lista"></div>
+      ${S.user ? `<form class="form pod-form" id="pc-f" novalidate><textarea name="texto" rows="3" maxlength="1000" placeholder="Escreva o seu comentário sobre o episódio. Seja respeitoso: comentários ofensivos são removidos."></textarea><div class="actions" style="justify-content:space-between;margin:0"><span class="small muted" id="pc-n">0/1000</span><button class="btn primary sm">${ic('check', 14)} Comentar</button></div></form>`
+        : `<div class="demo-hint"><a href="#/entrar">Entre</a> ou <a href="#/cadastro">crie sua conta</a> para comentar.</div>`}</div>`, { wide: true });
+  if (!S.user) { guardarVolta(`#/podcast/${encodeURIComponent(t.id)}?ep=${encodeURIComponent(e.id)}`); $$('a', el).forEach(a => a.addEventListener('click', close)); }
+  const desenhar = () => {
+    const l = coms.filter(c => c.epId === e.id).sort((a, b) => (a.em || 0) - (b.em || 0));
+    $('#pc-lista', el).innerHTML = l.length ? l.map(c => `<div class="pod-com"><span class="avatar sm">${esc(initials(c.nome || '?'))}</span><div><b>${esc(c.nome || 'Participante')}</b>${c.papel ? ` <i class="selo-est ${c.papel === 'Estudante' ? '' : 'prof'}">${esc(c.papel)}</i>` : ''}<small>${fmtDT(c.em)}</small><p>${esc(c.texto)}</p></div>
+      ${S.user && (S.user.role === 'admin' || S.user.id === c.userId) ? `<button type="button" class="icon-btn" data-del-com="${esc(c.id)}" title="Excluir comentário">${ic('trash', 15)}</button>` : ''}</div>`).join('') : '<p class="small muted">Nenhum comentário ainda. Seja o primeiro a comentar.</p>';
+  };
+  desenhar();
+  el.addEventListener('click', async ev => {
+    const b = ev.target.closest('[data-del-com]'); if (!b) return;
+    if (!await confirmar('Excluir este comentário?', 'Excluir')) return;
+    try { await podCom.del(t.id, b.dataset.delCom); const i = coms.findIndex(c => c.id === b.dataset.delCom); if (i >= 0) coms.splice(i, 1); desenhar(); aoMudar(); toast('Comentário excluído.'); } catch (er) { toast(er.message, true); }
+  });
+  const f = $('#pc-f', el);
+  if (f) {
+    f.texto.oninput = () => { $('#pc-n', el).textContent = `${f.texto.value.length}/1000`; };
+    f.onsubmit = async ev => {
+      ev.preventDefault(); const texto = f.texto.value.trim();
+      if (texto.length < 3) return toast('Escreva o seu comentário.', true);
+      const bt = $('button.btn.primary', f); bt.disabled = true;
+      try {
+        const papel = S.user.role === 'admin' ? 'Equipe do portal' : (await store.list('colunistas').catch(() => [])).some(c => c.userId === S.user.id && c.aprovado !== false) ? 'Estudante colunista' : 'Estudante';
+        const rec = await podCom.add(t.id, { epId: e.id, autorEp: e.autor.id, userId: S.user.id, nome: S.user.nome, papel, texto });
+        coms.push(rec); f.texto.value = ''; $('#pc-n', el).textContent = '0/1000'; desenhar(); aoMudar(); toast('Comentário publicado.');
+      } catch (er) { toast(er.message, true); }
+      bt.disabled = false;
+    };
+  }
+}
+/* ------------------------------ editor do colunista ------------------------------ */
+async function podcastColunista(col, aoMudar) {
+  let temas = []; try { temas = (await store.list('podcasts')).filter(t => t.ativo !== false).sort((a, b) => (b.status === 'aberto') - (a.status === 'aberto') || (b.criadoEm || 0) - (a.criadoEm || 0)); } catch (e) { console.warn(e); }
+  const abertos = temas.filter(t => t.status === 'aberto');
+  const { el, close } = modal('Podcast', `<p class="small muted" style="margin-top:0">Grave o seu episódio em vídeo sobre o tema em debate, publique no YouTube (pode ser como "não listado") e cole o link aqui. Ele aparece no Podcast do portal para todos assistirem e comentarem.</p>
+    ${abertos.length ? `<form class="form" id="pd-f" novalidate>
+      <label>Tema<select name="tema">${abertos.map(t => `<option value="${esc(t.id)}">${esc(t.titulo)}</option>`).join('')}</select></label>
+      <div class="demo-hint" id="pd-desc" style="margin:0"></div>
+      <label>Título do episódio *<input name="titulo" maxlength="120" placeholder="Ex.: Minha visão sobre o tema"></label>
+      <label>Link do vídeo no YouTube *<input name="url" type="url" placeholder="https://youtu.be/…"></label>
+      <label>Resumo da sua posição no debate<textarea name="resumo" rows="3" maxlength="600" placeholder="Em poucas linhas, o que você defende no episódio."></textarea></label>
+      <div class="actions"><button type="button" class="btn ghost" data-close>Fechar</button><button class="btn primary">${ic('mic', 15)} Publicar episódio</button></div></form>`
+      : '<div class="card empty"><p>Nenhum tema aberto para debate no momento. Quando o portal abrir um tema, você poderá publicar o seu episódio aqui.</p></div>'}
+    <h4 style="margin:18px 0 8px">Meus episódios</h4><div id="pd-meus"></div>`, { wide: true });
+  const nomeTema = id => temas.find(t => t.id === id)?.titulo || 'Tema removido';
+  const desenhar = () => {
+    const l = (col.podcasts || []).slice().sort((a, b) => (b.publicadoEm || 0) - (a.publicadoEm || 0));
+    $('#pd-meus', el).innerHTML = l.length ? l.map(e => `<div class="pd-meu"><img src="${esc(ytThumb(e.url))}" alt=""><div><b>${esc(e.titulo)}</b><small>${esc(nomeTema(e.temaId))} · ${fmtDate(e.publicadoEm)}</small></div><button type="button" class="btn ghost sm" data-pd-del="${esc(e.id)}">${ic('trash', 14)} Remover</button></div>`).join('') : '<p class="small muted">Você ainda não publicou episódios.</p>';
+  };
+  desenhar();
+  const f = $('#pd-f', el);
+  if (f) {
+    const desc = () => { const t = abertos.find(x => x.id === f.tema.value); $('#pd-desc', el).innerHTML = t?.descricao ? paras(t.descricao) : 'Sem descrição.'; };
+    f.tema.onchange = desc; desc();
+    f.onsubmit = ev => {
+      ev.preventDefault();
+      const titulo = f.titulo.value.trim(), url = f.url.value.trim();
+      if (titulo.length < 3) { toast('Informe o título do episódio.', true); return f.titulo.focus(); }
+      if (!ytId(url)) { toast('Cole um link válido do YouTube (youtube.com/watch?v=… ou youtu.be/…).', true); return f.url.focus(); }
+      col.podcasts = [...(col.podcasts || []), { id: uid().slice(0, 10), temaId: f.tema.value, titulo, url, resumo: f.resumo.value.trim(), publicadoEm: Date.now(), atualizadoEm: Date.now() }];
+      aoMudar(); f.reset(); desc(); desenhar(); toast('Episódio publicado no Podcast do portal.');
+    };
+  }
+  el.addEventListener('click', async ev => {
+    const b = ev.target.closest('[data-pd-del]'); if (!b) return;
+    if (!await confirmar('Remover este episódio do Podcast?', 'Remover')) return;
+    col.podcasts = (col.podcasts || []).filter(x => x.id !== b.dataset.pdDel); col.podExcluidos = [...(col.podExcluidos || []), b.dataset.pdDel];
+    aoMudar(); desenhar(); toast('Episódio removido.');
+  });
+}
+/* ----------------------------------- painel ----------------------------------- */
+async function admPodcast(box) {
+  const [{ eps }, temasTodos, cols] = await Promise.all([carregarPodcast(), store.list('podcasts'), store.list('colunistas')]);
+  const temas = temasTodos.sort((a, b) => (b.status === 'aberto') - (a.status === 'aberto') || (b.criadoEm || 0) - (a.criadoEm || 0));
+  const recarregar = () => admPodcast(box);
+  const ocultos = new Set(cols.flatMap(c => c.ocultos || []));
+  // episódios ocultos também aparecem para o administrador
+  const colunas = await store.list('colunas').catch(() => []), porCol = new Map(cols.map(c => [c.id, c]));
+  const todosEps = colunas.flatMap(cl => (cl.podcasts || []).map(e => ({ ...e, autor: porCol.get(cl.id) }))).filter(e => e.autor);
+  box.innerHTML = `<div class="list-h"><p class="muted" style="margin:0;max-width:740px">Defina o tema do debate. Professores e alunos colunistas publicam o link do episódio em vídeo pelo editor da Coluna (botão <b>Podcast</b>), e todos assistem e comentam em <a href="#/podcast">Podcast</a>.</p>
+    <button class="btn primary sm" id="pd-novo">${ic('plus', 15)} Novo tema</button></div>
+    ${temas.length ? temas.map(t => { const l = todosEps.filter(e => e.temaId === t.id); return `<div class="card pad pd-adm">
+      <div class="so-top"><h3>${esc(t.titulo)}</h3>${t.status === 'aberto' ? '<span class="badge ok">Em debate</span>' : '<span class="badge">Encerrado</span>'}${t.ativo === false ? '<span class="badge">Oculto</span>' : ''}</div>
+      <p class="small muted" style="margin:4px 0 10px">${l.length} episódio${l.length === 1 ? '' : 's'}${t.inicio ? ` · de ${dataBR(t.inicio)}` : ''}${t.fim ? ` até ${dataBR(t.fim)}` : ''}</p>
+      ${l.length ? `<div class="pd-eps">${l.map(e => `<div class="pd-meu ${ocultos.has(e.id) ? 'off' : ''}"><img src="${esc(ytThumb(e.url))}" alt=""><div><b>${esc(e.titulo)}</b><small>${esc(e.autor.nome)}${e.autor.tipo === 'aluno' ? ' · Estudante' : ''} · ${fmtDate(e.publicadoEm)}${ocultos.has(e.id) ? ' · <b>oculto</b>' : ''}</small></div>
+        <a class="btn ghost sm" href="${esc(e.url)}" target="_blank" rel="noopener">${ic('ext', 13)}</a><button class="btn ghost sm" data-pd="ocultar" data-col="${esc(e.autor.id)}" data-ep="${esc(e.id)}">${ocultos.has(e.id) ? 'Mostrar' : 'Ocultar'}</button></div>`).join('')}</div>` : ''}
+      <div class="acts" style="margin-top:10px"><a class="btn ghost sm" href="#/podcast/${encodeURIComponent(t.id)}">${ic('play', 14)} Ver no portal</a><button class="btn ghost sm" data-pd="ed" data-id="${esc(t.id)}">${ic('edit', 14)} Editar</button>
+        <button class="btn ghost sm" data-pd="st" data-id="${esc(t.id)}">${t.status === 'aberto' ? 'Encerrar debate' : 'Reabrir debate'}</button><button class="btn danger sm" data-pd="del" data-id="${esc(t.id)}" title="Excluir tema">${ic('trash', 14)}</button></div></div>`; }).join('')
+    : `<div class="card empty" style="margin-top:18px">${ART.medal('mic')}<h3>Nenhum tema ainda</h3><p>Crie o primeiro tema do Podcast: por exemplo, "Inteligência artificial nos tribunais: avanço ou risco?".</p></div>`}`;
+  $('#pd-novo', box).onclick = () => formTemaPodcast({}, recarregar);
+  box.onclick = async ev => {
+    const b = ev.target.closest('[data-pd]'); if (!b) return;
+    try {
+      if (b.dataset.pd === 'ocultar') { const c = cols.find(x => x.id === b.dataset.col); if (!c) return; const s = new Set(c.ocultos || []); s.has(b.dataset.ep) ? s.delete(b.dataset.ep) : s.add(b.dataset.ep); await store.save('colunistas', { ...c, ocultos: [...s] }); toast(s.has(b.dataset.ep) ? 'Episódio ocultado.' : 'Episódio visível de novo.'); return recarregar(); }
+      const t = temas.find(x => x.id === b.dataset.id); if (!t) return;
+      if (b.dataset.pd === 'ed') return formTemaPodcast(t, recarregar);
+      if (b.dataset.pd === 'st') { await store.save('podcasts', { ...t, status: t.status === 'aberto' ? 'encerrado' : 'aberto' }); toast(t.status === 'aberto' ? 'Debate encerrado. Os episódios continuam no portal.' : 'Debate reaberto.'); return recarregar(); }
+      if (b.dataset.pd === 'del') { if (!await confirmar(`Excluir o tema "${t.titulo}"? Os episódios dele deixam de aparecer no portal.`, 'Excluir')) return; await store.remove('podcasts', t.id); toast('Tema excluído.'); recarregar(); }
+    } catch (er) { toast(er.message, true); }
+  };
+}
+function formTemaPodcast(t = {}, onSalvo) {
+  const novo = !t.id;
+  const { el, close } = modal(novo ? 'Novo tema do Podcast' : 'Editar tema', `<form class="form" id="fpd" novalidate>
+    <label>Tema do debate *<input name="titulo" maxlength="140" value="${esc(t.titulo || '')}" placeholder="Ex.: Inteligência artificial nos tribunais: avanço ou risco?"></label>
+    <label>Apresentação e perguntas para o debate<textarea name="descricao" rows="6" maxlength="2000" placeholder="Contextualize o tema e proponha 2 ou 3 perguntas para orientar os episódios.">${esc(t.descricao || '')}</textarea></label>
+    <div class="row2"><label>Início<input type="date" name="inicio" value="${esc(t.inicio || hojeISO(new Date()))}"></label><label>Fim (opcional)<input type="date" name="fim" value="${esc(t.fim || '')}"></label></div>
+    <label class="dv-chk"><input type="checkbox" name="aberto" ${t.status !== 'encerrado' ? 'checked' : ''}> Debate aberto: colunistas podem publicar episódios</label>
+    <div class="actions"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">${novo ? 'Criar tema' : 'Salvar'}</button></div></form>`, { wide: true });
+  $('#fpd', el).onsubmit = async ev => {
+    ev.preventDefault(); const f = ev.target, titulo = f.titulo.value.trim();
+    if (titulo.length < 5) { toast('Escreva o tema do debate.', true); return f.titulo.focus(); }
+    try { await store.save('podcasts', { ...t, titulo, descricao: f.descricao.value.trim(), inicio: f.inicio.value, fim: f.fim.value, status: f.aberto.checked ? 'aberto' : 'encerrado', ativo: t.ativo !== false }); close(); toast(novo ? 'Tema criado. Avise os colunistas!' : 'Tema atualizado.'); onSalvo?.(); }
+    catch (er) { toast(er.message, true); }
+  };
+}
+
 /* ========================== Instituições parceiras ==========================
    Cadastro no Painel → Instituições parceiras (logomarca, nome, site, descrição).
    As ativas aparecem na tela inicial (visitantes e alunos), na ordem definida.
@@ -8394,6 +8631,8 @@ function mesclarColuna(a, b, id) {
   return {
     id, perfil: (pb.at || 0) > (pa.at || 0) ? pb : pa, excluidos: exc.slice(-300),
     artigos: [...m.values()].filter(x => !exc.includes(x.id)).sort((x, y) => (y.atualizadoEm || 0) - (x.atualizadoEm || 0)),
+    podcasts: (() => { const pe = [...new Set([...(a.podExcluidos || []), ...(b.podExcluidos || [])])], pm = new Map(); for (const x of [...(a.podcasts || []), ...(b.podcasts || [])]) { const y = pm.get(x.id); if (!y || (x.atualizadoEm || 0) > (y.atualizadoEm || 0)) pm.set(x.id, x); } return [...pm.values()].filter(x => !pe.includes(x.id)); })(),
+    podExcluidos: [...new Set([...(a.podExcluidos || []), ...(b.podExcluidos || [])])].slice(-300),
     atualizadoEm: Math.max(a.atualizadoEm || 0, b.atualizadoEm || 0)
   };
 }
@@ -8563,6 +8802,7 @@ async function viewEscrever(main, chave) {
 
   main.innerHTML = `<header class="ed-top">${brandHTML('#/escrever/' + encodeURIComponent(chave)).replace('Portal do estudante de Direito', 'Espaço do colunista')}
       <span class="ed-st" id="ed-st"><i></i><span>Pronto</span></span>
+      <button class="btn light sm" id="ed-pod" title="Publicar episódio no Podcast">${ic('fone', 15)}<span class="ed-meus-t"> Podcast</span></button>
       <button class="btn light sm ed-meus" id="ed-word-m" title="Importar do Word (.docx)">${ic('download', 15)}<span class="ed-meus-t"> Word</span></button>
       <button class="btn light sm ed-meus" id="ed-meus">${ic('file', 15)}<span class="ed-meus-t"> Meus textos</span></button>
       <button class="ed-eu" id="ed-eu" title="Meu perfil de colunista"><span id="ed-av"></span><span class="ed-eu-t"><b>${esc(c0.nome)}</b><small>Meu perfil</small></span></button></header>
@@ -8895,6 +9135,7 @@ async function viewEscrever(main, chave) {
 
   /* ---- ações ---- */
   $('#ed-novo').onclick = () => { const v = col.artigos.find(vazioArt); abrir((v || criar()).id); gravarLocal(); tit.focus(); };
+  $('#ed-pod').onclick = () => podcastColunista(col, () => { gravarLocal(); sujo(); agendarSync(600); });
   const wordM = () => $('#ed-word').click();
   $('#ed-word-m').onclick = wordM; $('#ed-word-v').onclick = wordM;
   $('#ed-word').onclick = () => importarWordColuna({ R, onPronto: r => {
