@@ -475,3 +475,17 @@ O card **Áudios** da tela inicial virou **Podcast**, e o menu ganhou o item **P
 
 O número do card **Videoaulas**, na tela inicial do aluno, agora soma as videoaulas dos materiais de estudo e todas as aulas em vídeo dos cursos online publicados.
 
+## Radar de estágios em órgãos públicos
+
+Os estágios do TJAL, MPAL, MPF, Defensorias, Justiça Federal, TRT, TRE e Procuradorias aparecem sozinhos em **Estágios, concursos e empregos → Estágios**.
+
+1. Envie para o repositório os arquivos novos `estagios-sync.mjs`, `scripts/radar-estagios.mjs` e `.github/workflows/radar-estagios.yml`, junto com os demais.
+2. O GitHub roda o radar **a cada 10 minutos**. Em cada rodada ele visita a página de estágio de cada órgão e, de hora em hora, procura notícias recentes sobre seleções de estagiários desses órgãos. O GitHub pode atrasar um pouco as execuções agendadas quando está sobrecarregado.
+3. Cada seleção com inscrições abertas vira uma publicação com o prazo, o órgão e o link do edital. Ela sai sozinha quando as inscrições terminam. Quando o prazo não aparece na página, a publicação mostra "Prazo no edital" e fica 30 dias no portal.
+4. **Atualização em tempo real:** com a página Estágios aberta, o portal confere as novidades a cada 30 segundos. Uma vaga nova aparece destacada na hora, com um aviso, sem recarregar.
+5. Em **Painel → Oportunidades → Radar de estágios → Órgãos e opções**, você liga e desliga o radar, escolhe se quer só estágios de Direito e se o radar procura também nas notícias. Ali também edita a lista de órgãos: sigla, nome, UF, endereço da página de estágios e termos da busca nas notícias. Os botões **Adicionar órgão** e **Restaurar a lista sugerida** ajudam a montar a lista.
+6. Se o endereço de algum órgão mudar, o aviso aparece no card do radar (em "Ver avisos"). Corrija o endereço em Órgãos e opções.
+7. Excluir uma vaga do radar no painel faz com que ela não volte nas próximas verificações.
+
+Se o repositório for **privado**, cada execução consome minutos do plano gratuito do GitHub Actions. Nesse caso, troque `*/10` por `*/30` no arquivo `.github/workflows/radar-estagios.yml`. Em repositório público (o caso do GitHub Pages gratuito), não há custo.
+

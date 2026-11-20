@@ -1372,7 +1372,7 @@ body.com-gaveta .cur-sala{padding-right:min(760px,52vw)}body.com-gaveta .cur-sal
 .selo-est{font-style:normal;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;background:var(--latao-bg);color:#7a5a1c;border-radius:20px;padding:1px 7px;margin-left:4px;vertical-align:middle;white-space:nowrap}
 .col-convite{padding:16px;margin-top:16px;display:grid;gap:6px;background:linear-gradient(160deg,#fff,var(--latao-bg));border-color:#e5d6b4}.col-convite>svg{color:var(--latao)}.col-convite b{color:var(--toga)}.col-convite p{margin:0;font-size:.86rem;color:#4a4f5c}.col-convite .btn{justify-self:start;margin-top:4px}
 .badge.radar{background:#e8eef9;color:#23407a}.radar-adm{margin-bottom:16px}.rd-ufs{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}.rd-uf{display:flex!important;align-items:center;gap:4px;font-size:.85rem;border:1px solid var(--linha);border-radius:8px;padding:4px 6px;cursor:pointer}.rd-uf input{margin:0}
-.radar-al{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:14px;background:#f2f5fb;border-color:#d6dff0}.radar-al>svg{color:#23407a;flex:none}.radar-al b{display:block;color:var(--toga)}.radar-al span{font-size:.86rem;color:#4a4f5c}
+.aovivo{display:inline-flex;align-items:center;gap:6px;font-size:.78rem;color:#4a4f5c;background:#eef6f0;border:1px solid #cfe5d6;border-radius:99px;padding:4px 10px;white-space:nowrap;align-self:flex-start}.aovivo i{width:8px;height:8px;border-radius:50%;background:#2e9e5b;animation:pulso 2s infinite}@keyframes pulso{0%{box-shadow:0 0 0 0 rgba(46,158,91,.5)}70%{box-shadow:0 0 0 7px rgba(46,158,91,0)}100%{box-shadow:0 0 0 0 rgba(46,158,91,0)}}.post.novo{animation:novoBrilho 4s ease-out;border-color:#2e9e5b}@keyframes novoBrilho{0%{background:#e3f4e9}100%{background:var(--card,#fff)}}.re-org{padding:10px 12px;margin-bottom:8px;display:grid;gap:8px}.re-top{display:flex;justify-content:space-between;align-items:center}.re-g{display:grid;grid-template-columns:110px 1fr 60px;gap:8px}@media(max-width:560px){.re-g{grid-template-columns:1fr 70px}.re-g label:nth-child(2){grid-column:1/-1;grid-row:1}}.radar-al{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:14px;background:#f2f5fb;border-color:#d6dff0}.radar-al>svg{color:#23407a;flex:none}.radar-al b{display:block;color:var(--toga)}.radar-al span{font-size:.86rem;color:#4a4f5c}
 /* podcast */
 .pod-tema{display:flex;gap:18px;padding:22px 24px;margin-bottom:16px;background:linear-gradient(135deg,var(--toga),#1f3157);color:#dfe3ea;border:0}.pod-tema h2{color:#fff;margin:6px 0 8px}.pod-tema-ic{width:62px;height:62px;border-radius:50%;background:rgba(216,190,138,.15);color:var(--latao-2);display:grid;place-items:center;flex:none}
 .pod-st{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#aab3c3}.pod-st.on{color:var(--latao-2)}.pod-tema .pod-desc p{color:#c9d0dc;margin:0 0 6px}.pod-tema .muted{color:#aab3c3!important}.pod-tema b{color:#fff}
@@ -2203,6 +2203,7 @@ function GistStore() {
       icache.set(name, t); return t;
     },
     async apagarImagemCol(ref) { if (!ref?.startsWith('gist:') || !isAdmin() || !TOKEN) return; try { await gh('/gists/' + G.id, { method: 'PATCH', body: JSON.stringify({ files: { [ref.slice(5)]: null } }) }); } catch (e) { console.warn(e); } },
+    async atualizar() { if (G && Date.now() - loadedAt > 20000) { try { await load(); } catch (e) { console.warn(e); } } },
     async list(col, f) {
       if (col === 'colunas') { await ensure(); return (await Promise.all((data?.colunistas || []).map(c => lerColuna(c.id).then(v => v && { ...v, id: c.id }).catch(e => { console.warn(e); return null; })))).filter(Boolean); }
       if (!GIST_COLS.includes(col)) return L.list(col, f); await ensure(); const r = (data?.[col] || []).map(x => ({ ...x })); return f ? r.filter(x => x[f[0]] === f[1]) : r; },
@@ -3778,7 +3779,7 @@ function postCard(p) {
   const pi = p.categoria === 'entrevista' ? (p.formato === 'audio' ? 'audio' : 'play') : c.icon;
   const f1 = fotosPub(p)[0];
   return `<article class="card post ${f1 ? 'com-foto' : ''}">${f1 ? `<a class="pi pf-th" href="#/publicacao/${encodeURIComponent(p.id)}"><img data-img="${esc(f1.ref)}" alt=""></a>` : `<span class="pi">${ic(pi, 22)}</span>`}
-    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+    <div><div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.radarEst ? `<span class="badge radar">${ic('search', 12)} Radar de estágios</span>${p.oficial ? `<span class="badge ok">${ic('check', 12)} Página oficial</span>` : ''}${!p.prazo ? '<span class="badge warn">Prazo no edital</span>' : ''}` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
       <h4><a href="#/publicacao/${encodeURIComponent(p.id)}">${esc(p.titulo)}</a></h4>
       <div class="meta">${metaPost(p)}</div>
       ${p.resumo ? `<p>${esc(p.resumo)}</p>` : ''}</div>
@@ -3793,16 +3794,48 @@ function metaPost(p) {
 }
 async function viewOportunidades(main, _, q) {
   const cat = ['estagio', 'concurso', 'emprego'].includes(q.get('tipo')) ? q.get('tipo') : 'estagio';
-  const all = await store.list('publicacoes');
-  const now = Date.now(), aberto = p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= now;
-  const list = all.filter(p => p.categoria === cat).sort((a, b) => (aberto(b) - aberto(a)) || String(a.prazo || '9').localeCompare(String(b.prazo || '9')));
-  const count = k => all.filter(p => p.categoria === k && aberto(p)).length;
-  main.innerHTML = `<div class="page">
-    <div class="page-h"><div><div class="eyebrow">Carreira</div><h2>Estágios, concursos e empregos</h2><p>Oportunidades selecionadas para estudantes e recém-formados em Direito.</p></div></div>
+  const aberto = p => !p.prazo || new Date(p.prazo + 'T23:59:59') >= Date.now();
+  let conhecidos = null, verificado = Date.now();
+  const desenhar = async (novos = new Set()) => {
+    const all = await store.list('publicacoes');
+    const list = all.filter(p => p.categoria === cat).sort((a, b) => (novos.has(b.id) - novos.has(a.id)) || (aberto(b) - aberto(a)) || String(a.prazo || '9').localeCompare(String(b.prazo || '9')));
+    const count = k => all.filter(p => p.categoria === k && aberto(p)).length;
+    const y = window.scrollY;
+    main.innerHTML = `<div class="page">
+    <div class="page-h"><div><div class="eyebrow">Carreira</div><h2>Estágios, concursos e empregos</h2><p>Oportunidades selecionadas para estudantes e recém-formados em Direito.</p></div><span class="aovivo" id="op-vivo" title="A página confere sozinha se há novidades"><i></i> Atualização automática · <span id="op-hora">${new Date(verificado).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span></span></div>
     <div class="tabs">${['estagio', 'concurso', 'emprego'].map(k => `<a class="tab ${k === cat ? 'on' : ''}" href="#/oportunidades?tipo=${k}">${ic(CATS[k].icon, 16)} ${CATS[k].plural} <span class="badge" style="margin-left:4px">${count(k)}</span></a>`).join('')}</div>
+    ${cat === 'estagio' ? (() => { const rz = estCfg(), n = list.filter(p => p.radarEst && aberto(p)).length; return rz.ativo && (n || rz.ultima) ? `<div class="card radar-al">${ic('search', 20)}<div><b>Radar de estágios em órgãos públicos</b><span>${n ? `${n} seleç${n === 1 ? 'ão' : 'ões'} de estagiários com inscrições abertas em ${esc(rz.orgaos.filter(o => o.ativo !== false).map(o => o.sigla).slice(0, 8).join(', '))}${rz.orgaos.length > 8 ? ' e outros' : ''}, encontrada${n === 1 ? '' : 's'} automaticamente` : `Nenhuma seleção de estagiários aberta agora em ${esc(rz.orgaos.filter(o => o.ativo !== false).map(o => o.sigla).slice(0, 8).join(', '))}`}${rz.ultima ? `. Órgãos verificados em ${fmtDT(rz.ultima.em)}` : ''}. Confira sempre o edital oficial antes de se inscrever.</span></div></div>` : ''; })() : ''}
     ${cat === 'concurso' ? (() => { const rz = radarCfg(), n = list.filter(p => p.radar && aberto(p)).length; return rz.ativo && (n || rz.ultima) ? `<div class="card radar-al">${ic('search', 20)}<div><b>Radar de concursos</b><span>${n ? `${n} concurso${n === 1 ? '' : 's'} da área jurídica com inscrições abertas, encontrado${n === 1 ? '' : 's'} automaticamente` : 'Nenhum concurso da área jurídica com inscrições abertas no momento'}${rz.ultima ? `. Atualizado em ${fmtDT(rz.ultima.em)}` : ''}. Confira sempre o edital oficial antes de se inscrever.</span></div></div>` : ''; })() : ''}
-    <div class="plist">${list.map(postCard).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
+    <div class="plist">${list.map(p => novos.has(p.id) ? postCard(p).replace('class="card post', 'class="card post novo') : postCard(p)).join('') || `<div class="card empty">${ART.medal(CATS[cat].icon)}<h3>Nenhuma publicação em ${CATS[cat].plural.toLowerCase()}</h3><p>Novas oportunidades aparecerão aqui.</p></div>`}</div>
   </div>`;
+    if (novos.size) window.scrollTo(0, y);
+    hidratarImagens(main).catch(() => {});
+    return all;
+  };
+  const assin = all => new Map(all.filter(p => ['estagio', 'concurso', 'emprego'].includes(p.categoria)).map(p => [p.id, `${p.prazo}|${p.titulo}|${p.atualizadoEm || ''}`]));
+  conhecidos = assin(await desenhar());
+  // Atualização em tempo real: enquanto a página estiver aberta, confere a cada 30 segundos
+  let ocupado = false;
+  const conferir = async () => {
+    if (ocupado || document.visibilityState === 'hidden' || !main.isConnected) return; ocupado = true;
+    try {
+      await store.atualizar?.();
+      const all = await store.list('publicacoes'), agora = assin(all); verificado = Date.now();
+      const novos = new Set([...agora.keys()].filter(id => !conhecidos.has(id)));
+      const mudou = novos.size || [...agora].some(([id, v]) => conhecidos.get(id) !== v) || [...conhecidos.keys()].some(id => !agora.has(id));
+      conhecidos = agora;
+      if (mudou) {
+        try { S.config = await store.getConfig(); } catch {}
+        await desenhar(new Set([...novos].filter(id => all.find(p => p.id === id)?.categoria === cat)));
+        const nn = [...novos].map(id => all.find(p => p.id === id)).filter(Boolean);
+        if (nn.length) toast(nn.length === 1 ? `Nova oportunidade: ${nn[0].titulo}` : `${nn.length} novas oportunidades publicadas agora.`);
+      } else { const h = $('#op-hora', main); if (h) h.textContent = new Date(verificado).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
+    } catch (e) { console.warn(e); } finally { ocupado = false; }
+  };
+  const t = setInterval(conferir, S.intervaloAoVivo || 30000);
+  const vis = () => { if (document.visibilityState === 'visible') conferir(); };
+  document.addEventListener('visibilitychange', vis);
+  S.limpar.push(() => { clearInterval(t); document.removeEventListener('visibilitychange', vis); });
 }
 async function viewNoticias(main, _, q) {
   if (q.get('tipo') === 'lei') { location.replace('#/legislacao'); return; }
@@ -3884,10 +3917,10 @@ async function viewPublicacao(main, id) {
   if (!p) { main.innerHTML = `<div class="page"><div class="card empty"><h3>Publicação não encontrada</h3></div></div>`; return; }
   const c = CATS[p.categoria] || CATS.estagio, back = p.categoria === 'lei' ? '#/legislacao' : CAT_INFO.includes(p.categoria) ? `#/noticias?tipo=${p.categoria}` : `#/oportunidades?tipo=${p.categoria}`;
   const ent = p.categoria === 'entrevista';
-  const linkTxt = p.radar ? 'Ver detalhes e o edital na fonte' : { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
+  const linkTxt = p.radarEst ? (p.oficial ? 'Ver edital e inscrições na página oficial' : `Ler a notícia (${p.fonte || 'fonte'})`) : p.radar ? 'Ver detalhes e o edital na fonte' : { lei: 'Ler texto oficial', noticia: 'Ler a matéria original', entrevista: 'Material complementar' }[p.categoria] || 'Acessar / candidatar-se';
   main.innerHTML = `<div class="page"><div class="article">
     <a href="${back}" class="small" style="display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">${ic('back', 14)} ${c.plural}</a>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge gold">${esc(c.nome)}</span>${prazoBadge(p)}${p.radar ? `<span class="badge radar">${ic('search', 12)} Radar de concursos</span>` : p.radarEst ? `<span class="badge radar">${ic('search', 12)} Radar de estágios</span>${p.oficial ? `<span class="badge ok">${ic('check', 12)} Página oficial</span>` : ''}${!p.prazo ? '<span class="badge warn">Prazo no edital</span>' : ''}` : p.auto ? `<span class="badge ok">${ic('check', 12)} Fonte oficial</span>` : ''}</div>
     <h2 style="margin-top:12px">${esc(p.titulo)}</h2>
     <div class="meta">${metaPost(p)}</div>
     ${!ent ? fotosHTML(p) : ''}
@@ -4734,13 +4767,58 @@ const GRUPOS_PUB = {
 };
 const btnsLinha = (id, extra = '') => `<div class="acts"><a class="btn ghost sm" href="#/publicacao/${encodeURIComponent(id)}">Ver</a>${extra}<button class="btn ghost sm" data-ed="${esc(id)}">Editar</button><button class="btn danger sm" data-del="${esc(id)}">Excluir</button></div>`;
 async function excluirPublicacao(p) {
-  if (!await confirmar(p.radar ? 'Excluir este concurso do radar? Ele não volta nas próximas verificações.' : p.origem ? 'Excluir esta atualização? Ela não volta nas próximas sincronizações.' : 'Excluir esta publicação?', 'Excluir')) return;
+  if (!await confirmar(p.radarEst ? 'Excluir este estágio do radar? Ele não volta nas próximas verificações.' : p.radar ? 'Excluir este concurso do radar? Ele não volta nas próximas verificações.' : p.origem ? 'Excluir esta atualização? Ela não volta nas próximas sincronizações.' : 'Excluir esta publicação?', 'Excluir')) return;
   try {
     await store.remove('publicacoes', p.id);
-    if (p.radar && p.origem) { const cfg = await store.getConfig(), rz = radarCfg(cfg); await store.saveConfig({ ...cfg, radarConcursos: { ...rz, ignorados: [...new Set([...(rz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+    if (p.radarEst && p.origem) { const cfg = await store.getConfig(), rz = estCfg(cfg); await store.saveConfig({ ...cfg, radarEstagios: { ...rz, ignorados: [...new Set([...(rz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
+    else if (p.radar && p.origem) { const cfg = await store.getConfig(), rz = radarCfg(cfg); await store.saveConfig({ ...cfg, radarConcursos: { ...rz, ignorados: [...new Set([...(rz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
     else if (p.origem) { const cfg = await store.getConfig(), lz = leisCfg(cfg); await store.saveConfig({ ...cfg, leisAuto: { ...lz, ignorados: [...new Set([...(lz.ignorados || []), p.origem])].slice(-3000) } }); S.config = await store.getConfig(); }
     toast('Publicação excluída.'); render();
   } catch (err) { toast(err.message, true); }
+}
+/* ------------------------------ Radar de estágios ------------------------------ */
+const ORGAOS_EST_PADRAO = [{"id":"tjal","sigla":"TJAL","nome":"Tribunal de Justiça de Alagoas","uf":"AL","url":"https://estagioesmal.tjal.jus.br/","busca":"estágio TJAL OR Esmal","ativo":true},{"id":"mpal","sigla":"MPAL","nome":"Ministério Público de Alagoas","uf":"AL","url":"https://www.mpal.mp.br/","busca":"estágio MPAL OR \"Ministério Público de Alagoas\"","ativo":true},{"id":"mpf-al","sigla":"MPF/AL","nome":"Ministério Público Federal em Alagoas","uf":"AL","url":"https://www.mpf.mp.br/al/estagie-conosco","busca":"estágio \"MPF\" Alagoas","ativo":true},{"id":"dpe-al","sigla":"DPE/AL","nome":"Defensoria Pública de Alagoas","uf":"AL","url":"https://www.defensoria.al.def.br/","busca":"estágio \"Defensoria Pública\" Alagoas","ativo":true},{"id":"dpu-al","sigla":"DPU/AL","nome":"Defensoria Pública da União em Alagoas","uf":"AL","url":"","busca":"estágio DPU Alagoas","ativo":true},{"id":"jfal","sigla":"JFAL","nome":"Justiça Federal em Alagoas","uf":"AL","url":"https://www.jfal.jus.br/","busca":"estágio JFAL OR \"Justiça Federal em Alagoas\"","ativo":true},{"id":"trt19","sigla":"TRT19","nome":"Tribunal Regional do Trabalho da 19ª Região","uf":"AL","url":"https://site.trt19.jus.br/","busca":"estágio TRT19 OR \"TRT da 19ª\"","ativo":true},{"id":"tre-al","sigla":"TRE-AL","nome":"Tribunal Regional Eleitoral de Alagoas","uf":"AL","url":"https://www.tre-al.jus.br/","busca":"estágio \"TRE-AL\" OR \"TRE de Alagoas\"","ativo":true},{"id":"pge-al","sigla":"PGE/AL","nome":"Procuradoria-Geral do Estado de Alagoas","uf":"AL","url":"https://www.procuradoria.al.gov.br/","busca":"estágio \"PGE\" Alagoas OR \"Procuradoria-Geral do Estado de Alagoas\"","ativo":true},{"id":"pgm-maceio","sigla":"PGM Maceió","nome":"Procuradoria-Geral do Município de Maceió","uf":"AL","url":"","busca":"estágio \"Procuradoria-Geral do Município de Maceió\" OR \"PGM Maceió\"","ativo":true}];
+const estCfg = c => { const r = { ativo: true, apenasDireito: true, noticias: true, orgaos: null, ignorados: [], ultima: null, ...((c || S.config || {}).radarEstagios || {}) }; if (!Array.isArray(r.orgaos) || !r.orgaos.length) r.orgaos = ORGAOS_EST_PADRAO.map(o => ({ ...o })); return r; };
+const linkRadarEst = cfg => { const r = repoDoSite((cfg || S.config).leisAuto || {}); return r ? `https://github.com/${r.owner}/${r.repo}/actions/workflows/radar-estagios.yml` : ''; };
+function radarEstAdmHTML(posts) {
+  const c = estCfg(), u = c.ultima, link = linkRadarEst(), hoje = hojeISO(new Date());
+  const abertos = posts.filter(p => p.radarEst && (!p.prazo || p.prazo >= hoje)).length, ativos = c.orgaos.filter(o => o.ativo !== false);
+  const st = !c.ativo ? ['', 'Desligado'] : !u ? ['', 'Aguardando a 1ª verificação'] : u.erros?.length >= (u.orgaos || 1) && !u.encontrados ? ['err', 'Com falha'] : ['ok', 'Ativo'];
+  return `<div class="card lsync radar-adm"><div class="lsync-st"><span class="lsync-dot ${st[0]}"></span><div><b>${ic('search', 15)} Radar de estágios em órgãos públicos: ${st[1]}</b>
+      <span>Acompanha ${ativos.length} órgão${ativos.length === 1 ? '' : 's'} (${esc(ativos.map(o => o.sigla).join(', '))}) a cada 10 minutos. ${u ? `Última verificação em <b>${fmtDT(u.em)}</b>: ${u.encontrados} seleç${u.encontrados === 1 ? 'ão' : 'ões'} encontrada${u.encontrados === 1 ? '' : 's'}; ${u.novas} nova${u.novas === 1 ? '' : 's'}.` : 'A primeira verificação acontece no GitHub depois que o portal estiver publicado.'} <b>${abertos}</b> estágio${abertos === 1 ? '' : 's'} do radar no portal. Cada um sai sozinho quando as inscrições terminam.</span>
+      ${u?.erros?.length ? `<details class="lsync-av"><summary>Ver avisos (${u.erros.length})</summary><p>${esc(u.erros.join('; '))}</p></details>` : ''}</div></div>
+    <div class="lsync-ac"><button class="btn ghost sm" id="re-cfg">${ic('settings', 14)} Órgãos e opções</button>${link ? `<a class="btn ghost sm" href="${esc(link)}" target="_blank" rel="noopener">${ic('ext', 14)} Executar agora no GitHub</a>` : ''}</div></div>`;
+}
+function configurarRadarEst(onSalvo) {
+  const c = estCfg(); let orgs = c.orgaos.map(o => ({ ...o }));
+  const linha = (o, i) => `<div class="re-org card" data-i="${i}">
+      <div class="re-top"><label class="dv-chk"><input type="checkbox" data-k="ativo" ${o.ativo !== false ? 'checked' : ''}> <b>${esc(o.sigla || 'Novo órgão')}</b></label><button type="button" class="btn ghost sm" data-rm="${i}" aria-label="Remover ${esc(o.sigla || 'órgão')}">${ic('trash', 14)}</button></div>
+      <div class="re-g"><label>Sigla<input class="field" data-k="sigla" value="${esc(o.sigla || '')}" maxlength="20" required></label><label>Nome<input class="field" data-k="nome" value="${esc(o.nome || '')}" maxlength="120"></label><label>UF<input class="field" data-k="uf" value="${esc(o.uf || '')}" maxlength="2"></label></div>
+      <label>Página de estágios ou de notícias do órgão<input class="field" data-k="url" type="url" value="${esc(o.url || '')}" placeholder="https://…"></label>
+      <label>Busca nas notícias <span class="muted small">(deixe em branco para usar a sigla)</span><input class="field" data-k="busca" value="${esc(o.busca || '')}" maxlength="160"></label></div>`;
+  const { el, close } = modal('Radar de estágios', `<form class="form" id="fre" novalidate>
+    <p class="small muted" style="margin-top:0">A cada 10 minutos o radar visita a página de cada órgão e publica na aba <b>Estágios</b> as seleções de estagiários com inscrições abertas, com o prazo e o link do edital. De hora em hora ele também procura notícias recentes sobre essas seleções. Os alunos que estiverem com a página aberta veem as novidades na hora, sem recarregar.</p>
+    <label class="dv-chk"><input type="checkbox" name="ativo" ${c.ativo ? 'checked' : ''}> Radar ligado</label>
+    <label class="dv-chk"><input type="checkbox" name="apenasDireito" ${c.apenasDireito ? 'checked' : ''}> Somente estágios para estudantes de Direito</label>
+    <label class="dv-chk"><input type="checkbox" name="noticias" ${c.noticias !== false ? 'checked' : ''}> Procurar também em notícias recentes</label>
+    <h4 style="margin:14px 0 6px">Órgãos acompanhados</h4><div id="re-lista"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn ghost sm" id="re-add">${ic('plus', 14)} Adicionar órgão</button><button type="button" class="btn ghost sm" id="re-pad">Restaurar a lista sugerida</button></div>
+    <div class="modal-f"><button type="button" class="btn ghost" data-close>Cancelar</button><button class="btn primary">Salvar</button></div></form>`);
+  const lista = $('#re-lista', el), ler = () => { $$('.re-org', lista).forEach(d => { const o = orgs[+d.dataset.i]; $$('[data-k]', d).forEach(x => { o[x.dataset.k] = x.type === 'checkbox' ? x.checked : x.value.trim(); }); }); };
+  const draw = () => { lista.innerHTML = orgs.map(linha).join('') || '<p class="muted small">Nenhum órgão na lista.</p>'; };
+  draw();
+  lista.onclick = e => { const b = e.target.closest('[data-rm]'); if (!b) return; ler(); orgs.splice(+b.dataset.rm, 1); draw(); };
+  $('#re-add', el).onclick = () => { ler(); orgs.push({ id: 'o' + uid().slice(0, 8), sigla: '', nome: '', uf: '', url: '', busca: '', ativo: true }); draw(); $$('.re-org', lista).pop().querySelector('[data-k=sigla]').focus(); };
+  $('#re-pad', el).onclick = () => { ler(); const ids = new Set(orgs.map(o => o.id)); orgs = [...orgs, ...ORGAOS_EST_PADRAO.filter(o => !ids.has(o.id)).map(o => ({ ...o }))]; draw(); toast('Órgãos sugeridos de volta à lista.'); };
+  $('#fre', el).onsubmit = async e => {
+    e.preventDefault(); ler(); const f = e.target;
+    orgs = orgs.filter(o => o.sigla || o.nome || o.url);
+    const ruim = orgs.find(o => !o.sigla || (o.url && !/^https?:\/\/[^\s]+\.[^\s]+/.test(o.url)));
+    if (ruim) return toast(!ruim.sigla ? 'Informe a sigla de cada órgão.' : `O endereço da página de ${ruim.sigla} não parece válido.`, true);
+    orgs.forEach(o => { o.uf = (o.uf || '').toUpperCase(); if (!o.id) o.id = 'o' + uid().slice(0, 8); });
+    try { const cfg = await store.getConfig(); await store.saveConfig({ ...cfg, radarEstagios: { ...estCfg(cfg), ativo: f.ativo.checked, apenasDireito: f.apenasDireito.checked, noticias: f.noticias.checked, orgaos: orgs } }); S.config = await store.getConfig(); close(); toast('Radar de estágios configurado. As mudanças valem na próxima verificação, em até 10 minutos.'); onSalvo?.(); }
+    catch (err) { toast(err.message, true); }
+  };
 }
 /* ------------------------------ Radar de concursos ------------------------------ */
 const UFS_BR = ['AC', 'AL', 'AM', 'AP', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'];
@@ -4776,16 +4854,17 @@ function admPublicacoes(box, posts, grupo = 'oportunidades') {
   const draw = () => {
     const l = meus.filter(p => !filtro || p.categoria === filtro).sort(byNewest);
     $('#ptab').innerHTML = l.length ? `<table><tr><th>Título</th><th>Categoria</th><th>${G.data}</th><th>Publicado</th><th></th></tr>
-      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td><span class="badge gold">${esc((CATS[p.categoria] || {}).nome)}</span>${p.radar ? ' <span class="badge">Radar</span>' : ''}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
+      ${l.map(p => `<tr><td><b>${esc(p.titulo)}</b><div class="small muted">${esc(p.instituicao || '')}</div></td><td><span class="badge gold">${esc((CATS[p.categoria] || {}).nome)}</span>${p.radar || p.radarEst ? ' <span class="badge">Radar</span>' : ''}</td><td>${fmtDate(p.prazo)}</td><td>${fmtDate(p.criadoEm)}</td>
       <td>${btnsLinha(p.id)}</td></tr>`).join('')}</table>` : `<div class="empty"><p>${G.vazio}</p></div>`;
   };
-  box.innerHTML = `<p class="muted adm-desc">${G.desc}</p>${grupo === 'oportunidades' ? radarAdmHTML(posts) : ''}
+  box.innerHTML = `<p class="muted adm-desc">${G.desc}</p>${grupo === 'oportunidades' ? radarEstAdmHTML(posts) + radarAdmHTML(posts) : ''}
     <div class="list-h"><div class="chips" id="pf">${[['', 'Todas', meus.length], ...G.cats.map(k => [k, CATS[k].plural, meus.filter(p => p.categoria === k).length])].map(([v, l, n]) => `<button class="chip ${v === '' ? 'on' : ''}" data-v="${v}">${l} <span class="cn">${n}</span></button>`).join('')}</div>
     <button class="btn primary sm" id="novo">${ic('plus', 15)} ${G.novo}</button></div><div class="card table-wrap" id="ptab"></div>`;
   draw();
   $('#pf').onclick = e => { const b = e.target.closest('.chip'); if (!b) return; filtro = b.dataset.v; $$('.chip', $('#pf')).forEach(x => x.classList.toggle('on', x === b)); draw(); };
   $('#novo').onclick = () => formPost({ categoria: filtro || G.cats[0] }, G.cats);
   const rc = $('#rd-cfg'); if (rc) rc.onclick = () => configurarRadar(() => render());
+  const re = $('#re-cfg'); if (re) re.onclick = () => configurarRadarEst(() => render());
   $('#ptab').onclick = e => {
     const ed = e.target.closest('[data-ed]'), dl = e.target.closest('[data-del]');
     if (ed) formPost(posts.find(p => p.id === ed.dataset.ed), G.cats);
