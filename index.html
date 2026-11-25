@@ -6165,7 +6165,7 @@ TEMA DO CURSO: ${tema || '[escreva o tema]'}
 PÚBLICO: ${publico || 'estudantes de graduação em Direito'}
 NÚMERO DE AULAS EM VÍDEO: ${aulas}
 DURAÇÃO DOS VÍDEOS: em média ${dm} minutos cada (aceitável de ${dMin} a ${dMax} minutos)
-ORDEM DAS AULAS: sequência cronológica do conteúdo, do primeiro ao último assunto
+ORDEM DAS AULAS: sequência cronológica do conteúdo, do primeiro ao último assunto; séries de vídeos SEMPRE a partir do episódio 1, sem pular episódios (no portal, a primeira aula do curso é a aula 1)
 CAPA DO CURSO: sim, coerente com a matéria e o assunto do curso
 NÚMERO DE QUESTÕES DA AVALIAÇÃO FINAL: ${questoes}
 MATERIAL EM PDF: ${!ap ? 'não precisa' : material === 'unico' ? `uma apostila única para o curso inteiro, com ${tm[0]} (${tm[1]})` : `uma apostila para cada módulo, cada uma com ${tm[0]} (${tm[1]})`}
@@ -6176,20 +6176,27 @@ O QUE FAZER
    - siga a ordem em que a matéria é estudada e acontece na prática: conceitos e fundamentos primeiro; depois cada etapa ou instituto na ordem em que aparece (por exemplo, a ordem dos artigos da lei ou das fases do processo, do início ao fim); por último, recursos, temas especiais e revisão;
    - cada aula parte do que foi visto na anterior e prepara a seguinte: nunca trate um assunto antes daquilo que ele pressupõe, nem volte a um tema já superado;
    - quando houver evolução histórica ou mudança na lei, apresente na ordem dos acontecimentos (regra antiga, a lei que mudou, regra atual);
-   - a ordem dos módulos e das aulas no JSON é exatamente a ordem em que o aluno vai assistir.
+   - a ordem dos módulos e das aulas no JSON é exatamente a ordem em que o aluno vai assistir;
+   - o Módulo 1 traz a base do tema (conceito, classificação, momento e forma); os módulos seguintes tratam cada instituto separadamente, do geral para o específico (exemplo: Módulo 1, noções gerais das exceções; Módulo 2, exceção de suspeição; Módulo 3, exceção de incompetência).
 2. Para cada aula, PESQUISE NO YOUTUBE e escolha um vídeo que exista de verdade:
    - em português do Brasil, com boa qualidade de áudio e conteúdo jurídico correto e atualizado;
    - de preferência de canais confiáveis: universidades, escolas da magistratura e do Ministério Público, tribunais (STF, STJ, TV Justiça), OAB, Defensorias e professores de Direito reconhecidos;
    - DURAÇÃO: escolha vídeos com cerca de ${dm} minutos, entre ${dMin} e ${dMax} minutos; a média de todas as aulas deve ficar perto de ${dm} minutos. Se o melhor vídeo sobre um assunto for muito mais longo, prefira outro; não use cortes curtos nem aulas de várias horas;
-   - quando usar uma série de aulas de um mesmo canal ou professor, mantenha a ordem dos episódios da série;
+   - SÉRIES DE VÍDEOS (regra obrigatória): antes de usar um vídeo, verifique se ele faz parte de uma série ou playlist. Sinais: "Aula N", "Parte N", algarismos romanos (I, II, III), o mesmo prefixo no título de vários vídeos (ex.: "Questões e Processos Incidentes - ..."), a mesma data de publicação e a mesma descrição padrão do canal. Se fizer parte:
+       a) procure os episódios ANTERIORES da mesma série (pesquise o prefixo do título com "I", "Parte 1", "Aula 1" e o nome do canal) até achar o primeiro;
+       b) inclua a série a partir do episódio 1, na ordem original, sem pular episódios intermediários, em bloco contínuo, até o último episódio necessário. NUNCA comece um curso no meio de uma série (por exemplo, pela "aula 3"), porque no portal a primeira aula do curso é sempre a aula 1;
+       c) se os primeiros episódios tratarem de assunto vizinho (ex.: uma série de "Questões e processos incidentes" que começa por "Questões prejudiciais" antes de chegar às "Exceções"), mantenha esses episódios e use-os como base introdutória no Módulo 1, cobrindo-os também na apostila e nas questões;
+       d) se não encontrar o episódio 1 da série, não use a série: escolha outro vídeo, de preferência avulso ou de uma série que comece no próprio tema;
+       e) evite misturar séries que se sobreponham; se usar mais de uma, cada uma entra completa desde o seu episódio 1;
    - evite vídeos com a legislação desatualizada, cortes de lives sem contexto e conteúdo sensacionalista;
    - use o link completo no formato https://www.youtube.com/watch?v=XXXXXXXXXXX;
    - CONFIRME que cada link abre o vídeo indicado. NUNCA invente links. Se não encontrar um vídeo adequado para uma aula, deixe "url" vazio e explique em "observacao".
-3. Informe a duração real de cada vídeo, em minutos, e o nome do canal.
-4. Escreva uma descrição curta de cada aula: o que o aluno vai aprender e o que observar no vídeo.
+3. Informe a duração real de cada vídeo, em minutos, e o nome do canal, conferido na página do vídeo. Se não conseguir confirmar a duração, estime e escreva "duração estimada" em "observacao".
+4. Escreva uma descrição curta de cada aula: o que o aluno vai aprender e o que observar no vídeo. Se o vídeo fizer parte de uma série, comece a descrição pela posição dele na série de origem (ex.: "Aula 2 da série da Trilhante." ou "Parte I da série de exceções da Kultivi.").
 ${ap ? `5. Escreva ${material === 'unico' ? 'a apostila do curso' : 'uma apostila para cada módulo'}. O portal transforma o texto em PDF sozinho, com a identidade visual do portal; você só escreve o texto. Regras:
    - texto ORIGINAL, escrito por você, em português do Brasil, linguagem clara e didática para ${publico || 'estudantes de graduação em Direito'}; não copie trechos de livros, artigos ou sites;
-   - acompanhe a sequência dos vídeos do módulo e aprofunde o que eles explicam;
+   - acompanhe a sequência dos vídeos do módulo e aprofunde o que eles explicam, inclusive os episódios introdutórios de uma série incluídos por causa da regra de séries;
+   - quando o curso tratar de institutos parecidos (ex.: suspeição x incompetência, suspeição x impedimento), feche a apostila do último módulo com um "Quadro comparativo" em tópicos (garantia protegida, alvo, forma, quem julga, efeitos, recurso);
    - estrutura sugerida: introdução; conceitos e fundamentos; base legal (cite a lei com número e ano e o artigo, por exemplo "art. 302 do Código de Processo Penal (Decreto-Lei 3.689/1941)", e transcreva só os trechos essenciais, como citação); posições da doutrina e da jurisprudência; um caso prático comentado; um quadro de "Pontos-chave" em tópicos; e "Para revisar", com 3 a 5 perguntas;
    - use SOMENTE a legislação em vigor e, se houve mudança recente, diga qual foi a lei que alterou;
    - NUNCA invente súmulas, julgados, números de processos, artigos ou autores. Cite súmula ou tese somente quando tiver certeza do número e do conteúdo; na dúvida, explique o entendimento sem citar número;
@@ -6202,8 +6209,8 @@ ${ap ? `5. Escreva ${material === 'unico' ? 'a apostila do curso' : 'uma apostil
    - "chamada": uma frase curta para a capa, com até 60 caracteres, que convide o aluno a fazer o curso;
    - "svg": uma ilustração vetorial ORIGINAL que represente o assunto, em estilo plano e elegante (linhas e formas geométricas simples), com viewBox "0 0 600 600" e fundo transparente (não desenhe retângulo de fundo). Use de 2 a 4 cores em harmonia com "corFundo" e "corDestaque", pensadas para aparecer sobre fundo escuro. Use somente os elementos svg, g, path, circle, ellipse, rect, line, polyline, polygon e linearGradient. É PROIBIDO: texto, letras ou números; logotipos, marcas, brasões, bandeiras e símbolos oficiais; pessoas reais ou reconhecíveis; imagens externas, scripts e links. Escreva os atributos do SVG com aspas simples, para não quebrar o JSON, e mantenha o SVG com até 6.000 caracteres;
    - opcional: se você também gera imagens, crie uma imagem capa.png de 1280×720, sem nenhum texto, com o mesmo conceito; eu posso enviá-la depois no editor do curso.
-${ap ? '7' : '6'}. Elabore a avaliação final com base no conteúdo das aulas${ap ? ' e das apostilas' : ''}: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis.
-${ap ? '8' : '7'}. Antes de entregar, revise: links conferidos, capa coerente com o assunto e SVG sem texto, módulos e aulas na sequência cronológica do conteúdo, duração dos vídeos perto de ${dm} minutos (média geral), ${ap ? 'leis e artigos citados nas apostilas conferidos, ' : ''}uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários${ap ? ', aspas dentro dos textos escapadas como \\"' : ''}).
+${ap ? '7' : '6'}. Elabore a avaliação final com base no conteúdo das aulas${ap ? ' e das apostilas' : ''}: questões de múltipla escolha, com 5 alternativas (A a E), apenas UMA correta, alternativas erradas plausíveis e uma explicação que diga por que a correta está certa. Sem "todas as anteriores" ou "nenhuma das anteriores". Misture questões fáceis, médias e difíceis. Distribua as questões por todos os módulos, na ordem do curso (as primeiras sobre o Módulo 1), e varie a posição da alternativa correta (índices de 0 a 4), sem repetir a mesma posição em sequência. Na explicação, cite o fundamento (artigo de lei e, se houver certeza, a súmula).
+${ap ? '8' : '7'}. Antes de entregar, revise: links conferidos, capa coerente com o assunto e SVG sem texto, módulos e aulas na sequência cronológica do conteúdo, cada série de vídeos começando no seu episódio 1 e sem episódios pulados, nomes dos módulos idênticos em "aulas" e "materiais", duração dos vídeos perto de ${dm} minutos (média geral), ${ap ? 'leis e artigos citados nas apostilas conferidos, ' : ''}uma única alternativa correta por questão e JSON válido (aspas duplas, sem vírgula sobrando, sem comentários${ap ? ', aspas dentro dos textos escapadas como \\"' : ''}).
 
 ENTREGA
 Entregue o curso como um ARQUIVO chamado curso.json, para download. Se você não puder criar arquivos, responda SOMENTE com o conteúdo JSON, sem texto antes ou depois, para eu salvar como curso.json. Use exatamente este formato:
@@ -6306,7 +6313,7 @@ function importarCurso(onCriado, { inicio = 1 } = {}) {
         <label>Público<input name="publico" maxlength="160" value="estudantes de graduação em Direito" placeholder="Ex.: candidatos ao Exame da OAB"></label>
         <div class="row2"><label>Número de aulas<select name="aulas">${[4, 6, 8, 10, 12, 15].map(n => `<option ${n === R.aulas ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
           <label>Questões da avaliação<select name="questoes">${[5, 10, 15, 20].map(n => `<option ${n === R.questoes ? 'selected' : ''}>${n}</option>`).join('')}</select></label></div>
-        <label>Duração média de cada videoaula<select name="duracao">${[15, 20, 30, 45, 60].map(n => `<option value="${n}" ${n === 30 ? 'selected' : ''}>${n} minutos</option>`).join('')}</select><span class="hint">As aulas vêm sempre na sequência cronológica do conteúdo.</span></label>
+        <label>Duração média de cada videoaula<select name="duracao">${[15, 20, 30, 45, 60].map(n => `<option value="${n}" ${n === 30 ? 'selected' : ''}>${n} minutos</option>`).join('')}</select><span class="hint">As aulas vêm sempre na sequência cronológica do conteúdo, e cada série de vídeos entra a partir do episódio 1.</span></label>
         <div class="row2"><label>Material em PDF (apostila)<select name="material"><option value="modulo" selected>Uma apostila por módulo</option><option value="unico">Uma apostila para o curso todo</option><option value="nenhum">Sem apostila</option></select></label>
           <label>Tamanho de cada apostila<select name="tamanho"><option value="curta">Curta (2 a 3 páginas)</option><option value="media" selected>Média (4 a 6 páginas)</option><option value="completa">Completa (8 a 10 páginas)</option></select></label></div>
         <label>Carga horária do certificado (opcional)<input name="carga" type="number" min="1" max="999" placeholder="Em branco: a IA calcula pela duração"></label>
